@@ -1,0 +1,92 @@
+{
+	"app": {
+		"title": "Stadtbäume",
+		"subtitle": "als Klimabotschafter"
+	},
+	"navigation": {
+		"home": "Start",
+		"phenology": "Phänologie",
+		"footer": {
+			"report": "Problem melden",
+			"imprint": "Impressum",
+			"home": "Startseite",
+			"note": "Mit &#x2764; entwickelt vom Sparkling Sciene Team &"
+		}
+	},
+	"phenology": {
+		"observation_note": {
+			"title": "Starte jetzt mit deiner Beobachtung!",
+			"text": "Es dauert nicht länger als 10 Minuten.",
+			"start_btn": "Beginnen"
+		},
+		"observation": {
+			"navigation": {
+				"step1": "Baum",
+				"step2": "Beobachtung",
+				"step3": "Dokumentation",
+				"step4": "Überprüfen",
+				"continue": "Weiter",
+				"previous": "Zurück",
+				"to": "zu"
+			},
+			"step1": {
+				"observation_date_label": "Beobachtungszeitpunkt",
+				"tree_location": "in der {{street}} in {{city}}"
+			},
+			"step2": {
+				"help": {
+					"title": "Lass uns loslegen!",
+					"description": "Gehe die Liste der Beobachtungsobjekte durch, um fortzufahren. Wenn alle Beobachtungen erledigt wurden, kannst du fortfahren.",
+					"expand_title": "Wie genau?",
+					"expand_description": "Für jeden Beobachtungstyp,\n\n<ol class=\"pt-1\">\n<li>Suche dir 10 zufällige Knospen/Blätter/etc. (je nach Typ)</li>\n<li>Untersuche jede Knospe/jedes Blatt einzeln</li>\n<li>Markiere das Bild, das deiner Beobachtung am Nähesten kommt</li>\n</ol>",
+					"check": "Überprüfe <b>{{amount}} zufällig ausgewählte {{type}}</b>"
+				}
+			},
+			"type": {
+				"Bud": {
+					"name": "Knospe",
+					"name_plural": "Knospen",
+					"result": {
+						"Closed bud": "Geschlossene Knospe",
+						"Half-open bud": "Halbgeschlossene Knospe",
+						"Open bud": "Geöffnete Knospe"
+					}
+				}
+			},
+			"step3": {
+				"title": "Dokumentation",
+				"observers_title": "Wer hat den Baum überprüft?",
+				"observers_placeholder": "Namen der Personen",
+				"upload_photo_title": "Foto hochladen",
+				"upload_photo_placeholder": "Ein Foto des Baumes aussuchen",
+				"remark_title": "Anmerkungen",
+				"remark_placeholder": "Zusätzliche Informationen über die Beobachtung",
+				"characters": "Zeichen",
+				"help": {
+					"description": "Du musst deinen und die Namen von allen angeben, die dir geholfen haben. Zustätzlich besteht die Möglichkeit ein Bild des Baumes hochzuladen und zusätzliche Anmerkungen einzutragen (optional).",
+					"toggle": "Was muss ich machen?"
+				}
+			},
+			"step4": {
+				"title": "Einträge Überprüfen",
+				"section": {
+					"tree": "Baum",
+					"observations": "Beobachtungen"
+				},
+				"location": "Standort",
+				"species": "Spezies",
+				"observation_time": "Datum & Zeit der Beobachtung",
+				"submit_btn": "Beobachtung abschicken",
+				"back_btn": "Schritt zurück"
+			}
+		}
+	},
+	"en-GB": "English",
+	"de-DE": "Deutsch",
+	"tree": {
+		"species": {
+			"baumhasel": "Baumhasel",
+			"oak": "Eiche"
+		}
+	}
+}

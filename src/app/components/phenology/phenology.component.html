@@ -1,0 +1,17 @@
+<ut-header></ut-header>
+
+<div class="container-fluid mt-3" *ngIf="router.url.indexOf('/observation/') === -1">
+
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">{{'phenology.observation_note.title' | translate}}</h5>
+      <p class="card-text">{{'phenology.observation_note.text' | translate}}</p>
+      <a routerLink="observation/step" class="card-link">{{'phenology.observation_note.start_btn' | translate}}</a>
+    </div>
+  </div>
+
+</div>
+
+<router-outlet></router-outlet>
+
+<ut-footer></ut-footer>

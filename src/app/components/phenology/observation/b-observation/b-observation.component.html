@@ -1,0 +1,85 @@
+<div class="container p-0 mt-3">
+
+  <div class="row mb-2">
+    <div class="col">
+
+      <div class="card">
+        <div class="card-body">
+
+          <h5 class="card-title collapse-arrow collapsed" data-toggle="collapse" data-target="#help">{{'phenology.observation.step2.help.title' | translate}}</h5>
+
+          <p class="m-0">
+            {{'phenology.observation.step2.help.description' | translate}}
+          </p>
+
+
+          <div id="help" class="collapse pt-2">
+
+            <h6>{{'phenology.observation.step2.help.expand_title' | translate}}</h6>
+
+            <div [innerHtml]="'phenology.observation.step2.help.expand_description' | translate"></div>
+
+          </div>
+
+        </div>
+
+        <ul class="list-group list-group-flush">
+          <li *ngFor="let type of observationService?.observationSpec" class="list-group-item" [ngClass]="{'todo': !type.done, 'done': type.done}">
+            <i *ngIf="type.done" class="fa fa-check" aria-hidden="true"></i>
+            <span [innerHtml]="'phenology.observation.step2.help.check' | translate:{amount: type.objects.length, type: 'phenology.observation.type.' + type.name + '.name_plural' | translate}"></span>
+          </li>
+        </ul>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <div *ngFor="let type of observationSpec">
+
+    <div class="row mb-2">
+      <div class="col">
+
+        <h4>{{'phenology.observation.type.' + type.name + '.name_plural' | translate}}</h4>
+
+      </div>
+    </div>
+
+    <div *ngFor="let object of type.objects">
+
+      <h5>{{'phenology.observation.type.' + type.name + '.name' | translate}} {{object.name}}</h5>
+
+      <div class="row">
+        <div class="col" *ngFor="let result of type.results">
+          <button class="btn btn-outline-secondary p-0" type="button" name="btn" [(ngModel)]="type.resultMap[object.id]"
+                  [btnRadio]="result" (click)="checkObservationStatus(type)">
+            <img [src]="images[result.id]?.encodedImage" class="w-100"/>
+          </button>
+        </div>
+      </div>
+
+      <hr/>
+
+    </div>
+
+  </div>
+
+  <div *ngIf="hasStatus(StatusKey.SPEC, StatusValue.IN_PROGRESS)" class="status-overlay overlay-fixed center">
+    <i class="fa fa-spin load-lg fa-refresh"></i>
+  </div>
+  <div *ngIf="hasStatus(StatusKey.SPEC, StatusValue.FAILED)" class="status-overlay overlay-fixed">
+    <div class="status-overlay-content">
+      <div class="status-overlay-heading heading-danger">
+        Error
+      </div>
+      <div class="status-overlay-text">
+        Could not load observation
+      </div>
+      <div class="status-overlay-controls">
+        <button class="btn btn-light float-right" (click)="loadSpec()" (keydown)="loadSpec()">Reload now</button>
+      </div>
+    </div>
+  </div>
+
+</div>

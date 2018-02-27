@@ -9,6 +9,7 @@
       "outDir": "dist",
       "assets": [
         "assets",
+        "translations",
         "favicon.ico"
       ],
       "index": "index.html",
@@ -19,9 +20,19 @@
       "testTsconfig": "tsconfig.spec.json",
       "prefix": "ut",
       "styles": [
-        "styles.less"
+        "../node_modules/bootstrap/dist/css/bootstrap.css",
+        "../node_modules/bootstrap/dist/css/bootstrap-grid.css",
+        "../node_modules/bootstrap/dist/css/bootstrap-reboot.css",
+        "../node_modules/font-awesome/css/font-awesome.min.css",
+        "../node_modules/primeng/resources/primeng.min.css",
+        "../node_modules/ngx-bootstrap/datepicker/bs-datepicker.css",
+        "theme/theme.less"
       ],
-      "scripts": [],
+      "scripts": [
+        "../node_modules/jquery/dist/jquery.min.js",
+        "../node_modules/bootstrap/dist/js/bootstrap.min.js",
+        "../node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"
+      ],
       "environmentSource": "environments/environment.ts",
       "environments": {
         "dev": "environments/environment.ts",

@@ -1,0 +1,81 @@
+.has-status-overlay {
+  position: relative;
+}
+
+.status-overlay {
+  position: absolute;
+  display: block;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(255, 255, 255, 0.9);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  z-index: 100;
+
+  &.overlay-fixed {
+    overflow: hidden;
+    position: fixed;
+    z-index: 200;
+  }
+
+  &.center {
+    text-align: center;
+  }
+
+  > .status-overlay-content {
+    margin: 0 auto;
+
+    @media screen and (max-width: 512px) {
+      width: 75%;
+    }
+
+    @media screen and (min-width: 513px) {
+      width: 350px;
+    }
+
+    &.content-center {
+      text-align: center;
+    }
+
+    > .status-overlay-heading {
+      border-bottom: 1px solid #E9ECEF;
+      padding: 0.25rem 0.5rem;
+
+      &:after {
+          font-family: FontAwesome;
+          font-size: 1.35rem;
+          float: right;
+      }
+
+      &.heading-success {
+        font-size: 1.25rem;
+        color: @success;
+
+        &:after {
+          content: "\f046";
+        }
+      }
+
+      &.heading-danger {
+        font-size: 1.25rem;
+        color: @danger;
+
+        &:after {
+          content: "\f071";
+        }
+      }
+    }
+
+    > .status-overlay-text {
+      padding: 0.25rem 0.5rem;
+    }
+
+    > .status-overlay-controls {
+      text-align: right;
+    }
+  }
+
+}

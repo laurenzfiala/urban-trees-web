@@ -2,13 +2,22 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>UrbanTreesWeb</title>
+  <title>Loading...</title>
   <base href="/">
 
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
   <link rel="icon" type="image/x-icon" href="favicon.ico">
 </head>
 <body>
-  <ut-root></ut-root>
+
+  <ut-root>
+
+    <!-- use inline style because style is not yet loaded -->
+    <div style="display: flex; justify-content: center; align-items: center; height: 100vh;">
+      <i class="fa fa-spin load-lg fa-refresh"></i>
+    </div>
+
+  </ut-root>
+
 </body>
 </html>

@@ -1,0 +1,63 @@
+@import "../../../../../theme/variables";
+
+.btn {
+  position: relative;
+
+  &.active:after {
+    content: '\f00c';
+    position: absolute;
+    left:0;
+    top:0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #ffffff;
+    opacity: 0.75;
+    font-family: FontAwesome;
+    font-size: 2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+}
+
+.row {
+  .col {
+    padding-right: 0.125rem !important;
+    padding-left: 0.125rem !important;
+    &:first-child {
+      padding-left: 15px !important;
+    }
+    &:last-child {
+      padding-right: 15px !important;
+    }
+  }
+
+}
+
+.list-group {
+
+  li {
+    &.todo {
+      border-left: solid @warning medium;
+    }
+    &.done {
+      border-left: solid @success medium;
+
+      .fa {
+        color: @success;
+      }
+    }
+  }
+
+}
+
+.collapse-arrow {
+  &.collapsed {
+    background-image: url('/assets/img/arrow_closed.svg');
+  }
+  background-image: url('/assets/img/arrow_open.svg');
+  background-repeat: no-repeat;
+  background-position: center right;
+  background-size: 20px 20px;
+}

@@ -1,0 +1,43 @@
+@import (reference) "../../../theme/theme.less";
+
+.navbar {
+  padding: 0 1rem;
+}
+
+li.nav-item.active {
+  border-bottom: solid @secondaryColor 2px;
+
+  a {
+    color: @textColorHightlight !important;
+  }
+}
+
+li.nav-item {
+  padding: 0 !important;
+  position: relative;
+
+  a {
+    padding: 1rem;
+    position: relative;
+    z-index: 2;
+  }
+}
+
+.announcement {
+  padding: 0.5rem;
+  background-color: lighten(@info, 65%);
+
+  > .announcement-title {
+    color: @info;
+  }
+
+  + .announcement {
+    padding-top: 0;
+  }
+
+
+  > .announcement-description {
+    font-size: 0.8em;
+    color: #676768;
+  }
+}

@@ -1,0 +1,72 @@
+<form class="container p-0 mt-3">
+
+  <div class="row mb-3">
+    <div class="col">
+      <a class="float-right" data-toggle="collapse" href="#explanationCollapse" aria-expanded="false" aria-controls="explanationCollapse">
+        {{'phenology.observation.step3.help.toggle' | translate}}
+      </a>
+
+      <h5>{{'phenology.observation.step3.title' | translate}}</h5>
+
+      <div class="collapse" id="explanationCollapse">
+        <div class="card card-body">
+          {{'phenology.observation.step3.help.description' | translate}}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+
+      <h6>{{'phenology.observation.step3.observers_title' | translate}}</h6>
+
+      <div class="form-group">
+        <input
+          [(ngModel)]="dataset.observers"
+          #observersInput="ngModel"
+          name="observersInput"
+          (keyup)="checkObservers()"
+          minlength="10"
+          maxlength="200"
+          required
+          class="form-control" [ngClass]="{'is-invalid': !observersInput.valid}"
+          [placeholder]="'phenology.observation.step3.observers_placeholder' | translate" />
+        <span class="float-right">{{dataset.observers ? dataset.observers.length : 0}} / 10-200 {{'phenology.observation.step3.characters' | translate}}</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="row mb-3">
+    <div class="col" style="opacity: 0.5">
+
+      <h6>{{'phenology.observation.step3.upload_photo_title' | translate}}</h6>
+
+      <div class="input-group">
+        <div class="custom-file">
+          <input type="file" class="custom-file-input" id="inputGroupFile04" disabled>
+          <label class="custom-file-label" for="inputGroupFile04">{{'phenology.observation.step3.upload_photo_placeholder' | translate}}</label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col">
+
+      <h6>{{'phenology.observation.step3.remark_title' | translate}}</h6>
+
+      <div class="form-group">
+        <textarea
+          [(ngModel)]="dataset.remark"
+          name="remark"
+          maxlength="350"
+          class="form-control"
+          rows="5"
+          [placeholder]="'phenology.observation.step3.remark_placeholder' | translate"></textarea>
+        <span class="float-right">{{dataset.remark ? dataset.remark.length : 0}} / 350 {{'phenology.observation.step3.characters' | translate}}</span>
+      </div>
+    </div>
+  </div>
+
+</form>

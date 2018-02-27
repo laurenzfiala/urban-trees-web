@@ -1,0 +1,35 @@
+<div *ngFor="let a of announcements" class="announcement">
+  <div class="announcement-title">{{a.title}}</div>
+  <div class="announcement-description">{{a.description}}</div>
+</div>
+
+<nav class="navbar navbar-expand-xs navbar-light bg-light">
+  <a class="navbar-brand" href="#">
+    <img src="../assets/img/urbantrees_icon.png" width="30" height="30" class="d-inline-block align-top nav-brand-icon" alt="Urban Trees logo">
+    <span class="d-none d-md-inline">{{'app.title' | translate}} <small>{{'app.subtitle' | translate}}</small></span>
+  </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav navbar-nav mr-auto">
+      <li class="nav-item" routerLinkActive="active">
+        <a class="nav-link" routerLink="/home">{{'navigation.home' | translate}}</a>
+      </li>
+      <li class="nav-item" routerLinkActive="active">
+        <a class="nav-link" routerLink="/phenology">{{'navigation.phenology' | translate}}</a>
+      </li>
+    </ul>
+    <ul class="navbar-nav">
+      <li dropdown class="dropdown pointer">
+        <a dropdownToggle class="nav-link dropdown-toggle">
+          {{currentLanguage | translate}}
+        </a>
+        <div *dropdownMenu class="dropdown-menu dropdown-menu-right">
+          <a *ngFor="let lang of availableLanguages" class="dropdown-item" (click)="setLanguage(lang)">{{lang | translate}}</a>
+        </div>
+      </li>
+    </ul>
+  </div>
+</nav>

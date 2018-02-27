@@ -1,0 +1,92 @@
+{
+	"app": {
+		"title": "Urban Trees",
+		"subtitle": "as climate messengers"
+	},
+	"navigation": {
+		"home": "Home",
+		"phenology": "Phenology",
+		"footer": {
+			"report": "Report a problem",
+			"imprint": "Imprint",
+			"home": "Home page",
+			"note": "Made with &#x2764; by the Sparkling Science Team &"
+		}
+	},
+	"phenology": {
+		"observation_note": {
+			"title": "Enter your phenology observation now!",
+			"text": "It's easy to do and will not take you too long.",
+			"start_btn": "Start observation"
+		},
+		"observation": {
+			"navigation": {
+				"step1": "Tree",
+				"step2": "Observation",
+				"step3": "Documentation",
+				"step4": "Review",
+				"continue": "Continue",
+				"previous": "Previous",
+				"to": "to"
+			},
+			"step1": {
+				"observation_date_label": "Observation time",
+				"tree_location": "at {{street}} in {{city}}"
+			},
+			"step2": {
+				"help": {
+					"title": "Let's get to it!",
+					"description": "Go through the below points to finish an observation. As soon as you successfully finished all necessary observations, you may continue and review your observation.",
+					"expand_title": "How to?",
+					"expand_description": "For every type of tree observation,\n\n            <ol class=\"pt-1\">\n              <li>Choose 10 random buds/leaves/etc.</li>\n              <li>Check each bud/leaf one by one</li>\n              <li>Tick the image coming closest to your findings</li>\n            </ol>",
+					"check": "Check <b>{{amount}} random {{type}}</b>"
+				}
+			},
+			"type": {
+				"Bud": {
+					"name": "Bud",
+					"name_plural": "Buds",
+					"result": {
+						"Closed bud": "Closed Bud",
+						"Half-open bud": "Half-open bud",
+						"Open bud": "Open bud"
+					}
+				}
+			},
+			"step3": {
+				"title": "Documentation",
+				"observers_title": "Who is checking?",
+				"observers_placeholder": "All names",
+				"upload_photo_title": "Upload photo",
+				"upload_photo_placeholder": "Choose a photo of the tree",
+				"remark_title": "Add a remark",
+				"remark_placeholder": "Additional information about the observation",
+				"characters": "characters",
+				"help": {
+					"description": "You must enter your name and the naes of everyone observing with you and can optionally upload a picture of the tree if you want and add additional remarks.",
+					"toggle": "How does it work?"
+				}
+			},
+			"step4": {
+				"title": "Review your entries",
+				"section": {
+					"tree": "Tree",
+					"observations": "Observations"
+				},
+				"location": "Location",
+				"species": "Species",
+				"observation_time": "Date & Time of observation",
+				"submit_btn": "Submit this observation",
+				"back_btn": "Go back"
+			}
+		}
+	},
+	"en-GB": "English",
+	"de-DE": "Deutsch",
+	"tree": {
+		"species": {
+			"baumhasel": "Turkish hazel",
+			"oak": "Oak"
+		}
+	}
+}
