@@ -3,6 +3,7 @@ import {PhenologyObservationService} from '../../../../services/phenology/observ
 import {Log} from '../../../../services/log.service';
 import {PhenologyObservationResult} from '../../../../entities/phenology-observation-result.entity';
 import {AbstractComponent} from '../../../abstract.component';
+import {ClientError} from '../../../../entities/client-error.entity';
 
 @Component({
   selector: 'ut-d-finish',
@@ -15,12 +16,29 @@ export class DFinishComponent extends AbstractComponent implements OnInit {
 
   public StatusKey = StatusKey;
   public StatusValue = StatusValue;
+  public ClientError = ClientError;
+
+  /**
+   * TODO
+   */
+  private phenologyId: number;
+
+  /**
+   * Percentage of user image currently uploaded.
+   */
+  public uploadUserImagePercentage: number = 0;
 
   constructor(public observationService: PhenologyObservationService) {
     super();
   }
 
   public ngOnInit() {
+
+    this.setStatus(StatusKey.SUBMISSION_DATA, StatusValue.PENDING);
+    if (this.observationService.userImage) {
+      this.setStatus(StatusKey.SUBMISSION_FILE, StatusValue.PENDING);
+    }
+
   }
 
   /**
@@ -29,11 +47,34 @@ export class DFinishComponent extends AbstractComponent implements OnInit {
    */
   public onSubmit() {
 
-    this.setStatus(StatusKey.SUBMISSION, StatusValue.IN_PROGRESS);
-    this.observationService.submit(() => {
-      this.setStatus(StatusKey.SUBMISSION, StatusValue.SUCCESSFUL);
-    }, () => {
-      this.setStatus(StatusKey.SUBMISSION, StatusValue.FAILED);
+    this.setStatus(StatusKey.SUBMISSION_DATA, StatusValue.IN_PROGRESS);
+    this.observationService.submit((phenologyId: number) => {
+      this.phenologyId = phenologyId;
+      this.setStatus(StatusKey.SUBMISSION_DATA, StatusValue.SUCCESSFUL);
+      if (this.observationService.userImage) {
+        this.submitFile();
+      }
+    }, (error, apiError) => {
+      this.setStatus(StatusKey.SUBMISSION_DATA, StatusValue.FAILED);
+      if (apiError) {
+        this.setStatus(StatusKey.SUBMISSION_DATA_DETAIL, apiError.clientErrorCode);
+      }
+    });
+
+  }
+
+  /**
+   * Submit the uploaded file to the backend.
+   */
+  public submitFile() {
+
+    this.setStatus(StatusKey.SUBMISSION_FILE, StatusValue.IN_PROGRESS);
+    this.observationService.submitImg(this.phenologyId, () => {
+      this.setStatus(StatusKey.SUBMISSION_FILE, StatusValue.SUCCESSFUL);
+    }, (error, apiError) => {
+      this.setStatus(StatusKey.SUBMISSION_FILE, StatusValue.FAILED);
+    }).subscribe((progressPercentage: number) => {
+      this.uploadUserImagePercentage = progressPercentage;
     });
 
   }
@@ -63,8 +104,9 @@ export class DFinishComponent extends AbstractComponent implements OnInit {
 
 export enum StatusKey {
 
-  SUBMISSION,
-  SUBMISSION_DETAIL
+  SUBMISSION_DATA,
+  SUBMISSION_DATA_DETAIL,
+  SUBMISSION_FILE
 
 }
 
@@ -73,9 +115,6 @@ export enum StatusValue {
   PENDING,
   IN_PROGRESS,
   SUCCESSFUL,
-  FAILED,
-
-  SENDING_OBSERVATION,
-  SENDING_FILE
+  FAILED
 
 }

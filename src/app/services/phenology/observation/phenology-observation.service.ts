@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {PhenologyDatasetFrontend} from '../../../entities/phenology-dataset-frontend.entity';
 import {Image} from '../../../entities/image.entity';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpEventType, HttpResponse} from '@angular/common/http';
 import {AbstractService} from '../../abstract.service';
 import {EnvironmentService} from '../../environment.service';
 import {MenuItem} from 'primeng/api';
@@ -12,6 +12,10 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {TranslateService} from '@ngx-translate/core';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/timeout';
+import {PhenologyDataset} from '../../../entities/phenology-dataset.entity';
+import {Observable} from 'rxjs/Observable';
+import {Subject} from 'rxjs/Subject';
+import {ApiError} from '../../../entities/api-error.entity';
 
 @Injectable()
 export class PhenologyObservationService extends AbstractService {
@@ -66,6 +70,16 @@ export class PhenologyObservationService extends AbstractService {
   public dataset: PhenologyDatasetFrontend = new PhenologyDatasetFrontend();
 
   /**
+   * Image from the user to be uploaded.
+   */
+  public userImage: File;
+
+  /**
+   * Observable to push to the component on upload progress.
+   */
+  public uploadUserImageSubject: Subject<number>;
+
+  /**
    * Map of images to show for different result ids.
    */
   public images: Map<number, Image> = new Map<number, Image>();
@@ -84,7 +98,8 @@ export class PhenologyObservationService extends AbstractService {
    * @param {(trees: Array<Tree>) => void} successCallback Called upon success
    * @param {(error: any) => void} errorCallback Called upon exception
    */
-  public loadTrees(successCallback: (trees: Array<Tree>) => void, errorCallback?: (error: any) => void) {
+  public loadTrees(successCallback: (trees: Array<Tree>) => void,
+                   errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void) {
 
     let headers = this.getAuthHeaders();
 
@@ -94,7 +109,7 @@ export class PhenologyObservationService extends AbstractService {
         successCallback(results);
       }, (e: any) => {
         PhenologyObservationService.LOG.error('Could not load trees: ' + e.message, e);
-        errorCallback(e);
+        errorCallback(e, this.safeApiError(e));
       });
 
   }
@@ -104,7 +119,8 @@ export class PhenologyObservationService extends AbstractService {
    * @param {(types: Array<PhenologyObservationTypeFrontend>) => void} successCallback Called upon success
    * @param {(error: any) => void} errorCallback Called upon exception
    */
-  public loadObservationSpec(successCallback: (types: Array<PhenologyObservationTypeFrontend>) => void, errorCallback?: (error: any) => void): void {
+  public loadObservationSpec(successCallback: (types: Array<PhenologyObservationTypeFrontend>) => void,
+                             errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void): void {
 
     // return cached spec
     if (this.observationSpec) {
@@ -123,10 +139,10 @@ export class PhenologyObservationService extends AbstractService {
       .subscribe((types: Array<PhenologyObservationTypeFrontend>) => {
         this.observationSpec = types;
         successCallback(types);
-      }, (e) => {
+      }, (e: any) => {
         PhenologyObservationService.LOG.error('Couldn\'t load observation spec for tree id ' + selectedTreeId + ': ' + e.message, e);
         if (errorCallback) {
-          errorCallback(e);
+          errorCallback(e, this.safeApiError(e));
         }
       });
 
@@ -139,7 +155,8 @@ export class PhenologyObservationService extends AbstractService {
    * @param {() => void} successCallback Called upon success
    * @param {(error: any) => void} errorCallback Called upon exception
    */
-  public loadResultImg(resultId: number, successCallback: () => void, errorCallback?: (error: any) => void): void {
+  public loadResultImg(resultId: number, successCallback: () => void,
+                       errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void): void {
 
     let selectedTreeSpeciesId = this.selectedTree.speciesId;
 
@@ -155,7 +172,7 @@ export class PhenologyObservationService extends AbstractService {
     }, (e: any) => {
       PhenologyObservationService.LOG.error('Could not load image for result id ' + resultId + ': ' + e.message, e);
       if (errorCallback) {
-        errorCallback(e);
+        errorCallback(e, this.safeApiError(e));
       }
     });
 
@@ -167,24 +184,72 @@ export class PhenologyObservationService extends AbstractService {
    * @param {() => void} successCallback when the submission was successful
    * @param {(error: any) => void} errorCallback if it failed
    */
-  public submit(successCallback: () => void, errorCallback?: (error: any) => void): void {
+  public submit(successCallback: (phenologyId: number) => void,
+                errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void): void {
 
     this.dataset.treeId = this.selectedTree.id;
 
     let headers = this.getAuthHeaders();
 
-    let path = this.envService.endpoints.getPhenologyObservationSubmission(this.dataset.treeId);
+    let path = this.envService.endpoints.getPhenologyDatasetSubmission(this.dataset.treeId);
     this.http.post(path, this.dataset.apply(), {headers: headers})
       .timeout(this.envService.defaultTimeout)
-      .subscribe((result: any) => {
+      .map(value => PhenologyDataset.fromObject(value))
+      .subscribe((result: PhenologyDataset) => {
       PhenologyObservationService.LOG.info('Successfully submitted phenology observation dataset.');
-      successCallback();
+      successCallback(result.id);
     }, (e: any) => {
-      PhenologyObservationService.LOG.error('Could not save observation: ' + e.message, e);
+      PhenologyObservationService.LOG.error('Could not save observation: ' + e.error.message, e);
       if (errorCallback) {
-        errorCallback(e);
+        errorCallback(e, this.safeApiError(e));
       }
     });
+
+  }
+
+  /**
+   * TODO
+   * @param {number} phenologyId
+   * @param {() => void} successCallback
+   * @param {(error: HttpErrorResponse, apiError?: ApiError) => void} errorCallback
+   * @returns {Observable<number>}
+   */
+  public submitImg(phenologyId: number,
+                   successCallback: () => void,
+                   errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void): Observable<number> {
+
+    if (!this.userImage) {
+      return;
+    }
+
+    let formdata: FormData = new FormData();
+    formdata.append('file', this.userImage);
+
+    let uploadProgress = 0;
+
+    this.http.post(this.envService.endpoints.getPhenologyDatasetImageSubmission(phenologyId), formdata, {
+      headers: this.getAuthHeaders(),
+      reportProgress: true,
+      responseType: 'text'
+    }).subscribe((event: any) => {
+      if (event.type === HttpEventType.UploadProgress) {
+        uploadProgress = Math.round(100 * event.loaded / event.total);
+        PhenologyObservationService.LOG.info('Uploading image: ' + uploadProgress + ' %');
+        this.uploadUserImageSubject.next(uploadProgress);
+      } else {
+        PhenologyObservationService.LOG.info('Successfully uploaded image.');
+        successCallback();
+      }
+    }, (e: any) => {
+      PhenologyObservationService.LOG.error('Could not upload observation image: ' + e.error.message, e);
+      if (errorCallback) {
+        errorCallback(e, this.safeApiError(e));
+      }
+    });
+
+    this.uploadUserImageSubject = new Subject<number>();
+
+    return this.uploadUserImageSubject.asObservable();
 
   }
 

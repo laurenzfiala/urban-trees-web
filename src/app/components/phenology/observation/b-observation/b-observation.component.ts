@@ -64,14 +64,14 @@ export class BObservationComponent extends AbstractComponent implements OnInit, 
       }
       this.checkObservationStatus();
       this.setStatus(StatusKey.SPEC, StatusValue.SUCCESSFUL);
-    }, (error: any) => {
+    }, (error, apiError) => {
       this.setStatus(StatusKey.SPEC, StatusValue.FAILED);
     });
   }
 
   private loadResultImage(resultId: number) {
     this.observationService.loadResultImg(resultId, () => {
-    }, (error: any) => {
+    }, (error, apiError) => {
       this.setStatus(StatusKey.SPEC, StatusValue.FAILED);
     });
   }

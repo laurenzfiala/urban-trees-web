@@ -77,7 +77,24 @@
 				"species": "Spezies",
 				"observation_time": "Datum & Zeit der Beobachtung",
 				"submit_btn": "Beobachtung abschicken",
-				"back_btn": "Schritt zurück"
+				"back_btn": "Schritt zurück",
+				"submitting_data": "Daten werden abgeschickt...",
+				"submitted_data": "Daten gespeichert!",
+				"submit_data": "Daten abschicken",
+				"submit_file": "Foto abschicken",
+				"submitted_file": "Foto gespeichert!",
+				"submit_failed_data": "Senden der Daten fehlgeschlagen!",
+				"submit_failed_file": "Senden des Fotos fehlgeschlagen!",
+				"status": {
+					"duplicate": "Es existiert bereits eine Beobachtung zum angegebenen Zeitpunkt.",
+					"generic": "Bitte versuche es nochmals in ein paar Sekunden. Beim neu laden der Seite gehen die Daten verloren."
+				},
+				"submitting_file": "Foto wird abgeschickt...",
+				"success": {
+					"title": "Erfolgreich",
+					"text": "Deine Phänologiebeobachtung wurde erfasst.",
+					"btn": "Fertig"
+				}
 			}
 		}
 	},

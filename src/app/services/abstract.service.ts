@@ -1,4 +1,5 @@
-import {HttpHeaders} from '@angular/common/http';
+import {HttpErrorResponse, HttpHeaders} from '@angular/common/http';
+import {ApiError} from '../entities/api-error.entity';
 
 /**
  * Abstract service class containing common helpers and logic.
@@ -31,6 +32,22 @@ export abstract class AbstractService {
     return new HttpHeaders()
       .set(AbstractService.API_KEY_HEADER, apiKey);
 
+  }
+
+  /**
+   * Returns an ApiError if possible, otherwise null.
+   * @param {HttpErrorResponse} o Error object given back by e.g. HttpClient observable.
+   * @returns {ApiError} ApiError if available; null otherwise.
+   */
+  protected safeApiError(o: HttpErrorResponse): ApiError {
+    if (!o) {
+      return null;
+    }
+    let apiErr = ApiError.fromObject(o.error);
+    if (apiErr && apiErr.clientErrorCode) {
+      return apiErr.withStatusCode(o.status);
+    }
+    return null;
   }
 
   /**

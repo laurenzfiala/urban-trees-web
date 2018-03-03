@@ -77,7 +77,24 @@
 				"species": "Species",
 				"observation_time": "Date & Time of observation",
 				"submit_btn": "Submit this observation",
-				"back_btn": "Go back"
+				"back_btn": "Go back",
+				"submitting_data": "Sending observation...",
+				"submitted_data": "Submitted observation!",
+				"submit_data": "Send observation",
+				"submit_file": "Send photo",
+				"submitted_file": "Submitted photo!",
+				"submit_failed_data": "Failed to submit observation!",
+				"submit_failed_file": "Failed to send photo!",
+				"status": {
+					"duplicate": "There is already an observation at the given time.",
+					"generic": "Please try submitting again in a few moments. If you refresh the page, your observation data is lost."
+				},
+				"submitting_file": "Sending photo...",
+				"success": {
+					"title": "Success",
+					"text": "Your observation has been successfully submitted.",
+					"btn": "Finish"
+				}
 			}
 		}
 	},

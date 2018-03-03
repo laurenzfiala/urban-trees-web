@@ -12,9 +12,10 @@ export const environment = {
 
   endpoints: {
     // Phenology
-    allTrees:                       '/tree',
-    phenologySpec:                  '/tree/{treeId}/phenology/spec',
-    phenologyObservationSubmission: '/tree/{treeId}/phenology',
+    allTrees:                         '/tree',
+    phenologySpec:                    '/tree/{treeId}/phenology/spec',
+    phenologyDatasetSubmission:       '/tree/{treeId}/phenology',
+    phenologyDatasetImageSubmission:  '/usercontent/phenology/observation/{phenologyId}/image',
 
     // UI
     phenologyObservationResultImg:  '/ui/phenology/observation/result/{treeSpeciesId}/{resultId}/img',
@@ -22,6 +23,7 @@ export const environment = {
   },
 
   defaultTimeout:                   10000,
+  imageUploadTimeout:               60000,
 
   log: {
     level:                          LogLevel.TRACE

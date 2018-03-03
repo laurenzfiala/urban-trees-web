@@ -9,6 +9,8 @@ import {Announcement} from './announcement.entity';
 
 export class PhenologyDataset {
 
+  public id: number;
+
   public treeId: number;
   public observationDate: string;
   public observers: string;
@@ -16,17 +18,18 @@ export class PhenologyDataset {
 
   public observations: Array<PhenologyObservation>;
 
-  constructor();
-  constructor(treeId?: number, observationDate?: string, observers?: string, remark?: string) {
+  constructor(id?: number, treeId?: number, observationDate?: string, observers?: string, remark?: string) {
+    this.id = id;
     this.treeId = treeId;
     this.observationDate = observationDate;
     this.observers = observers;
     this.remark = remark;
   }
 
-  public static fromObject(o: any): Announcement {
+  public static fromObject(o: any): PhenologyDataset {
 
-    return new Announcement(
+    return new PhenologyDataset(
+      o.id,
       o.treeId,
       o.observationDate,
       o.observers,

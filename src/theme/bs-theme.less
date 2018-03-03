@@ -1,9 +1,5 @@
 .card {
-  border-radius: 0 !important;
-}
-
-* {
-  border-radius: 0 !important;
+  border-color: @lightBorderColor;
 }
 
 .card a {
@@ -23,6 +19,10 @@
 
 .navbar-toggler {
   border: 0;
+}
+
+.nav-pills .nav-link.active {
+  background-color: @secondaryColorHighlight;
 }
 
 /**
@@ -76,16 +76,30 @@
   }
 }
 
-.btn-dark {
-  background-color: @darkBgColor;
-  border-color: @darkBgColor;
+.btn {
+  &.btn-dark {
+    background-color: @darkBgColor;
+    border-color: @darkBorderColor;
+  }
+
+  &.btn-outline-secondary {
+    border-color: @darkBorderColor;
+  }
 }
 
 .list-group-item {
-  border-color: @lightBgColor;
+  border-color: @lightBorderColor;
 
   &.active {
     background-color: @secondaryColorHighlight;
     border-color: @secondaryColorHighlight;
   }
+}
+
+input.form-control {
+  border-color: @lightBorderColor;
+}
+
+hr {
+  border-color: @lightBorderColor;
 }

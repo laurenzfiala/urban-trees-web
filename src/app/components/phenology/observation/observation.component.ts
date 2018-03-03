@@ -46,7 +46,6 @@ export class ObservationComponent implements OnInit, OnDestroy {
     this.observationService.checkStepPreconditions();
 
     this.subs.register(this.router.events.subscribe((e: any) => {
-    ObservationComponent.LOG.trace('init -sub');
       if (e instanceof ChildActivationStart) {
         const url = e.snapshot.children[0].url[0].path;
         if (url) {

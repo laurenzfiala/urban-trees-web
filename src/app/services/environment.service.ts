@@ -19,6 +19,10 @@ export class EnvironmentService {
     return this.context.defaultTimeout;
   }
 
+  get imageUploadTimeout() {
+    return this.context.imageUploadTimeout;
+  }
+
 }
 
 class EnvironmentEndpoints {
@@ -50,7 +54,7 @@ class EnvironmentEndpoints {
     return this.prependCommonPath(this.context.allTrees);
   }
 
-  public getPhenologySpec(treeId: number) {
+  public getPhenologySpec(treeId: number): string {
 
     let replacements: any[] = [
       { placeholder: 'treeId', replacement: treeId }
@@ -65,7 +69,7 @@ class EnvironmentEndpoints {
 
   }
 
-  public getPhenologyObservationResultImg(treeSpeciesId: number, resultId: number) {
+  public getPhenologyObservationResultImg(treeSpeciesId: number, resultId: number): string {
 
     let replacements: any[] = [
       { placeholder: 'treeSpeciesId', replacement: treeSpeciesId },
@@ -81,7 +85,7 @@ class EnvironmentEndpoints {
 
   }
 
-  public getPhenologyObservationSubmission(treeId: number) {
+  public getPhenologyDatasetSubmission(treeId: number): string {
 
     let replacements: any[] = [
       { placeholder: 'treeId', replacement: treeId }
@@ -89,7 +93,22 @@ class EnvironmentEndpoints {
 
     return this.prependCommonPath(
       this.replaceParams(
-        this.context.phenologyObservationSubmission,
+        this.context.phenologyDatasetSubmission,
+        replacements
+      )
+    );
+
+  }
+
+  public getPhenologyDatasetImageSubmission(phenologyId: number): string {
+
+    let replacements: any[] = [
+      { placeholder: 'phenologyId', replacement: phenologyId }
+    ];
+
+    return this.prependCommonPath(
+      this.replaceParams(
+        this.context.phenologyDatasetImageSubmission,
         replacements
       )
     );

@@ -16,16 +16,31 @@ export class CUploadComponent implements OnInit {
   }
 
   public ngOnInit(): void {
+    this.checkContinue();
   }
 
   /**
    * Check if we can continue to the next step.
    */
-  public checkObservers() {
+  public checkContinue() {
     let observers = this.dataset.observers;
     if (observers) {
       this.observationService.setContinue(observers.length >= 10);
     }
+  }
+
+  /**
+   * Check if we can continue to the next step.
+   */
+  public setUserImage(event: any) {
+    this.observationService.userImage = event.target.files.item(0);
+  }
+
+  get userImageName(): String {
+    if (!this.observationService.userImage) {
+      return null;
+    }
+    return this.observationService.userImage.name;
   }
 
   get dataset(): PhenologyDatasetFrontend {

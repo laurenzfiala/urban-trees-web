@@ -44,7 +44,7 @@ export abstract class AbstractComponent {
    */
   public hasStatus(key: number, value: number): boolean {
     let status = this.statuses.get(key);
-    if (status && status === value) {
+    if (status !== undefined && status === value) {
       return true;
     }
     return false;
