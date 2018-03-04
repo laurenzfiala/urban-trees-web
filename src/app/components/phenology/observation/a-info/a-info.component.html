@@ -13,7 +13,7 @@
                #dp="bsDatepicker"
                bsDatepicker
                [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"
-               [(ngModel)]="d"
+               [(ngModel)]="dataset.uiObservationDate"
                [maxDate]="dataset.uiMaxObservationDate">
         <div class="input-group-append">
           <button class="btn btn-outline-secondary" type="button" (click)="dp.toggle()">
@@ -31,7 +31,8 @@
           id="observationTime"
           name="observationTime"
           [(ngModel)]="dataset.uiObservationDate"
-          [showMeridian]="false">
+          [showMeridian]="false"
+          [max]="dataset.uiMaxObservationDate">
         </timepicker>
       </div>
 
@@ -52,13 +53,13 @@
       <div *ngIf="hasStatus(StatusKey.MAP, StatusValue.FAILED)" class="status-overlay">
         <div class="status-overlay-content">
           <div class="status-overlay-heading heading-danger">
-            Error
+            {{'general.error' | translate}}
           </div>
           <div class="status-overlay-text">
-            Could not load map data
+            {{'phenology.observation.step1.error_map.text' | translate}}
           </div>
           <div class="status-overlay-controls">
-            <button class="btn btn-light float-right" (click)="load()" (keydown)="load()">Reload now</button>
+            <button class="btn btn-light float-right" (click)="load()" (keydown)="load()">{{'general.retry' | translate}}</button>
           </div>
         </div>
       </div>
@@ -87,13 +88,13 @@
   <div *ngIf="hasStatus(StatusKey.TREES, StatusValue.FAILED)" class="status-overlay">
     <div class="status-overlay-content">
       <div class="status-overlay-heading heading-danger">
-        Error
+        {{'general.error' | translate}}
       </div>
       <div class="status-overlay-text">
-        Could not load trees
+        {{'phenology.observation.step1.error_loading.text' | translate}}
       </div>
       <div class="status-overlay-controls">
-        <button class="btn btn-light float-right" (click)="load()" (keydown)="load()">Reload now</button>
+        <button class="btn btn-light float-right" (click)="load()" (keydown)="load()">{{'general.retry' | translate}}</button>
       </div>
     </div>
   </div>

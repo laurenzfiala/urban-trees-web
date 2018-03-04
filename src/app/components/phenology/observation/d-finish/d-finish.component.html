@@ -97,7 +97,7 @@
       {{'phenology.observation.step4.submitted_file' | translate}}
     </li>
     <li class="list-group-item" *ngIf="hasStatus(StatusKey.SUBMISSION_FILE, StatusValue.FAILED)">
-      <button class="btn btn-light float-right" (click)="submitFile()">Retry</button>
+      <button class="btn btn-light float-right" (click)="submitFile()">{{'general.retry' | translate}}</button>
       <i class="fa fa-times text-danger" aria-hidden="true"></i>
       {{'phenology.observation.step4.submit_failed_file' | translate}}
     </li>

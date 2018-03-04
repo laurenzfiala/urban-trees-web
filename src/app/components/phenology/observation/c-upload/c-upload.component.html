@@ -27,12 +27,12 @@
           #observersInput="ngModel"
           name="observersInput"
           (keyup)="checkContinue()"
-          minlength="10"
+          minlength="5"
           maxlength="200"
           required
           class="form-control" [ngClass]="{'is-invalid': !observersInput.valid}"
           [placeholder]="'phenology.observation.step3.observers_placeholder' | translate" />
-        <span class="float-right">{{dataset.observers ? dataset.observers.length : 0}} / 10-200 {{'phenology.observation.step3.characters' | translate}}</span>
+        <span class="float-right">{{dataset.observers ? dataset.observers.length : 0}} / 5-200 {{'phenology.observation.step3.characters' | translate}}</span>
       </div>
     </div>
   </div>
@@ -42,11 +42,22 @@
 
       <h6>{{'phenology.observation.step3.upload_photo_title' | translate}}</h6>
 
-      <div class="input-group">
-        <div class="custom-file">
-          <input type="file" class="custom-file-input" id="userImage" name="userImage" (change)="setUserImage($event)">
-          <label *ngIf="userImageName" class="custom-file-label" for="userImage">{{userImageName}}</label>
-          <label *ngIf="!userImageName" class="custom-file-label" for="userImage">{{'phenology.observation.step3.upload_photo_placeholder' | translate}}</label>
+      <div class="custom-file">
+        <input
+          type="file"
+          class="custom-file-input"
+          id="userImage"
+          name="userImage"
+          (change)="setUserImage($event); checkContinue()"
+          [ngClass]="{'is-invalid': !isUserImageValid()}"
+          >
+        <label *ngIf="userImageName" class="custom-file-label" for="userImage">{{userImageName}}</label>
+        <label *ngIf="!userImageName" class="custom-file-label" for="userImage">{{'phenology.observation.step3.upload_photo_placeholder' | translate}}</label>
+        <div class="invalid-feedback" *ngIf="getUserImageErrors().indexOf(UserImageError.INVALID_SIZE) !== -1">
+            {{'phenology.observation.step3.photo_size_invalid' | translate}}
+        </div>
+        <div class="invalid-feedback" *ngIf="getUserImageErrors().indexOf(UserImageError.INVALID_TYPE) !== -1">
+            {{'phenology.observation.step3.photo_type_invalid' | translate}}
         </div>
       </div>
     </div>

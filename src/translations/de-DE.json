@@ -31,7 +31,13 @@
 			},
 			"step1": {
 				"observation_date_label": "Beobachtungszeitpunkt",
-				"tree_location": "in der {{street}} in {{city}}"
+				"tree_location": "in der {{street}} in {{city}}",
+				"error_loading": {
+					"text": "Baum-Informationen konnten nicht geladen werden, bitte versuche es später noch einmal."
+				},
+				"error_map": {
+					"text": "Kartendaten konnten nicht geladen werden. Bitte wähle weiter unten einen Baum manuell aus."
+				}
 			},
 			"step2": {
 				"help": {
@@ -65,7 +71,9 @@
 				"help": {
 					"description": "Du musst deinen und die Namen von allen angeben, die dir geholfen haben. Zustätzlich besteht die Möglichkeit ein Bild des Baumes hochzuladen und zusätzliche Anmerkungen einzutragen (optional).",
 					"toggle": "Was muss ich machen?"
-				}
+				},
+				"photo_type_invalid": "Das Foto muss im Format PNG oder JPEG hochgeladen werden.",
+				"photo_size_invalid": "Das Foto darf nicht größer als 5 MB sein."
 			},
 			"step4": {
 				"title": "Einträge Überprüfen",
@@ -105,5 +113,9 @@
 			"baumhasel": "Baumhasel",
 			"oak": "Eiche"
 		}
+	},
+	"general": {
+		"retry": "Nochmals versuchen",
+		"error": "Fehler"
 	}
 }

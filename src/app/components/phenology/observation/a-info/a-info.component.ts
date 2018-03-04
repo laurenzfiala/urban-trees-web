@@ -57,8 +57,6 @@ export class AInfoComponent extends AbstractComponent implements OnInit, OnDestr
    */
   private mapMarkerLayer: VectorLayer;
 
-  public d = new Date();
-
   constructor(private observationsService: PhenologyObservationService,
               private environmentService: EnvironmentService) {
     super();

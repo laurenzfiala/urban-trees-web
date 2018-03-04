@@ -31,7 +31,13 @@
 			},
 			"step1": {
 				"observation_date_label": "Observation time",
-				"tree_location": "at {{street}} in {{city}}"
+				"tree_location": "at {{street}} in {{city}}",
+				"error_loading": {
+					"text": "Could not load tree data. Please try again later."
+				},
+				"error_map": {
+					"text": "Could not load map data. Please manually choose a tree below."
+				}
 			},
 			"step2": {
 				"help": {
@@ -65,7 +71,9 @@
 				"help": {
 					"description": "You must enter your name and the naes of everyone observing with you and can optionally upload a picture of the tree if you want and add additional remarks.",
 					"toggle": "How does it work?"
-				}
+				},
+				"photo_type_invalid": "The photo must be of type PNG or JPEG.",
+				"photo_size_invalid": "The photo must not be larger than 5 MB."
 			},
 			"step4": {
 				"title": "Review your entries",
@@ -105,5 +113,9 @@
 			"baumhasel": "Turkish hazel",
 			"oak": "Oak"
 		}
+	},
+	"general": {
+		"retry": "Retry",
+		"error": "Error"
 	}
 }
