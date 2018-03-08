@@ -10,7 +10,7 @@
 			"report": "Problem melden",
 			"imprint": "Impressum",
 			"home": "Startseite",
-			"note": "Mit &#x2764; entwickelt vom Sparkling Sciene Team &"
+			"note": "Mit &#x2764; entwickelt vom Stadtbäume-Team &"
 		}
 	},
 	"phenology": {
@@ -37,7 +37,10 @@
 				},
 				"error_map": {
 					"text": "Kartendaten konnten nicht geladen werden. Bitte wähle weiter unten einen Baum manuell aus."
-				}
+				},
+				"tree_search_placeholder": "Gib Land, Stadt, Straße, Spezies oder ID ein, um zu suchen...",
+				"title": "Dein Baum",
+				"tree_not_found": "Keinen Baum gefunden."
 			},
 			"step2": {
 				"help": {

@@ -1,27 +1,32 @@
-<p-steps [model]="stepItems" [activeIndex]="currentStepIndex"></p-steps>
+<div class="steps">
+  <a class="step"
+     *ngFor="let step of stepItems; let i = index"
+     [routerLink]="step.routerLink"
+     [ngClass]="{'step-highlight': i === currentStepIndex,
+                'step-disabled': i > finishedStepIndex + 1 || i === currentStepIndex}">
+    <div class="step-number">{{i + 1}}</div>
+    <div class="step-title">{{step.label}}</div>
+  </a>
+</div>
 
-<div class="container-fluid child-container py-2">
+<div class="container-fluid pt-3">
   <router-outlet></router-outlet>
 </div>
 
-<div *ngIf="nextStep && (previousStep || currentStep.continue)" class="container-fluid py-2 nav-bottom fixed-bottom">
-
-  <form>
-    <div class="row form-row px-1">
-      <div *ngIf="previousStep" class="col col-lg-3 col-xl-2">
-        <button [routerLink]="[previousStep?.path]" class="btn btn-light btn-block" type="button">
-          <i class="fa fa-angle-left" aria-hidden="true"></i>
-          <span class="d-none d-sm-inline">{{'phenology.observation.navigation.previous' | translate}}</span>
-        </button>
-      </div>
-      <div *ngIf="nextStep && currentStep.continue" class="col col-lg-3 col-xl-2 ml-auto">
-        <button [routerLink]="[nextStep.path]" class="btn btn-dark btn-block" type="button">
-          {{'phenology.observation.navigation.continue' | translate}}
-          <span class="d-none d-sm-inline">{{'phenology.observation.navigation.to' | translate}} {{'phenology.observation.navigation.step' + nextStep.path | translate}}</span>
-          <i class="fa fa-angle-right" aria-hidden="true"></i>
-        </button>
-      </div>
+<div class="container my-2" *ngIf="currentStepIndex < 3">
+  <div class="row">
+    <div *ngIf="isPreviousStepAllowed()" class="col col-lg-4 col-xl-3">
+      <button [routerLink]="[previousStep?.routerLink]" class="btn btn-light btn-block" type="button">
+        <i class="fa fa-angle-left" aria-hidden="true"></i>
+        <span class="d-none d-sm-inline">{{'phenology.observation.navigation.previous' | translate}}</span>
+      </button>
     </div>
-  </form>
-
+    <div *ngIf="isNextStepAllowed()" class="col col-lg-4 col-xl-3 ml-auto">
+      <button [routerLink]="[nextStep.routerLink]" class="btn btn-dark btn-block" type="button">
+        {{'phenology.observation.navigation.continue' | translate}}
+        <span class="d-none d-sm-inline">{{'phenology.observation.navigation.to' | translate}} {{'phenology.observation.navigation.step' + nextStep.routerLink | translate}}</span>
+        <i class="fa fa-angle-right" aria-hidden="true"></i>
+      </button>
+    </div>
+  </div>
 </div>

@@ -4,6 +4,7 @@ import {Log} from '../../../../services/log.service';
 import {PhenologyObservationResult} from '../../../../entities/phenology-observation-result.entity';
 import {AbstractComponent} from '../../../abstract.component';
 import {ClientError} from '../../../../entities/client-error.entity';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'ut-d-finish',
@@ -19,7 +20,8 @@ export class DFinishComponent extends AbstractComponent implements OnInit {
   public ClientError = ClientError;
 
   /**
-   * TODO
+   * ID of the submitted phenology observation.
+   * This is used for sending the optional observation photo.
    */
   private phenologyId: number;
 
@@ -28,7 +30,8 @@ export class DFinishComponent extends AbstractComponent implements OnInit {
    */
   public uploadUserImagePercentage: number = 0;
 
-  constructor(public observationService: PhenologyObservationService) {
+  constructor(public observationService: PhenologyObservationService,
+              public translateService: TranslateService) {
     super();
   }
 
@@ -47,6 +50,8 @@ export class DFinishComponent extends AbstractComponent implements OnInit {
    */
   public onSubmit() {
 
+    this.observationService.setDone(0, false, true);
+
     this.setStatus(StatusKey.SUBMISSION_DATA, StatusValue.IN_PROGRESS);
     this.observationService.submit((phenologyId: number) => {
       this.phenologyId = phenologyId;
@@ -54,6 +59,7 @@ export class DFinishComponent extends AbstractComponent implements OnInit {
       if (this.observationService.userImage) {
         this.submitFile();
       }
+      this.observationService.markToBeReset();
     }, (error, apiError) => {
       this.setStatus(StatusKey.SUBMISSION_DATA, StatusValue.FAILED);
       if (apiError) {

@@ -29,10 +29,10 @@ export class CUploadComponent implements OnInit {
    * Check if we can continue to the next step.
    */
   public checkContinue() {
-    this.observationService.setContinue(
-      this.observersInput.touched &&
-      this.observersInput.valid &&
-      this.isUserImageValid()
+    this.observationService.setDone(2,
+      this.dataset.observers &&
+      this.isUserImageValid(),
+      true
     );
   }
 

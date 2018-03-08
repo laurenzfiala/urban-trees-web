@@ -1,5 +1,7 @@
+@import "../../../../../theme/variables";
+
 .timepicker-container {
-  margin-top: 3px;
+  margin-top: 0.2rem;
 }
 
 timepicker {
@@ -31,7 +33,20 @@ timepicker {
   overflow-y: auto;
   max-height: 250px;
 
-  > li:not(.active) {
+  > li.list-group-item-action:not(.active) {
     cursor: pointer;
+  }
+
+  > li.list-group-item.disabled {
+    color: @darkGrey;
+    font-size: 0.85rem;
+    text-align: center;
+  }
+}
+
+#map::ng-deep {
+  .ol-viewport,
+  #osm-copyright {
+    border-radius: @borderRadius;
   }
 }

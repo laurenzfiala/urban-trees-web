@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {PhenologyObservationService} from '../../../../services/phenology/observation/phenology-observation.service';
 
 import OlMap from 'ol/map';
@@ -23,6 +23,8 @@ import VectorTileOptions = olx.source.VectorTileOptions;
 import TileEvent = ol.source.TileEvent;
 import OlXYZ from 'ol/source/xyz';
 import OlTileLayer from 'ol/layer/tile';
+import {LangChangeEvent, TranslateService} from '@ngx-translate/core';
+import {BsDatepickerDirective} from 'ngx-bootstrap/datepicker';
 
 /**
  * First step of a phenology observation.
@@ -45,7 +47,12 @@ export class AInfoComponent extends AbstractComponent implements OnInit, OnDestr
   /**
    * Once loaded, contains all trees available for observation.
    */
-  public trees: Array<TreeFrontend>;
+  public availableTrees: Array<TreeFrontend>;
+
+  /**
+   * Trees currently displayed.
+   */
+  public displayTrees: Array<TreeFrontend>;
 
   /**
    * The map to display.
@@ -57,12 +64,47 @@ export class AInfoComponent extends AbstractComponent implements OnInit, OnDestr
    */
   private mapMarkerLayer: VectorLayer;
 
+  /**
+   * Current tree search input.
+   */
+  public treeSearchInput: string;
+
+  /**
+   * Set tree search and filter displayed trees by input.
+   * @param {string} searchInput user's tree search input
+   */
+  public setTreeSearchInput(searchInput: string): void {
+
+    if (!searchInput) {
+      this.displayTrees = this.availableTrees;
+      return;
+    }
+
+    const idInput = Number(searchInput);
+    if (!Number.isNaN(idInput)) {
+      this.displayTrees = this.availableTrees.filter((tree: TreeFrontend) => {
+        return tree.id === idInput;
+      });
+      return;
+    }
+
+    this.displayTrees = this.availableTrees.filter((tree: TreeFrontend) => {
+      const translationKey = ('tree.species.' + tree.species).toLowerCase();
+      return this.translateService.instant(translationKey).toLowerCase().indexOf(searchInput.toLowerCase()) !== -1 ||
+        tree.location.street.toLowerCase().indexOf(searchInput.toLowerCase()) !== -1 ||
+        tree.location.city.toLowerCase().indexOf(searchInput.toLowerCase()) !== -1;
+    });
+
+  }
+
   constructor(private observationsService: PhenologyObservationService,
-              private environmentService: EnvironmentService) {
+              private environmentService: EnvironmentService,
+              public translateService: TranslateService) {
     super();
   }
 
   public ngOnInit(): void {
+    this.observationsService.resetIfMarked();
     this.load();
   }
 
@@ -119,7 +161,7 @@ export class AInfoComponent extends AbstractComponent implements OnInit, OnDestr
       }))
     });
 
-    this.trees.forEach((value, index, array) => {
+    this.availableTrees.forEach((value, index, array) => {
 
       let iconFeature = new Feature({
         geometry: new Point(OlProj.fromLonLat([value.location.coordinates.x, value.location.coordinates.y], 'EPSG:3857')),
@@ -184,7 +226,7 @@ export class AInfoComponent extends AbstractComponent implements OnInit, OnDestr
 
     this.map = new OlMap({
       target: 'map',
-      layers: [layer, this.mapMarkerLayer],
+      layers: [tileLayer, this.mapMarkerLayer],
       view: view
     });
 
@@ -251,15 +293,17 @@ export class AInfoComponent extends AbstractComponent implements OnInit, OnDestr
    */
   private loadTrees(successCallback: () => void) {
 
-    if (this.trees) {
+    if (this.availableTrees) {
+      this.displayTrees = this.availableTrees;
       successCallback();
       return;
     }
 
     this.setStatus(StatusKey.TREES, StatusValue.IN_PROGRESS);
     this.observationsService.loadTrees((trees: Array<Tree>) => {
-      this.trees = <Array<TreeFrontend>>trees;
+      this.availableTrees = <Array<TreeFrontend>>trees;
       this.setStatus(StatusKey.TREES, StatusValue.SUCCESSFUL);
+      this.displayTrees = this.availableTrees;
       successCallback();
     }, () => {
       this.setStatus(StatusKey.TREES, StatusValue.FAILED);
@@ -273,15 +317,18 @@ export class AInfoComponent extends AbstractComponent implements OnInit, OnDestr
    */
   public selectTree(treeId: number) {
 
-    for (let t of this.trees) {
+    for (let t of this.availableTrees) {
       if (t.id === treeId) {
         t.selected = true;
+        if (this.observationsService.selectedTree && t.speciesId !== this.observationsService.selectedTree.speciesId) {
+          this.observationsService.setDone(0, true, true);
+        }
       } else {
         t.selected = false;
       }
     }
     this.initMap();
-    this.observationsService.setContinue(true);
+    this.observationsService.setDone(0, true);
 
   }
 
@@ -291,11 +338,11 @@ export class AInfoComponent extends AbstractComponent implements OnInit, OnDestr
    */
   private saveTreeSelection() {
 
-    if (!this.trees) {
+    if (!this.availableTrees) {
       return;
     }
 
-    for (let t of this.trees) {
+    for (let t of this.availableTrees) {
       if (t.selected) {
         this.observationsService.selectTree(t);
         return;

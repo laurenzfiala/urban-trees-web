@@ -5,26 +5,31 @@ import {LogLevel} from '../app/entities/log-level.entity';
  */
 export const environment = {
 
-  production:                       false,
+  production:                         false,
 
-  host:                             'http://141.201.106.39:80',
-  mapHost:                          'http://141.201.106.39:80',
+  host:                               'http://141.201.106.39:8080',
+  mapHost:                            'http://141.201.106.39:80',
 
   endpoints: {
     // Phenology
-    allTrees:                       '/api/tree',
-    phenologySpec:                  '/api/tree/{treeId}/phenology/spec',
-    phenologyObservationSubmission: '/api/tree/{treeId}/phenology',
+    allTrees:                         '/tree',
+    findTrees:                        '/tree/find?search={searchString}',
+    phenologySpec:                    '/tree/{treeId}/phenology/spec',
+    phenologyDatasetSubmission:       '/tree/{treeId}/phenology',
+    phenologyDatasetImageSubmission:  '/usercontent/phenology/observation/{phenologyId}/image',
 
     // UI
-    phenologyObservationResultImg:  '/api/ui/phenology/observation/result/{treeSpeciesId}/{resultId}/img',
-    announcements:                  '/api/ui/announcements'
+    phenologyObservationResultImg:    '/ui/phenology/observation/result/{treeSpeciesId}/{resultId}/img',
+    announcements:                    '/ui/announcements'
   },
 
-  defaultTimeout:                   10000,
+  defaultTimeout:                     10000,
+  imageUploadTimeout:                 60000,
+
+  outputDateFormat:                 'YYYY-MM-DD[T]HH-mm-ss',
 
   log: {
-    level:                          LogLevel.TRACE
+    level:                            LogLevel.TRACE
   }
 
 };

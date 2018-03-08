@@ -4,8 +4,7 @@ import {NgModule} from '@angular/core';
 import {AppRoutingModule} from './app-routing.module';
 
 import {AppComponent} from './app.component';
-import {TranslateLoader, TranslateModule, TranslatePipe} from '@ngx-translate/core';
-import {StepsModule} from 'primeng/steps';
+import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {HeaderComponent} from './components/header/header.component';
 import {HomeComponent} from './components/home/home.component';
@@ -29,9 +28,7 @@ import {ImprintComponent} from './components/imprint/imprint.component';
 import {FooterComponent} from './components/footer/footer.component';
 import {AnnouncementService} from './services/announcement.service';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
-import {
-  PhenologyObservationStepGuard
-} from './components/phenology/observation/phenology-observation-step.guard';
+import {PhenologyObservationStepGuard} from './components/phenology/observation/phenology-observation-step.guard';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, '/translations/');
@@ -65,9 +62,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     FormsModule,
     AppRoutingModule,
     HttpClientModule,
-
-    // PrimeNG
-    StepsModule,
 
     // Ngx-Bootstrap
     BsDatepickerModule.forRoot(),

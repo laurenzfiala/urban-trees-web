@@ -17,9 +17,9 @@ export class AppComponent {
    */
   public static APP_NAME = 'Urban Trees';
 
+  // TODO rework this
   constructor(translate: TranslateService) {
 
-    // TODO add to config
     translate.addLangs(['en-GB', 'de-DE']);
     translate.setDefaultLang('en-GB');
 

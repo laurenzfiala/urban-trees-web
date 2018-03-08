@@ -1,5 +1,5 @@
 /**
- * TODO
+ * Announcement to show fetched from the backend.
  *
  * @author Laurenz Fiala
  * @since 2018/02/22

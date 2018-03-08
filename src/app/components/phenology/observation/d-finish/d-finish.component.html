@@ -1,4 +1,4 @@
-<form class="container p-0 mt-3 has-status-overlay" (submit)="onSubmit()">
+<form class="container has-status-overlay" (submit)="onSubmit()">
 
   <h4>{{'phenology.observation.step4.title' | translate}}</h4>
 
@@ -20,7 +20,8 @@
     </tr>
     <tr>
       <th scope="row">{{'phenology.observation.step4.observation_time' | translate}}</th>
-      <td>{{dataset?.observationDate}}</td>
+      <td *ngIf="translateService.currentLang.startsWith('de')">{{dataset?.uiObservationDate | date:'dd.MM.yyyy HH:mm'}}</td>
+      <td *ngIf="translateService.currentLang.startsWith('en')">{{dataset?.uiObservationDate | date:'yyyy-MM-dd HH:mm'}}</td>
     </tr>
     </tbody>
   </table>
@@ -49,7 +50,7 @@
 
   <button class="btn btn-block btn-light"
           [disabled]="hasStatus(StatusKey.SUBMISSION_DATA, StatusValue.SUCCESSFUL)"
-          [routerLink]="['..', observationService.previousStep?.path]">
+          [routerLink]="['..', '3']">
     {{'phenology.observation.step4.back_btn' | translate}}
   </button>
   <button class="btn btn-block btn-dark" type="submit"

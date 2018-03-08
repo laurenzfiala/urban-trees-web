@@ -18,7 +18,6 @@ export class ApiError {
 
   /**
    * Timestamp of the error event.
-   * TODO automatically parse this upon construction
    */
   public timestamp: string;
 

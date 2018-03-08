@@ -56,6 +56,7 @@ export class BObservationComponent extends AbstractComponent implements OnInit, 
 
   private loadSpec(): void {
     this.setStatus(StatusKey.SPEC, StatusValue.IN_PROGRESS);
+
     this.observationService.loadObservationSpec((types: Array<PhenologyObservationTypeFrontend>) => {
       for (let t of types) {
         for (let r of t.results) {
@@ -87,7 +88,7 @@ export class BObservationComponent extends AbstractComponent implements OnInit, 
         return;
       }
     }
-    this.observationService.setContinue(true);
+    this.observationService.setDone(1, true);
 
   }
 

@@ -16,7 +16,7 @@ export class PhenologyObservationTypeFrontend extends PhenologyObservationType {
   public done: boolean = false;
 
   /**
-   * TODO
+   * Map of selected results for each object.
    * @type {Map<PhenologyObservationObject, PhenologyObservationResult>}
    */
   public resultMap: any = {};

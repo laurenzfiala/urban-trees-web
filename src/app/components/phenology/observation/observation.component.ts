@@ -1,15 +1,10 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit} from '@angular/core';
-import {MenuItem} from 'primeng/api';
-import {ActivatedRoute, ChildActivationStart, NavigationStart, Router} from '@angular/router';
-import {AInfoComponent} from './a-info/a-info.component';
+import {Component, OnDestroy, OnInit} from '@angular/core';
+import {ActivatedRoute, Router} from '@angular/router';
 import {BObservationComponent} from './b-observation/b-observation.component';
-import {CUploadComponent} from './c-upload/c-upload.component';
-import {DFinishComponent} from './d-finish/d-finish.component';
 import {PhenologyObservationService} from '../../../services/phenology/observation/phenology-observation.service';
 import {SubscriptionManagerService} from '../../../services/subscription-manager.service';
 import {Log} from '../../../services/log.service';
 import {LangChangeEvent, TranslateService} from '@ngx-translate/core';
-import {AbstractComponent} from '../../abstract.component';
 
 @Component({
   selector: 'ut-observation',
@@ -22,7 +17,33 @@ export class ObservationComponent implements OnInit, OnDestroy {
 
   private static SUBSCRIPTION_TAG = 'observation-cmp';
 
-  public stepItems: MenuItem[] = [];
+  /**
+   * This array contains all available steps for phenology observation
+   * with their corresponding path and title.
+   */
+  public static steps: any[] = [
+    {
+      routerLink: '1',
+      label: 'Tree'
+    },
+    {
+      routerLink: '2',
+      label: 'Observation'
+    },
+    {
+      routerLink: '3',
+      label: 'Documentation'
+    },
+    {
+      routerLink: '4',
+      label: 'Review'
+    }
+  ];
+
+  /**
+   * Needed for template.
+   */
+  public stepItems = ObservationComponent.steps;
 
   constructor(private observationService: PhenologyObservationService,
               private subs: SubscriptionManagerService,
@@ -31,61 +52,21 @@ export class ObservationComponent implements OnInit, OnDestroy {
               private translateService: TranslateService) { }
 
   public ngOnInit() {
-
     ObservationComponent.LOG.trace('Initializing...');
-
     this.initSteps();
-
-    if (!this.route.children) {
-      ObservationComponent.LOG.debug('Found no child routes.');
-      return;
-    }
-
-
-    this.checkStepIndex();
-    this.observationService.checkStepPreconditions();
-
-    this.subs.register(this.router.events.subscribe((e: any) => {
-      if (e instanceof ChildActivationStart) {
-        const url = e.snapshot.children[0].url[0].path;
-        if (url) {
-          let n = Number(url) - 1;
-          this.observationService.currentStepIndex = n;
-        }
-      }
-    }), ObservationComponent.SUBSCRIPTION_TAG);
-
   }
 
   /**
    * Setup steps for translation.
    */
   private initSteps() {
-    this.stepItems = this.observationService.getMenuItems();
     this.subs.register(this.translateService.onLangChange.subscribe((event: LangChangeEvent) => {
-      ObservationComponent.LOG.trace('Getting observation steps...');
-      this.stepItems = this.observationService.getMenuItems();
+      for (let i = 0; i < ObservationComponent.steps.length; i++) {
+        this.translateService.get('phenology.observation.navigation.step' + ObservationComponent.steps[i].routerLink).subscribe((translated: string) => {
+          ObservationComponent.steps[i].label = translated;
+        });
+      }
     }), ObservationComponent.SUBSCRIPTION_TAG);
-  }
-
-  /**
-   * Check which step is currently active by the current routes'
-   * component type and set the appropriate index in the service.
-   */
-  private checkStepIndex() {
-
-    let child = this.route.children[0].component;
-
-    if (child === AInfoComponent) {
-      this.observationService.currentStepIndex = 0;
-    } else if (child === BObservationComponent) {
-      this.observationService.currentStepIndex = 1;
-    } else if (child === CUploadComponent) {
-      this.observationService.currentStepIndex = 2;
-    } else if (child === DFinishComponent) {
-      this.observationService.currentStepIndex = 3;
-    }
-
   }
 
   public ngOnDestroy() {
@@ -93,23 +74,35 @@ export class ObservationComponent implements OnInit, OnDestroy {
     this.subs.unsubscribe(ObservationComponent.SUBSCRIPTION_TAG);
   }
 
-  get currentStep() {
-    return this.observationService.currentStep;
-  }
-
   get currentStepIndex(): number {
     return this.observationService.currentStepIndex;
   }
 
-  get nextStep() {
-    return this.observationService.nextStep;
+  get finishedStepIndex(): number {
+    return this.observationService.finishedStepIndex;
   }
 
-  get previousStep() {
-    return this.observationService.previousStep;
+  get currentStep(): any {
+    return ObservationComponent.steps[this.observationService.currentStepIndex];
   }
 
-  get isObservationSpecLoaded(): boolean {
-    return this.observationService.observationSpec !== undefined;
+  get nextStep(): any {
+    return ObservationComponent.steps[this.observationService.currentStepIndex + 1];
   }
+
+  get previousStep(): any {
+    return ObservationComponent.steps[this.observationService.currentStepIndex - 1];
+  }
+
+  public isPreviousStepAllowed(): boolean {
+    if (this.previousStep) {
+      return true;
+    }
+    return false;
+  }
+
+  public isNextStepAllowed(): boolean {
+    return this.nextStep && this.finishedStepIndex >= this.currentStepIndex;
+  }
+
 }

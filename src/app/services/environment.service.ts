@@ -23,6 +23,10 @@ export class EnvironmentService {
     return this.context.imageUploadTimeout;
   }
 
+  get outputDateFormat() {
+    return this.context.outputDateFormat;
+  }
+
 }
 
 class EnvironmentEndpoints {
@@ -52,6 +56,21 @@ class EnvironmentEndpoints {
 
   get allTrees() {
     return this.prependCommonPath(this.context.allTrees);
+  }
+
+  public getFindTrees(searchString: string): string {
+
+    let replacements: any[] = [
+      { placeholder: 'searchString', replacement: searchString }
+    ];
+
+    return this.prependCommonPath(
+      this.replaceParams(
+        this.context.findTrees,
+        replacements
+      )
+    );
+
   }
 
   public getPhenologySpec(treeId: number): string {

@@ -7,6 +7,7 @@ import {BObservationComponent} from './b-observation/b-observation.component';
 import {AInfoComponent} from './a-info/a-info.component';
 import {CUploadComponent} from './c-upload/c-upload.component';
 import {Log} from '../../../services/log.service';
+import {ObservationComponent} from './observation.component';
 
 @Injectable()
 export class PhenologyObservationStepGuard implements CanActivateChild {
@@ -28,12 +29,12 @@ export class PhenologyObservationStepGuard implements CanActivateChild {
     } else if (component === DFinishComponent) {
       this.observationService.currentStepIndex = 3;
     }
-    this.observationService.currentStep.continue = false;
 
-    if (!this.observationService.checkStepPreconditions()) {
+    if (this.observationService.currentStepIndex > this.observationService.finishedStepIndex + 1) {
       this.router.navigate([state.url.substring(0, state.url.lastIndexOf('/')), '1']);
       return false;
     }
     return true;
   }
+
 }

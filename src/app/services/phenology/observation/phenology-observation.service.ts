@@ -1,21 +1,20 @@
 import {Injectable} from '@angular/core';
 import {PhenologyDatasetFrontend} from '../../../entities/phenology-dataset-frontend.entity';
 import {Image} from '../../../entities/image.entity';
-import {HttpClient, HttpErrorResponse, HttpEventType, HttpResponse} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpEventType} from '@angular/common/http';
 import {AbstractService} from '../../abstract.service';
 import {EnvironmentService} from '../../environment.service';
-import {MenuItem} from 'primeng/api';
 import {Tree} from '../../../entities/tree.entity';
 import {Log} from '../../log.service';
 import {PhenologyObservationTypeFrontend} from '../../../entities/phenology-observation-type-frontend.entity';
 import {ActivatedRoute, Router} from '@angular/router';
-import {TranslateService} from '@ngx-translate/core';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/timeout';
 import {PhenologyDataset} from '../../../entities/phenology-dataset.entity';
 import {Observable} from 'rxjs/Observable';
 import {Subject} from 'rxjs/Subject';
 import {ApiError} from '../../../entities/api-error.entity';
+import {SubscriptionManagerService} from '../../subscription-manager.service';
 
 @Injectable()
 export class PhenologyObservationService extends AbstractService {
@@ -23,36 +22,21 @@ export class PhenologyObservationService extends AbstractService {
   private static LOG: Log = Log.newInstance(PhenologyObservationService);
 
   /**
-   * This array contains all available steps for phenology observation
-   * with their corresponding path and title.
+   * Whether the observation data should be reset or not.
+   * Called upon init of first observation stap.
    */
-  public static steps: any[] = [
-    {
-      path: '1',
-      title: 'Tree',
-      continue: false
-    },
-    {
-      path: '2',
-      title: 'Observation',
-      continue: false
-    },
-    {
-      path: '3',
-      title: 'Documentation',
-      continue: false
-    },
-    {
-      path: '4',
-      title: 'Review',
-      continue: false
-    }
-  ];
+  private markedForReset: boolean = false;
 
   /**
    * Index of the current step displayed.
    */
   public currentStepIndex: number = 0;
+
+  /**
+   * Step thats currently finished. Used to determine which steps
+   * and navigation buttons to display.
+   */
+  public finishedStepIndex: number = -1;
 
   /**
    * List of observation types possible for the currently selected tree.
@@ -87,8 +71,8 @@ export class PhenologyObservationService extends AbstractService {
   constructor(private http: HttpClient,
               private router: Router,
               private route: ActivatedRoute,
-              private envService: EnvironmentService,
-              private translateService: TranslateService) {
+              private sub: SubscriptionManagerService,
+              private envService: EnvironmentService) {
     super();
     this.initDataset();
   }
@@ -208,11 +192,11 @@ export class PhenologyObservationService extends AbstractService {
   }
 
   /**
-   * TODO
-   * @param {number} phenologyId
-   * @param {() => void} successCallback
-   * @param {(error: HttpErrorResponse, apiError?: ApiError) => void} errorCallback
-   * @returns {Observable<number>}
+   * Submit the optional phenology observation image to the backend.
+   * @param {number} phenologyId Id of the previously submitted phenology observation data.
+   * @param {() => void} successCallback when the upload was successful.
+   * @param {(error: HttpErrorResponse, apiError?: ApiError) => void} errorCallback if it failed
+   * @returns {Observable<number>} called upon status info of the upload.
    */
   public submitImg(phenologyId: number,
                    successCallback: () => void,
@@ -254,40 +238,29 @@ export class PhenologyObservationService extends AbstractService {
   }
 
   /**
-   * Initializ observation data for use.
+   * Initialize observation data for use.
    */
-  public initDataset() {
+  public initDataset(): void {
     this.dataset.uiObservationDate = new Date();
     this.dataset.uiMaxObservationDate = new Date();
   }
 
-  /**
-   * Create menu items for the steps component.
-   */
-  public getMenuItems(): MenuItem[] {
-
-    let items = new Array<MenuItem>();
-    for (let i of PhenologyObservationService.steps) {
-      this.translateService.get('phenology.observation.navigation.step' + i.path).subscribe((translated: string) => {
-        items.push({'label': translated});
-      });
-    }
-    return items;
-
+  public markToBeReset() {
+    this.markedForReset = true;
   }
 
   /**
-   * If previous steps are not finished, return false.
+   * Reset observation data.
    */
-  public checkStepPreconditions(): boolean {
-
-    for (let i = 0; i < this.currentStepIndex; i++) {
-      if (!PhenologyObservationService.steps[i].continue) {
-        return false;
-      }
+  public resetIfMarked(): void {
+    if (!this.markedForReset) {
+      return;
     }
-    return true;
-
+    this.markedForReset = false;
+    this.dataset = new PhenologyDatasetFrontend();
+    this.observationSpec = undefined;
+    this.selectedTree = undefined;
+    this.initDataset();
   }
 
   /**
@@ -295,32 +268,27 @@ export class PhenologyObservationService extends AbstractService {
    * so it will be reloaded.
    */
   public selectTree(tree: Tree): void {
+    // force refresh of changed species spec
+    if (this.selectedTree && tree.speciesId !== this.selectedTree.speciesId) {
+      this.observationSpec = null;
+    }
     this.selectedTree = tree;
-    this.observationSpec = null;
   }
 
-  get currentStep() {
-    return PhenologyObservationService.steps[this.currentStepIndex];
-  }
-
-  public setContinue(value: boolean) {
-    this.currentStep.continue = value;
-  }
-
-  get nextStep() {
-    let nextStepIndex = this.currentStepIndex + 1;
-    if (nextStepIndex >= PhenologyObservationService.steps.length) {
-      return null;
+  /**
+   * Set whether the given step index is done or not.
+   * @param {number} stepIndex index of the step which is finished or not
+   * @param {boolean} isDone whether the given step is done or not
+   */
+  public setDone(stepIndex: number, isDone: boolean, force?: boolean): void {
+    if (!force && isDone && stepIndex <= this.finishedStepIndex) {
+      return;
     }
-    return PhenologyObservationService.steps[nextStepIndex];
-  }
-
-  get previousStep() {
-    let previousStepIndex = this.currentStepIndex - 1;
-    if (previousStepIndex < 0) {
-      return null;
+    if (isDone) {
+      this.finishedStepIndex = stepIndex;
+    } else {
+      this.finishedStepIndex = stepIndex - 1;
     }
-    return PhenologyObservationService.steps[previousStepIndex];
   }
 
 }

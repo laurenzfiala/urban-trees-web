@@ -21,7 +21,6 @@ export class PhenologyDatasetFrontend extends PhenologyDataset {
    * and return the downcast backend object.
    */
   public apply(): PhenologyDataset {
-    // TODO configuration for time format
     this.observationDate = moment(this.uiObservationDate).utc().format('YYYY-MM-DD[T]HH-mm-ss');
     return <PhenologyDataset>this;
   }

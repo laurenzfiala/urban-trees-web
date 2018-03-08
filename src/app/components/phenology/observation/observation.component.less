@@ -1,6 +1,4 @@
-.child-container {
-  margin-bottom: 6rem;
-}
+@import "../../../../theme/variables";
 
 .nav-bottom {
   border-top: 1px solid #E9ECEF;
@@ -10,5 +8,71 @@
 
 .nav-bottom .navbar-info {
   font-size: 1.35em;
+}
+
+.steps {
+  font-size: 1.5rem;
+  display: flex;
+  flex-direction: row;
+
+  a {
+    text-decoration: none;
+  }
+
+  .step-title {
+    font-size: 0.9rem;
+  }
+
+  .step {
+    padding: 0.75rem;
+    flex-basis: 0;
+    flex-grow: 1;
+    text-align: center;
+    background-color: @lightBgColor;
+    line-height: 1.15;
+    box-shadow: inset 0px -1px 0px 0px darken(@lightGrey, 5%);
+    color: @darkGrey;
+
+    &.step-done {
+      box-shadow: inset 0px -1px 0px 0px @secondaryColorHighlight;
+    }
+
+    &.step-disabled {
+      color: rgba(0, 0, 0, 0.5);
+      pointer-events: none;
+
+      > .step-number {
+        font-size: 1.5rem;
+        color: rgba(0, 0, 0, 0.5);
+      }
+
+      > .step-title {
+        font-size: 0.85rem;
+        color: rgba(0, 0, 0, 0.425);
+      }
+    }
+
+    &.step-highlight {
+      color: #474747;
+      box-shadow: inset 0px -2px 0px 0px @secondaryColor;
+
+      > .step-number{
+        color: #474747 !important;
+      }
+      > .step-title {
+        color: lighten(#474747, 15%) !important;
+      }
+    }
+
+    > .step-number {
+      font-size: 1.5rem;
+      color: @textColorHighlight;
+    }
+
+    > .step-title {
+      font-size: 0.85rem;
+      color: lighten(@textColorHighlight, 5%);
+    }
+  }
 }
 

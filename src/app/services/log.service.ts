@@ -59,10 +59,10 @@ export class Log {
   }
 
   /**
-   * TODO
-   * @param {LogLevel} level
-   * @param {string} message
-   * @param logObject
+   * Log to the console.
+   * @param {LogLevel} level The LogLevel to use
+   * @param {string} message Message to display
+   * @param logObject (optional) object to display
    */
   private log(level: LogLevel, message: string, logObject?: any) {
 

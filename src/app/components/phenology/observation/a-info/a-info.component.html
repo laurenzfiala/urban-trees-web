@@ -1,50 +1,50 @@
-<div class="container p-0 has-status-overlay">
+<div class="container has-status-overlay">
 
-  <div class="row">
+  <h3>{{'phenology.observation.step1.title' | translate}}</h3>
 
-    <div class="form-group col col-sm-6 col-md-auto">
+  <form>
+    <div class="row">
 
+      <div class="col">
       <label for="observationDate">{{'phenology.observation.step1.observation_date_label' | translate}}</label>
-      <div class="input-group">
-        <input type="text"
-               id="observationDate"
-               class="form-control"
-               name="observationDate"
-               #dp="bsDatepicker"
-               bsDatepicker
-               [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"
-               [(ngModel)]="dataset.uiObservationDate"
-               [maxDate]="dataset.uiMaxObservationDate">
-        <div class="input-group-append">
-          <button class="btn btn-outline-secondary" type="button" (click)="dp.toggle()">
-            <i class="fa fa-calendar-o" aria-hidden="true"></i>
-          </button>
+        <div class="input-group">
+          <input type="text"
+                 id="observationDate"
+                 class="form-control"
+                 name="observationDate"
+                 #dp="bsDatepicker"
+                 bsDatepicker
+                 [bsConfig]="{ dateInputFormat: 'YYYY-MM-DD' }"
+                 [(ngModel)]="dataset.uiObservationDate"
+                 [maxDate]="dataset.uiMaxObservationDate">
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="button" (click)="dp.toggle()">
+              <i class="fa fa-calendar-o" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col">
+        <div class="input-group timepicker-container mb-2">
+            <timepicker
+              id="observationTime"
+              name="observationTime"
+              [(ngModel)]="dataset.uiObservationDate"
+              [showMeridian]="false"
+              [max]="dataset.uiMaxObservationDate">
+            </timepicker>
         </div>
       </div>
 
     </div>
-
-    <div class="form-group col col-sm-6 col-md-auto timepicker-container">
-
-      <div class="input-group">
-        <timepicker
-          id="observationTime"
-          name="observationTime"
-          [(ngModel)]="dataset.uiObservationDate"
-          [showMeridian]="false"
-          [max]="dataset.uiMaxObservationDate">
-        </timepicker>
-      </div>
-
-    </div>
-
-  </div>
+  </form>
 
   <div *ngIf="hasStatus(StatusKey.TREES, StatusValue.IN_PROGRESS)" style="text-align: center; margin: 10%">
     <i class="fa fa-spin load-md fa-refresh"></i>
   </div>
 
-  <div [ngClass]="{'hide-map': !hasStatus(StatusKey.TREES, StatusValue.SUCCESSFUL)}" class="form-group map-container">
+  <div [ngClass]="{'hide-map': !hasStatus(StatusKey.TREES, StatusValue.SUCCESSFUL)}" class="form-group map-container mb-0">
 
     <div id="map" class="has-status-overlay" (click)="onMapClick($event)">
       <div *ngIf="hasStatus(StatusKey.MAP, StatusValue.IN_PROGRESS)" class="status-overlay center">
@@ -68,15 +68,29 @@
       </div>
     </div>
 
+    <div class="form-group mt-2 mb-0">
+      <input
+        [ngModel]="treeSearchInput"
+        (ngModelChange)="setTreeSearchInput($event)"
+        name="treeSearchInput"
+        class="form-control"
+        [placeholder]="'phenology.observation.step1.tree_search_placeholder' | translate" />
+    </div>
+
     <ul class="list-group mt-2">
-      <li *ngFor="let tree of this.trees"
+      <li *ngFor="let tree of this.displayTrees"
           class="list-group-item list-group-item-action"
           [ngClass]="{'active': tree.selected}"
           (click)="selectTree(tree.id)"
           (keydown)="selectTree(tree.id)">
+        <span class="badge badge-light float-right">#{{tree.id}}</span>
         <b>{{'tree.species.' + tree.species | lowercase | translate}}</b>
         <br/>
         {{'phenology.observation.step1.tree_location' | translate:tree.location}}
+      </li>
+      <li *ngIf="this.displayTrees?.length === 0"
+          class="list-group-item disabled">
+        {{'phenology.observation.step1.tree_not_found' | translate}}
       </li>
     </ul>
 
