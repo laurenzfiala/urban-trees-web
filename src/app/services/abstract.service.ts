@@ -64,4 +64,13 @@ export abstract class AbstractService {
     return null;
   }
 
+  /**
+   * Whether there is currently an embedded auth method used or not.
+   * This may be used to check if we need to show an authentication dialog.
+   * @returns {boolean}
+   */
+  protected isUseEmbeddedAuthentication(): boolean {
+    return this.getCookie(AbstractService.API_KEY_HEADER) !== null;
+  }
+
 }

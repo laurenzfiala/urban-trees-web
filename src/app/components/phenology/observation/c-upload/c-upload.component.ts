@@ -31,6 +31,7 @@ export class CUploadComponent implements OnInit {
   public checkContinue() {
     this.observationService.setDone(2,
       this.dataset.observers &&
+      this.dataset.observers.length >= 5 &&
       this.isUserImageValid(),
       true
     );
@@ -40,6 +41,7 @@ export class CUploadComponent implements OnInit {
    * Set the user upload image in the service.
    */
   public setUserImage(event: any) {
+    CUploadComponent.LOG.info('Setting user image', event);
     this.observationService.userImage = event.target.files.item(0);
   }
 

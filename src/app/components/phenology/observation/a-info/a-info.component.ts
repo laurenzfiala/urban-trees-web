@@ -164,7 +164,7 @@ export class AInfoComponent extends AbstractComponent implements OnInit, OnDestr
     this.availableTrees.forEach((value, index, array) => {
 
       let iconFeature = new Feature({
-        geometry: new Point(OlProj.fromLonLat([value.location.coordinates.x, value.location.coordinates.y], 'EPSG:3857')),
+        geometry: new Point([value.location.coordinates.x, value.location.coordinates.y]),
         treeId: value.id,
         selected: value.selected
       });

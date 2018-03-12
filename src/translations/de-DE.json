@@ -114,7 +114,13 @@
 	"tree": {
 		"species": {
 			"baumhasel": "Baumhasel",
-			"oak": "Eiche"
+			"oak": "Eiche",
+			"gingko biloba": "Gingko Biloba",
+			"quercus robur": "Quercus Robur",
+			"platanus sp": "Platanus sp",
+			"tilia sp": "Tilia sp",
+			"quercus sp": "Quercus sp",
+			"carpinus betulus": "Carpinus betulus"
 		}
 	},
 	"general": {

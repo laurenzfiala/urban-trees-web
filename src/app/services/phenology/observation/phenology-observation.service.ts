@@ -112,19 +112,19 @@ export class PhenologyObservationService extends AbstractService {
       return;
     }
 
-    let selectedTreeId = this.selectedTree.speciesId;
+    let selectedSpeciesId = this.selectedTree.speciesId;
     this.observationSpec = new Array<PhenologyObservationTypeFrontend>();
 
     let headers = this.getAuthHeaders();
 
-    this.http.get<Array<PhenologyObservationTypeFrontend>>(this.envService.endpoints.getPhenologySpec(selectedTreeId), {headers: headers})
+    this.http.get<Array<PhenologyObservationTypeFrontend>>(this.envService.endpoints.getPhenologySpec(selectedSpeciesId), {headers: headers})
       .timeout(this.envService.defaultTimeout)
       .map(value => value.map(element => PhenologyObservationTypeFrontend.fromObject(element)))
       .subscribe((types: Array<PhenologyObservationTypeFrontend>) => {
         this.observationSpec = types;
         successCallback(types);
       }, (e: any) => {
-        PhenologyObservationService.LOG.error('Couldn\'t load observation spec for tree id ' + selectedTreeId + ': ' + e.message, e);
+        PhenologyObservationService.LOG.error('Couldn\'t load observation spec for species id ' + selectedSpeciesId + ': ' + e.message, e);
         if (errorCallback) {
           errorCallback(e, this.safeApiError(e));
         }
@@ -260,6 +260,7 @@ export class PhenologyObservationService extends AbstractService {
     this.dataset = new PhenologyDatasetFrontend();
     this.observationSpec = undefined;
     this.selectedTree = undefined;
+    this.userImage = undefined;
     this.initDataset();
   }
 
