@@ -40,7 +40,8 @@
 				},
 				"tree_search_placeholder": "Enter Country, City, Street, Species or ID to find...",
 				"title": "Your tree",
-				"tree_not_found": "No tree found."
+				"tree_not_found": "No tree found.",
+				"map_activator": "Click to use map"
 			},
 			"step2": {
 				"help": {
@@ -125,6 +126,14 @@
 	},
 	"general": {
 		"retry": "Retry",
-		"error": "Error"
+		"error": "Error",
+		"imprint": "Imprint"
+	},
+	"imprint": {
+		"partners": "Partners",
+		"license": "License",
+		"os_projects": "Open Source Projects",
+		"os_projects_text": "Following is a list of open source projects used to create this website.",
+		"license_text": "Not currently defined."
 	}
 }

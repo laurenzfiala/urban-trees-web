@@ -70,6 +70,11 @@ export class AInfoComponent extends AbstractComponent implements OnInit, OnDestr
   public treeSearchInput: string;
 
   /**
+   * Whether the map can currently be used, or its disabled.
+   */
+  public isMapEnabled: boolean = false;
+
+  /**
    * Set tree search and filter displayed trees by input.
    * @param {string} searchInput user's tree search input
    */

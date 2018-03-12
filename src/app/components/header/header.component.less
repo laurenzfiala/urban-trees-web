@@ -35,9 +35,19 @@ li.nav-item {
     padding-top: 0;
   }
 
-
   > .announcement-description {
     font-size: 0.8em;
     color: #676768;
+  }
+
+  &.severity-high {
+    background-color: lighten(@danger, 42%);
+
+    > .announcement-title {
+      color: darken(@danger, 10%);
+    }
+    > .announcement-description {
+      color: darken(@danger, 50%);
+    }
   }
 }

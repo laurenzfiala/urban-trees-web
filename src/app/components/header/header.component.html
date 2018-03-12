@@ -1,4 +1,4 @@
-<div *ngFor="let a of announcements" class="announcement">
+<div *ngFor="let a of announcements" class="announcement" [ngClass]="{'severity-high': a.severity > 10}">
   <div class="announcement-title">{{a.title}}</div>
   <div class="announcement-description">{{a.description}}</div>
 </div>

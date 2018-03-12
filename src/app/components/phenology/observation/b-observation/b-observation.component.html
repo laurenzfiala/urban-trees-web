@@ -66,7 +66,7 @@
   </div>
 
   <div *ngIf="hasStatus(StatusKey.SPEC, StatusValue.IN_PROGRESS)" class="status-overlay overlay-fixed center">
-    <i class="fa fa-spin load-lg fa-refresh"></i>
+    <img class="load-md" src="/assets/tail-spin.svg" />
   </div>
   <div *ngIf="hasStatus(StatusKey.SPEC, StatusValue.FAILED)" class="status-overlay overlay-fixed">
     <div class="status-overlay-content">
