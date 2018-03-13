@@ -148,7 +148,7 @@ export class AInfoComponent extends AbstractComponent implements OnInit, OnDestr
 
     let iconStyle = new Style({
       image: new Icon( ({
-        anchor: [0.5, 46],
+        anchor: [0.5, 40],
         anchorXUnits: 'fraction',
         anchorYUnits: 'pixels',
         opacity: 1,
@@ -158,7 +158,7 @@ export class AInfoComponent extends AbstractComponent implements OnInit, OnDestr
 
     let iconStyleHighlight = new Style({
       image: new Icon( ({
-        anchor: [0.5, 46],
+        anchor: [0.5, 40],
         anchorXUnits: 'fraction',
         anchorYUnits: 'pixels',
         opacity: 1,
