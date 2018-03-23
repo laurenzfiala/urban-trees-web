@@ -203,9 +203,9 @@ export class AInfoComponent extends AbstractComponent implements OnInit, OnDestr
 
     let iconStyle = new Style({
       image: new Icon( ({
-        anchor: [0.5, 40],
+        anchor: [0.5, 1],
         anchorXUnits: 'fraction',
-        anchorYUnits: 'pixels',
+        anchorYUnits: 'fraction',
         opacity: 1,
         src: '/assets/img/map_marker.svg'
       }))
@@ -213,15 +213,21 @@ export class AInfoComponent extends AbstractComponent implements OnInit, OnDestr
 
     let iconStyleHighlight = new Style({
       image: new Icon( ({
-        anchor: [0.5, 40],
+        anchor: [0.5, 1],
         anchorXUnits: 'fraction',
-        anchorYUnits: 'pixels',
+        anchorYUnits: 'fraction',
         opacity: 1,
         src: '/assets/img/map_marker_highlight.svg'
       }))
     });
 
-    this.availableTrees.forEach((value, index, array) => {
+    this.availableTrees.sort((a, b) => {
+      if (a.selected) {
+        return 1;
+      } else {
+        return 0;
+      }
+    }).forEach((value, index, array) => {
 
       let iconFeature = new Feature({
         geometry: new Point([value.location.coordinates.x, value.location.coordinates.y]),
