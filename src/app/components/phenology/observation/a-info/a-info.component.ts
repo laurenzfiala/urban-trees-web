@@ -60,6 +60,12 @@ export class AInfoComponent extends AbstractComponent implements OnInit, OnDestr
   private map: OlMap;
 
   /**
+   * The current view on the map.
+   * Used to manipulate zooming, centering, etc.
+   */
+  private mapView: OlView;
+
+  /**
    * The layer of map markers.
    */
   private mapMarkerLayer: VectorLayer;
@@ -122,6 +128,12 @@ export class AInfoComponent extends AbstractComponent implements OnInit, OnDestr
    */
   private load() {
 
+    this.mapView = new OlView({
+      center: OlProj.fromLonLat([13.0432, 47.8103], 'EPSG:3857'),
+      zoom: 8,
+      enableRotation: false
+    });
+
     this.setStatus(StatusKey.MAP, StatusValue.IN_PROGRESS);
     this.loadTrees(() => {
 
@@ -131,6 +143,7 @@ export class AInfoComponent extends AbstractComponent implements OnInit, OnDestr
       }
 
       this.initMap();
+      this.updateMapMarkers();
     });
 
   }
@@ -139,6 +152,48 @@ export class AInfoComponent extends AbstractComponent implements OnInit, OnDestr
    * Initialize the map with markers for all loaded trees.
    */
   private initMap() {
+
+    let layer = new VectorTile({
+      source: new VectorTileSource(<VectorTileOptions>{
+        format: new MVT(),
+        url: this.environmentService.endpoints.mapHost + '/data/v3/{z}/{x}/{y}.pbf',
+        projection: null
+      }),
+      renderOrder: null
+    });
+
+    layer.getSource().on('tileloaderror', (tile) => {
+      this.onMapTileError(tile);
+    });
+
+    layer.getSource().on('tileloadend', () => {
+      this.onMapTileLoaded();
+    });
+
+    let source = new OlXYZ({
+      url: 'https://a.tile.openstreetmap.org/{z}/{x}/{y}.png'
+    });
+
+    let tileLayer = new OlTileLayer({
+      source: source
+    });
+
+    tileLayer.getSource().on('tileloadend', () => {
+      this.onMapTileLoaded();
+    });
+
+    this.map = new OlMap({
+      target: 'map',
+      layers: [tileLayer],
+      view: this.mapView
+    });
+
+  }
+
+  /**
+   * Update the maps' markers to project what the user selected.
+   */
+  private updateMapMarkers() {
 
     if (this.map) {
       this.map.removeLayer(this.mapMarkerLayer);
@@ -185,30 +240,8 @@ export class AInfoComponent extends AbstractComponent implements OnInit, OnDestr
 
     });
 
-    let layer = new VectorTile({
-      source: new VectorTileSource(<VectorTileOptions>{
-        format: new MVT(),
-        url: this.environmentService.endpoints.mapHost + '/data/v3/{z}/{x}/{y}.pbf',
-        projection: null
-      }),
-      renderOrder: null
-    });
-
-    layer.getSource().on('tileloaderror', (tile) => {
-      this.onMapTileError(tile);
-    });
-
-    layer.getSource().on('tileloadend', () => {
-      this.onMapTileLoaded();
-    });
-
     this.mapMarkerLayer = new VectorLayer({
       source: markerSource
-    });
-
-    let view = new OlView({
-      center: OlProj.fromLonLat([13.0432, 47.8103], 'EPSG:3857'),
-      zoom: 8,
     });
 
     if (this.map) {
@@ -216,24 +249,6 @@ export class AInfoComponent extends AbstractComponent implements OnInit, OnDestr
       this.map.changed();
       return;
     }
-
-    let source = new OlXYZ({
-      url: 'https://a.tile.openstreetmap.org/{z}/{x}/{y}.png'
-    });
-
-    let tileLayer = new OlTileLayer({
-      source: source
-    });
-
-    tileLayer.getSource().on('tileloadend', () => {
-      this.onMapTileLoaded();
-    });
-
-    this.map = new OlMap({
-      target: 'map',
-      layers: [tileLayer, this.mapMarkerLayer],
-      view: view
-    });
 
   }
 
@@ -318,6 +333,7 @@ export class AInfoComponent extends AbstractComponent implements OnInit, OnDestr
 
   /**
    * Select a single tree to continue observation.
+   * Resets all not-selected trees to selected = false.
    * @param {number} treeId id of that tree
    */
   public selectTree(treeId: number) {
@@ -332,8 +348,23 @@ export class AInfoComponent extends AbstractComponent implements OnInit, OnDestr
         t.selected = false;
       }
     }
-    this.initMap();
     this.observationsService.setDone(0, true);
+    this.updateMapMarkers();
+
+  }
+
+  /**
+   * Center the given tree on the map.
+   * @param {TreeFrontend} tree The tree to be centered.
+   */
+  public centerTree(tree: TreeFrontend) {
+
+    AInfoComponent.LOG.trace('Centering tree with id ' + tree.id + '.');
+    this.mapView.centerOn(
+      [tree.location.coordinates.x, tree.location.coordinates.y],
+      this.map.getSize(),
+      [(this.map.getSize()[0] / 2), (this.map.getSize()[1] / 2)]
+    );
 
   }
 

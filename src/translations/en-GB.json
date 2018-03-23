@@ -121,7 +121,22 @@
 			"platanus sp": "Platanus sp",
 			"tilia sp": "Tilia sp",
 			"quercus sp": "Quercus sp",
-			"carpinus betulus": "Carpinus betulus"
+			"carpinus betulus": "Carpinus betulus",
+			"acer platanoides": "Acer platanoides",
+			"robinia pseudoacacia": "Robinia pseudoacacia",
+			"platanus x acerifolia": "Platanus x acerifolia",
+			"tilia platyphyllos": "Tilia platyphyllos",
+			"paulownia tomentosa": "Paulownia tomentosa",
+			"acer campestre": "Acer campestre",
+			"fraxinus excelsior": "Fraxinus excelsior",
+			"tilia cordata": "Tilia cordata",
+			"liriodendron tulipifera": "Liriodendron tulipifera",
+			"acer": "Acer",
+			"aesculus x carnea": "Aesculus x carnea",
+			"betula": "Betula",
+			"fraxinus": "Fraxinus",
+			"sequoioideae": "Sequoioideae",
+			"corylus colurna": "Corylus colurna"
 		}
 	},
 	"general": {

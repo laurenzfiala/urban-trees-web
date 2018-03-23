@@ -84,8 +84,8 @@
       <li *ngFor="let tree of this.displayTrees"
           class="list-group-item list-group-item-action"
           [ngClass]="{'active': tree.selected}"
-          (click)="selectTree(tree.id)"
-          (keydown)="selectTree(tree.id)">
+          (click)="selectTree(tree.id); centerTree(tree)"
+          (keydown)="selectTree(tree.id); centerTree(tree)">
         <span class="badge badge-light float-right">#{{tree.id}}</span>
         <b>{{'tree.species.' + tree.species | lowercase | translate}}</b>
         <br/>
