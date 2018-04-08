@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
 import {PhenologyObservationService} from '../../../../services/phenology/observation/phenology-observation.service';
 import {Log} from '../../../../services/log.service';
 import {AbstractComponent} from '../../../abstract.component';
@@ -77,10 +77,15 @@ export class BObservationComponent extends AbstractComponent implements OnInit, 
     });
   }
 
-  public checkObservationStatus(type?: PhenologyObservationTypeFrontend): void {
+  public checkObservationStatus(type?: PhenologyObservationTypeFrontend, collapseElement?: any): void {
 
     if (type && Object.keys(type.resultMap).length === type.objects.length) {
       type.done = true;
+
+      if (collapseElement && !type.wasAutoCollapsed) {
+        collapseElement.hide();
+        type.wasAutoCollapsed = true;
+      }
     }
 
     for (let t of this.observationService.observationSpec) {

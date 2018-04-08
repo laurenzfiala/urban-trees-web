@@ -1,6 +1,6 @@
 <div class="container">
 
-  <div class="row mb-2">
+  <!--<div class="row mb-2">
     <div class="col">
 
       <div class="card">
@@ -34,35 +34,42 @@
 
     </div>
 
-  </div>
+  </div>-->
 
-  <div *ngFor="let type of observationSpec">
+  <h3>Observations</h3>
 
-    <div class="row mb-2">
-      <div class="col">
+  <div class="card" *ngFor="let type of observationSpec" [ngClass]="{'card-buds': type.name === 'Bud'}">
+    <div class="card-header" (click)="collapse.toggle()">
 
-        <h4>{{'phenology.observation.type.' + type.name + '.name_plural' | translate}}</h4>
+      <div class="card-header-icon"></div>
+      <div class="card-header-icon"></div>
+      <div class="card-header-icon"></div>
 
-      </div>
+      <h5 class="mb-0" [ngClass]="{'todo': !type.done, 'done': type.done}">
+        {{'phenology.observation.type.' + type.name + '.name_plural' | translate}}
+      </h5>
     </div>
 
-    <div *ngFor="let object of type.objects">
+    <div #collapse="bs-collapse" [collapse]="true" class="collapse">
+      <div class="card-body">
 
-      <h5>{{'phenology.observation.type.' + type.name + '.name' | translate}} {{object.name}}</h5>
+        <div *ngFor="let object of type.objects" class="result-wrapper">
 
-      <div class="row">
-        <div class="col" *ngFor="let result of type.results">
-          <button class="btn btn-outline-secondary p-0" type="button" name="btn" [(ngModel)]="type.resultMap[object.id]"
-                  [btnRadio]="result" (click)="checkObservationStatus(type)">
-            <img [src]="images[result.id]?.encodedImage" class="w-100"/>
-          </button>
+          <h5>{{'phenology.observation.type.' + type.name + '.name' | translate}} {{object.name}}</h5>
+
+          <div class="row">
+            <div class="col" *ngFor="let result of type.results">
+              <button class="btn btn-outline-secondary p-0" type="button" name="btn" [(ngModel)]="type.resultMap[object.id]"
+                      [btnRadio]="result" (click)="checkObservationStatus(type, collapse)">
+                <img [src]="images[result.id]?.encodedImage" class="w-100"/>
+              </button>
+            </div>
+          </div>
+
         </div>
+
       </div>
-
-      <hr/>
-
     </div>
-
   </div>
 
   <div *ngIf="hasStatus(StatusKey.SPEC, StatusValue.IN_PROGRESS)" class="status-overlay overlay-fixed center">

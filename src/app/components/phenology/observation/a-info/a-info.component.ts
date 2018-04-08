@@ -55,6 +55,11 @@ export class AInfoComponent extends AbstractComponent implements OnInit, OnDestr
   public displayTrees: Array<TreeFrontend>;
 
   /**
+   * Tree currently selected.
+   */
+  public selectedTree: TreeFrontend;
+
+  /**
    * The map to display.
    */
   private map: OlMap;
@@ -221,7 +226,7 @@ export class AInfoComponent extends AbstractComponent implements OnInit, OnDestr
       }))
     });
 
-    this.availableTrees.sort((a, b) => {
+    Array.from(this.availableTrees).sort((a, b) => {
       if (a.selected) {
         return 1;
       } else {
@@ -344,17 +349,17 @@ export class AInfoComponent extends AbstractComponent implements OnInit, OnDestr
    */
   public selectTree(treeId: number) {
 
-    for (let t of this.availableTrees) {
-      if (t.id === treeId) {
-        t.selected = true;
-        if (this.observationsService.selectedTree && t.speciesId !== this.observationsService.selectedTree.speciesId) {
-          this.observationsService.setDone(0, true, true);
-        }
-      } else {
-        t.selected = false;
-      }
+    if (this.selectedTree) {
+      this.selectedTree.selected = false;
     }
-    this.observationsService.setDone(0, true);
+    this.selectedTree = this.availableTrees.find(value => value.id === treeId);
+    this.selectedTree.selected = true;
+
+    if (this.observationsService.selectedTree && this.selectedTree.speciesId !== this.observationsService.selectedTree.speciesId) {
+      this.observationsService.setDone(0, true, true);
+    } else {
+      this.observationsService.setDone(0, true);
+    }
     this.updateMapMarkers();
 
   }
@@ -384,12 +389,7 @@ export class AInfoComponent extends AbstractComponent implements OnInit, OnDestr
       return;
     }
 
-    for (let t of this.availableTrees) {
-      if (t.selected) {
-        this.observationsService.selectTree(t);
-        return;
-      }
-    }
+    this.observationsService.selectTree(this.selectedTree);
 
   }
 

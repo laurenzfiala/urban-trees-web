@@ -1,3 +1,5 @@
+@import "../../../../../theme/variables";
+
 table {
 
   th, td {
@@ -15,5 +17,81 @@ li.list-group-item {
   }
   > .btn {
     margin: -0.4rem;
+  }
+}
+
+.progress-vertical {
+  padding: 0.25rem;
+  border-radius: @borderRadiusNew;
+  background-color: @lightBgColor;
+
+  > .progress-entry {
+    display: flex;
+    flex-direction: row;
+
+    > .progress-indicator {
+      font-size: 1.5rem;
+      width: 2.5rem;
+      background-color: @bgColor;
+      box-shadow: 0 1px 1px @darkBorderColor;
+
+      > .progress-indicator-content {
+        color: white;
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
+
+        &.success {
+          background-color: @success;
+        }
+
+        &.inprogress {
+        }
+
+        &.error {
+          background-color: @danger;
+        }
+      }
+    }
+
+    &:first-child > .progress-indicator,
+    &:first-child > .progress-indicator > .progress-indicator-content {
+      border-top-left-radius: @borderRadiusNew;
+      border-top-right-radius: @borderRadiusNew;
+    }
+
+    &:last-child > .progress-indicator,
+    &:last-child > .progress-indicator > .progress-indicator-content {
+      border-bottom-left-radius: @borderRadiusNew;
+      border-bottom-right-radius: @borderRadiusNew;
+    }
+
+    > .progress-content {
+      padding: 0.5rem;
+      font-size: 1.05rem;
+      flex-grow: 1;
+
+      .progress-content-between {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+      }
+
+      .flex-inline-col-center {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      p {
+        margin: 0.25rem 0;
+      }
+
+      button {
+        border-radius: @borderRadiusNew;
+      }
+    }
   }
 }

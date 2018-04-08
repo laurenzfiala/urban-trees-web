@@ -21,6 +21,12 @@ export class PhenologyObservationTypeFrontend extends PhenologyObservationType {
    */
   public resultMap: any = {};
 
+  /**
+   * Used only for the UI.
+   * We only want to auto-callapse a phenobs type once.
+   */
+  public wasAutoCollapsed: boolean = false;
+
   constructor(id: number, name: string, objects: Array<PhenologyObservationObject>, results: Array<PhenologyObservationResult>) {
     super();
     this.id = id;

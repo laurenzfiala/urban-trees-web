@@ -28,15 +28,12 @@
 
   <h5>{{'phenology.observation.step4.section.observations' | translate}}</h5>
 
-  <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
-    <li *ngFor="let type of observationService.observationSpec" class="nav-item">
-      <a class="nav-link active" id="{{type.name}}-tab" data-toggle="pill" href="#{{type.name}}-tab-content" role="tab" aria-controls="pills-home" aria-selected="true">
-        {{'phenology.observation.type.' + type.name + '.name_plural' | translate}} <span class="badge badge-pill badge-light">{{type.objects.length}}</span>
-      </a>
-    </li>
-  </ul>
-  <div *ngFor="let type of observationService.observationSpec" class="tab-content" id="{{type.name}}-tab-content">
-    <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+  <tabset id="typeTabs" type="pills">
+    <tab *ngFor="let type of observationService.observationSpec">
+      <ng-template tabHeading>
+        {{'phenology.observation.type.' + type.name + '.name_plural' | translate}}
+        <span class="badge badge-pill badge-light">{{type.objects.length}}</span>
+      </ng-template>
       <table class="table">
         <tbody>
         <tr *ngFor="let r of type.results">
@@ -45,8 +42,8 @@
         </tr>
         </tbody>
       </table>
-    </div>
-  </div>
+    </tab>
+  </tabset>
 
   <button class="btn btn-block btn-light"
           [disabled]="hasStatus(StatusKey.SUBMISSION_DATA, StatusValue.SUCCESSFUL)"
@@ -62,7 +59,7 @@
     {{'phenology.observation.step4.submit_btn' | translate}}
   </button>
 
-  <ul class="list-group mt-2">
+  <!--<ul class="list-group mt-2">
     <li class="list-group-item" *ngIf="hasStatus(StatusKey.SUBMISSION_DATA, StatusValue.PENDING)">
       <i class="fa fa-arrow-right text-info" aria-hidden="true"></i>
       {{'phenology.observation.step4.submit_data' | translate}}
@@ -102,7 +99,92 @@
       <i class="fa fa-times text-danger" aria-hidden="true"></i>
       {{'phenology.observation.step4.submit_failed_file' | translate}}
     </li>
-  </ul>
+  </ul>-->
+
+  <div class="text-center text-subtle mt-4">Submission progress</div>
+  <hr class="my-1"/>
+
+  <div class="progress-vertical">
+
+    <div class="progress-entry">
+      <div class="progress-indicator">
+        <div class="progress-indicator-content" [ngClass]="{ 'success': hasStatus(StatusKey.SUBMISSION_DATA, StatusValue.SUCCESSFUL),
+                                                             'inprogress': hasStatus(StatusKey.SUBMISSION_DATA, StatusValue.IN_PROGRESS),
+                                                             'error': hasStatus(StatusKey.SUBMISSION_DATA, StatusValue.FAILED)}">
+          <i *ngIf="hasStatus(StatusKey.SUBMISSION_DATA, StatusValue.PENDING)"
+             class="fa fa-chevron-right"
+             aria-hidden="true"></i>
+          <i *ngIf="hasStatus(StatusKey.SUBMISSION_DATA, StatusValue.IN_PROGRESS)"
+             class="fa fa-spin fa-refresh"
+             aria-hidden="true"></i>
+          <i *ngIf="hasStatus(StatusKey.SUBMISSION_DATA, StatusValue.SUCCESSFUL)"
+             class="fa fa-check"
+             aria-hidden="true"></i>
+          <i *ngIf="hasStatus(StatusKey.SUBMISSION_DATA, StatusValue.FAILED)"
+             class="fa fa-times"
+             aria-hidden="true"></i>
+        </div>
+      </div>
+      <div class="progress-content">
+        <span *ngIf="hasStatus(StatusKey.SUBMISSION_DATA, StatusValue.PENDING)">
+          {{'phenology.observation.step4.submit_data' | translate}}
+        </span>
+        <span *ngIf="hasStatus(StatusKey.SUBMISSION_DATA, StatusValue.IN_PROGRESS)">
+          {{'phenology.observation.step4.submitting_data' | translate}}
+        </span>
+        <span *ngIf="hasStatus(StatusKey.SUBMISSION_DATA, StatusValue.SUCCESSFUL)">
+          {{'phenology.observation.step4.submitted_data' | translate}}
+        </span>
+        <div class="flex-inline-col-center" *ngIf="hasStatus(StatusKey.SUBMISSION_DATA, StatusValue.FAILED)">
+          {{'phenology.observation.step4.submit_data' | translate}}
+          <p class="text-danger" *ngIf="!hasStatusKey(StatusKey.SUBMISSION_DATA_DETAIL)">
+            {{'phenology.observation.step4.status.generic' | translate}}
+          </p>
+          <p class="text-danger" *ngIf="hasStatus(StatusKey.SUBMISSION_DATA_DETAIL, ClientError.PHENOLOGY_DUPLICATE)">
+            {{'phenology.observation.step4.status.duplicate' | translate}}
+          </p>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="progress-entry" *ngIf="hasStatusKey(StatusKey.SUBMISSION_FILE)">
+      <div class="progress-indicator">
+        <div class="progress-indicator-content" [ngClass]="{ 'success': hasStatus(StatusKey.SUBMISSION_FILE, StatusValue.SUCCESSFUL),
+                                                             'inprogress': hasStatus(StatusKey.SUBMISSION_FILE, StatusValue.IN_PROGRESS),
+                                                             'error': hasStatus(StatusKey.SUBMISSION_FILE, StatusValue.FAILED)}">
+          <i *ngIf="hasStatus(StatusKey.SUBMISSION_FILE, StatusValue.PENDING)"
+             class="fa fa-chevron-right"
+             aria-hidden="true"></i>
+          <i *ngIf="hasStatus(StatusKey.SUBMISSION_FILE, StatusValue.IN_PROGRESS)"
+             class="fa fa-spin fa-refresh"
+             aria-hidden="true"></i>
+          <i *ngIf="hasStatus(StatusKey.SUBMISSION_FILE, StatusValue.SUCCESSFUL)"
+             class="fa fa-check"
+             aria-hidden="true"></i>
+          <i *ngIf="hasStatus(StatusKey.SUBMISSION_FILE, StatusValue.FAILED)"
+             class="fa fa-times"
+             aria-hidden="true"></i>
+        </div>
+      </div>
+      <div class="progress-content">
+        <span *ngIf="hasStatus(StatusKey.SUBMISSION_FILE, StatusValue.PENDING)">
+            {{'phenology.observation.step4.submit_file' | translate}}
+          </span>
+        <span *ngIf="hasStatus(StatusKey.SUBMISSION_FILE, StatusValue.IN_PROGRESS)">
+          {{'phenology.observation.step4.submitting_file' | translate}}
+        </span>
+        <span *ngIf="hasStatus(StatusKey.SUBMISSION_FILE, StatusValue.SUCCESSFUL)">
+          {{'phenology.observation.step4.submitted_file' | translate}}
+        </span>
+        <div class="progress-content-between" *ngIf="hasStatus(StatusKey.SUBMISSION_FILE, StatusValue.FAILED)">
+          <span class="flex-inline-col-center">{{'phenology.observation.step4.submit_failed_file' | translate}}</span>
+          <button class="btn btn-light" (click)="submitFile()">{{'general.retry' | translate}}</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
 
   <div *ngIf="hasStatus(StatusKey.SUBMISSION_DATA, StatusValue.SUCCESSFUL) &&
               (!hasStatusKey(StatusKey.SUBMISSION_FILE) ||

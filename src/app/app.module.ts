@@ -18,7 +18,14 @@ import {FormsModule} from '@angular/forms';
 import {StringModificationPipe} from './pipes/strmod.pipe';
 import {CapitalizationPipe} from './pipes/capitalize.pipe';
 import {LowercasePipe} from './pipes/lowercase.pipe';
-import {BsDatepickerModule, BsDropdownModule, ButtonsModule, PopoverModule, TimepickerModule} from 'ngx-bootstrap';
+import {
+  BsDatepickerModule,
+  BsDropdownModule,
+  ButtonsModule,
+  CollapseModule,
+  PopoverModule, TabsModule,
+  TimepickerModule
+} from 'ngx-bootstrap';
 import {HttpClient, HttpClientModule} from '@angular/common/http';
 import {PhenologyObservationService} from './services/phenology/observation/phenology-observation.service';
 import {EnvironmentService} from './services/environment.service';
@@ -69,6 +76,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     ButtonsModule.forRoot(),
     PopoverModule.forRoot(),
     BsDropdownModule.forRoot(),
+    CollapseModule.forRoot(),
+    TabsModule.forRoot(),
 
     // Translation
     TranslateModule.forRoot({

@@ -10,6 +10,7 @@ export abstract class AbstractComponent {
    * Contains all current statuses of the component.
    * @type {Map<number, number>} key and value should be from two different enums.
    *                             The key Should be the category and the value the current status of it.
+   *                             The value can also be a numeric progress value.
    */
   private statuses: Map<number, number> = new Map<number, number>();
 
@@ -25,6 +26,15 @@ export abstract class AbstractComponent {
    */
   protected deleteStatus(key: number) {
     this.statuses.delete(key);
+  }
+
+  /**
+   * Get the value of a status category.
+   * @param {number} key category id
+   * @returns {boolean} the numeric status value
+   */
+  public getStatus(key: number): number {
+    return this.statuses.get(key);
   }
 
   /**

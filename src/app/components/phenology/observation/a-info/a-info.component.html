@@ -46,6 +46,16 @@
 
   <div [ngClass]="{'hide-map': !hasStatus(StatusKey.TREES, StatusValue.SUCCESSFUL)}" class="form-group map-container mb-0">
 
+    <ul *ngIf="this.selectedTree" id="selected-tree" class="list-group">
+      <li class="list-group-item"
+          (click)="centerTree(this.selectedTree)"
+          (keydown)="centerTree(this.selectedTree)">
+        <span class="badge badge-light float-right">#{{this.selectedTree.id}}</span>
+        <b>{{'tree.species.' + this.selectedTree.species | lowercase | translate}}</b>
+        {{'phenology.observation.step1.tree_location' | translate:this.selectedTree.location}}
+      </li>
+    </ul>
+
     <div id="map" class="has-status-overlay" (click)="onMapClick($event)">
       <div *ngIf="hasStatus(StatusKey.MAP, StatusValue.IN_PROGRESS)" class="status-overlay center">
         <img class="load-md" src="/assets/tail-spin.svg" />
@@ -83,7 +93,7 @@
     <ul class="list-group mt-2">
       <li *ngFor="let tree of this.displayTrees"
           class="list-group-item list-group-item-action"
-          [ngClass]="{'active': tree.selected}"
+          [ngClass]="{'active': tree.id === this.selectedTree?.id}"
           (click)="selectTree(tree.id); centerTree(tree)"
           (keydown)="selectTree(tree.id); centerTree(tree)">
         <span class="badge badge-light float-right">#{{tree.id}}</span>
