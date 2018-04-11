@@ -118,9 +118,9 @@
 			"oak": "Eiche",
 			"gingko biloba": "Gingko Biloba",
 			"quercus robur": "Quercus Robur",
-			"platanus sp": "Platanus sp",
-			"tilia sp": "Tilia sp",
-			"quercus sp": "Quercus sp",
+			"platanus": "Platanus sp",
+			"tilia": "Tilia sp",
+			"quercus": "Quercus sp",
 			"carpinus betulus": "Carpinus betulus",
 			"acer platanoides": "Acer platanoides",
 			"robinia pseudoacacia": "Robinia pseudoacacia",
@@ -136,7 +136,16 @@
 			"betula": "Betula",
 			"fraxinus": "Fraxinus",
 			"sequoioideae": "Sequoioideae",
-			"corylus colurna": "Corylus colurna"
+      "corylus colurna": "Corylus colurna",
+      "acer pseudoplatanus": "Acer pseudoplatanus",
+      "aesculus": "Aesculus sp",
+      "betula pendula": "Betula pendula",
+      "juglans nigra": "Juglans nigra",
+      "juglans": "Juglans sp",
+      "fagus": "Fagus sp",
+      "prunus cerasifera": "Prunus cerasifera",
+      "castanea": "Castanea sp",
+      "platanus hispanica": "Platanus hispanica"
 		}
 	},
 	"general": {
