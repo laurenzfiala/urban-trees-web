@@ -10,7 +10,8 @@
 			"report": "Report a problem",
 			"imprint": "Imprint",
 			"home": "Home page",
-			"note": "Made with &#x2764; by the Urban-Trees-Team &"
+			"madeby": "Made with &#x2764; by the",
+      "madeby_team": "Urban-Trees-Team"
 		}
 	},
 	"phenology": {

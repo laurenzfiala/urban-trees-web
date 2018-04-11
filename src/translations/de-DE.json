@@ -10,7 +10,8 @@
 			"report": "Problem melden",
 			"imprint": "Impressum",
 			"home": "Startseite",
-			"note": "Mit &#x2764; entwickelt vom Stadtbäume-Team &"
+      "madeby": "Mit &#x2764; entwickelt vom ",
+      "madeby_team": "Stadtbäume-Team"
 		}
 	},
 	"phenology": {

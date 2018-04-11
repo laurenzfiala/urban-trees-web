@@ -12,6 +12,7 @@ import {ImprintComponent} from './components/imprint/imprint.component';
 import {
   PhenologyObservationStepGuard
 } from './components/phenology/observation/phenology-observation-step.guard';
+import {ReportComponent} from './components/report/report.component';
 
 const routes: Routes = [
   {
@@ -30,6 +31,10 @@ const routes: Routes = [
   {
     path: 'imprint',
     component: ImprintComponent
+  },
+  {
+    path: 'report',
+    component: ReportComponent
   },
   {
     path: 'phenology',

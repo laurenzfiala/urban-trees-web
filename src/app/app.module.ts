@@ -36,6 +36,7 @@ import {FooterComponent} from './components/footer/footer.component';
 import {AnnouncementService} from './services/announcement.service';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {PhenologyObservationStepGuard} from './components/phenology/observation/phenology-observation-step.guard';
+import {ReportComponent} from './components/report/report.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, '/translations/');
@@ -60,7 +61,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     // Pipes
     StringModificationPipe,
     CapitalizationPipe,
-    LowercasePipe
+    LowercasePipe,
+    ReportComponent
   ],
   imports: [
     // Core
