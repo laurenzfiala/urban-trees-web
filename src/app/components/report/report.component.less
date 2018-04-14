@@ -3,4 +3,17 @@
 .btn {
   border-radius: 5rem;
   padding: @btnPadding;
+
+  &.btn-primary {
+    background-color: @secondaryColorHighlight;
+  }
+
+  &.btn-secondary {
+    background-color: darken(@bgColor, 20%);
+    border-color: darken(@bgColor, 20%);
+  }
+}
+
+.spotlight-container {
+  background-color: @lightBgColor;
 }

@@ -21,7 +21,7 @@
 
       <h6>{{'phenology.observation.step3.observers_title' | translate}}</h6>
 
-      <div class="form-group">
+      <div class="input-group mb-3">
         <input
           [(ngModel)]="dataset.observers"
           #observersInput="ngModel"
@@ -30,9 +30,13 @@
           minlength="5"
           maxlength="200"
           required
-          class="form-control" [ngClass]="{'is-invalid': !observersInput.valid}"
+          class="form-control"
           [placeholder]="'phenology.observation.step3.observers_placeholder' | translate" />
-        <span class="float-right">{{dataset.observers ? dataset.observers.length : 0}} / 5-200 {{'phenology.observation.step3.characters' | translate}}</span>
+        <div class="input-group-append">
+          <span class="input-group-text" [ngClass]="{'is-invalid': !observersInput.valid}">
+            {{dataset.observers ? dataset.observers.length : 0}} / 5-200 {{'phenology.observation.step3.characters' | translate}}
+          </span>
+        </div>
       </div>
     </div>
   </div>
@@ -68,15 +72,21 @@
 
       <h6>{{'phenology.observation.step3.remark_title' | translate}}</h6>
 
-      <div class="form-group">
-        <textarea
-          [(ngModel)]="dataset.remark"
-          name="remark"
-          maxlength="350"
-          class="form-control"
-          rows="5"
-          [placeholder]="'phenology.observation.step3.remark_placeholder' | translate"></textarea>
-        <span class="float-right">{{dataset.remark ? dataset.remark.length : 0}} / 350 {{'phenology.observation.step3.characters' | translate}}</span>
+      <div class="input-group mb-3">
+        <div class="form-group">
+          <textarea
+            [(ngModel)]="dataset.remark"
+            name="remark"
+            maxlength="350"
+            class="form-control"
+            rows="5"
+            [placeholder]="'phenology.observation.step3.remark_placeholder' | translate"></textarea>
+        </div>
+        <div class="input-group-append">
+          <span class="input-group-text">
+            {{dataset.remark ? dataset.remark.length : 0}} / 350 {{'phenology.observation.step3.characters' | translate}}
+          </span>
+        </div>
       </div>
     </div>
   </div>

@@ -52,7 +52,17 @@ export class AInfoComponent extends AbstractComponent implements OnInit, OnDestr
   /**
    * Trees currently displayed.
    */
-  public displayTrees: Array<TreeFrontend>;
+  public displayTrees: Array<Array<TreeFrontend>>;
+
+  /**
+   * Whether or not to display the tree list pagination.
+   */
+  public displayTreePagination: boolean;
+
+  /**
+   * Page index to display.
+   */
+  public currentDisplayTreePage: number = 0;
 
   /**
    * Tree currently selected.
@@ -85,6 +95,12 @@ export class AInfoComponent extends AbstractComponent implements OnInit, OnDestr
    */
   public isMapEnabled: boolean = false;
 
+  constructor(private observationsService: PhenologyObservationService,
+              private environmentService: EnvironmentService,
+              public translateService: TranslateService) {
+    super();
+  }
+
   /**
    * Set tree search and filter displayed trees by input.
    * @param {string} searchInput user's tree search input
@@ -92,31 +108,27 @@ export class AInfoComponent extends AbstractComponent implements OnInit, OnDestr
   public setTreeSearchInput(searchInput: string): void {
 
     if (!searchInput) {
-      this.displayTrees = this.availableTrees;
+      this.setDisplayTreesPaginated(this.availableTrees);
       return;
     }
 
     const idInput = Number(searchInput);
     if (!Number.isNaN(idInput)) {
-      this.displayTrees = this.availableTrees.filter((tree: TreeFrontend) => {
+      this.setDisplayTreesPaginated(this.availableTrees.filter((tree: TreeFrontend) => {
         return tree.id === idInput;
-      });
+      }));
       return;
     }
 
-    this.displayTrees = this.availableTrees.filter((tree: TreeFrontend) => {
-      const translationKey = ('tree.species.' + tree.species).toLowerCase();
-      return this.translateService.instant(translationKey).toLowerCase().indexOf(searchInput.toLowerCase()) !== -1 ||
-        tree.location.street.toLowerCase().indexOf(searchInput.toLowerCase()) !== -1 ||
-        tree.location.city.toLowerCase().indexOf(searchInput.toLowerCase()) !== -1;
-    });
+    this.setDisplayTreesPaginated(
+      this.availableTrees.filter((tree: TreeFrontend) => {
+        const translationKey = ('tree.species.' + tree.species).toLowerCase();
+        return this.translateService.instant(translationKey).toLowerCase().indexOf(searchInput.toLowerCase()) !== -1 ||
+          tree.location.street.toLowerCase().indexOf(searchInput.toLowerCase()) !== -1 ||
+          tree.location.city.toLowerCase().indexOf(searchInput.toLowerCase()) !== -1;
+      })
+    );
 
-  }
-
-  constructor(private observationsService: PhenologyObservationService,
-              private environmentService: EnvironmentService,
-              public translateService: TranslateService) {
-    super();
   }
 
   public ngOnInit(): void {
@@ -325,7 +337,7 @@ export class AInfoComponent extends AbstractComponent implements OnInit, OnDestr
   private loadTrees(successCallback: () => void) {
 
     if (this.availableTrees) {
-      this.displayTrees = this.availableTrees;
+      this.setDisplayTreesPaginated(this.availableTrees);
       successCallback();
       return;
     }
@@ -334,7 +346,7 @@ export class AInfoComponent extends AbstractComponent implements OnInit, OnDestr
     this.observationsService.loadTrees((trees: Array<Tree>) => {
       this.availableTrees = <Array<TreeFrontend>>trees;
       this.setStatus(StatusKey.TREES, StatusValue.SUCCESSFUL);
-      this.displayTrees = this.availableTrees;
+      this.setDisplayTreesPaginated(this.availableTrees);
       successCallback();
     }, () => {
       this.setStatus(StatusKey.TREES, StatusValue.FAILED);
@@ -361,6 +373,45 @@ export class AInfoComponent extends AbstractComponent implements OnInit, OnDestr
       this.observationsService.setDone(0, true);
     }
     this.updateMapMarkers();
+
+  }
+
+  private setDisplayTreesPaginated(trees: Array<TreeFrontend>) {
+
+    const minPageSize = 10;
+    const pages = 5;
+    let pageSize = Math.ceil(this.availableTrees.length / pages);
+
+    if (pageSize < minPageSize) {
+      pageSize = minPageSize;
+    }
+
+    if (trees.length <= pageSize) {
+      this.displayTreePagination = false;
+    } else {
+      this.displayTreePagination = true;
+    }
+
+    let paginatedArray = new Array<Array<TreeFrontend>>();
+
+    let page = 0;
+    for (let i = 0; i < trees.length; i += pageSize) {
+      pageSize = i >= trees.length ? i - trees.length : pageSize;
+      paginatedArray[page] = trees.slice(i, i + pageSize);
+      page++;
+    }
+
+    this.currentDisplayTreePage = 0;
+    this.displayTrees = paginatedArray;
+
+  }
+
+  public displayTreePage(displayIndex: number): void {
+
+    if (displayIndex < 0 || displayIndex >= this.displayTrees.length) {
+      return;
+    }
+    this.currentDisplayTreePage = displayIndex;
 
   }
 

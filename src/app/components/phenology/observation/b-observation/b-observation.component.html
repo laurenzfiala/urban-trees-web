@@ -36,6 +36,12 @@
 
   </div>-->
 
+  <i tabindex="0"
+    class="fa fa-info-circle text-subtle popover-trigger popover-trigger-heading"
+    popover="The observation page has changed its design and is now way more easy to use!"
+    triggers="focus">
+  </i>
+
   <h3>Observations</h3>
 
   <div class="card" *ngFor="let type of observationSpec" [ngClass]="{'card-buds': type.name === 'Bud'}">

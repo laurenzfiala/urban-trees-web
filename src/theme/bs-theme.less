@@ -96,14 +96,102 @@
   }
 }
 
+.page-link:hover {
+  background-color: @medLightBgColor;
+}
+
 input.form-control,
 textarea.form-control,
 label.custom-file-label:after,
 label.custom-file-label,
+.page-link,
+.page-link:hover,
 hr {
   border-color: @lightBorderColor;
 }
 
 .text-subtle{
   color: @darkGrey;
+}
+
+.btn,
+.badge,
+.form-control,
+.custom-file-label,
+.custom-file-label:after {
+  border-radius: @borderRadius;
+}
+
+.custom-file {
+
+  > .custom-file-input {
+
+    &.is-invalid ~ .custom-file-label {
+      border: solid @lightBorderColor 1px;
+
+      &:after {
+        background-color: @danger;
+        color: white;
+      }
+    }
+  }
+}
+
+.custom-file-label {
+  color: @darkGrey; // change
+
+  &.is-invalid {
+    border: solid @lightBorderColor 1px;
+  }
+
+  &:after {
+    border: 0;
+    margin: 0.3rem;
+    background-color: @bgColor;
+    box-shadow: 0 1px 1px @darkBgColor;
+    font-size: 0.8rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: auto;
+    border-radius: @borderRadius;
+  }
+}
+
+.input-group {
+  > .form-control:first-child {
+    border-right: 0 !important;
+  }
+
+  > .input-group-append {
+    border: solid @lightBorderColor 1px;
+    border-bottom-right-radius: @borderRadiusNew;
+    border-top-right-radius: @borderRadiusNew;
+
+    > .input-group-text {
+      border: 0;
+      margin: 0.3rem;
+      background-color: @lightBgColor;
+      box-shadow: 0 1px 1px @darkBgColor;
+      font-size: 0.8rem;
+      border-radius: @borderRadius;
+
+      &.is-invalid {
+        color: white;
+        background-color: @danger;
+      }
+    }
+  }
+}
+
+.list-group .list-group-item {
+
+  &:first-child {
+    border-top-left-radius: @borderRadius;
+    border-top-right-radius: @borderRadius;
+  }
+  &:last-child {
+    border-bottom-left-radius: @borderRadius;
+    border-bottom-right-radius: @borderRadius;
+  }
 }

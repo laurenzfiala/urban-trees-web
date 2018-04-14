@@ -38,8 +38,8 @@ timepicker {
 #osm-copyright {
   display: inline-block;
   position: absolute;
-  right: 3px;
-  bottom: 3px;
+  right: 0.5rem;
+  bottom: 0.25rem;
   z-index: 1;
   background-color: rgba(201, 201, 201, 0.35);
   padding: 1px 6px;
@@ -51,8 +51,6 @@ timepicker {
 }
 
 .map-container ul {
-  overflow-y: auto;
-  max-height: 250px;
 
   > li.list-group-item-action:not(.active) {
     cursor: pointer;
@@ -91,3 +89,27 @@ timepicker {
     margin-top: -0.1rem;
   }
 }
+
+.page-item {
+  text-align: center;
+  flex-grow: 1;
+
+  &:first-child .page-link {
+    border-top-left-radius: @borderRadius;
+    border-bottom-left-radius: @borderRadius;
+  }
+
+  &:last-child .page-link {
+    border-top-right-radius: @borderRadius;
+    border-bottom-right-radius: @borderRadius;
+  }
+
+  .page-link {
+    padding: 0.5rem 0;
+
+    &.active {
+      background-color: @bgColor;
+    }
+  }
+}
+
