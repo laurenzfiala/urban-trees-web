@@ -7,7 +7,7 @@ export const environment = {
 
   production:                         false,
 
-  host:                               'http://141.201.106.39:8080',
+  host:                               'https://urban-tree-climate.sbg.ac.at:8443',
   mapHost:                            'http://141.201.106.39:80',
 
   endpoints: {
@@ -23,7 +23,7 @@ export const environment = {
     announcements:                    '/ui/announcements'
   },
 
-  defaultTimeout:                     10000,
+  defaultTimeout:                     30000,
   imageUploadTimeout:                 60000,
 
   outputDateFormat:                 'YYYY-MM-DD[T]HH-mm-ss',
