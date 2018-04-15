@@ -39,18 +39,14 @@
 				"error_map": {
 					"text": "Kartendaten konnten nicht geladen werden. Bitte wähle weiter unten einen Baum manuell aus."
 				},
-				"tree_search_placeholder": "Gib Land, Stadt, Straße, Spezies oder ID ein, um zu suchen...",
+				"tree_search_placeholder": "Gib Land, Stadt, Straße, Spezies oder ID ein...",
 				"title": "Dein Baum",
 				"tree_not_found": "Keinen Baum gefunden.",
 				"map_activator": "Klicken, um die Karte zu nutzen"
 			},
 			"step2": {
 				"help": {
-					"title": "Lass uns loslegen!",
-					"description": "Gehe die Liste der Beobachtungsobjekte durch, um fortzufahren. Wenn alle Beobachtungen erledigt wurden, kannst du fortfahren.",
-					"expand_title": "Wie genau?",
-					"expand_description": "Für jeden Beobachtungstyp,\n\n<ol class=\"pt-1\">\n<li>Suche dir 10 zufällige Knospen/Blätter/etc. (je nach Typ)</li>\n<li>Untersuche jede Knospe/jedes Blatt einzeln</li>\n<li>Markiere das Bild, das deiner Beobachtung am Nähesten kommt</li>\n</ol>",
-					"check": "Überprüfe <b>{{amount}} zufällig ausgewählte {{type}}</b>"
+					"title": "Sieh dir die folgenden Objekte an und markiere das am besten passende Bild"
 				}
 			},
 			"type": {
@@ -71,7 +67,7 @@
 				"upload_photo_title": "Foto hochladen",
 				"upload_photo_placeholder": "Ein Foto des Baumes aussuchen",
 				"remark_title": "Anmerkungen",
-				"remark_placeholder": "Zusätzliche Informationen über die Beobachtung",
+				"remark_placeholder": "Zusätzliche Informationen",
 				"characters": "Zeichen",
 				"help": {
 					"description": "Du musst deinen und die Namen von allen angeben, die dir geholfen haben. Zustätzlich besteht die Möglichkeit ein Bild des Baumes hochzuladen und zusätzliche Anmerkungen einzutragen (optional).",
@@ -91,6 +87,7 @@
 				"observation_time": "Datum & Zeit der Beobachtung",
 				"submit_btn": "Beobachtung abschicken",
 				"back_btn": "Schritt zurück",
+        "submit_progress": "Sendefortschritt",
 				"submitting_data": "Daten werden abgeschickt...",
 				"submitted_data": "Daten gespeichert!",
 				"submit_data": "Daten abschicken",
@@ -115,8 +112,6 @@
 	"de-DE": "Deutsch",
 	"tree": {
 		"species": {
-			"baumhasel": "Baumhasel",
-			"oak": "Eiche",
 			"gingko biloba": "Gingko Biloba",
 			"quercus robur": "Quercus Robur",
 			"platanus": "Platanus sp",
@@ -146,7 +141,39 @@
       "fagus": "Fagus sp",
       "prunus cerasifera": "Prunus cerasifera",
       "castanea": "Castanea sp",
-      "platanus hispanica": "Platanus hispanica"
+      "platanus hispanica": "Platanus hispanica",
+      "latin": {
+        "gingko biloba": "Gingko Biloba",
+        "quercus robur": "Quercus Robur",
+        "platanus": "Platanus sp",
+        "tilia": "Tilia sp",
+        "quercus": "Quercus sp",
+        "carpinus betulus": "Carpinus betulus",
+        "acer platanoides": "Acer platanoides",
+        "robinia pseudoacacia": "Robinia pseudoacacia",
+        "platanus x acerifolia": "Platanus x acerifolia",
+        "tilia platyphyllos": "Tilia platyphyllos",
+        "paulownia tomentosa": "Paulownia tomentosa",
+        "acer campestre": "Acer campestre",
+        "fraxinus excelsior": "Fraxinus excelsior",
+        "tilia cordata": "Tilia cordata",
+        "liriodendron tulipifera": "Liriodendron tulipifera",
+        "acer": "Acer",
+        "aesculus x carnea": "Aesculus x carnea",
+        "betula": "Betula",
+        "fraxinus": "Fraxinus",
+        "sequoioideae": "Sequoioideae",
+        "corylus colurna": "Corylus colurna",
+        "acer pseudoplatanus": "Acer pseudoplatanus",
+        "aesculus": "Aesculus sp",
+        "betula pendula": "Betula pendula",
+        "juglans nigra": "Juglans nigra",
+        "juglans": "Juglans sp",
+        "fagus": "Fagus sp",
+        "prunus cerasifera": "Prunus cerasifera",
+        "castanea": "Castanea sp",
+        "platanus hispanica": "Platanus hispanica"
+      }
 		}
 	},
 	"general": {

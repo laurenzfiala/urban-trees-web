@@ -59,6 +59,9 @@ export class BObservationComponent extends AbstractComponent implements OnInit, 
 
     this.observationService.loadObservationSpec((types: Array<PhenologyObservationTypeFrontend>) => {
       for (let t of types) {
+        if (types.length === 1) {
+          t.containerCollapsed = false;
+        }
         for (let r of t.results) {
           this.loadResultImage(r.id);
         }

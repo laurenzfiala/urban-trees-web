@@ -1,48 +1,11 @@
 <div class="container">
 
-  <!--<div class="row mb-2">
-    <div class="col">
-
-      <div class="card">
-        <div class="card-body">
-
-          <h5 class="card-title collapse-arrow collapsed" data-toggle="collapse" data-target="#help">{{'phenology.observation.step2.help.title' | translate}}</h5>
-
-          <p class="m-0">
-            {{'phenology.observation.step2.help.description' | translate}}
-          </p>
-
-
-          <div id="help" class="collapse pt-2">
-
-            <h6>{{'phenology.observation.step2.help.expand_title' | translate}}</h6>
-
-            <div [innerHtml]="'phenology.observation.step2.help.expand_description' | translate"></div>
-
-          </div>
-
-        </div>
-
-        <ul class="list-group list-group-flush">
-          <li *ngFor="let type of observationService?.observationSpec" class="list-group-item" [ngClass]="{'todo': !type.done, 'done': type.done}">
-            <i *ngIf="type.done" class="fa fa-check" aria-hidden="true"></i>
-            <span [innerHtml]="'phenology.observation.step2.help.check' | translate:{amount: type.objects.length, type: 'phenology.observation.type.' + type.name + '.name_plural' | translate}"></span>
-          </li>
-        </ul>
-
-      </div>
-
-    </div>
-
-  </div>-->
-
-  <i tabindex="0"
-    class="fa fa-info-circle text-subtle popover-trigger popover-trigger-heading"
-    popover="The observation page has changed its design and is now way more easy to use!"
-    triggers="focus">
-  </i>
-
   <h3>Observations</h3>
+
+  <div class="text-center text-subtle mt-4">
+    {{'phenology.observation.step2.help.title' | translate}}
+  </div>
+  <hr class="my-1"/>
 
   <div class="card" *ngFor="let type of observationSpec" [ngClass]="{'card-buds': type.name === 'Bud'}">
     <div class="card-header" (click)="collapse.toggle()">
@@ -56,7 +19,7 @@
       </h5>
     </div>
 
-    <div #collapse="bs-collapse" [collapse]="true" class="collapse">
+    <div #collapse="bs-collapse" [collapse]="type.containerCollapsed" class="collapse">
       <div class="card-body">
 
         <div *ngFor="let object of type.objects" class="result-wrapper">

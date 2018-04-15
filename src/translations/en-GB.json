@@ -39,18 +39,14 @@
 				"error_map": {
 					"text": "Could not load map data. Please manually choose a tree below."
 				},
-				"tree_search_placeholder": "Enter Country, City, Street, Species or ID to find...",
+				"tree_search_placeholder": "Enter Country, City, Street, Species or ID...",
 				"title": "Your tree",
 				"tree_not_found": "No tree found.",
 				"map_activator": "Click to use map"
 			},
 			"step2": {
 				"help": {
-					"title": "Let's get to it!",
-					"description": "Go through the below points to finish an observation. As soon as you successfully finished all necessary observations, you may continue and review your observation.",
-					"expand_title": "How to?",
-					"expand_description": "For every type of tree observation,\n\n            <ol class=\"pt-1\">\n              <li>Choose 10 random buds/leaves/etc.</li>\n              <li>Check each bud/leaf one by one</li>\n              <li>Tick the image coming closest to your findings</li>\n            </ol>",
-					"check": "Check <b>{{amount}} random {{type}}</b>"
+					"title": "Check the following objects and tick the most fitting image for each"
 				}
 			},
 			"type": {
@@ -71,7 +67,7 @@
 				"upload_photo_title": "Upload photo",
 				"upload_photo_placeholder": "Choose a photo of the tree",
 				"remark_title": "Add a remark",
-				"remark_placeholder": "Additional information about the observation",
+				"remark_placeholder": "Additional information",
 				"characters": "characters",
 				"help": {
 					"description": "You must enter your name and the naes of everyone observing with you and can optionally upload a picture of the tree if you want and add additional remarks.",
@@ -91,6 +87,7 @@
 				"observation_time": "Date & Time of observation",
 				"submit_btn": "Submit this observation",
 				"back_btn": "Go back",
+        "submit_progress": "Submission progress",
 				"submitting_data": "Sending observation...",
 				"submitted_data": "Submitted observation!",
 				"submit_data": "Send observation",
@@ -115,8 +112,6 @@
 	"de-DE": "Deutsch",
 	"tree": {
 		"species": {
-			"baumhasel": "Turkish hazel",
-			"oak": "Oak",
 			"gingko biloba": "Gingko Biloba",
 			"quercus robur": "Quercus Robur",
 			"platanus": "Platanus sp",
@@ -146,7 +141,39 @@
       "fagus": "Fagus sp",
       "prunus cerasifera": "Prunus cerasifera",
       "castanea": "Castanea sp",
-      "platanus hispanica": "Platanus hispanica"
+      "platanus hispanica": "Platanus hispanica",
+      "latin": {
+        "gingko biloba": "Gingko Biloba",
+        "quercus robur": "Quercus Robur",
+        "platanus": "Platanus sp",
+        "tilia": "Tilia sp",
+        "quercus": "Quercus sp",
+        "carpinus betulus": "Carpinus betulus",
+        "acer platanoides": "Acer platanoides",
+        "robinia pseudoacacia": "Robinia pseudoacacia",
+        "platanus x acerifolia": "Platanus x acerifolia",
+        "tilia platyphyllos": "Tilia platyphyllos",
+        "paulownia tomentosa": "Paulownia tomentosa",
+        "acer campestre": "Acer campestre",
+        "fraxinus excelsior": "Fraxinus excelsior",
+        "tilia cordata": "Tilia cordata",
+        "liriodendron tulipifera": "Liriodendron tulipifera",
+        "acer": "Acer",
+        "aesculus x carnea": "Aesculus x carnea",
+        "betula": "Betula",
+        "fraxinus": "Fraxinus",
+        "sequoioideae": "Sequoioideae",
+        "corylus colurna": "Corylus colurna",
+        "acer pseudoplatanus": "Acer pseudoplatanus",
+        "aesculus": "Aesculus sp",
+        "betula pendula": "Betula pendula",
+        "juglans nigra": "Juglans nigra",
+        "juglans": "Juglans sp",
+        "fagus": "Fagus sp",
+        "prunus cerasifera": "Prunus cerasifera",
+        "castanea": "Castanea sp",
+        "platanus hispanica": "Platanus hispanica"
+      }
 		}
 	},
 	"general": {

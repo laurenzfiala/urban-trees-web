@@ -97,7 +97,12 @@
           (click)="selectTree(tree.id); centerTree(tree)"
           (keydown)="selectTree(tree.id); centerTree(tree)">
         <span class="badge badge-light float-right">#{{tree.id}}</span>
-        <b>{{'tree.species.' + tree.species | lowercase | translate}}</b>
+        <b>
+          {{'tree.species.' + tree.species | lowercase | translate}}
+        </b>
+        <small [ngClass]="(tree.id === selectedTree?.id) ? 'text-light' : 'text-subtle'">
+          {{'tree.species.latin.' + tree.species | lowercase | translate}}
+        </small>
         <br/>
         {{'phenology.observation.step1.tree_location' | translate:tree.location}}
       </li>

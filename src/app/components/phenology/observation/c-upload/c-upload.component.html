@@ -34,7 +34,7 @@
           [placeholder]="'phenology.observation.step3.observers_placeholder' | translate" />
         <div class="input-group-append">
           <span class="input-group-text" [ngClass]="{'is-invalid': !observersInput.valid}">
-            {{dataset.observers ? dataset.observers.length : 0}} / 5-200 {{'phenology.observation.step3.characters' | translate}}
+            {{dataset.observers ? dataset.observers.length : 0}} / 5-200
           </span>
         </div>
       </div>
@@ -73,18 +73,16 @@
       <h6>{{'phenology.observation.step3.remark_title' | translate}}</h6>
 
       <div class="input-group mb-3">
-        <div class="form-group">
-          <textarea
-            [(ngModel)]="dataset.remark"
-            name="remark"
-            maxlength="350"
-            class="form-control"
-            rows="5"
-            [placeholder]="'phenology.observation.step3.remark_placeholder' | translate"></textarea>
-        </div>
+        <textarea
+          [(ngModel)]="dataset.remark"
+          name="remark"
+          maxlength="350"
+          class="form-control"
+          rows="1"
+          [placeholder]="'phenology.observation.step3.remark_placeholder' | translate"></textarea>
         <div class="input-group-append">
           <span class="input-group-text">
-            {{dataset.remark ? dataset.remark.length : 0}} / 350 {{'phenology.observation.step3.characters' | translate}}
+            {{dataset.remark ? dataset.remark.length : 0}} / 350
           </span>
         </div>
       </div>

@@ -100,6 +100,10 @@
   background-color: @medLightBgColor;
 }
 
+.input-group-append {
+  line-height: 1;
+}
+
 input.form-control,
 textarea.form-control,
 label.custom-file-label:after,
@@ -119,7 +123,7 @@ hr {
 .form-control,
 .custom-file-label,
 .custom-file-label:after {
-  border-radius: @borderRadius;
+  border-radius: @borderRadiusOuterNew;
 }
 
 .custom-file {
@@ -193,5 +197,33 @@ hr {
   &:last-child {
     border-bottom-left-radius: @borderRadius;
     border-bottom-right-radius: @borderRadius;
+  }
+}
+
+tabset .nav {
+
+  .nav-item {
+    margin-right: 0.5rem;
+
+    .nav-link {
+      border-radius: @borderRadius;
+      color: black;
+      background-color: @lightBgColor;
+
+      &.active {
+        background-color: @secondaryColorHighlight;
+        color: @white;
+      }
+    }
+  }
+}
+
+.table.no-top-border {
+
+  tr:first-child {
+    th,
+    td {
+      border-top: none;
+    }
   }
 }

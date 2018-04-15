@@ -23,6 +23,12 @@ export class PhenologyObservationTypeFrontend extends PhenologyObservationType {
 
   /**
    * Used only for the UI.
+   * Whether the types' container is currently collapsed or not.
+   */
+  public containerCollapsed: boolean = true;
+
+  /**
+   * Used only for the UI.
    * We only want to auto-callapse a phenobs type once.
    */
   public wasAutoCollapsed: boolean = false;

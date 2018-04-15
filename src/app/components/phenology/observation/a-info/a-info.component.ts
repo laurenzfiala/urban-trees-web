@@ -376,6 +376,10 @@ export class AInfoComponent extends AbstractComponent implements OnInit, OnDestr
 
   }
 
+  /**
+   * Set the #displayTrees array using the correct pagination.
+   * @param {Array<TreeFrontend>} trees the filtered trees to display.
+   */
   private setDisplayTreesPaginated(trees: Array<TreeFrontend>) {
 
     const minPageSize = 10;
@@ -406,6 +410,10 @@ export class AInfoComponent extends AbstractComponent implements OnInit, OnDestr
 
   }
 
+  /**
+   * Change the currently displayed tree list page.
+   * @param {number} displayIndex index to display.
+   */
   public displayTreePage(displayIndex: number): void {
 
     if (displayIndex < 0 || displayIndex >= this.displayTrees.length) {
