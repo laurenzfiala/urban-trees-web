@@ -33,10 +33,6 @@ const routes: Routes = [
     component: ImprintComponent
   },
   {
-    path: 'report',
-    component: ReportComponent
-  },
-  {
     path: 'phenology',
     component: PhenologyComponent,
     children: [

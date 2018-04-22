@@ -5,9 +5,9 @@
   <div class="text-center text-subtle mt-4">
     {{'phenology.observation.step2.help.title' | translate}}
   </div>
-  <hr class="my-1"/>
+  <hr class="mt-1"/>
 
-  <div class="card" *ngFor="let type of observationSpec" [ngClass]="{'card-buds': type.name === 'Bud'}">
+  <div class="card mt-2" *ngFor="let type of observationSpec" [ngClass]="{'card-buds': type.name === 'Bud'}">
     <div class="card-header" (click)="collapse.toggle()">
 
       <div class="card-header-icon"></div>

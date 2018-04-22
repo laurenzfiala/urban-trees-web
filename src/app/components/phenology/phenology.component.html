@@ -2,11 +2,11 @@
 
 <div class="container-fluid mt-3" *ngIf="router.url.indexOf('/observation/') === -1">
 
-  <div class="card">
+  <div class="card col-md-6">
     <div class="card-body">
       <h5 class="card-title">{{'phenology.observation_note.title' | translate}}</h5>
       <p class="card-text">{{'phenology.observation_note.text' | translate}}</p>
-      <a routerLink="observation/step" class="card-link">{{'phenology.observation_note.start_btn' | translate}}</a>
+      <button routerLink="observation/step" class="btn btn-primary btn-block">{{'phenology.observation_note.start_btn' | translate}}</button>
     </div>
   </div>
 

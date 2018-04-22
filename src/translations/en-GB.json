@@ -14,9 +14,12 @@
       "madeby_team": "Urban-Trees-Team"
 		}
 	},
+  "home": {
+    "placeholder": "We are currently working on the app and will add content to this page in the future."
+  },
 	"phenology": {
 		"observation_note": {
-			"title": "Enter your phenology observation now!",
+			"title": "Enter a tree observation",
 			"text": "It's easy to do and will not take you too long.",
 			"start_btn": "Start observation"
 		},

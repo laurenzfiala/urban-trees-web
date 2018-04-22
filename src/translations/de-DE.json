@@ -14,9 +14,12 @@
       "madeby_team": "Stadtbäume-Team"
 		}
 	},
+  "home": {
+    "placeholder": "Wird arbeiten derzeit an der App und werden hier in Zukunft Inhalte bereitstellen."
+  },
 	"phenology": {
 		"observation_note": {
-			"title": "Starte jetzt mit deiner Beobachtung!",
+			"title": "Phänologiebeobachtung eintragen",
 			"text": "Es dauert nicht länger als 10 Minuten.",
 			"start_btn": "Beginnen"
 		},

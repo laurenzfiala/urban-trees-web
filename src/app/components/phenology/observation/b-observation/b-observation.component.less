@@ -165,6 +165,13 @@
 
 .card .btn {
   border-radius: @borderRadiusOuterNew;
+  border-color: @lightBorderColor;
+
+  &.active,
+  &:hover {
+    background-color: @white;
+    border-color: @darkBorderColor;
+  }
 
   > img {
     border-radius: @borderRadiusOuterNew;

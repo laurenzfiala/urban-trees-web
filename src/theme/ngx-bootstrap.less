@@ -1,0 +1,34 @@
+/**
+
+Workaround from 2018/04/22
+
+This keeps the datepicker from going outside
+the frame on small devices.
+
+ */
+@media screen and (max-width: 575px) {
+
+  bs-datepicker-container {
+    left: @gutter2x !important;
+  }
+}
+
+
+.bs-datepicker {
+  border-radius: @borderRadiusOuterNew;
+
+  .bs-datepicker-container {
+    padding: 0.5rem;
+
+    .bs-datepicker-head {
+      border-top-left-radius: @borderRadiusNew;
+      border-top-right-radius: @borderRadiusNew;
+    }
+
+    .bs-datepicker-body {
+      border-bottom-left-radius: @borderRadiusNew;
+      border-bottom-right-radius: @borderRadiusNew;
+    }
+  }
+}
+
