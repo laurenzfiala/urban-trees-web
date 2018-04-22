@@ -2,41 +2,47 @@
 
   <h3>Observations</h3>
 
-  <div class="text-center text-subtle mt-4">
-    {{'phenology.observation.step2.help.title' | translate}}
+  <div class="my-3 py-2 text-danger text-center" *ngIf="observationSpec.length === 0">
+    You can't currently observe any parts of this tree.
   </div>
-  <hr class="mt-1"/>
 
-  <div class="card mt-2" *ngFor="let type of observationSpec" [ngClass]="{'card-buds': type.name === 'Bud'}">
-    <div class="card-header" (click)="collapse.toggle()">
-
-      <div class="card-header-icon"></div>
-      <div class="card-header-icon"></div>
-      <div class="card-header-icon"></div>
-
-      <h5 class="mb-0" [ngClass]="{'todo': !type.done, 'done': type.done}">
-        {{'phenology.observation.type.' + type.name + '.name_plural' | translate}}
-      </h5>
+  <div *ngIf="observationSpec.length > 0">
+    <div class="text-center text-subtle mt-4">
+      {{'phenology.observation.step2.help.title' | translate}}
     </div>
+    <hr class="mt-1"/>
 
-    <div #collapse="bs-collapse" [collapse]="type.containerCollapsed" class="collapse">
-      <div class="card-body">
+    <div class="card mt-2" *ngFor="let type of observationSpec" [ngClass]="{'card-buds': type.name === 'Bud'}">
+      <div class="card-header" (click)="collapse.toggle()">
 
-        <div *ngFor="let object of type.objects" class="result-wrapper">
+        <div class="card-header-icon"></div>
+        <div class="card-header-icon"></div>
+        <div class="card-header-icon"></div>
 
-          <h5>{{'phenology.observation.type.' + type.name + '.name' | translate}} {{object.name}}</h5>
+        <h5 class="mb-0" [ngClass]="{'todo': !type.done, 'done': type.done}">
+          {{'phenology.observation.type.' + type.name + '.name_plural' | translate}}
+        </h5>
+      </div>
 
-          <div class="row">
-            <div class="col" *ngFor="let result of type.results">
-              <button class="btn btn-outline-secondary p-0" type="button" name="btn" [(ngModel)]="type.resultMap[object.id]"
-                      [btnRadio]="result" (click)="checkObservationStatus(type, collapse)">
-                <img [src]="images[result.id]?.encodedImage" class="w-100"/>
-              </button>
+      <div #collapse="bs-collapse" [collapse]="type.containerCollapsed" class="collapse">
+        <div class="card-body">
+
+          <div *ngFor="let object of type.objects" class="result-wrapper">
+
+            <h5>{{'phenology.observation.type.' + type.name + '.name' | translate}} {{object.name}}</h5>
+
+            <div class="row">
+              <div class="col" *ngFor="let result of type.results">
+                <button class="btn btn-outline-secondary p-0" type="button" name="btn" [(ngModel)]="type.resultMap[object.id]"
+                        [btnRadio]="result" (click)="checkObservationStatus(type, collapse)">
+                  <img [src]="images[result.id]?.encodedImage" class="w-100"/>
+                </button>
+              </div>
             </div>
+
           </div>
 
         </div>
-
       </div>
     </div>
   </div>

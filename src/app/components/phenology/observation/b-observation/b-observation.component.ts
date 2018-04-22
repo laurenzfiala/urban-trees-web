@@ -82,6 +82,10 @@ export class BObservationComponent extends AbstractComponent implements OnInit, 
 
   public checkObservationStatus(type?: PhenologyObservationTypeFrontend, collapseElement?: any): void {
 
+    if (this.observationSpec.length === 0) {
+      return;
+    }
+
     if (type && Object.keys(type.resultMap).length === type.objects.length) {
       type.done = true;
 
