@@ -2,6 +2,7 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 import {PhenologyObservationService} from '../../../../services/phenology/observation/phenology-observation.service';
 import {Log} from '../../../../services/log.service';
 import {PhenologyDatasetFrontend} from '../../../../entities/phenology-dataset-frontend.entity';
+import {AbstractComponent} from '../../../abstract.component';
 
 @Component({
   selector: 'ut-c-upload',
@@ -9,7 +10,7 @@ import {PhenologyDatasetFrontend} from '../../../../entities/phenology-dataset-f
   styleUrls: ['./c-upload.component.less'],
 
 })
-export class CUploadComponent implements OnInit {
+export class CUploadComponent extends AbstractComponent implements OnInit {
 
   private static LOG: Log = Log.newInstance(CUploadComponent);
 
@@ -19,9 +20,11 @@ export class CUploadComponent implements OnInit {
   public observersInput: any;
 
   constructor(private observationService: PhenologyObservationService) {
+    super();
   }
 
   public ngOnInit(): void {
+    this.scrollToTop();
     this.checkContinue();
   }
 

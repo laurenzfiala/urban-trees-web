@@ -25,6 +25,7 @@ export class BObservationComponent extends AbstractComponent implements OnInit, 
   public ngOnInit(): void {
 
     BObservationComponent.LOG.trace('Initializing BObservationComponent...');
+    this.scrollToTop();
     this.loadSpec();
 
   }

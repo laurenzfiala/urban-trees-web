@@ -101,37 +101,8 @@ export class AInfoComponent extends AbstractComponent implements OnInit, OnDestr
     super();
   }
 
-  /**
-   * Set tree search and filter displayed trees by input.
-   * @param {string} searchInput user's tree search input
-   */
-  public setTreeSearchInput(searchInput: string): void {
-
-    if (!searchInput) {
-      this.setDisplayTreesPaginated(this.availableTrees);
-      return;
-    }
-
-    const idInput = Number(searchInput);
-    if (!Number.isNaN(idInput)) {
-      this.setDisplayTreesPaginated(this.availableTrees.filter((tree: TreeFrontend) => {
-        return tree.id === idInput;
-      }));
-      return;
-    }
-
-    this.setDisplayTreesPaginated(
-      this.availableTrees.filter((tree: TreeFrontend) => {
-        const translationKey = ('tree.species.' + tree.species).toLowerCase();
-        return this.translateService.instant(translationKey).toLowerCase().indexOf(searchInput.toLowerCase()) !== -1 ||
-          tree.location.street.toLowerCase().indexOf(searchInput.toLowerCase()) !== -1 ||
-          tree.location.city.toLowerCase().indexOf(searchInput.toLowerCase()) !== -1;
-      })
-    );
-
-  }
-
   public ngOnInit(): void {
+    this.scrollToTop();
     this.observationsService.resetIfMarked();
     this.load();
   }
@@ -373,6 +344,36 @@ export class AInfoComponent extends AbstractComponent implements OnInit, OnDestr
       this.observationsService.setDone(0, true);
     }
     this.updateMapMarkers();
+
+  }
+
+  /**
+   * Set tree search and filter displayed trees by input.
+   * @param {string} searchInput user's tree search input
+   */
+  public setTreeSearchInput(searchInput: string): void {
+
+    if (!searchInput) {
+      this.setDisplayTreesPaginated(this.availableTrees);
+      return;
+    }
+
+    const idInput = Number(searchInput);
+    if (!Number.isNaN(idInput)) {
+      this.setDisplayTreesPaginated(this.availableTrees.filter((tree: TreeFrontend) => {
+        return tree.id === idInput;
+      }));
+      return;
+    }
+
+    this.setDisplayTreesPaginated(
+      this.availableTrees.filter((tree: TreeFrontend) => {
+        const translationKey = ('tree.species.' + tree.species).toLowerCase();
+        return this.translateService.instant(translationKey).toLowerCase().indexOf(searchInput.toLowerCase()) !== -1 ||
+          tree.location.street.toLowerCase().indexOf(searchInput.toLowerCase()) !== -1 ||
+          tree.location.city.toLowerCase().indexOf(searchInput.toLowerCase()) !== -1;
+      })
+    );
 
   }
 

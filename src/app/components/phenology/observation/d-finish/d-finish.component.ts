@@ -37,6 +37,8 @@ export class DFinishComponent extends AbstractComponent implements OnInit {
 
   public ngOnInit() {
 
+    this.scrollToTop();
+
     this.setStatus(StatusKey.SUBMISSION_DATA, StatusValue.PENDING);
     if (this.observationService.userImage) {
       this.setStatus(StatusKey.SUBMISSION_FILE, StatusValue.PENDING);
