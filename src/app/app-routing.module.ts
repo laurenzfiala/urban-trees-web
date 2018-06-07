@@ -13,6 +13,10 @@ import {
   PhenologyObservationStepGuard
 } from './components/phenology/observation/phenology-observation-step.guard';
 import {ReportComponent} from './components/report/report.component';
+import {TreeComponent} from './components/tree/tree.component';
+import {TreeListComponent} from './components/tree-list/tree-list.component';
+import {ProjectHomeComponent} from './components/project-home/project-home.component';
+import {ProjectLoginComponent} from './components/project-login/project-login.component';
 
 const routes: Routes = [
   {
@@ -33,34 +37,52 @@ const routes: Routes = [
     component: ImprintComponent
   },
   {
-    path: 'phenology',
-    component: PhenologyComponent,
+    path: 'trees',
+    component: TreeListComponent,
+  },
+  {
+    path: 'tree',
+    component: TreeComponent,
+  },
+  {
+    path: 'login',
+    component: ProjectLoginComponent
+  },
+  {
+    path: 'project',
+    component: ProjectHomeComponent,
     children: [
       {
-        path: 'observation/step',
-        component: ObservationComponent,
-        canActivateChild: [PhenologyObservationStepGuard],
+        path: 'phenology',
+        component: PhenologyComponent,
         children: [
           {
-            path: '',
-            redirectTo: '1',
-            pathMatch: 'full'
-          },
-          {
-            path: '1',
-            component: AInfoComponent
-          },
-          {
-            path: '2',
-            component: BObservationComponent
-          },
-          {
-            path: '3',
-            component: CUploadComponent
-          },
-          {
-            path: '4',
-            component: DFinishComponent
+            path: 'observation/step',
+            component: ObservationComponent,
+            canActivateChild: [PhenologyObservationStepGuard],
+            children: [
+              {
+                path: '',
+                redirectTo: '1',
+                pathMatch: 'full'
+              },
+              {
+                path: '1',
+                component: AInfoComponent
+              },
+              {
+                path: '2',
+                component: BObservationComponent
+              },
+              {
+                path: '3',
+                component: CUploadComponent
+              },
+              {
+                path: '4',
+                component: DFinishComponent
+              }
+            ]
           }
         ]
       }

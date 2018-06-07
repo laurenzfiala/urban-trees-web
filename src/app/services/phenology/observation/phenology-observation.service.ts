@@ -83,9 +83,11 @@ export class PhenologyObservationService extends AbstractService {
    * @param {(error: any) => void} errorCallback Called upon exception
    */
   public loadTrees(successCallback: (trees: Array<Tree>) => void,
-                   errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void) {
+                   errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void): void {
 
     let headers = this.getAuthHeaders();
+
+    PhenologyObservationService.LOG.debug('Loading available trees from ' + this.envService.endpoints.allTrees + ' ...');
 
     this.http.get<Array<Tree>>(this.envService.endpoints.allTrees, {headers: headers})
       .timeout(this.envService.defaultTimeout)

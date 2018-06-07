@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {PhenologyObservationService} from '../../../../services/phenology/observation/phenology-observation.service';
 
 import OlMap from 'ol/map';
@@ -19,12 +19,11 @@ import {Log} from '../../../../services/log.service';
 import {TreeFrontend} from '../../../../entities/tree-frontend.entity';
 import {EnvironmentService} from '../../../../services/environment.service';
 import {PhenologyDatasetFrontend} from '../../../../entities/phenology-dataset-frontend.entity';
-import VectorTileOptions = olx.source.VectorTileOptions;
-import TileEvent = ol.source.TileEvent;
 import OlXYZ from 'ol/source/xyz';
 import OlTileLayer from 'ol/layer/tile';
-import {LangChangeEvent, TranslateService} from '@ngx-translate/core';
-import {BsDatepickerDirective} from 'ngx-bootstrap/datepicker';
+import {TranslateService} from '@ngx-translate/core';
+import VectorTileOptions = olx.source.VectorTileOptions;
+import TileEvent = ol.source.TileEvent;
 
 /**
  * First step of a phenology observation.

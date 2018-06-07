@@ -1,0 +1,193 @@
+<ut-header></ut-header>
+
+<div class="highlight-wrapper py-3 mb-5">
+
+  <div class="highlight-background highlight-background-top"></div>
+
+  <div *ngIf="hasStatus(StatusKey.STATISTICS, StatusValue.IN_PROGRESS)"
+       class="highlight-content container text-center">
+    <img class="load-md" src="/assets/tail-spin.svg" />
+  </div>
+
+  <div *ngIf="statistics"
+       class="highlight-content container">
+
+    <div class="hl-row py-4">
+      <div class="hl-item hl-item-even">
+        <div class="hl-title">
+          {{statistics.cityAmount}}
+        </div>
+        <div class="hl-annotation">
+          Cities
+        </div>
+      </div>
+      <div class="hl-item hl-item-even">
+        <div class="hl-title">
+          {{statistics.treeSpeciesAmount}}
+        </div>
+        <div class="hl-annotation">
+          Species
+        </div>
+      </div>
+      <div class="hl-item hl-item-even">
+        <div class="hl-title">
+          {{statistics.treeAmount}}
+        </div>
+        <div class="hl-annotation">
+          Trees
+        </div>
+      </div>
+    </div>
+
+    <div class="hl-row py-4">
+      <div class="hl-item hl-item-even">
+        <div class="hl-title">
+          {{statistics.phenologyObservationAmount}}
+        </div>
+        <div class="hl-annotation">
+          Observations
+        </div>
+      </div>
+      <div class="hl-item hl-item-even">
+        <div class="hl-title">
+          {{statistics.beaconAmount}}
+        </div>
+        <div class="hl-annotation">
+          Beacons
+        </div>
+      </div>
+      <div class="hl-item hl-item-even">
+        <div class="hl-title">
+          {{statistics.beaconDatasetAmount}}
+        </div>
+        <div class="hl-annotation">
+          Datasets
+        </div>
+      </div>
+    </div>
+
+    <div class="hl-row py-4">
+      <div class="hl-item hl-item-even hl-flex-basis-content">
+        <div class="hl-title cool-warm">
+          <div class="hl-flex-row hl-warm">
+            <div class="hl-opacity-85">{{statistics.beaconTempMaximum}} °C</div>
+            <div class="hl-subtitle hl-flex-col hl-opacity-75">high</div>
+          </div>
+          <div class="hl-flex-row hl-med">
+            <div class="hl-opacity-85">{{statistics.beaconTempAverage}} °C</div>
+            <div class="hl-subtitle hl-flex-col hl-opacity-75">avg</div>
+          </div>
+          <div class="hl-flex-row hl-cool">
+            <div class="hl-opacity-85">{{statistics.beaconTempMinimum}} °C</div>
+            <div class="hl-subtitle hl-flex-col hl-opacity-75">low</div>
+          </div>
+        </div>
+        <div class="hl-annotation text-center">
+          Temperature
+        </div>
+      </div>
+      <div class="hl-item hl-item-even hl-flex-basis-content">
+        <div class="hl-title">
+          <div class="hl-flex-row hl-warm">
+            <div class="hl-opacity-85">{{statistics.beaconHumidityMaximum}} %</div>
+            <div class="hl-subtitle hl-flex-col hl-opacity-75">high</div>
+          </div>
+          <div class="hl-flex-row hl-med">
+            <div class="hl-opacity-75">{{statistics.beaconHumidityAverage}} %</div>
+            <div class="hl-subtitle hl-flex-col hl-opacity-75">avg</div>
+          </div>
+          <div class="hl-flex-row hl-cool">
+            <div class="hl-opacity-75">{{statistics.beaconHumidityMinimum}} %</div>
+            <div class="hl-subtitle hl-flex-col hl-opacity-75">low</div>
+          </div>
+        </div>
+        <div class="hl-annotation text-center">
+          Humidity
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+<div *ngIf="hasStatus(StatusKey.TREES, StatusValue.IN_PROGRESS) || hasStatus(StatusKey.CITIES, StatusValue.IN_PROGRESS)"
+     class="highlight-content container text-center">
+  <img class="load-md" src="/assets/tail-spin.svg" />
+</div>
+
+<div *ngFor="let city of cities">
+
+  <div class="highlight-wrapper pt-3 pb-1">
+
+    <div class="highlight-content container">
+      <div class="hl-title hl-title-light">
+        {{city}}
+      </div>
+    </div>
+
+  </div>
+
+  <div class="container my-2 has-status-overlay">
+
+    <div class="mb-4">
+
+      <ul class="list-group mt-2">
+        <ng-container *ngFor="let tree of trees">
+
+          <li *ngIf="tree.location.city === city"
+              class="list-group-item list-group-item-action"
+              [routerLink]="['/tree', tree.id]">
+            <span class="badge badge-light float-right">#{{tree.id}}</span>
+            <b>
+              {{'tree.species.' + tree.species | lowercase | translate}}
+            </b>
+            <small class="text-subtle">
+              {{'tree.species.latin.' + tree.species | lowercase | translate}}
+            </small>
+            <br/>
+            {{'tree_list.tree.location' | translate:tree.location}}
+          </li>
+          <li *ngIf="trees?.length === 0"
+              class="list-group-item disabled">
+            {{'phenology.observation.step1.tree_not_found' | translate}}
+          </li>
+
+        </ng-container>
+      </ul>
+
+    </div>
+
+  </div>
+
+</div>
+
+<div *ngIf="hasStatus(StatusKey.TREES, StatusValue.FAILED)" class="status-overlay">
+  <div class="status-content">
+    <div class="status-heading heading-danger">
+      {{'general.error' | translate}}
+    </div>
+    <div class="status-text">
+      {{'tree_list.error_loading_trees.text' | translate}}<!-- TODO -->
+    </div>
+    <div class="status-controls">
+      <button class="btn btn-light float-right" (click)="loadTreeList()" (keydown)="loadTreeList()">{{'general.retry' | translate}}</button>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="hasStatus(StatusKey.STATISTICS, StatusValue.FAILED)" class="status-overlay">
+  <div class="status-content">
+    <div class="status-heading heading-danger">
+      {{'general.error' | translate}}
+    </div>
+    <div class="status-text">
+      {{'tree_list.error_loading_trees.text' | translate}}<!-- TODO -->
+    </div>
+    <div class="status-controls">
+      <button class="btn btn-light float-right" (click)="loadStatistics()" (keydown)="loadStatistics()">{{'general.retry' | translate}}</button>
+    </div>
+  </div>
+</div>
+
+<ut-footer></ut-footer>

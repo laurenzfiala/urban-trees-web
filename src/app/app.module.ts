@@ -35,8 +35,13 @@ import {ImprintComponent} from './components/imprint/imprint.component';
 import {FooterComponent} from './components/footer/footer.component';
 import {AnnouncementService} from './services/announcement.service';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
-import {PhenologyObservationStepGuard} from './components/phenology/observation/phenology-observation-step.guard';
 import {ReportComponent} from './components/report/report.component';
+import { TreeComponent } from './components/tree/tree.component';
+import { TreeListComponent } from './components/tree-list/tree-list.component';
+import {TreeListService} from './services/tree-list.service';
+import { SpyDirective } from './directives/spy.directive';
+import { ProjectHomeComponent } from './components/project-home/project-home.component';
+import { ProjectLoginComponent } from './components/project-login/project-login.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, '/translations/');
@@ -62,7 +67,12 @@ export function HttpLoaderFactory(http: HttpClient) {
     StringModificationPipe,
     CapitalizationPipe,
     LowercasePipe,
-    ReportComponent
+    ReportComponent,
+    TreeComponent,
+    TreeListComponent,
+    SpyDirective,
+    ProjectHomeComponent,
+    ProjectLoginComponent
   ],
   imports: [
     // Core
@@ -98,7 +108,7 @@ export function HttpLoaderFactory(http: HttpClient) {
 
     // Component-Services
     PhenologyObservationService,
-    PhenologyObservationStepGuard
+    TreeListService
   ],
   bootstrap: [AppComponent]
 })

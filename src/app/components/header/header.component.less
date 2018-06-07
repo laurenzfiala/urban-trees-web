@@ -4,11 +4,17 @@
   padding: 0 1rem;
 }
 
-li.nav-item.active {
-  border-bottom: solid @secondaryColor 2px;
+li.nav-item {
+  border-bottom: solid transparent 2px;
 
-  a {
-    color: @textColorHighlight !important;
+
+  &.active {
+    border-bottom: solid @secondaryColor 2px;
+
+    a {
+      background-color: white;
+      color: @textColorHighlight !important;
+    }
   }
 }
 
@@ -49,5 +55,22 @@ li.nav-item {
     > .announcement-description {
       color: darken(@danger, 50%);
     }
+  }
+}
+
+li.nav-item.tetet {
+  margin: 0.6rem 0;
+  box-shadow: 0 1px 1px @secondaryColorHighlight;
+  border: solid @secondaryColor 1px;
+  border-radius: @borderRadiusNew;
+  border-bottom: solid @secondaryColor 1px !important;
+
+  &.active {
+    background-color: white;
+  }
+
+  > a {
+    border-radius: @borderRadiusNew;
+    padding: 0.35rem 1rem !important;
   }
 }

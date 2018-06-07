@@ -61,14 +61,14 @@
         <img class="load-md" src="/assets/tail-spin.svg" />
       </div>
       <div *ngIf="hasStatus(StatusKey.MAP, StatusValue.FAILED)" class="status-overlay">
-        <div class="status-overlay-content">
-          <div class="status-overlay-heading heading-danger">
+        <div class="status-content">
+          <div class="status-heading heading-danger">
             {{'general.error' | translate}}
           </div>
-          <div class="status-overlay-text">
+          <div class="status-text">
             {{'phenology.observation.step1.error_map.text' | translate}}
           </div>
-          <div class="status-overlay-controls">
+          <div class="status-controls">
             <button class="btn btn-light float-right" (click)="load()" (keydown)="load()">{{'general.retry' | translate}}</button>
           </div>
         </div>
@@ -78,6 +78,17 @@
       </div>
       <div id="activator" [ngClass]="{'disabled': isMapEnabled || hasStatus(StatusKey.MAP, StatusValue.IN_PROGRESS)}" (click)="isMapEnabled = true">
         {{'phenology.observation.step1.map_activator' | translate}}
+      </div>
+    </div>
+
+    <div class="status my-3">
+      <div class="status-content">
+        <div class="status-heading heading-danger">
+          {{'phenology.observation.step1.trees_changed_alert.title' | translate}}
+        </div>
+        <div class="status-text">
+          {{'phenology.observation.step1.trees_changed_alert.text' | translate}}
+        </div>
       </div>
     </div>
 
@@ -145,14 +156,14 @@
     <img class="load-md" src="/assets/tail-spin.svg" />
   </div>
   <div *ngIf="hasStatus(StatusKey.TREES, StatusValue.FAILED)" class="status-overlay">
-    <div class="status-overlay-content">
-      <div class="status-overlay-heading heading-danger">
+    <div class="status-content">
+      <div class="status-heading heading-danger">
         {{'general.error' | translate}}
       </div>
-      <div class="status-overlay-text">
+      <div class="status-text">
         {{'phenology.observation.step1.error_loading.text' | translate}}
       </div>
-      <div class="status-overlay-controls">
+      <div class="status-controls">
         <button class="btn btn-light float-right" (click)="load()" (keydown)="load()">{{'general.retry' | translate}}</button>
       </div>
     </div>

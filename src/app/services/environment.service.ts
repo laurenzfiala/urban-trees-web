@@ -138,4 +138,12 @@ class EnvironmentEndpoints {
     return this.prependCommonPath(this.context.announcements);
   }
 
+  get cities() {
+    return this.prependCommonPath(this.context.cities);
+  }
+
+  get statistics() {
+    return this.prependCommonPath(this.context.statistics);
+  }
+
 }

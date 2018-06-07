@@ -1,0 +1,135 @@
+@import (reference) "../../../theme/variables";
+
+li.list-group-item-action {
+  cursor: pointer;
+}
+
+.highlight-wrapper,
+.highlight-content {
+  position: relative;
+}
+
+.highlight-background {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  background-position: center;
+  background-size: cover;
+  background-image: url("/assets/img/tree-list/salzburg.JPG");
+
+  &.highlight-background-top {
+    background-image: url("/assets/img/tree-list/stats_background.JPG");
+  }
+
+  &.highlight-background-city {
+    background-image: url("/assets/img/tree-list/tree_list_city_background.JPG");
+  }
+}
+
+.highlight-content {
+  font-family: 'Segoe UI';
+
+  .hl-row {
+    display: flex;
+    flex-direction: row;
+
+    &:not(:last-child) {
+      border-bottom: solid rgba(60, 246, 103, 0.2) 1px;
+    }
+  }
+
+  .hl-item {
+    padding-left: 1rem;
+    padding-right: 1rem;
+    display: flex;
+    flex-direction: column;
+
+    &.hl-item-even {
+      flex-grow: 1;
+      flex-basis: 0;
+    }
+  }
+
+  .hl-title,
+  .hl-separator {
+    font-size: 2rem;
+    color: #4cc688;
+
+    &.hl-title-light {
+      color: @primaryColorHighlight;
+    }
+
+    .hl-subtitle {
+      font-size: 1rem;
+      padding-left: 1rem;
+    }
+
+    .hl-flex-row,
+    .hl-flex-col {
+      display: flex;
+      justify-content: center;
+
+      * {
+        flex-basis: 0;
+        flex-grow: 1;
+      }
+    }
+
+    .hl-flex-row {
+      flex-direction: row;
+    }
+
+    .hl-flex-col {
+      flex-direction: column;
+      text-align: left;
+    }
+
+  }
+
+  .hl-separator {
+    font-size: 2rem;
+
+    &.hl-separator-top {
+      margin-top: -1rem;
+    }
+  }
+
+  .hl-annotation {
+    color: #9ec3ae;
+  }
+
+  .hl-flex-basis-content * {
+    flex-basis: auto !important;
+    flex-grow: unset !important;
+  }
+
+  .hl-warm {
+    color: #ff8e73;
+  }
+
+  .hl-med {
+    color: #7affcf;
+  }
+
+  .hl-cool {
+    color: #5cbbff;
+  }
+
+  .hl-opacity-85 {
+    opacity: 0.85;
+  }
+
+  .hl-opacity-75 {
+    opacity: 0.75;
+  }
+
+}
+
+@media @sm {
+  .highlight-content .hl-title {
+    font-size: @fontSizeLarge;
+  }
+}

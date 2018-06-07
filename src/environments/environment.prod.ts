@@ -18,6 +18,9 @@ export const environment = {
     phenologyDatasetSubmission:       '/tree/{treeId}/phenology',
     phenologyDatasetImageSubmission:  '/usercontent/phenology/observation/{phenologyId}/image',
 
+    // Tree List
+    cities:                           '/tree/cities',
+
     // UI
     phenologyObservationResultImg:    '/ui/phenology/observation/result/{treeSpeciesId}/{resultId}/img',
     announcements:                    '/ui/announcements'

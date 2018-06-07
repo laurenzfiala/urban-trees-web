@@ -6,6 +6,7 @@
 	"navigation": {
 		"home": "Start",
 		"phenology": "Phänologie",
+		"tree_list": "Bäume",
 		"footer": {
 			"report": "Problem melden",
 			"imprint": "Impressum",
@@ -34,6 +35,10 @@
 				"to": "zu"
 			},
 			"step1": {
+        "trees_changed_alert": {
+          "title": "Achtung!",
+          "text": "Wir haben vor Kurzem einige Bäume, Spezies als auch ihre Standorte geändert. Bitte sei vorsichtig beim Suchen mittels Nummer (#x)!"
+        },
 				"observation_date_label": "Beobachtungszeitpunkt",
 				"tree_location": "in der {{street}} in {{city}}",
 				"error_loading": {
@@ -111,6 +116,11 @@
 			}
 		}
 	},
+  "tree_list": {
+    "tree": {
+      "location": "at {{street}}"
+    }
+  },
 	"en-GB": "English",
 	"de-DE": "Deutsch",
 	"tree": {
