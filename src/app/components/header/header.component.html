@@ -17,9 +17,6 @@
       <li class="nav-item" routerLinkActive="active">
         <a class="nav-link" routerLink="/home">{{'navigation.home' | translate}}</a>
       </li>
-      <!--<li class="nav-item" routerLinkActive="active">
-        <a class="nav-link" routerLink="/phenology">{{'navigation.phenology' | translate}}</a>
-      </li>-->
       <li class="nav-item" routerLinkActive="active">
         <a class="nav-link" routerLink="/trees">{{'navigation.tree_list' | translate}}</a>
       </li>
@@ -27,17 +24,30 @@
     <ul class="navbar-nav">
       <li class="nav-item tetet" routerLinkActive="active">
         <a class="nav-link" routerLink="/project">
-          <span class="d-none d-md-inline">Projekt-</span>Account
+          <span class="d-none d-md-inline">{{'navigation.project_account_1' | translate}}</span>{{'navigation.project_account_2' | translate}}
         </a>
       </li>
-      <!--<li dropdown class="dropdown pointer">
-        <a dropdownToggle class="nav-link dropdown-toggle">
-          {{currentLanguage | translate}}
+      <li dropdown class="nav-item dropdown pointer">
+        <a dropdownToggle class="nav-link">
+          <i class="fa fa-cog" aria-hidden="true"></i>
         </a>
         <div *dropdownMenu class="dropdown-menu dropdown-menu-right">
-          <a *ngFor="let lang of availableLanguages" class="dropdown-item" (click)="setLanguage(lang)">{{lang | translate}}</a>
+          <a *ngFor="let lang of availableLanguages"
+             [ngClass]="{'lang-current': lang === currentLanguage}"
+             class="dropdown-item"
+             (click)="setLanguage(lang)">
+            {{lang | translate}}
+          </a>
+          <div *ngIf="isLoggedIn()">
+            <div class="dropdown-divider"></div>
+            <a class="dropdown-item sign-out"
+               (click)="logout()">
+              {{'navigation.logout' | translate}}
+              <i class="fa fa-sign-out float-right" aria-hidden="true"></i>
+            </a>
+          </div>
         </div>
-      </li>-->
+      </li>
     </ul>
   </div>
 </nav>

@@ -12,11 +12,11 @@ import {ImprintComponent} from './components/imprint/imprint.component';
 import {
   PhenologyObservationStepGuard
 } from './components/phenology/observation/phenology-observation-step.guard';
-import {ReportComponent} from './components/report/report.component';
 import {TreeComponent} from './components/tree/tree.component';
 import {TreeListComponent} from './components/tree-list/tree-list.component';
 import {ProjectHomeComponent} from './components/project-home/project-home.component';
 import {ProjectLoginComponent} from './components/project-login/project-login.component';
+import {ProjectLoginGuard} from './components/project-login/project-login.guard';
 
 const routes: Routes = [
   {
@@ -51,38 +51,42 @@ const routes: Routes = [
   {
     path: 'project',
     component: ProjectHomeComponent,
+    canActivate: [ProjectLoginGuard],
+  },
+  {
+    path: 'phenology',
+    redirectTo: 'project/phenology'
+  },
+  {
+    path: 'project/phenology',
+    component: PhenologyComponent,
     children: [
       {
-        path: 'phenology',
-        component: PhenologyComponent,
+        path: 'observation/step',
+        component: ObservationComponent,
+        canActivate: [ProjectLoginGuard],
+        canActivateChild: [PhenologyObservationStepGuard],
         children: [
           {
-            path: 'observation/step',
-            component: ObservationComponent,
-            canActivateChild: [PhenologyObservationStepGuard],
-            children: [
-              {
-                path: '',
-                redirectTo: '1',
-                pathMatch: 'full'
-              },
-              {
-                path: '1',
-                component: AInfoComponent
-              },
-              {
-                path: '2',
-                component: BObservationComponent
-              },
-              {
-                path: '3',
-                component: CUploadComponent
-              },
-              {
-                path: '4',
-                component: DFinishComponent
-              }
-            ]
+            path: '',
+            redirectTo: '1',
+            pathMatch: 'full'
+          },
+          {
+            path: '1',
+            component: AInfoComponent
+          },
+          {
+            path: '2',
+            component: BObservationComponent
+          },
+          {
+            path: '3',
+            component: CUploadComponent
+          },
+          {
+            path: '4',
+            component: DFinishComponent
           }
         ]
       }

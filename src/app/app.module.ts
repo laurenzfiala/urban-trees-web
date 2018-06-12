@@ -26,7 +26,7 @@ import {
   PopoverModule, TabsModule,
   TimepickerModule
 } from 'ngx-bootstrap';
-import {HttpClient, HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule} from '@angular/common/http';
 import {PhenologyObservationService} from './services/phenology/observation/phenology-observation.service';
 import {EnvironmentService} from './services/environment.service';
 import {SubscriptionManagerService} from './services/subscription-manager.service';
@@ -42,6 +42,10 @@ import {TreeListService} from './services/tree-list.service';
 import { SpyDirective } from './directives/spy.directive';
 import { ProjectHomeComponent } from './components/project-home/project-home.component';
 import { ProjectLoginComponent } from './components/project-login/project-login.component';
+import {AuthInterceptor} from './interceptors/auth.interceptor';
+import {PhenologyObservationStepGuard} from './components/phenology/observation/phenology-observation-step.guard';
+import {AuthService} from './services/auth.service';
+import {ProjectLoginGuard} from './components/project-login/project-login.guard';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, '/translations/');
@@ -101,14 +105,29 @@ export function HttpLoaderFactory(http: HttpClient) {
     })
   ],
   providers: [
+    // Native providers
+    {provide: Window, useValue: window},
+
     // Core services
     EnvironmentService,
     SubscriptionManagerService,
     AnnouncementService,
+    AuthService,
 
     // Component-Services
     PhenologyObservationService,
-    TreeListService
+    TreeListService,
+
+    // Guards
+    PhenologyObservationStepGuard,
+    ProjectLoginGuard,
+
+    // Interceptors
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
   ],
   bootstrap: [AppComponent]
 })

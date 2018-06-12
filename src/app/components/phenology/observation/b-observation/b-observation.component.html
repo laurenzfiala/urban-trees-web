@@ -3,7 +3,7 @@
   <h3>Observations</h3>
 
   <div class="my-3 py-2 text-danger text-center" *ngIf="observationSpec.length === 0">
-    You can't currently observe any parts of this tree.
+    {{'phenology.observation.step2.nothing_to_observe' | translate}}
   </div>
 
   <div *ngIf="observationSpec.length > 0">

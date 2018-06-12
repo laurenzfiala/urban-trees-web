@@ -1,7 +1,66 @@
 @import (reference) "../../../theme/theme.less";
 
+@maxAnnotations:  10;
+
 .login-container {
-  border-radius: @borderRadiusNew;
+  border-radius: @borderRadiusOuterNew;
   background-color: @medLightBgColor;
   padding: @gutter2x;
+  z-index: @maxAnnotations + 1;
+}
+
+.login-annotation-container {
+  background-color: @lightBgColor;
+  color: @darkGrey;
+  font-size: @fontSizeSmall;
+  border-bottom-left-radius: @borderRadiusOuterNew;
+  border-bottom-right-radius: @borderRadiusOuterNew;
+  padding: @gutter + @borderRadiusOuterNew @gutter2x @gutter2x @gutter2x;
+  margin-top: -@borderRadiusOuterNew;
+
+  &.login-annotation-danger,
+  &.login-annotation-success,
+  &.login-annotation-warning,
+  &.login-annotation-info {
+    font-size: 1rem;
+  }
+
+  &.login-annotation-danger {
+    color: @dangerColor;
+    background-color: @dangerBg;
+  }
+
+  &.login-annotation-success {
+    color: @successColor;
+    background-color: @successBg;
+  }
+
+  &.login-annotation-warning {
+    color: @warningColor;
+    background-color: @warningBg;
+  }
+
+  &.login-annotation-info {
+    color: @infoColor;
+    background-color: @infoBg;
+  }
+
+  .ordering(@i: 1) when (@i <= @maxAnnotations) {
+    &:nth-child(@{i}) {
+      z-index: @maxAnnotations - @i;
+    }
+
+    .ordering(@i + 1);
+  }
+  .ordering();
+
+  a {
+    color: @darkGrey;
+    cursor: pointer;
+
+    &:hover {
+      color: @darkestGrey;
+      text-decoration: none;
+    }
+  }
 }

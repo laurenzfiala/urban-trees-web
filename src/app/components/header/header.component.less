@@ -22,10 +22,36 @@ li.nav-item {
   padding: 0 !important;
   position: relative;
 
-  a {
+  a:not(.dropdown-item) {
     padding: 1rem;
     position: relative;
     z-index: 2;
+  }
+
+  &.dropdown {
+
+    > .nav-link > .fa {
+      font-size: 1.25rem;
+    }
+
+    .dropdown-menu {
+      border-radius: @borderRadiusNew;
+      padding-top: @borderRadiusNew;
+      padding-bottom: @borderRadiusNew;
+    }
+
+    .dropdown-item {
+      padding: 0.25rem 1rem;
+
+      &.lang-current {
+        background-color: @bgColor;
+      }
+
+      &.sign-out > .fa {
+        padding: 0.2em;
+        font-size: 1.15rem;
+      }
+    }
   }
 }
 

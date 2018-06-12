@@ -33,10 +33,8 @@ export class AnnouncementService extends AbstractService {
       return;
     }
 
-    let headers = this.getAuthHeaders();
-
-    this.http.get<Array<Announcement>>(this.envService.endpoints.announcements, {headers: headers})
-      .map(list => list.map(a => Announcement.fromObject(a)))
+    this.http.get<Array<Announcement>>(this.envService.endpoints.announcements)
+      .map(list => list && list.map(a => Announcement.fromObject(a)))
       .subscribe((announcements: Array<Announcement>) => {
       AnnouncementService.LOG.trace('Successfully loaded announcements.');
       AnnouncementService.announcements = announcements;

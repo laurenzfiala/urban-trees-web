@@ -77,4 +77,19 @@ export abstract class AbstractStatusComponent {
     return false;
   }
 
+  /**
+   * Whether any of the given categories has the given key.
+   * @param {number} keys The status categories keys.
+   * @param {number} value The status value.
+   * @returns {boolean} true if any of the given statuses exist; false otherwise
+   */
+  public hasAnyStatusKey(keys: number[], value: number): boolean {
+    for (let k of keys) {
+      if (this.hasStatus(k, value)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
 }

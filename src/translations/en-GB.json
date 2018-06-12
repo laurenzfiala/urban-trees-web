@@ -13,7 +13,10 @@
 			"home": "Home page",
 			"madeby": "Made with &#x2764; by the",
       "madeby_team": "Urban-Trees-Team"
-		}
+		},
+    "logout": "Log out",
+    "project_account_1": "Project-",
+    "project_account_2": "Account"
 	},
   "home": {
     "placeholder": "We are currently working on the app and will add content to this page in the future."
@@ -53,6 +56,7 @@
 				"map_activator": "Click to use map"
 			},
 			"step2": {
+        "nothing_to_observe": "There is nothing to observe set up for this tree. Should you suspect a mistake, please contact a system administrator.",
 				"help": {
 					"title": "Check the following objects and tick the most fitting image for each"
 				}

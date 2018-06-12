@@ -32,11 +32,9 @@ export class TreeListService extends AbstractService {
   public loadStatistics(successCallback: (trees: TreeListStatistics) => void,
                    errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void) {
 
-    let headers = this.getAuthHeaders();
-
     TreeListService.LOG.debug('Loading statistics from ' + this.envService.endpoints.statistics + ' ...');
 
-    this.http.get<TreeListStatistics>(this.envService.endpoints.statistics, {headers: headers})
+    this.http.get<TreeListStatistics>(this.envService.endpoints.statistics)
       .timeout(this.envService.defaultTimeout)
       .subscribe((results: TreeListStatistics) => {
         successCallback(results);
@@ -55,11 +53,9 @@ export class TreeListService extends AbstractService {
   public loadTrees(successCallback: (trees: Array<Tree>) => void,
                    errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void) {
 
-    let headers = this.getAuthHeaders();
-
     TreeListService.LOG.debug('Loading available trees from ' + this.envService.endpoints.allTrees + ' ...');
 
-    this.http.get<Array<Tree>>(this.envService.endpoints.allTrees, {headers: headers})
+    this.http.get<Array<Tree>>(this.envService.endpoints.allTrees)
       .timeout(this.envService.defaultTimeout)
       .subscribe((results: Array<Tree>) => {
         successCallback(results);
@@ -78,11 +74,9 @@ export class TreeListService extends AbstractService {
   public loadCities(successCallback: (cities: Array<string>) => void,
                    errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void) {
 
-    let headers = this.getAuthHeaders();
-
     TreeListService.LOG.debug('Loading cities from ' + this.envService.endpoints.cities + ' ...');
 
-    this.http.get<Array<string>>(this.envService.endpoints.cities, {headers: headers})
+    this.http.get<Array<string>>(this.envService.endpoints.cities)
       .timeout(this.envService.defaultTimeout)
       .subscribe((results: Array<string>) => {
         successCallback(results);

@@ -1,5 +1,5 @@
 // color and dimension variables
-@primaryColor:                #000;
+@primaryColor:                #007bff;
 @primaryColorHighlight:       brighten(@primaryColor, 20%);
 @secondaryColor:              #008000;
 @secondaryColorHighlight:     lighten(@secondaryColor, 5%);
@@ -11,6 +11,8 @@
 @grey:                        #E9ECEF;
 @darkGrey:                    #818283;
 @darkerGrey:                  #555555;
+@darkestGrey:                 #434343;
+@black:                       #000000;
 
 @lightBgColor:                @lightGrey;
 @medLightBgColor:             @medLight;
@@ -30,11 +32,22 @@
 @info:                        #004085;
 @success:                     #28a745;
 
+@dangerBg:                    lighten(@danger, 40%);
+@warningBg:                   lighten(@warning, 40%);
+@infoBg:                      lighten(@info, 65%);
+@successBg:                   lighten(@success, 40%);
+
+@dangerColor:                 @danger;
+@warningColor:                darken(@warning, 20%);
+@infoColor:                   @info;
+@successColor:                darken(@success, 10%);
+
 @borderRadius:                1.25rem;
 @borderRadiusNew:             1.25rem;
 @borderRadiusOuterNew:        1.5rem;
 
 @btnPadding:                  1rem 2rem;
+@btnIconPadding:              2rem;
 @gutter:                      0.5rem;
 @gutter2x:                    1rem;
 

@@ -162,21 +162,7 @@
 
 </div>
 
-<div *ngIf="hasStatus(StatusKey.TREES, StatusValue.FAILED)" class="status-overlay">
-  <div class="status-content">
-    <div class="status-heading heading-danger">
-      {{'general.error' | translate}}
-    </div>
-    <div class="status-text">
-      {{'tree_list.error_loading_trees.text' | translate}}<!-- TODO -->
-    </div>
-    <div class="status-controls">
-      <button class="btn btn-light float-right" (click)="loadTreeList()" (keydown)="loadTreeList()">{{'general.retry' | translate}}</button>
-    </div>
-  </div>
-</div>
-
-<div *ngIf="hasStatus(StatusKey.STATISTICS, StatusValue.FAILED)" class="status-overlay">
+<div *ngIf="hasAnyStatusKey([StatusKey.STATISTICS, StatusKey.TREES], StatusValue.FAILED)" class="status-overlay">
   <div class="status-content">
     <div class="status-heading heading-danger">
       {{'general.error' | translate}}

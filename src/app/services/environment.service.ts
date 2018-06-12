@@ -146,4 +146,8 @@ class EnvironmentEndpoints {
     return this.prependCommonPath(this.context.statistics);
   }
 
+  get login() {
+    return this.prependCommonPath(this.context.login);
+  }
+
 }

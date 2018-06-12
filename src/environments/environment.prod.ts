@@ -23,7 +23,10 @@ export const environment = {
 
     // UI
     phenologyObservationResultImg:    '/ui/phenology/observation/result/{treeSpeciesId}/{resultId}/img',
-    announcements:                    '/ui/announcements'
+    announcements:                    '/ui/announcements',
+
+    // Authentication
+    login:                            '/login'
   },
 
   defaultTimeout:                     30000,

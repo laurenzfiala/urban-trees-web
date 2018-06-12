@@ -85,11 +85,9 @@ export class PhenologyObservationService extends AbstractService {
   public loadTrees(successCallback: (trees: Array<Tree>) => void,
                    errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void): void {
 
-    let headers = this.getAuthHeaders();
-
     PhenologyObservationService.LOG.debug('Loading available trees from ' + this.envService.endpoints.allTrees + ' ...');
 
-    this.http.get<Array<Tree>>(this.envService.endpoints.allTrees, {headers: headers})
+    this.http.get<Array<Tree>>(this.envService.endpoints.allTrees)
       .timeout(this.envService.defaultTimeout)
       .subscribe((results: Array<Tree>) => {
         successCallback(results);
@@ -117,9 +115,7 @@ export class PhenologyObservationService extends AbstractService {
     let selectedSpeciesId = this.selectedTree.speciesId;
     this.observationSpec = new Array<PhenologyObservationTypeFrontend>();
 
-    let headers = this.getAuthHeaders();
-
-    this.http.get<Array<PhenologyObservationTypeFrontend>>(this.envService.endpoints.getPhenologySpec(selectedSpeciesId), {headers: headers})
+    this.http.get<Array<PhenologyObservationTypeFrontend>>(this.envService.endpoints.getPhenologySpec(selectedSpeciesId))
       .timeout(this.envService.defaultTimeout)
       .map(value => value.map(element => PhenologyObservationTypeFrontend.fromObject(element)))
       .subscribe((types: Array<PhenologyObservationTypeFrontend>) => {
@@ -146,10 +142,8 @@ export class PhenologyObservationService extends AbstractService {
 
     let selectedTreeSpeciesId = this.selectedTree.speciesId;
 
-    let headers = this.getAuthHeaders();
-
     let t = this.envService.endpoints.getPhenologyObservationResultImg(selectedTreeSpeciesId, resultId);
-    this.http.get<Image>(t, {headers: headers})
+    this.http.get<Image>(t)
       .timeout(this.envService.defaultTimeout)
       .subscribe((image: Image) => {
       image.encodedImage = 'data:image/jpeg;base64,' + image.encodedImage;
@@ -175,10 +169,8 @@ export class PhenologyObservationService extends AbstractService {
 
     this.dataset.treeId = this.selectedTree.id;
 
-    let headers = this.getAuthHeaders();
-
     let path = this.envService.endpoints.getPhenologyDatasetSubmission(this.dataset.treeId);
-    this.http.post(path, this.dataset.apply(), {headers: headers})
+    this.http.post(path, this.dataset.apply())
       .timeout(this.envService.defaultTimeout)
       .map(value => PhenologyDataset.fromObject(value))
       .subscribe((result: PhenologyDataset) => {
@@ -214,7 +206,6 @@ export class PhenologyObservationService extends AbstractService {
     let uploadProgress = 0;
 
     this.http.post(this.envService.endpoints.getPhenologyDatasetImageSubmission(phenologyId), formdata, {
-      headers: this.getAuthHeaders(),
       reportProgress: true,
       responseType: 'text'
     }).subscribe((event: any) => {

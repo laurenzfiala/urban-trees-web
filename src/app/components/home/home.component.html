@@ -1,9 +1,24 @@
 <ut-header></ut-header>
 
-<div class="container-fluid my-5 text-center">
-  <p class="text-subtle">
-    {{'home.placeholder' | translate}}
-  </p>
+<div class="container-fluid my-2 my-lg-5 text-center">
+
+  <div class="text-subtle mt-4">
+    Choose what to do
+  </div>
+  <hr class="mt-1"/>
+
+  <div class="my-3">
+    <div class="btn-full" tabindex="-1" routerLink="/trees">
+      Check out all trees and their stats
+      <i class="btn-icon fa fa-chevron-right" aria-hidden="true"></i>
+    </div>
+
+    <div class="btn-full" tabindex="-1" routerLink="/project">
+      Log in to your project-account
+      <i class="btn-icon fa fa-chevron-right" aria-hidden="true"></i>
+    </div>
+  </div>
+
 </div>
 
 <ut-footer></ut-footer>

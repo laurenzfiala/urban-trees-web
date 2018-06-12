@@ -13,7 +13,10 @@
 			"home": "Startseite",
       "madeby": "Mit &#x2764; entwickelt vom ",
       "madeby_team": "Stadtbäume-Team"
-		}
+		},
+		"logout": "Abmelden",
+    "project_account_1": "Projekt-",
+    "project_account_2": "Account"
 	},
   "home": {
     "placeholder": "Wird arbeiten derzeit an der App und werden hier in Zukunft Inhalte bereitstellen."
@@ -53,6 +56,7 @@
 				"map_activator": "Klicken, um die Karte zu nutzen"
 			},
 			"step2": {
+        "nothing_to_observe": "An diesem Baum gibt es zur Zeit nichts zu beobachten. Falls Du einen Fehler vermutest, wende dich bitte an einen Systemadministrator,",
 				"help": {
 					"title": "Sieh dir die folgenden Objekte an und markiere das am besten passende Bild"
 				}
