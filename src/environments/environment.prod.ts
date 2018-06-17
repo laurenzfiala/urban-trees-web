@@ -5,25 +5,27 @@ import {LogLevel} from '../app/entities/log-level.entity';
  */
 export const environment = {
 
-  production:                         false,
+  production:                         true,
 
   host:                               'https://urban-tree-climate.sbg.ac.at:8443',
   mapHost:                            'http://141.201.106.39:80',
 
   endpoints: {
-    // Phenology
+    // Tree
+    tree:                             '/tree/{treeId}',
     allTrees:                         '/tree',
-    findTrees:                        '/tree/find?search={searchString}',
+    statistics:                       '/ui/statistics',
+    cities:                           '/tree/cities',
+    beaconData:                       '/beacon/{beaconId}/data',
+
+    // Phenology
     phenologySpec:                    '/tree/{treeId}/phenology/spec',
     phenologyDatasetSubmission:       '/tree/{treeId}/phenology',
     phenologyDatasetImageSubmission:  '/usercontent/phenology/observation/{phenologyId}/image',
 
-    // Tree List
-    cities:                           '/tree/cities',
-
     // UI
-    phenologyObservationResultImg:    '/ui/phenology/observation/result/{treeSpeciesId}/{resultId}/img',
-    announcements:                    '/ui/announcements',
+    phenologyObservationResultImg:  '/ui/phenology/observation/result/{treeSpeciesId}/{resultId}/img',
+    announcements:                  '/ui/announcements',
 
     // Authentication
     login:                            '/login'

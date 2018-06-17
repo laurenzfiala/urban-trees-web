@@ -1,7 +1,110 @@
 <ut-header></ut-header>
 
-<p>
-  tree works!
-</p>
+<div *ngIf="tree" class="container mb-5">
+
+  <div class="text-center">
+
+    <h4 class="mt-4">
+      {{'tree.species.' + tree.species | lowercase | translate}}
+    </h4>
+    <div class="text-subtle mb-2">
+      {{'tree.species.latin.' + tree.species | lowercase | translate}}
+      ({{tree.genus}})
+    </div>
+    <hr class="mt-1"/>
+
+  </div>
+
+  <div class="row mb-2">
+
+    <div class="col-sm-6 col-md-3 image-placeholder">
+
+      Tree image goes here
+
+    </div>
+
+    <div class="col-sm-6 col-md-9">
+
+      <p>
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque eget velit ut augue ultrices accumsan sed sit amet eros. Praesent suscipit mattis velit ac ultricies. Fusce interdum consequat ligula non congue. Nulla maximus sapien scelerisque quam laoreet tincidunt. Suspendisse et odio gravida, malesuada purus eu, porttitor nunc. Aliquam vulputate magna eget semper aliquam. Sed porttitor placerat blandit. Nam lobortis nibh a sapien hendrerit interdum. Mauris in erat convallis, dapibus neque et, sagittis massa. Phasellus quis tincidunt nunc, eget sagittis ex. Praesent sit amet odio felis. Proin nec porta eros, id interdum nunc. Maecenas non lobortis erat.
+      </p>
+
+      <p>
+        Phasellus aliquam semper aliquam. Suspendisse in turpis vitae purus placerat placerat vitae sit amet enim. Pellentesque fringilla gravida justo, vel lacinia urna imperdiet eget.
+      </p>
+
+    </div>
+
+  </div>
+
+  <div class="row mb-2">
+
+    <div class="col-12">
+
+      <h5 class="text-center mb-2">
+        {{tree.beacons?.length}} Beacons
+      </h5>
+      <hr class="mt-1"/>
+
+    </div>
+
+    <div *ngFor="let beacon of tree.beacons" class="col-12">
+
+      <div class="position-relative my-2">
+
+        <div class="beacon-status" [ngClass]="{'bg-success': beacon.status === 'OK', 'bg-danger': beacon.status !== 'OK'}">
+          {{beacon.status}}
+        </div>
+
+        <div class="beacon-id">
+          {{beacon.deviceId}}
+        </div>
+
+        <div *ngIf="!(beacon.chartData && beacon.datasets?.length > 0)" class="beacon-description text-subtle">
+          No data for beacon.
+        </div>
+
+      </div>
+
+      <div *ngIf="beacon.chartData && beacon.datasets?.length > 0" class="line-chart-full">
+        <ngx-charts-line-chart
+          [scheme]="colorScheme"
+          [results]="beacon.chartData"
+          [gradient]="gradient"
+          [xAxis]="showXAxis"
+          [yAxis]="showYAxis"
+          [legend]="showLegend"
+          [showXAxisLabel]="showXAxisLabel"
+          [showYAxisLabel]="showYAxisLabel"
+          [xAxisLabel]="xAxisLabel"
+          [yAxisLabel]="yAxisLabel"
+          [autoScale]="autoScale"
+          (select)="onSelect($event)">
+        </ngx-charts-line-chart>
+      </div>
+
+      <hr class="m-0"/>
+
+    </div>
+
+  </div>
+
+</div>
+
+<div *ngIf="hasAnyStatusKey([StatusKey.TREE_VALIDATION, StatusKey.TREE_LOADING], StatusValue.IN_PROGRESS)" class="load load-center load-md status-overlay overlay-fixed"></div>
+<div *ngIf="hasStatus(StatusKey.TREE_VALIDATION, StatusValue.FAILED)"
+     class="status-overlay overlay-fixed">
+  <div class="status-content">
+    <div class="status-heading heading-danger">
+      {{'tree_view.error.title' | translate}}
+    </div>
+    <div class="status-text">
+      {{'tree_view.error.text' | translate}}
+    </div>
+    <div class="status-controls">
+      <button class="btn btn-light float-right" routerLink="/trees">{{'navigation.back' | translate}}</button>
+    </div>
+  </div>
+</div>
 
 <ut-footer></ut-footer>

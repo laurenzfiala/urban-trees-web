@@ -16,7 +16,8 @@
 		},
 		"logout": "Abmelden",
     "project_account_1": "Projekt-",
-    "project_account_2": "Account"
+    "project_account_2": "Account",
+    "back": "Zurück"
 	},
   "home": {
     "placeholder": "Wird arbeiten derzeit an der App und werden hier in Zukunft Inhalte bereitstellen."
@@ -109,7 +110,7 @@
 				"submit_failed_file": "Senden des Fotos fehlgeschlagen!",
 				"status": {
 					"duplicate": "Es existiert bereits eine Beobachtung zum angegebenen Zeitpunkt.",
-					"generic": "Bitte versuche es nochmals in ein paar Sekunden. Beim neu laden der Seite gehen die Daten verloren."
+					"generic": "Bitte versuche es nochmals in ein paar Sekunden. Durch neu laden der Seite gehen die Daten verloren."
 				},
 				"submitting_file": "Foto wird abgeschickt...",
 				"success": {
@@ -121,9 +122,42 @@
 		}
 	},
   "tree_list": {
+    "cities": "Städte",
+    "species": "Spezies",
+    "trees": "Bäume",
+    "observations": "Beobachtungen",
+    "beacons": "Beacons",
+    "datasets": "Datensätze",
+    "temperature": "Temperatur",
+    "humidity": "Luftfeutigkeit",
+    "high": "Höchste",
+    "average": "Durchschnitt",
+    "low": "Geringste",
     "tree": {
       "location": "at {{street}}"
     }
+  },
+  "tree_view": {
+    "error": {
+      "title": "Fehler",
+      "text": "Wir konnten den Baum nicht laden, bitte gehe zurück und versuche es erneut."
+    }
+  },
+  "login": {
+    "heading": "Dein Projekt-Account",
+    "username_placeholder": "Nutzername",
+    "password_placeholder": "Passwort",
+    "log_in": "Anmelden",
+    "logging_in": "Melde an...",
+    "status_connection_insecure": "Anmelden über eine unsichere Verbindung ist nicht erlaubt",
+    "status_bad_credentials": "Nutzername und Passwort wurden nicht erkannt",
+    "status_failed": "Anmeldung fehlgeschlagen, bitte versuche es erneut",
+    "status_expired": "Anmeldedaten abgelaufen, bitte melde dich erneut an",
+    "status_force_logout": "Du wurdest abgemeldet",
+    "status_user_logout": "Erfolgreich abgemeldet",
+    "status_not_authenticated": "Bitte anmelden, um diese Seite anzuzeigen",
+    "description": "Dein persönlicher Projekt-Account ermöglicht es Dir, Deine Phänologiebeobachtungen einzutragen, projektbezogene Neuigkeiten anzuzeigen und vieles mehr.",
+    "disclaimer": "Wir speichern keine persönlichen Daten, außer jene deutlich zum Abschicken markiert und für wissenschaftliche Zwecke.<br/>Es werden keine automatisierten E-Mails verschickt.<br/>Durch das Anmelden erlaubst Du, Deine Anmeldedaten lokal zu speichern."
   },
 	"en-GB": "English",
 	"de-DE": "Deutsch",

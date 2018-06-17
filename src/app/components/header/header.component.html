@@ -3,7 +3,7 @@
   <div class="announcement-description">{{a.description}}</div>
 </div>
 
-<nav class="navbar navbar-expand navbar-light bg-light">
+<nav class="navbar navbar-expand navbar-light round bg-light">
   <a class="navbar-brand" href="#">
     <img src="../assets/img/urbantrees_icon.png" width="30" height="30" class="d-inline-block align-top nav-brand-icon" alt="Urban Trees logo">
     <span class="d-none d-md-inline pl-2">{{'app.title' | translate}} <small>{{'app.subtitle' | translate}}</small></span>
@@ -22,7 +22,7 @@
       </li>
     </ul>
     <ul class="navbar-nav">
-      <li class="nav-item tetet" routerLinkActive="active">
+      <li class="nav-item pill" routerLinkActive="active">
         <a class="nav-link" routerLink="/project">
           <span class="d-none d-md-inline">{{'navigation.project_account_1' | translate}}</span>{{'navigation.project_account_2' | translate}}
         </a>
@@ -42,8 +42,8 @@
             <div class="dropdown-divider"></div>
             <a class="dropdown-item sign-out"
                (click)="logout()">
-              {{'navigation.logout' | translate}}
               <i class="fa fa-sign-out float-right" aria-hidden="true"></i>
+              {{'navigation.logout' | translate}}
             </a>
           </div>
         </div>

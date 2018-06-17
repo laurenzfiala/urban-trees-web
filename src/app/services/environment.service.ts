@@ -54,23 +54,23 @@ class EnvironmentEndpoints {
     return environment.mapHost;
   }
 
-  get allTrees() {
-    return this.prependCommonPath(this.context.allTrees);
-  }
-
-  public getFindTrees(searchString: string): string {
+  public tree(treeId: number): string {
 
     let replacements: any[] = [
-      { placeholder: 'searchString', replacement: searchString }
+      { placeholder: 'treeId', replacement: treeId }
     ];
 
     return this.prependCommonPath(
       this.replaceParams(
-        this.context.findTrees,
+        this.context.tree,
         replacements
       )
     );
 
+  }
+
+  get allTrees() {
+    return this.prependCommonPath(this.context.allTrees);
   }
 
   public getPhenologySpec(treeId: number): string {
@@ -148,6 +148,21 @@ class EnvironmentEndpoints {
 
   get login() {
     return this.prependCommonPath(this.context.login);
+  }
+
+  public beaconData(beaconId: number): string {
+
+    let replacements: any[] = [
+      { placeholder: 'beaconId', replacement: beaconId }
+    ];
+
+    return this.prependCommonPath(
+      this.replaceParams(
+        this.context.beaconData,
+        replacements
+      )
+    );
+
   }
 
 }

@@ -16,7 +16,8 @@
 		},
     "logout": "Log out",
     "project_account_1": "Project-",
-    "project_account_2": "Account"
+    "project_account_2": "Account",
+    "back": "Back"
 	},
   "home": {
     "placeholder": "We are currently working on the app and will add content to this page in the future."
@@ -121,9 +122,42 @@
 		}
 	},
   "tree_list": {
+    "cities": "Cities",
+    "species": "Species",
+    "trees": "Trees",
+    "observations": "Observations",
+    "beacons": "Beacons",
+    "datasets": "Datasets",
+    "temperature": "Temperature",
+    "humidity": "Humidity",
+    "high": "high",
+    "average": "avg",
+    "low": "low",
     "tree": {
       "location": "at {{street}}"
     }
+  },
+  "tree_view": {
+    "error": {
+      "title": "Error",
+      "text": "We could not load the given tree, please go back and try again."
+    }
+  },
+  "login": {
+    "heading": "Your Project-Account",
+    "username_placeholder": "Username",
+    "password_placeholder": "Password",
+    "log_in": "Log in",
+    "logging_in": "Logging you in...",
+    "status_connection_insecure": "You may not log in using an insecure connection",
+    "status_bad_credentials": "The username and password were not recognized",
+    "status_failed": "Login failed, please retry",
+    "status_expired": "Your login expired, please log in again",
+    "status_force_logout": "You have been logged out",
+    "status_user_logout": "Logged out successfully",
+    "status_not_authenticated": "Please log in to view this page",
+    "description": "Your personal project account enables you to enter phenology observations, access project-related news and much more.",
+    "disclaimer": "We don't store any personal data except those needed for scientific research clearly marked to be sent off for submission.<br/>No automated E-Mails are sent out at any time to any user.<br/>By logging in you agree to store your personal login information inside your browser."
   },
 	"en-GB": "English",
 	"de-DE": "Deutsch",

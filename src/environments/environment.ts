@@ -11,16 +11,17 @@ export const environment = {
   mapHost:                          'http://192.168.1.104:8081',
 
   endpoints: {
-    // Phenology
+    // Tree
+    tree:                             '/tree/{treeId}',
     allTrees:                         '/tree',
-    findTrees:                        '/tree/find?search={searchString}',
+    statistics:                       '/ui/statistics',
+    cities:                           '/tree/cities',
+    beaconData:                       '/beacon/{beaconId}/data',
+
+    // Phenology
     phenologySpec:                    '/tree/{treeId}/phenology/spec',
     phenologyDatasetSubmission:       '/tree/{treeId}/phenology',
     phenologyDatasetImageSubmission:  '/usercontent/phenology/observation/{phenologyId}/image',
-
-    // Tree List
-    statistics:                       '/ui/statistics',
-    cities:                           '/tree/cities',
 
     // UI
     phenologyObservationResultImg:  '/ui/phenology/observation/result/{treeSpeciesId}/{resultId}/img',

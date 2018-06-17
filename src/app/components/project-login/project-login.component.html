@@ -4,23 +4,25 @@
 
   <div class="col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto login-container">
 
-    <h4 class="mb-3">Your Project-Account</h4>
+    <h4 class="mb-3">
+      {{'login.heading' | translate}}
+    </h4>
 
     <form (submit)="login()">
       <fieldset [attr.disabled]="!isSslConnection() ? true : null">
         <div class="form-group">
-          <input type="text" class="form-control" name="username" placeholder="Username" [(ngModel)]="this.username" required>
+          <input type="text" class="form-control" name="username" [placeholder]="'login.username_placeholder' | translate" [(ngModel)]="this.username" required>
         </div>
         <div class="form-group">
-          <input type="password" class="form-control" name="password" placeholder="Password" [(ngModel)]="this.password" required>
+          <input type="password" class="form-control" name="password" [placeholder]="'login.password_placeholder' | translate" [(ngModel)]="this.password" required>
         </div>
         <button type="submit" class="btn btn-block btn-primary">
           <span *ngIf="!hasStatus(StatusKey.LOGIN, StatusValue.IN_PROGRESS)">
-            Log in
+            {{'login.log_in' | translate}}
           </span>
           <span *ngIf="hasStatus(StatusKey.LOGIN, StatusValue.IN_PROGRESS)">
-            Logging you in...
             <i class="fa fa-spin load-xs fa-refresh float-left"></i>
+            {{'login.logging_in' | translate}}
           </span>
         </button>
       </fieldset>
@@ -30,7 +32,7 @@
 
   <div *ngIf="!isSslConnection()" class="col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto login-annotation-container login-annotation-danger">
 
-    You may not log in using an insecure connection.
+    {{'login.status_connection_insecure' | translate}}
 
   </div>
 
@@ -38,7 +40,7 @@
     *ngIf="hasStatus(StatusKey.LOGIN, StatusValue.BAD_CREDENTIALS)"
     class="col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto login-annotation-container login-annotation-danger">
 
-    The username and password were not recognized
+    {{'login.status_bad_credentials' | translate}}
 
   </div>
 
@@ -46,7 +48,7 @@
     *ngIf="hasStatus(StatusKey.LOGIN, StatusValue.FAILED)"
     class="col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto login-annotation-container login-annotation-danger">
 
-    Login failed. Please retry.
+    {{'login.status_failed' | translate}}
 
   </div>
 
@@ -54,7 +56,7 @@
     *ngIf="accessReason === LoginAccessReason.FORCE_LOGOUT_EXPIRED"
     class="col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto login-annotation-container login-annotation-warning">
 
-    Your login expired, please log in again
+    {{'login.status_expired' | translate}}
 
   </div>
 
@@ -62,7 +64,7 @@
     *ngIf="accessReason === LoginAccessReason.FORCE_LOGOUT"
     class="col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto login-annotation-container login-annotation-info">
 
-    You have been logged out
+    {{'login.status_force_logout' | translate}}
 
   </div>
 
@@ -70,7 +72,7 @@
     *ngIf="accessReason === LoginAccessReason.USER_LOGOUT"
     class="col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto login-annotation-container login-annotation-success">
 
-    Logged out successfully
+    {{'login.status_user_logout' | translate}}
 
   </div>
 
@@ -78,27 +80,22 @@
     *ngIf="accessReason === LoginAccessReason.NOT_AUTHENTICATED"
     class="col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto login-annotation-container login-annotation-info">
 
-    Please log in to view this page
+    {{'login.status_not_authenticated' | translate}}
 
   </div>
 
   <div class="col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto login-annotation-container">
 
     <p>
-      Your personal project account enables you to enter phenology observations, access project-related news and much
-      more.
+      {{'login.description' | translate}}
     </p>
 
     <div *ngIf="showDataDisclaimer">
 
       <hr/>
 
-      We don't store any personal data except those needed for
-      scientific research clearly marked to be sent off for submission.
-      <br/>
-      No automated E-Mails are sent out at any time to any user.
-      <br/>
-      By logging in you agree to store your personal login information inside your browser.
+      <div [innerHtml]="'login.disclaimer' | translate"></div>
+
     </div>
 
     <a *ngIf="!showDataDisclaimer"

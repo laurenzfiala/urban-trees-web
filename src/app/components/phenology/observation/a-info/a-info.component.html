@@ -40,9 +40,7 @@
     </div>
   </form>
 
-  <div *ngIf="hasStatus(StatusKey.TREES, StatusValue.IN_PROGRESS)" style="text-align: center; margin: 10%">
-    <img class="load-md" src="/assets/tail-spin.svg" />
-  </div>
+  <div *ngIf="hasStatus(StatusKey.TREES, StatusValue.IN_PROGRESS)" class="load load-md p-5"></div>
 
   <div [ngClass]="{'hide-map': !hasStatus(StatusKey.TREES, StatusValue.SUCCESSFUL)}" class="form-group map-container mb-0">
 
@@ -57,9 +55,7 @@
     </ul>
 
     <div id="map" class="has-status-overlay" (click)="onMapClick($event)">
-      <div *ngIf="hasStatus(StatusKey.MAP, StatusValue.IN_PROGRESS)" class="status-overlay center">
-        <img class="load-md" src="/assets/tail-spin.svg" />
-      </div>
+      <div *ngIf="hasStatus(StatusKey.MAP, StatusValue.IN_PROGRESS)" class="status-overlay load load-md"></div>
       <div *ngIf="hasStatus(StatusKey.MAP, StatusValue.FAILED)" class="status-overlay">
         <div class="status-content">
           <div class="status-heading heading-danger">
@@ -152,9 +148,7 @@
 
   </div>
 
-  <div *ngIf="hasStatus(StatusKey.TREES, StatusValue.IN_PROGRESS)" class="status-overlay center">
-    <img class="load-md" src="/assets/tail-spin.svg" />
-  </div>
+  <div *ngIf="hasStatus(StatusKey.TREES, StatusValue.IN_PROGRESS)" class="status-overlay load load-md"></div>
   <div *ngIf="hasStatus(StatusKey.TREES, StatusValue.FAILED)" class="status-overlay">
     <div class="status-content">
       <div class="status-heading heading-danger">

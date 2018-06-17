@@ -1,5 +1,4 @@
 import {PhenologyDataset} from './phenology-dataset.entity';
-import {Moment} from 'moment';
 import * as moment from 'moment';
 
 /**

@@ -1,7 +1,6 @@
 import {NgModule} from '@angular/core';
 import {Routes, RouterModule} from '@angular/router';
 import {HomeComponent} from './components/home/home.component';
-import {PhenologyComponent} from './components/phenology/phenology.component';
 import {AInfoComponent} from './components/phenology/observation/a-info/a-info.component';
 import {BObservationComponent} from './components/phenology/observation/b-observation/b-observation.component';
 import {CUploadComponent} from './components/phenology/observation/c-upload/c-upload.component';
@@ -41,7 +40,7 @@ const routes: Routes = [
     component: TreeListComponent,
   },
   {
-    path: 'tree',
+    path: 'tree/:treeId',
     component: TreeComponent,
   },
   {
@@ -58,37 +57,31 @@ const routes: Routes = [
     redirectTo: 'project/phenology'
   },
   {
-    path: 'project/phenology',
-    component: PhenologyComponent,
+    path: 'project/phenology/observation/step',
+    component: ObservationComponent,
+    canActivate: [ProjectLoginGuard],
+    canActivateChild: [ProjectLoginGuard, PhenologyObservationStepGuard],
     children: [
       {
-        path: 'observation/step',
-        component: ObservationComponent,
-        canActivate: [ProjectLoginGuard],
-        canActivateChild: [PhenologyObservationStepGuard],
-        children: [
-          {
-            path: '',
-            redirectTo: '1',
-            pathMatch: 'full'
-          },
-          {
-            path: '1',
-            component: AInfoComponent
-          },
-          {
-            path: '2',
-            component: BObservationComponent
-          },
-          {
-            path: '3',
-            component: CUploadComponent
-          },
-          {
-            path: '4',
-            component: DFinishComponent
-          }
-        ]
+        path: '',
+        redirectTo: '1',
+        pathMatch: 'full'
+      },
+      {
+        path: '1',
+        component: AInfoComponent
+      },
+      {
+        path: '2',
+        component: BObservationComponent
+      },
+      {
+        path: '3',
+        component: CUploadComponent
+      },
+      {
+        path: '4',
+        component: DFinishComponent
       }
     ]
   },

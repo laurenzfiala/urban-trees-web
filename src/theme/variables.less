@@ -1,6 +1,6 @@
 // color and dimension variables
 @primaryColor:                #007bff;
-@primaryColorHighlight:       brighten(@primaryColor, 20%);
+@primaryColorHighlight:       lighten(@primaryColor, 10%);
 @secondaryColor:              #008000;
 @secondaryColorHighlight:     lighten(@secondaryColor, 5%);
 @textColorHighlight:          #474747;
@@ -56,6 +56,16 @@
 @fontSizeMedium:              1.25rem;
 @fontSizeLarge:               1.35rem;
 @fontSizeExtraLarge:          2rem;
+
+@statusOverlayZIndex:         30;
+@navZIndex:                   40;
+@dropdownZIndex:              50;
+
+@dropdownBorder:              0;
+
+@statusPadding:               0.5rem 1.25rem;
+@statusBg:                    darken(@primaryColor, 10%);
+@statusColor:                 @white;
 
 @xs:                          ~"only screen and (max-width: 575px)";
 @sm:                          ~"only screen and (max-width: 767px)";

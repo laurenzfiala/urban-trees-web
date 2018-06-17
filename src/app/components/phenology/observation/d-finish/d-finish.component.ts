@@ -64,7 +64,7 @@ export class DFinishComponent extends AbstractComponent implements OnInit {
       this.observationService.markToBeReset();
     }, (error, apiError) => {
       this.setStatus(StatusKey.SUBMISSION_DATA, StatusValue.FAILED);
-      if (apiError) {
+      if (apiError && apiError.clientErrorCode) {
         this.setStatus(StatusKey.SUBMISSION_DATA_DETAIL, apiError.clientErrorCode);
       }
     });

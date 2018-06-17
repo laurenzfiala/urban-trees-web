@@ -2,9 +2,9 @@ import {ChangeDetectorRef, Component, ElementRef, HostListener, Inject, OnInit, 
 import {AbstractComponent} from '../abstract.component';
 import {Tree} from '../../entities/tree.entity';
 import {TreeFrontend} from '../../entities/tree-frontend.entity';
-import {TreeListService} from '../../services/tree-list.service';
 import {TreeListStatistics} from '../../entities/tree-list-statistics.entity';
 import {Log} from '../../services/log.service';
+import {TreeService} from '../../services/tree.service';
 
 @Component({
   selector: 'ut-tree-list',
@@ -14,12 +14,6 @@ import {Log} from '../../services/log.service';
 export class TreeListComponent extends AbstractComponent implements OnInit {
 
   private static LOG: Log = Log.newInstance(TreeListComponent);
-
-  /**
-   * TODO
-   * @type {any[]}
-   */
-  private parallaxElements: any[] = [];
 
   /**
    * Statistics regarding the trees overall.
@@ -39,11 +33,20 @@ export class TreeListComponent extends AbstractComponent implements OnInit {
   public StatusKey = StatusKey;
   public StatusValue = StatusValue;
 
-  constructor(private treeListService: TreeListService) {
+  constructor(private treeService: TreeService) {
     super();
   }
 
   public ngOnInit() {
+
+    this.load();
+
+  }
+
+  /**
+   * Load all resource neccessary for this page.
+   */
+  public load(): void {
 
     this.loadStatistics();
     this.loadTreeList();
@@ -70,7 +73,7 @@ export class TreeListComponent extends AbstractComponent implements OnInit {
       return;
     }
 
-    this.treeListService.loadStatistics((stats: TreeListStatistics) => {
+    this.treeService.loadStatistics((stats: TreeListStatistics) => {
       this.statistics = stats;
       this.setStatus(StatusKey.STATISTICS, StatusValue.SUCCESSFUL);
       if (successCallback) {
@@ -94,7 +97,7 @@ export class TreeListComponent extends AbstractComponent implements OnInit {
       return;
     }
 
-    this.treeListService.loadTrees((trees: Array<Tree>) => {
+    this.treeService.loadTrees((trees: Array<Tree>) => {
       this.trees = <Array<TreeFrontend>>trees;
       this.setStatus(StatusKey.TREES, StatusValue.SUCCESSFUL);
       if (successCallback) {
@@ -118,7 +121,7 @@ export class TreeListComponent extends AbstractComponent implements OnInit {
       return;
     }
 
-    this.treeListService.loadCities((cities: Array<string>) => {
+    this.treeService.loadCities((cities: Array<string>) => {
       this.cities = <Array<string>>cities;
       this.setStatus(StatusKey.CITIES, StatusValue.SUCCESSFUL);
       if (successCallback) {

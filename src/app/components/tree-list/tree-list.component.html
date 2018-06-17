@@ -2,12 +2,10 @@
 
 <div class="highlight-wrapper py-3 mb-5">
 
-  <div class="highlight-background highlight-background-top"></div>
+  <div class="highlight-background highlight-background-top round"></div>
 
   <div *ngIf="hasStatus(StatusKey.STATISTICS, StatusValue.IN_PROGRESS)"
-       class="highlight-content container text-center">
-    <img class="load-md" src="/assets/tail-spin.svg" />
-  </div>
+       class="highlight-content container load load-md"></div>
 
   <div *ngIf="statistics"
        class="highlight-content container">
@@ -18,7 +16,7 @@
           {{statistics.cityAmount}}
         </div>
         <div class="hl-annotation">
-          Cities
+          {{'tree_list.cities' | translate }}
         </div>
       </div>
       <div class="hl-item hl-item-even">
@@ -26,7 +24,7 @@
           {{statistics.treeSpeciesAmount}}
         </div>
         <div class="hl-annotation">
-          Species
+          {{'tree_list.species' | translate }}
         </div>
       </div>
       <div class="hl-item hl-item-even">
@@ -34,7 +32,7 @@
           {{statistics.treeAmount}}
         </div>
         <div class="hl-annotation">
-          Trees
+          {{'tree_list.trees' | translate }}
         </div>
       </div>
     </div>
@@ -45,7 +43,7 @@
           {{statistics.phenologyObservationAmount}}
         </div>
         <div class="hl-annotation">
-          Observations
+          {{'tree_list.observations' | translate }}
         </div>
       </div>
       <div class="hl-item hl-item-even">
@@ -53,7 +51,7 @@
           {{statistics.beaconAmount}}
         </div>
         <div class="hl-annotation">
-          Beacons
+          {{'tree_list.beacons' | translate }}
         </div>
       </div>
       <div class="hl-item hl-item-even">
@@ -61,7 +59,7 @@
           {{statistics.beaconDatasetAmount}}
         </div>
         <div class="hl-annotation">
-          Datasets
+          {{'tree_list.datasets' | translate }}
         </div>
       </div>
     </div>
@@ -70,39 +68,39 @@
       <div class="hl-item hl-item-even hl-flex-basis-content">
         <div class="hl-title cool-warm">
           <div class="hl-flex-row hl-warm">
-            <div class="hl-opacity-85">{{statistics.beaconTempMaximum}} °C</div>
-            <div class="hl-subtitle hl-flex-col hl-opacity-75">high</div>
+            <div class="hl-opacity-85">{{statistics.beaconTempMaximum | decimalPlaces:4}} °C</div>
+            <div class="hl-subtitle hl-flex-col hl-opacity-75">{{'tree_list.high' | translate }}</div>
           </div>
           <div class="hl-flex-row hl-med">
-            <div class="hl-opacity-85">{{statistics.beaconTempAverage}} °C</div>
-            <div class="hl-subtitle hl-flex-col hl-opacity-75">avg</div>
+            <div class="hl-opacity-85">{{statistics.beaconTempAverage | decimalPlaces:4}} °C</div>
+            <div class="hl-subtitle hl-flex-col hl-opacity-75">{{'tree_list.average' | translate }}</div>
           </div>
           <div class="hl-flex-row hl-cool">
-            <div class="hl-opacity-85">{{statistics.beaconTempMinimum}} °C</div>
-            <div class="hl-subtitle hl-flex-col hl-opacity-75">low</div>
+            <div class="hl-opacity-85">{{statistics.beaconTempMinimum | decimalPlaces:4}} °C</div>
+            <div class="hl-subtitle hl-flex-col hl-opacity-75">{{'tree_list.low' | translate }}</div>
           </div>
         </div>
         <div class="hl-annotation text-center">
-          Temperature
+          {{'tree_list.temperature' | translate }}
         </div>
       </div>
       <div class="hl-item hl-item-even hl-flex-basis-content">
         <div class="hl-title">
           <div class="hl-flex-row hl-warm">
-            <div class="hl-opacity-85">{{statistics.beaconHumidityMaximum}} %</div>
-            <div class="hl-subtitle hl-flex-col hl-opacity-75">high</div>
+            <div class="hl-opacity-85">{{statistics.beaconHumidityMaximum | decimalPlaces:4}} %</div>
+            <div class="hl-subtitle hl-flex-col hl-opacity-75">{{'tree_list.high' | translate }}</div>
           </div>
           <div class="hl-flex-row hl-med">
-            <div class="hl-opacity-75">{{statistics.beaconHumidityAverage}} %</div>
-            <div class="hl-subtitle hl-flex-col hl-opacity-75">avg</div>
+            <div class="hl-opacity-75">{{statistics.beaconHumidityAverage | decimalPlaces:4}} %</div>
+            <div class="hl-subtitle hl-flex-col hl-opacity-75">{{'tree_list.average' | translate }}</div>
           </div>
           <div class="hl-flex-row hl-cool">
-            <div class="hl-opacity-75">{{statistics.beaconHumidityMinimum}} %</div>
-            <div class="hl-subtitle hl-flex-col hl-opacity-75">low</div>
+            <div class="hl-opacity-75">{{statistics.beaconHumidityMinimum | decimalPlaces:4}} %</div>
+            <div class="hl-subtitle hl-flex-col hl-opacity-75">{{'tree_list.low' | translate }}</div>
           </div>
         </div>
         <div class="hl-annotation text-center">
-          Humidity
+          {{'tree_list.humidity' | translate }}
         </div>
       </div>
     </div>
@@ -112,8 +110,7 @@
 </div>
 
 <div *ngIf="hasStatus(StatusKey.TREES, StatusValue.IN_PROGRESS) || hasStatus(StatusKey.CITIES, StatusValue.IN_PROGRESS)"
-     class="highlight-content container text-center">
-  <img class="load-md" src="/assets/tail-spin.svg" />
+     class="container load load-md">
 </div>
 
 <div *ngFor="let city of cities">
@@ -171,7 +168,7 @@
       {{'tree_list.error_loading_trees.text' | translate}}<!-- TODO -->
     </div>
     <div class="status-controls">
-      <button class="btn btn-light float-right" (click)="loadStatistics()" (keydown)="loadStatistics()">{{'general.retry' | translate}}</button>
+      <button class="btn btn-light float-right" (click)="load()" (keydown)="load()">{{'general.retry' | translate}}</button>
     </div>
   </div>
 </div>

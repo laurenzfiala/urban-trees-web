@@ -8,24 +8,60 @@
   padding-left: 0;
 }
 
+@keyframes loading-spin {
+  0% {
+    border-top-color: @primaryColorHighlight;
+  }
+  25% {
+    border-top-color: @secondaryColorHighlight;
+  }
+  50% {
+    border-top-color: @primaryColorHighlight;
+  }
+  75% {
+    border-top-color: @secondaryColorHighlight;
+  }
+  100% {
+    border-top-color: @primaryColorHighlight;
+    transform: rotate(1080deg);
+  }
+}
+
+.load {
+  position: relative;
+
+  &:after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -40px;
+    margin-left: -40px;
+
+    border-radius: 50%;
+    border: solid @lightBorderColor 6px;
+    border-top-color: @primaryColorHighlight;
+    width: 80px;
+    height: 80px;
+    animation: loading-spin 3s linear infinite;
+  }
+
+}
+
 .load-xs {
-  font-size: 1.2em;
   padding: 2px;
 }
 
 .load-sm {
-  width: 1.5rem;
-  height: 1.5rem;
+  padding: 2rem;
 }
 
 .load-md {
-  width: 3.5rem;
-  height: 3.5rem;
+  padding: 6rem;
 }
 
 .load-lg {
-  width: 5rem;
-  height: 5rem;
+  padding: 10rem;
 }
 
 .text-sm {
@@ -44,4 +80,28 @@
 
 .btn > .btn-icon {
   padding-left: @btnIconPadding;
+}
+
+.round {
+  .round-left();
+  .round-right();
+}
+
+.round-left {
+  border-bottom-left-radius: @borderRadiusNew;
+}
+
+.round-right {
+  border-bottom-right-radius: @borderRadiusNew;
+}
+
+.round-children {
+
+  > *:first-child {
+    .round-left();
+  }
+
+  > *:last-child {
+    .round-right();
+  }
 }

@@ -1,4 +1,6 @@
-<div class="steps">
+<ut-header></ut-header>
+
+<div class="steps round-children">
   <a class="step"
      *ngFor="let step of stepItems; let i = index"
      [routerLink]="step.routerLink"
@@ -17,7 +19,7 @@
   <div class="row">
     <div *ngIf="isPreviousStepAllowed()" class="col">
       <button [routerLink]="[previousStep?.routerLink]" class="btn btn-light btn-block" type="button">
-        <i class="fa fa-angle-left" aria-hidden="true"></i>
+        <i class="fa fa-angle-left pr-2" aria-hidden="true"></i>
         <span class="d-none d-sm-inline">{{'phenology.observation.navigation.previous' | translate}}</span>
       </button>
     </div>
@@ -25,8 +27,10 @@
       <button [routerLink]="[nextStep.routerLink]" class="btn btn-dark btn-block" type="button">
         {{'phenology.observation.navigation.continue' | translate}}
         <span class="d-none d-sm-inline">{{'phenology.observation.navigation.to' | translate}} {{'phenology.observation.navigation.step' + nextStep.routerLink | translate}}</span>
-        <i class="fa fa-angle-right" aria-hidden="true"></i>
+        <i class="fa fa-angle-right pl-2" aria-hidden="true"></i>
       </button>
     </div>
   </div>
 </div>
+
+<ut-footer></ut-footer>

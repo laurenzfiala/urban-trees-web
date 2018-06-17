@@ -8,7 +8,6 @@ import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {HeaderComponent} from './components/header/header.component';
 import {HomeComponent} from './components/home/home.component';
-import {PhenologyComponent} from './components/phenology/phenology.component';
 import {AInfoComponent} from './components/phenology/observation/a-info/a-info.component';
 import {BObservationComponent} from './components/phenology/observation/b-observation/b-observation.component';
 import {CUploadComponent} from './components/phenology/observation/c-upload/c-upload.component';
@@ -38,7 +37,6 @@ import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {ReportComponent} from './components/report/report.component';
 import { TreeComponent } from './components/tree/tree.component';
 import { TreeListComponent } from './components/tree-list/tree-list.component';
-import {TreeListService} from './services/tree-list.service';
 import { SpyDirective } from './directives/spy.directive';
 import { ProjectHomeComponent } from './components/project-home/project-home.component';
 import { ProjectLoginComponent } from './components/project-login/project-login.component';
@@ -46,6 +44,9 @@ import {AuthInterceptor} from './interceptors/auth.interceptor';
 import {PhenologyObservationStepGuard} from './components/phenology/observation/phenology-observation-step.guard';
 import {AuthService} from './services/auth.service';
 import {ProjectLoginGuard} from './components/project-login/project-login.guard';
+import {NgxChartsModule} from '@swimlane/ngx-charts';
+import {TreeService} from './services/tree.service';
+import { DecimalPlacesPipe } from './pipes/decimal-places.pipe';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, '/translations/');
@@ -56,7 +57,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     // Components
     AppComponent,
     HeaderComponent,
-    PhenologyComponent,
     HomeComponent,
     AInfoComponent,
     BObservationComponent,
@@ -66,17 +66,18 @@ export function HttpLoaderFactory(http: HttpClient) {
     MissingComponent,
     ImprintComponent,
     FooterComponent,
-
-    // Pipes
-    StringModificationPipe,
-    CapitalizationPipe,
-    LowercasePipe,
     ReportComponent,
     TreeComponent,
     TreeListComponent,
     SpyDirective,
     ProjectHomeComponent,
-    ProjectLoginComponent
+    ProjectLoginComponent,
+
+    // Pipes
+    StringModificationPipe,
+    CapitalizationPipe,
+    LowercasePipe,
+    DecimalPlacesPipe
   ],
   imports: [
     // Core
@@ -94,6 +95,9 @@ export function HttpLoaderFactory(http: HttpClient) {
     BsDropdownModule.forRoot(),
     CollapseModule.forRoot(),
     TabsModule.forRoot(),
+
+    // Charts
+    NgxChartsModule,
 
     // Translation
     TranslateModule.forRoot({
@@ -116,7 +120,7 @@ export function HttpLoaderFactory(http: HttpClient) {
 
     // Component-Services
     PhenologyObservationService,
-    TreeListService,
+    TreeService,
 
     // Guards
     PhenologyObservationStepGuard,

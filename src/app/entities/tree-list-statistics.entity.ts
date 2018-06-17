@@ -1,5 +1,3 @@
-import {PhenologyObservation} from './phenology-observation.entity';
-import {TreeLocation} from './tree-location.entity';
 
 /**
  * All statistics to be displayed on the tree list page.
@@ -24,5 +22,55 @@ export class TreeListStatistics {
   public beaconHumidityMinimum: number;
   public beaconHumidityAverage: number;
   public beaconHumidityMaximum: number;
+
+  constructor(
+    cityAmount: number,
+    treeAmount: number,
+    treeSpeciesAmount: number,
+    phenologyObservationAmount: number,
+    phenologyObservationObjectAmount: number,
+    beaconAmount: number,
+    beaconDatasetAmount: number,
+    beaconTempMinimum: number,
+    beaconTempAverage: number,
+    beaconTempMaximum: number,
+    beaconHumidityMinimum: number,
+    beaconHumidityAverage: number,
+    beaconHumidityMaximum: number
+  ) {
+    this.cityAmount = cityAmount;
+    this.treeAmount = treeAmount;
+    this.treeSpeciesAmount = treeSpeciesAmount;
+    this.phenologyObservationAmount = phenologyObservationAmount;
+    this.phenologyObservationObjectAmount = phenologyObservationObjectAmount;
+    this.beaconAmount = beaconAmount;
+    this.beaconDatasetAmount = beaconDatasetAmount;
+    this.beaconTempMinimum = beaconTempMinimum;
+    this.beaconTempAverage = beaconTempAverage;
+    this.beaconTempMaximum = beaconTempMaximum;
+    this.beaconHumidityMinimum = beaconHumidityMinimum;
+    this.beaconHumidityAverage = beaconHumidityAverage;
+    this.beaconHumidityMaximum = beaconHumidityMaximum;
+  }
+
+  public static fromObject(o: any): TreeListStatistics {
+
+    return new TreeListStatistics(
+      o.cityAmount,
+      o.treeAmount,
+      o.treeSpeciesAmount,
+      o.phenologyObservationAmount,
+      o.phenologyObservationObjectAmount,
+      o.beaconAmount,
+      o.beaconDatasetAmount,
+      o.beaconTempMinimum,
+      o.beaconTempAverage,
+      o.beaconTempMaximum,
+      o.beaconHumidityMinimum,
+      o.beaconHumidityAverage,
+      o.beaconHumidityMaximum
+    );
+
+  }
 
 }
