@@ -157,7 +157,8 @@
     "status_user_logout": "Logged out successfully",
     "status_not_authenticated": "Please log in to view this page",
     "description": "Your personal project account enables you to enter phenology observations, access project-related news and much more.",
-    "disclaimer": "We don't store any personal data except those needed for scientific research clearly marked to be sent off for submission.<br/>No automated E-Mails are sent out at any time to any user.<br/>By logging in you agree to store your personal login information inside your browser."
+    "disclaimer": "We don't store any personal data except those needed for scientific research clearly marked to be sent off for submission.<br/>No automated E-Mails are sent out at any time to any user.<br/>By logging in you agree to store your personal login information inside your browser.",
+    "already_logged_in": "You are already logged in."
   },
 	"en-GB": "English",
 	"de-DE": "Deutsch",

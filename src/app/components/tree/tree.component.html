@@ -17,7 +17,7 @@
 
   <div class="row mb-2">
 
-    <div class="col-sm-6 col-md-3 image-placeholder">
+    <div class="col-sm-6 col-md-3 mb-2 mb-sm-0 image-placeholder">
 
       Tree image goes here
 
@@ -48,6 +48,10 @@
 
     </div>
 
+    <div *ngIf="!tree.beacons || tree.beacons.length === 0">
+      This tree has no beacons attached to it.
+    </div>
+
     <div *ngFor="let beacon of tree.beacons" class="col-12">
 
       <div class="position-relative my-2">
@@ -66,7 +70,7 @@
 
       </div>
 
-      <div *ngIf="beacon.chartData && beacon.datasets?.length > 0" class="line-chart-full">
+      <div *ngIf="beacon.chartData && beacon.datasets?.length > 0" class="line-chart-full mb-2">
         <ngx-charts-line-chart
           [scheme]="colorScheme"
           [results]="beacon.chartData"

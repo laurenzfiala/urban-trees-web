@@ -46,15 +46,15 @@ export class ProjectLoginGuard implements CanActivate, CanActivateChild {
    */
   private canActivateInternal(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
 
-    const logoutReason = this.authService.getLoggedInStatus();
-    if (!logoutReason) {
+    const isLoggedIn = this.authService.isLoggedIn();
+    if (isLoggedIn) {
       return true;
     }
 
     // TODO refactor with e.g. flatMap
     let redirectLocation = route.pathFromRoot.map(value => value.url.map(value1 => value1.path).join('/')).join('/');
 
-    this.authService.redirectToLogin(logoutReason, redirectLocation);
+    this.authService.redirectToLogin(this.authService.getLogOutReason(), redirectLocation);
 
     return false;
 

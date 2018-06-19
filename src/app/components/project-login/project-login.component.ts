@@ -4,6 +4,7 @@ import {Login} from '../../entities/login.entity';
 import {AbstractComponent} from '../abstract.component';
 import {ActivatedRoute, Router} from '@angular/router';
 import {LogoutReason} from './logout-reason.enum';
+import {LoginStatus} from './login-status.enum';
 
 @Component({
   selector: 'ut-project-login',
@@ -51,8 +52,10 @@ export class ProjectLoginComponent extends AbstractComponent implements OnInit {
       if (reasonVal) {
         this.accessReason = reasonVal;
       }
-      if (reasonVal) {
+      if (redirectVal) {
         this.redirectTo = redirectVal;
+      } else {
+        this.redirectTo = '/project';
       }
 
     });
@@ -81,6 +84,22 @@ export class ProjectLoginComponent extends AbstractComponent implements OnInit {
       }
     });
 
+  }
+
+  /**
+   * Log the user out.
+   */
+  public logout(): void {
+    this.authService.logout();
+    this.accessReason = LogoutReason.USER_LOGOUT;
+  }
+
+  /**
+   * Check if user is already logged in via the standard
+   * JWT login.
+   */
+  public isAlreadyLoggedIn(): boolean {
+    return this.authService.getLogInStatus() === LoginStatus.LOGGED_IN_JWT;
   }
 
   /**

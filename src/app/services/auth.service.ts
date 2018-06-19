@@ -8,6 +8,7 @@ import {ApiError} from '../entities/api-error.entity';
 import {JwtHelperService} from '@auth0/angular-jwt';
 import {Router} from '@angular/router';
 import {LogoutReason} from '../components/project-login/logout-reason.enum';
+import {LoginStatus} from '../components/project-login/login-status.enum';
 
 /**
  * Service for user authentication functionality.
@@ -77,16 +78,41 @@ export class AuthService extends AbstractService {
    * @see AuthService#getLoggedInStatus
    */
   public isLoggedIn(): boolean {
-    return this.getLoggedInStatus() === null;
+    return this.getLogInStatus() !== LoginStatus.NOT_AUTHENTICATED;
   }
 
   /**
-   * Check if the user is currently logged in.
-   * - assumes login if api key is set in a cookie
-   * - assumes login if authorization token is set and not expired
-   * @returns {boolean} null if the user is in any way authenticated; the logout reason otherwise.
+   * Check the users' login status.
+   * @returns {LoginStatus} if logged in and using which method
    */
-  public getLoggedInStatus(): LogoutReason {
+  public getLogInStatus(): LoginStatus {
+
+    const token = AuthService.getJWTToken();
+    const apiKey = this.getApiKey();
+
+    if (apiKey) {
+      return LoginStatus.LOGGED_IN_API_KEY;
+    }
+
+    if (token && !this.jwtHelper.isTokenExpired(token)) {
+      return LoginStatus.LOGGED_IN_JWT;
+    }
+
+    return LoginStatus.NOT_AUTHENTICATED;
+
+  }
+
+  /**
+   * Checks what reason should be displayed to
+   * the user when logging out.
+   * @returns {boolean} null if the user is in any way authenticated (see #getLogInStatus); the logout reason otherwise.
+   */
+  public getLogOutReason(): LogoutReason {
+
+    const logInStatus = this.getLogInStatus();
+    if (logInStatus) {
+      return null;
+    }
 
     const token = AuthService.getJWTToken();
     const apiKey = this.getApiKey();
