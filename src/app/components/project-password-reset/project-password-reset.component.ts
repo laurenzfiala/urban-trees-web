@@ -10,7 +10,7 @@ import {PasswordReset} from '../../entities/password-reset.entity';
 export class ProjectPasswordResetComponent extends AbstractComponent {
 
   @Output()
-  public submit: EventEmitter<PasswordReset> = new EventEmitter<PasswordReset>();
+  public submitChange: EventEmitter<PasswordReset> = new EventEmitter<PasswordReset>();
 
   @Input()
   public status: PasswordResetStatus = PasswordResetStatus.INITIAL;
@@ -37,7 +37,7 @@ export class ProjectPasswordResetComponent extends AbstractComponent {
    * Emit the passwordreset object.
    */
   public changePassword(): void {
-    this.submit.emit(this.passwordReset);
+    this.submitChange.emit(this.passwordReset);
   }
 
   /**
@@ -45,7 +45,7 @@ export class ProjectPasswordResetComponent extends AbstractComponent {
    */
   public checkPasswordStrength(): void {
 
-    const SINGLE_VAL_SCORE: number = 6;
+    const SINGLE_VAL_SCORE: number = 50;
 
     const pw = this.passwordReset.newPassword;
     let score = 0;
@@ -113,9 +113,6 @@ export class ProjectPasswordResetComponent extends AbstractComponent {
 export enum PasswordResetStatus {
 
   INITIAL,
-  DISABLED,
-  UPDATING_PASSWORD,
-  UPDATE_PASSWORD_FAILED,
-  UPDATE_PASSWORD_SUCCESS
+  UPDATING_PASSWORD
 
 }
