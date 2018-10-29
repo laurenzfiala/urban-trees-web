@@ -7,8 +7,8 @@ export const environment = {
 
   production:                       false,
 
-  host:                             'http://192.168.1.104:80',
-  mapHost:                          'http://192.168.1.104:8081',
+  host:                             'http://192.168.1.100:80',
+  mapHost:                          'http://192.168.1.100:8081',
 
   endpoints: {
     // Tree
@@ -24,20 +24,28 @@ export const environment = {
     phenologyDatasetImageSubmission:  '/usercontent/phenology/observation/{phenologyId}/image',
 
     // UI
-    phenologyObservationResultImg:  '/ui/phenology/observation/result/{treeSpeciesId}/{resultId}/img',
-    announcements:                  '/ui/announcements',
+    phenologyObservationResultImg:    '/ui/phenology/observation/result/{treeSpeciesId}/{resultId}/img',
+    announcements:                    '/ui/announcements',
 
     // Authentication
-    login:                          '/login'
+    login:                            '/login',
+    changePassword:                   '/account/changepassword'
   },
 
-  defaultTimeout:                   10000,
-  imageUploadTimeout:               60000,
+  defaultTimeout:                     10000,
+  imageUploadTimeout:                 60000,
 
-  outputDateFormat:                 'YYYY-MM-DD[T]HH-mm-ss',
+  outputDateFormat:                   'YYYY-MM-DD[T]HH-mm-ss',
 
   log: {
-    level:                          LogLevel.TRACE
+    level:                            LogLevel.TRACE
+  },
+
+  security: {
+    roles: {
+      phenObs:                        ['ROLE_PHENOBS'],
+      admin:                          ['ROLE_ADMIN']
+    }
   }
 
 };

@@ -1,0 +1,28 @@
+<div class="image-container" (click)="openOverlay();">
+
+  <div class="overlay" [ngClass]="{'hide': !this.showOverlay}" (click)="$event.stopPropagation();">
+
+    <div class="close" (click)="closeOverlay();"></div>
+
+    <div>
+      <div class="audio-control playpause" [ngClass]="{'play': !this.isPlaying, 'stop': this.isPlaying}" (click)="onClickPlayPause()"></div>
+      <div class="audio-control volume" [ngClass]="'vol-' + volumeLevel" (click)="toggleVolume();"></div>
+    </div>
+
+  </div>
+
+  <img [src]="image" class="w-100"/>
+
+  <div class="d-flex align-items-center">
+    <div class="audio-control progress" [ngStyle]="{'width': progress + '%'}"></div>
+  </div>
+  <div class="text-subtle text-center text-xs" *ngIf="!showOverlay">
+    {{'tree.audioimg.help.controls' | translate}}
+  </div>
+
+  <audio #player [src]="audio" (timeupdate)="onAudioTimeUpdate();" (ended)="stop(); closeOverlay();">
+    <!-- TODO translate -->
+    Your browser unfortunately does not support this audio format.
+  </audio>
+
+</div>

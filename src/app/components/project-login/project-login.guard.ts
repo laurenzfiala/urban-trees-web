@@ -4,6 +4,7 @@ import {ActivatedRouteSnapshot, RouterStateSnapshot} from '@angular/router/src/r
 import {Log} from '../../services/log.service';
 import {AuthService} from '../../services/auth.service';
 import {Observable} from 'rxjs/observable';
+import {LogoutReason} from './logout-reason.enum';
 
 /**
  * Guard to check valid authentication before accessing
@@ -47,16 +48,38 @@ export class ProjectLoginGuard implements CanActivate, CanActivateChild {
   private canActivateInternal(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
 
     const isLoggedIn = this.authService.isLoggedIn();
+    const isAccessGranted = this.isRoleAccessGranted(route);
+    let unauthorized: LogoutReason;
     if (isLoggedIn) {
-      return true;
+      if (isAccessGranted) {
+        return true;
+      }
+      unauthorized = LogoutReason.INSUFFICIENT_PERMISSIONS;
     }
 
     // TODO refactor with e.g. flatMap
     let redirectLocation = route.pathFromRoot.map(value => value.url.map(value1 => value1.path).join('/')).join('/');
 
-    this.authService.redirectToLogin(this.authService.getLogOutReason(), redirectLocation);
+    this.authService.redirectToLogin(unauthorized || this.authService.getLogOutReason(), redirectLocation);
 
     return false;
+
+  }
+
+  /**
+   * Checks the roles of the currently logged in user
+   * and whether they are allowed to access the protected
+   * resource being accessed.
+   * @param route The route to access.
+   * @see AuthService#isUserRoleAccessGranted
+   */
+  private isRoleAccessGranted(route: ActivatedRouteSnapshot): boolean {
+
+    if (!route.data) {
+      return true;
+    }
+
+    return this.authService.isUserRoleAccessGranted(route.data.roles);
 
   }
 

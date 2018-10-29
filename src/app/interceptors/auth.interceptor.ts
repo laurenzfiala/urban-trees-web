@@ -25,7 +25,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
     AuthInterceptor.LOG.trace('Intercepting http request.');
 
-    const token = AuthService.getJWTToken();
+    const token = AuthService.getJWTTokenRaw();
     const apiKey = this.authService.getApiKey();
 
     let newRequest;
@@ -44,8 +44,8 @@ export class AuthInterceptor implements HttpInterceptor {
 
         if (error instanceof HttpErrorResponse && error.status === 403) {
           AuthInterceptor.LOG.debug('Received unauthorized response from backend. Redirecting to login...');
-
         }
+
         return _throw(error);
 
       }) as any;

@@ -92,6 +92,14 @@
   </div>
 
   <div
+    *ngIf="accessReason === LoginAccessReason.INSUFFICIENT_PERMISSIONS"
+    class="col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto login-annotation-container login-annotation-warning">
+
+    {{'login.status_insufficient_permissions' | translate}}
+
+  </div>
+
+  <div
     *ngIf="accessReason === LoginAccessReason.USER_LOGOUT"
     class="col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto login-annotation-container login-annotation-success">
 

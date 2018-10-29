@@ -147,8 +147,13 @@
     "heading": "Your Project-Account",
     "username_placeholder": "Username",
     "password_placeholder": "Password",
+    "password_old_placeholder": "Current Password",
+    "password_new_placeholder": "New Password",
+    "password_new_confirm_placeholder": "New Password (confirm)",
     "log_in": "Log in",
     "logging_in": "Logging you in...",
+    "change_password": "Change password",
+    "changing_password": "Changing password...",
     "status_connection_insecure": "You may not log in using an insecure connection",
     "status_bad_credentials": "The username and password were not recognized",
     "status_failed": "Login failed, please retry",
@@ -156,6 +161,7 @@
     "status_force_logout": "You have been logged out",
     "status_user_logout": "Logged out successfully",
     "status_not_authenticated": "Please log in to view this page",
+    "status_insufficient_permissions": "You are not allowed to access the requested page",
     "description": "Your personal project account enables you to enter phenology observations, access project-related news and much more.",
     "disclaimer": "We don't store any personal data except those needed for scientific research clearly marked to be sent off for submission.<br/>No automated E-Mails are sent out at any time to any user.<br/>By logging in you agree to store your personal login information inside your browser.",
     "already_logged_in": "You are already logged in."
@@ -230,7 +236,22 @@
         "quercus rubra": "Quercus rubra",
         "juglans regia": "Juglans regia"
       }
-		}
+		},
+    "beacon": {
+      "details": {
+        "heading": "Detailed Beacon Data"
+      },
+      "transfer": {
+        "success": "Beacon data successfully transferred!",
+        "success_note": "Information below is now up to date.",
+        "failed": "Failed to get beacon data for this tree!"
+      }
+    },
+    "audioimg": {
+      "help": {
+        "controls": "Click to show controls"
+      }
+    }
 	},
 	"general": {
 		"retry": "Retry",

@@ -1,5 +1,37 @@
 @import (reference) "../../../theme/variables";
 
+.transfer-status {
+  margin-top: -1.25rem;
+  padding: 2.25rem 1rem 1rem 1rem;
+  font-weight: bold;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  line-height: 1rem;
+
+  &.success {
+    background-color: @successBg;
+  }
+  &.warning {
+    background-color: @warningBg;
+  }
+  &.danger {
+    background-color: @dangerBg;
+  }
+
+  > img {
+    height: 35px;
+    margin-right: 0.5rem;
+  }
+
+  .note {
+    font-weight: normal;
+    font-size: 0.75rem;
+    color: @darkGrey;
+  }
+}
+
 .image-placeholder {
   display: flex;
   flex-direction: column;

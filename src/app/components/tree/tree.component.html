@@ -1,5 +1,18 @@
 <ut-header></ut-header>
 
+<div *ngIf="hasStatus(StatusKey.APP_TRANSFER_STATUS, StatusValue.SUCCESSFUL)" class="transfer-status success round">
+  <img src="../../../assets/img/alert_success.svg"/>
+  <div>
+    {{'tree.beacon.transfer.success' | translate}}
+    <div class="note">{{'tree.beacon.transfer.success_note' | translate}}</div>
+  </div>
+</div>
+
+<div *ngIf="hasStatus(StatusKey.APP_TRANSFER_STATUS, StatusValue.FAILED)" class="transfer-status danger round">
+  <img src="../../../assets/img/alert_danger.svg"/>
+  {{'tree.beacon.transfer.failed' | translate}}
+</div>
+
 <div *ngIf="tree" class="container mb-5">
 
   <div class="text-center">
@@ -15,7 +28,7 @@
 
   </div>
 
-  <div class="row mb-2">
+  <div class="row mb-5">
 
     <div class="col-sm-6 col-md-3 mb-2 mb-sm-0 image-placeholder">
 
@@ -25,13 +38,20 @@
 
     <div class="col-sm-6 col-md-9">
 
-      <p>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque eget velit ut augue ultrices accumsan sed sit amet eros. Praesent suscipit mattis velit ac ultricies. Fusce interdum consequat ligula non congue. Nulla maximus sapien scelerisque quam laoreet tincidunt. Suspendisse et odio gravida, malesuada purus eu, porttitor nunc. Aliquam vulputate magna eget semper aliquam. Sed porttitor placerat blandit. Nam lobortis nibh a sapien hendrerit interdum. Mauris in erat convallis, dapibus neque et, sagittis massa. Phasellus quis tincidunt nunc, eget sagittis ex. Praesent sit amet odio felis. Proin nec porta eros, id interdum nunc. Maecenas non lobortis erat.
-      </p>
 
-      <p>
-        Phasellus aliquam semper aliquam. Suspendisse in turpis vitae purus placerat placerat vitae sit amet enim. Pellentesque fringilla gravida justo, vel lacinia urna imperdiet eget.
-      </p>
+
+    </div>
+
+  </div>
+
+  <div class="row mb-5">
+
+    <div class="col-sm-4 col-lg-6 mb-2">
+    </div>
+
+    <div class="col-sm-8 col-lg-6">
+
+      <ut-audio-img image="../../../assets/content/img/blattentfaltung_2018_10.jpeg" audio="../../../assets/content/audio/blattentfaltung_2018_10.mp3" class="w-100"></ut-audio-img>
 
     </div>
 
@@ -39,11 +59,14 @@
 
   <div class="row mb-2">
 
-    <div class="col-12">
+    <div class="col-12 text-center pb-2">
 
-      <h5 class="text-center mb-2">
-        {{tree.beacons?.length}} Beacons
+      <h5 class="text-center mb-0">
+        {{'tree.beacon.details.heading' | translate}}
       </h5>
+      <span class="text-subtle">
+        {{tree.beacons?.length}} Beacon{{tree.beacons?.length > 1 ? 's' : ''}}
+      </span>
       <hr class="mt-1"/>
 
     </div>

@@ -24,20 +24,28 @@ export const environment = {
     phenologyDatasetImageSubmission:  '/usercontent/phenology/observation/{phenologyId}/image',
 
     // UI
-    phenologyObservationResultImg:  '/ui/phenology/observation/result/{treeSpeciesId}/{resultId}/img',
-    announcements:                  '/ui/announcements',
+    phenologyObservationResultImg:    '/ui/phenology/observation/result/{treeSpeciesId}/{resultId}/img',
+    announcements:                    '/ui/announcements',
 
     // Authentication
-    login:                            '/login'
+    login:                            '/login',
+    changePassword:                   '/account/changepassword'
   },
 
   defaultTimeout:                     30000,
   imageUploadTimeout:                 60000,
 
-  outputDateFormat:                 'YYYY-MM-DD[T]HH-mm-ss',
+  outputDateFormat:                   'YYYY-MM-DD[T]HH-mm-ss',
 
   log: {
     level:                            LogLevel.TRACE
+  },
+
+  security: {
+    roles: {
+      phenObs:                        ['ROLE_PHENOBS'],
+      admin:                          ['ROLE_ADMIN']
+    }
   }
 
 };

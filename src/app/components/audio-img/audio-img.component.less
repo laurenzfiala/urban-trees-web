@@ -1,0 +1,80 @@
+@import (reference) "../../../theme/variables";
+
+.image-container {
+  position: relative;
+  padding: 0.5rem;
+  background-color: @medLightBgColor;
+
+  > .overlay {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    &.hide {
+      display: none;
+    }
+
+    .close {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 2rem;
+      height: 2rem;
+      margin: 0.5rem;
+      background-image: url("../../../assets/img/audio_close.svg");
+      background-position: center;
+      background-size: contain;
+    }
+
+  }
+
+  .audio-control {
+    display: inline-block;
+    width: 4rem;
+    height: 4rem;
+    margin-left: 0.5rem;
+    margin-right: 0.5rem;
+    background-position: center;
+    background-size: contain;
+
+    &.playpause {
+
+      &.play {
+        background-image: url("../../../assets/img/audio_play.svg");
+      }
+      &.stop {
+        background-image: url("../../../assets/img/audio_stop.svg");
+      }
+    }
+
+    &.volume {
+
+      &.vol-1 {
+        background-image: url("../../../assets/img/audio_volume_1.svg");
+      }
+      &.vol-2 {
+        background-image: url("../../../assets/img/audio_volume_2.svg");
+      }
+      &.vol-3 {
+        background-image: url("../../../assets/img/audio_volume_3.svg");
+      }
+    }
+
+    &.progress {
+      height: 0.2rem;
+      margin: 0;
+      background-color: @darkGrey;
+      border-radius: 0;
+    }
+
+  }
+
+}

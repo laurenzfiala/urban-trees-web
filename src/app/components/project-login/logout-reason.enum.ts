@@ -10,6 +10,7 @@ export enum LogoutReason {
   NOT_AUTHENTICATED = 'noAuth',
   FORCE_LOGOUT = 'forceLogout',
   FORCE_LOGOUT_EXPIRED = 'expiryForceLogout',
-  USER_LOGOUT = 'logout'
+  USER_LOGOUT = 'logout',
+  INSUFFICIENT_PERMISSIONS = 'permission'
 
 }

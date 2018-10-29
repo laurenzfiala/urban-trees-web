@@ -129,7 +129,7 @@
     "beacons": "Beacons",
     "datasets": "Datensätze",
     "temperature": "Temperatur",
-    "humidity": "Luftfeutigkeit",
+    "humidity": "Luftfeuchtigkeit",
     "high": "Höchste",
     "average": "Durchschnitt",
     "low": "Geringste",
@@ -156,6 +156,7 @@
     "status_force_logout": "Du wurdest abgemeldet",
     "status_user_logout": "Erfolgreich abgemeldet",
     "status_not_authenticated": "Bitte anmelden, um diese Seite anzuzeigen",
+    "status_insufficient_permissions": "Du bist nicht berechtigt, die angefragte Seite anzuzeigen",
     "description": "Dein persönlicher Projekt-Account ermöglicht es Dir, Deine Phänologiebeobachtungen einzutragen, projektbezogene Neuigkeiten anzuzeigen und vieles mehr.",
     "disclaimer": "Wir speichern keine persönlichen Daten, außer jene deutlich zum Abschicken markiert und für wissenschaftliche Zwecke.<br/>Es werden keine automatisierten E-Mails verschickt.<br/>Durch das Anmelden erlaubst Du, Deine Anmeldedaten lokal zu speichern.",
     "already_logged_in": "Du bist bereits angemeldet."
@@ -230,7 +231,22 @@
         "quercus rubra": "Quercus rubra",
         "juglans regia": "Juglans regia"
       }
-		}
+		},
+    "beacon": {
+      "details": {
+        "heading": "Detaillierte Beacon Daten"
+      },
+      "transfer": {
+        "success": "Beacon-Daten erfolgreich übertragen!",
+        "success_note": "Die Daten wurden aktualisiert.",
+        "failed": "Der Beacon für diesen Baum konnte nicht ausgelesen werden!"
+      }
+    },
+    "audioimg": {
+      "help": {
+        "controls": "Für Steuerung klicken"
+      }
+    }
 	},
 	"general": {
 		"retry": "Nochmals versuchen",

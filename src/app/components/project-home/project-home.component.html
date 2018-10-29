@@ -1,18 +1,60 @@
 <ut-header></ut-header>
 
-<div class="container my-2 my-lg-5 text-center">
+<div class="container mt-4 mb-2 my-lg-5">
 
-  <div class="text-subtle mt-4">
-    Choose what to do
-  </div>
-  <hr class="mt-1"/>
+  <div class="row mb-2">
 
-  <div class="my-3">
-    <div class="btn-full" tabindex="-1" routerLink="/project/phenology/observation/step">
-      Enter a phenology observation
-      <i class="btn-icon fa fa-chevron-right" aria-hidden="true"></i>
+    <div class="col-md-12 col-lg-5">
+
+      <div class="user-info">
+
+        <div class="text-center text-subtle">
+          Your account
+        </div>
+        <hr class="mt-1"/>
+
+        <!-- TODO css -->
+        <div class="d-flex flex-row align-items-center my-1 py-1 px-1" style="cursor: pointer">
+          <div style="width: 3rem; color: #7a7a7a; font-size: 1.65rem">
+            <i class="fas fa-key"></i>
+          </div>
+          <div style="color: #333333; font-size: 1.15rem" routerLink="/account/changepassword">
+            Change password
+          </div>
+        </div>
+
+        <div class="d-flex flex-row align-items-center my-1 py-1 px-1 disabled" style="cursor: pointer;">
+          <div style="width: 3rem; color: #7a7a7a; font-size: 1.65rem">
+            <i class="fas fa-edit"></i>
+          </div>
+          <div style="color: #333333; font-size: 1.15rem">
+            Edit account
+          </div>
+        </div>
+
+
+      </div>
+
     </div>
+
+    <div class="col-md-12 col-lg-7 text-center">
+
+      <div class="text-subtle">
+        Navigation
+      </div>
+      <hr class="mt-1"/>
+
+      <div class="my-3">
+        <div class="btn-full" tabindex="-1" routerLink="/project/phenology/observation/step">
+          Enter a phenology observation
+          <i class="btn-icon fa fa-chevron-right" aria-hidden="true"></i>
+        </div>
+      </div>
+
+    </div>
+
   </div>
+
 
 </div>
 

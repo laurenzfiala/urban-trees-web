@@ -16,6 +16,7 @@ import {TreeListComponent} from './components/tree-list/tree-list.component';
 import {ProjectHomeComponent} from './components/project-home/project-home.component';
 import {ProjectLoginComponent} from './components/project-login/project-login.component';
 import {ProjectLoginGuard} from './components/project-login/project-login.guard';
+import {PasswordChangeComponent} from './components/project-login/password-change/password-change.component';
 
 const routes: Routes = [
   {
@@ -48,9 +49,15 @@ const routes: Routes = [
     component: ProjectLoginComponent
   },
   {
+    path: 'account/changepassword',
+    component: PasswordChangeComponent,
+    canActivate: [ProjectLoginGuard]
+  },
+  {
     path: 'project',
     component: ProjectHomeComponent,
-    canActivate: [ProjectLoginGuard],
+    canActivate: [ProjectLoginGuard]//,
+    //data: {roles: environment.security.roles.phenObs}
   },
   {
     path: 'phenology',

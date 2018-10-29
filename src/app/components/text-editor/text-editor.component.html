@@ -1,0 +1,21 @@
+<div class="editor-container">
+
+  <div class="editor-toolbar round-top">
+
+    <div>
+      Style | <button class="btn btn-default" (click)="bold()">Bold</button> | Italic | Color | Link | Alert | List | Image
+    </div>
+
+    <div>
+      Raw | Preview
+    </div>
+
+  </div>
+
+  <div class="editor-input form-control" contenteditable="true" (mousemove)="test()">
+    <span style="background-color: darkorange">hi</span> jojopsjdf
+  </div>
+
+  {{testSelection}}
+
+</div>

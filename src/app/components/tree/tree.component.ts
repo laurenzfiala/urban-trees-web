@@ -15,6 +15,8 @@ export class TreeComponent extends AbstractComponent implements OnInit {
 
   private static PATH_PARAMS_TREE_ID = 'treeId';
 
+  private static QUERY_PARAMS_APP_TRANSFER_STATUS = 'readout';
+
   public StatusKey = StatusKey;
   public StatusValue = StatusValue;
 
@@ -106,6 +108,18 @@ export class TreeComponent extends AbstractComponent implements OnInit {
 
     });
 
+    this.route.queryParams.subscribe((params: any) => {
+
+      const appTransferStatusVal: AppTransferStatusParam = params[TreeComponent.QUERY_PARAMS_APP_TRANSFER_STATUS];
+      console.log(appTransferStatusVal);
+      if (appTransferStatusVal === AppTransferStatusParam.SUCCESSFUL) {
+        this.setStatus(StatusKey.APP_TRANSFER_STATUS, StatusValue.SUCCESSFUL);
+      } else if (appTransferStatusVal === AppTransferStatusParam.FAILED) {
+        this.setStatus(StatusKey.APP_TRANSFER_STATUS, StatusValue.FAILED);
+      }
+
+    });
+
   }
 
   private loadTree(treeId: number): void {
@@ -147,7 +161,8 @@ export enum StatusKey {
 
   TREE_VALIDATION,
   TREE_LOADING,
-  BEACON_DATA
+  BEACON_DATA,
+  APP_TRANSFER_STATUS
 
 }
 
@@ -157,5 +172,12 @@ export enum StatusValue {
   IN_PROGRESS,
   SUCCESSFUL,
   FAILED = -1
+
+}
+
+export enum AppTransferStatusParam {
+
+  SUCCESSFUL = 'successful',
+  FAILED = 'failed'
 
 }

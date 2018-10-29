@@ -9,6 +9,8 @@ import {JwtHelperService} from '@auth0/angular-jwt';
 import {Router} from '@angular/router';
 import {LogoutReason} from '../components/project-login/logout-reason.enum';
 import {LoginStatus} from '../components/project-login/login-status.enum';
+import {JWTToken} from '../entities/jwt-token.entity';
+import {PasswordReset} from '../entities/password-reset.entity';
 
 /**
  * Service for user authentication functionality.
@@ -40,6 +42,50 @@ export class AuthService extends AbstractService {
   }
 
   /**
+   * Return the users' roles if they are logged in,
+   * null otherwise or if no roles can be found.
+   * @returns {Array<String>} List of the current users' roles.
+   */
+  public getUserRoles(): Array<string> {
+
+    const token = AuthService.getJWTTokenRaw();
+
+    if (!token) {
+      return null;
+    }
+
+    const tokenPayload = JWTToken.fromObject(this.jwtHelper.decodeToken(token));
+    return tokenPayload.getRoles();
+
+  }
+
+  /**
+   * Whether or not the current user is allowed
+   * for the given grantRoles.
+   * - If at least one role in grantRoles can also be
+   *   found in userRoles, return true (grant access).
+   * - If grantRoles is undefined, return true (grant access).
+   * - If grantRoles is empty, return false (deny access).
+   * - Else, return false (deny access).
+   * @param grantRoles Roles to grant access to (any match).
+   */
+  public isUserRoleAccessGranted(grantRoles: string[]): boolean {
+
+    const userRoles = this.getUserRoles();
+
+    if (!userRoles) {
+      return false;
+    }
+
+    if (!grantRoles) {
+      return true;
+    }
+
+    return userRoles.some(userRole => grantRoles.indexOf(userRole) !== -1);
+
+  }
+
+  /**
    * Send login request to the backend and react on the response.
    * This includes saving the given authorization header to the local storage.
    * @param {Login} loginEntity username, password
@@ -57,6 +103,29 @@ export class AuthService extends AbstractService {
         successCallback();
       }, (e: any) => {
         AuthService.LOG.error('Could not log in: ' + e.message, e);
+        if (errorCallback) {
+          errorCallback(e, this.safeApiError(e));
+        }
+      });
+
+  }
+
+  /**
+   * TODO
+   * @param {PasswordReset} changePassword
+   * @param {() => void} successCallback
+   * @param {(error: HttpErrorResponse, apiError?: ApiError) => void} errorCallback
+   */
+  public changePassword(changePassword: PasswordReset,
+               successCallback: () => void,
+               errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void): void {
+
+    this.http.put(this.envService.endpoints.changePassword, changePassword)
+      .subscribe((response: HttpResponse<any>) => {
+        AuthService.LOG.debug('Changed password successfully.');
+        successCallback();
+      }, (e: any) => {
+        AuthService.LOG.error('Could not change password: ' + e.message, e);
         if (errorCallback) {
           errorCallback(e, this.safeApiError(e));
         }
@@ -87,7 +156,7 @@ export class AuthService extends AbstractService {
    */
   public getLogInStatus(): LoginStatus {
 
-    const token = AuthService.getJWTToken();
+    const token = AuthService.getJWTTokenRaw();
     const apiKey = this.getApiKey();
 
     if (apiKey) {
@@ -114,7 +183,7 @@ export class AuthService extends AbstractService {
       return null;
     }
 
-    const token = AuthService.getJWTToken();
+    const token = AuthService.getJWTTokenRaw();
     const apiKey = this.getApiKey();
 
     if (apiKey) {
@@ -167,23 +236,34 @@ export class AuthService extends AbstractService {
   }
 
   /**
-   * TODO
-   * @returns {string}
+   * Returns the decoded JWT token object.
    */
-  public getApiKey(): string {
-    return this.getCookie(AuthService.HEADER_API_KEY);
+  public getJWTToken(): JWTToken {
+    const storedToken = AuthService.getJWTTokenRaw();
+    if (!storedToken) {
+      return undefined;
+    }
+    return JWTToken.fromObject(this.jwtHelper.decodeToken(storedToken));
   }
 
   /**
-   * TODO
-   * @returns {string}
+   * Returns the JWT token like stored in localStorage.
+   * If not set, returns undefined.
    */
-  public static getJWTToken(): string {
+  public static getJWTTokenRaw(): string {
     const storedToken = localStorage.getItem(AuthService.LOCAL_STORAGE_AUTH_KEY);
     if (!storedToken || storedToken === 'null') {
       return undefined;
     }
     return storedToken;
+  }
+
+  /**
+   * Returns the API key from the cookies.
+   * If not set, returns undefined.
+   */
+  public getApiKey(): string {
+    return this.getCookie(AuthService.HEADER_API_KEY);
   }
 
 }

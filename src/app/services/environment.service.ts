@@ -150,6 +150,10 @@ class EnvironmentEndpoints {
     return this.prependCommonPath(this.context.login);
   }
 
+  get changePassword() {
+    return this.prependCommonPath(this.context.changePassword);
+  }
+
   public beaconData(beaconId: number): string {
 
     let replacements: any[] = [

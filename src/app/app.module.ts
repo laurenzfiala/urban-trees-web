@@ -47,6 +47,11 @@ import {ProjectLoginGuard} from './components/project-login/project-login.guard'
 import {NgxChartsModule} from '@swimlane/ngx-charts';
 import {TreeService} from './services/tree.service';
 import { DecimalPlacesPipe } from './pipes/decimal-places.pipe';
+import {AuthDirective} from './directives/auth.directive';
+import { TextEditorComponent } from './components/text-editor/text-editor.component';
+import {ProjectPasswordResetComponent} from './components/project-password-reset/project-password-reset.component';
+import { PasswordChangeComponent } from './components/project-login/password-change/password-change.component';
+import {AudioImgComponent} from './components/audio-img/audio-img.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, '/translations/');
@@ -69,15 +74,22 @@ export function HttpLoaderFactory(http: HttpClient) {
     ReportComponent,
     TreeComponent,
     TreeListComponent,
-    SpyDirective,
     ProjectHomeComponent,
     ProjectLoginComponent,
+    ProjectPasswordResetComponent,
+    PasswordChangeComponent,
+    AudioImgComponent,
+
+    // Directives
+    SpyDirective,
+    AuthDirective,
 
     // Pipes
     StringModificationPipe,
     CapitalizationPipe,
     LowercasePipe,
-    DecimalPlacesPipe
+    DecimalPlacesPipe,
+    TextEditorComponent
   ],
   imports: [
     // Core
