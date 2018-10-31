@@ -111,7 +111,7 @@ export class TreeComponent extends AbstractComponent implements OnInit {
     this.route.queryParams.subscribe((params: any) => {
 
       const appTransferStatusVal: AppTransferStatusParam = params[TreeComponent.QUERY_PARAMS_APP_TRANSFER_STATUS];
-      console.log(appTransferStatusVal);
+
       if (appTransferStatusVal === AppTransferStatusParam.SUCCESSFUL) {
         this.setStatus(StatusKey.APP_TRANSFER_STATUS, StatusValue.SUCCESSFUL);
       } else if (appTransferStatusVal === AppTransferStatusParam.FAILED) {

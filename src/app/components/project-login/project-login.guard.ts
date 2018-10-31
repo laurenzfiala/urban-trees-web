@@ -75,7 +75,7 @@ export class ProjectLoginGuard implements CanActivate, CanActivateChild {
    */
   private isRoleAccessGranted(route: ActivatedRouteSnapshot): boolean {
 
-    if (!route.data) {
+    if (!route.data || Object.keys(route.data).length === 0) {
       return true;
     }
 

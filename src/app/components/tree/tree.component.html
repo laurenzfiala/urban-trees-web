@@ -30,9 +30,15 @@
 
   <div class="row mb-5">
 
-    <div class="col-sm-6 col-md-3 mb-2 mb-sm-0 image-placeholder">
+    <div *ngIf="tree.id !== 1" class="col-sm-6 col-md-3 mb-2 mb-sm-0 image-placeholder">
 
       Tree image goes here
+
+    </div>
+
+    <div *ngIf="tree.id === 1" class="col-sm-6 col-md-3 mb-2 mb-sm-0 tree-image">
+
+      <img src="../../../assets/content/img/tree_1.jpg"/>
 
     </div>
 
