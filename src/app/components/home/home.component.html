@@ -3,26 +3,44 @@
 <div class="container my-2 my-lg-5 text-center">
 
   <div class="text-subtle mt-4">
-    Choose what to do
+    {{'home.choose' | translate}}
   </div>
   <hr class="mt-1"/>
 
-  <div class="my-3">
-    <div class="btn-full" tabindex="-1" routerLink="/trees">
-      Check out all trees and their stats
-      <i class="btn-icon fa fa-chevron-right" aria-hidden="true"></i>
-    </div>
-
-    <div class="btn-full" tabindex="-1" routerLink="/project">
-      Log in to your project-account
-      <i class="btn-icon fa fa-chevron-right" aria-hidden="true"></i>
+  <div class="btn-img-toolbar d-none d-lg-block">
+    <div class="my-3 d-flex">
+      <div class="btn-img trees" tabindex="-1" routerLink="/trees">
+        Trees
+      </div>
+      <div class="btn-img phenology" tabindex="-1" routerLink="/phenology/observation/step">
+        Phenology observation
+      </div>
+      <div class="btn-img account" tabindex="-1" routerLink="/project">
+        Account
+      </div>
+      <a class="btn-img infopage" tabindex="-1" href="http://stadt-baum-klima.sbg.ac.at/" target="_blank">
+        Info page
+      </a>
     </div>
   </div>
 
-  <div *auth="['ROLE_ADMIN']">
-
-    <ut-text-editor></ut-text-editor>
-
+  <div class="btn-img-toolbar d-md-block d-lg-none">
+    <div class="my-3 d-flex">
+      <div class="btn-img trees" tabindex="-1" routerLink="/trees">
+        Trees
+      </div>
+      <div class="btn-img phenology" tabindex="-1" routerLink="/phenology/observation/step">
+        Phenology observation
+      </div>
+    </div>
+    <div class="my-3 d-flex">
+      <div class="btn-img account" tabindex="-1" routerLink="/project">
+        Account
+      </div>
+      <a class="btn-img infopage" tabindex="-1" href="http://stadt-baum-klima.sbg.ac.at/" target="_blank">
+        Info page
+      </a>
+    </div>
   </div>
 
 </div>

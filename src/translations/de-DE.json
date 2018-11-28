@@ -20,7 +20,10 @@
     "back": "Zurück"
 	},
   "home": {
-    "placeholder": "Wird arbeiten derzeit an der App und werden hier in Zukunft Inhalte bereitstellen."
+    "placeholder": "Wird arbeiten derzeit an der App und werden hier in Zukunft Inhalte bereitstellen.",
+    "choose": "Triff eine Auswahl",
+    "refTrees": "Schau Dir alle Bäume und Statistiken an",
+    "refProjectAccount": "Einloggen in den Projekt-Account"
   },
 	"phenology": {
 		"observation_note": {
@@ -54,7 +57,8 @@
 				"tree_search_placeholder": "Gib Land, Stadt, Straße, Spezies oder ID ein...",
 				"title": "Dein Baum",
 				"tree_not_found": "Keinen Baum gefunden.",
-				"map_activator": "Klicken, um die Karte zu nutzen"
+				"map_activator": "Klicken, um die Karte zu nutzen",
+				"map_activator_touch": "Berühren, um die Karte zu nutzen"
 			},
 			"step2": {
         "nothing_to_observe": "An diesem Baum gibt es zur Zeit nichts zu beobachten. Falls Du einen Fehler vermutest, wende dich bitte an einen Systemadministrator,",
@@ -234,12 +238,22 @@
 		},
     "beacon": {
       "details": {
-        "heading": "Detaillierte Beacon Daten"
+        "heading": "Detaillierte Beacon Daten",
+        "range": "Zeitspanne",
+        "maxdataentries": "Anzahl Datenpunkte"
       },
       "transfer": {
         "success": "Beacon-Daten erfolgreich übertragen!",
         "success_note": "Die Daten wurden aktualisiert.",
         "failed": "Der Beacon für diesen Baum konnte nicht ausgelesen werden!"
+      },
+      "data": {
+        "missing": "Keine Daten für Beacon aufgezeichnet",
+        "range": {
+          "24h": "Letzte 24 Stunden",
+          "week": "Letzte 7 Tage",
+          "month": "Letzte 30 Tage"
+        }
       }
     },
     "audioimg": {

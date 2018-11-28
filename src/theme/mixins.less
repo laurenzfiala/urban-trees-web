@@ -1,0 +1,12 @@
+
+.hover-supported(@rules) {
+  @media (hover: hover) {
+    @rules();
+  }
+}
+
+.hover-unsupported(@rules) {
+  @media (hover: none) {
+    @rules();
+  }
+}

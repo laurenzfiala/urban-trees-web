@@ -14,6 +14,7 @@ export class EnvironmentService {
   private context = environment;
 
   public endpoints: EnvironmentEndpoints = new EnvironmentEndpoints();
+  public security: SecurityEndpoints = new SecurityEndpoints();
 
   get defaultTimeout() {
     return this.context.defaultTimeout;
@@ -154,19 +155,56 @@ class EnvironmentEndpoints {
     return this.prependCommonPath(this.context.changePassword);
   }
 
-  public beaconData(beaconId: number): string {
+  public beaconData(beaconId: number, maxDatapoints?: number, timespanMin?: string, timespanMax?: string): string {
+
+    let url = this.context.beaconData;
+    if (timespanMin && timespanMax) {
+      url = this.context.beaconDataTimespan;
+    } else if (timespanMin) {
+      url = this.context.beaconDataTimespanMin;
+    } else if (timespanMax) {
+      url = this.context.beaconDataTimespanMax;
+    }
+
+    if (maxDatapoints !== undefined) {
+      if (url === this.context.beaconData) {
+        url += '?maxDatapoints=' + maxDatapoints;
+      } else {
+        url += '&maxDatapoints=' + maxDatapoints;
+      }
+    }
 
     let replacements: any[] = [
-      { placeholder: 'beaconId', replacement: beaconId }
+      { placeholder: 'beaconId', replacement: beaconId },
+      { placeholder: 'timespanMin', replacement: timespanMin },
+      { placeholder: 'timespanMax', replacement: timespanMax }
     ];
 
     return this.prependCommonPath(
       this.replaceParams(
-        this.context.beaconData,
+        url,
         replacements
       )
     );
 
+  }
+
+}
+
+class SecurityEndpoints {
+
+  private context = environment.security;
+
+  get rolesUser() {
+    return this.context.roles.user;
+  }
+
+  get rolesPhenObs() {
+    return this.context.roles.phenObs;
+  }
+
+  get rolesAdmin() {
+    return this.context.roles.admin;
   }
 
 }

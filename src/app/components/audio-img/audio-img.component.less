@@ -4,6 +4,11 @@
   position: relative;
   padding: 0.5rem;
   background-color: @medLightBgColor;
+  border-radius: @borderRadiusOuterNew;
+
+  > img {
+    border-radius: @borderRadiusNew;
+  }
 
   > .overlay {
     content: "";
@@ -17,6 +22,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    border-radius: @borderRadiusOuterNew;
 
     &.hide {
       display: none;
@@ -28,7 +34,7 @@
       right: 0;
       width: 2rem;
       height: 2rem;
-      margin: 0.5rem;
+      margin: 1rem;
       background-image: url("../../../assets/img/audio_close.svg");
       background-position: center;
       background-size: contain;

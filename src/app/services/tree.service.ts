@@ -8,6 +8,8 @@ import {Log} from './log.service';
 import {TreeListStatistics} from '../entities/tree-list-statistics.entity';
 import {Announcement} from '../entities/announcement.entity';
 import {BeaconData} from '../entities/beacon-data.entity';
+import {BeaconDataRange} from '../entities/beacon-data-range.entity';
+import * as moment from 'moment';
 
 /**
  * Service for backend calls on the tree-list
@@ -96,14 +98,32 @@ export class TreeService extends AbstractService {
 
   /**
    * Load the given beacon's data.
+   * @param beaconId id of beaocn to load data for
+   * @param maxDatapoints maximum datapoints to receive
+   * @param rangeType time range of data to request
    * @param {(trees: Array<Tree>) => void} successCallback Called upon success
    * @param {(error: any) => void} errorCallback Called upon exception
    */
   public loadBeaconData(beaconId: number,
+                  maxDatapoints: number,
+                  rangeType: BeaconDataRange,
                   successCallback: (beaconDatasets: Array<BeaconData>) => void,
                   errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void) {
 
-    const url = this.envService.endpoints.beaconData(beaconId);
+    let rangeStart;
+    switch (rangeType) {
+      case BeaconDataRange.LAST_24_H:
+        rangeStart = moment().utc().add(-24, 'hours').format(this.envService.outputDateFormat);
+        break;
+      case BeaconDataRange.LAST_WEEK:
+        rangeStart = moment().utc().add(-1, 'week').format(this.envService.outputDateFormat);
+        break;
+      case BeaconDataRange.LAST_MONTH:
+        rangeStart = moment().utc().add(-1, 'month').format(this.envService.outputDateFormat);
+        break;
+    }
+
+    const url = this.envService.endpoints.beaconData(beaconId, maxDatapoints, rangeStart);
 
     TreeService.LOG.debug('Loading beacon data for beacon id ' + beaconId + ' from ' + url + ' ...');
 

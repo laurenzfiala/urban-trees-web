@@ -73,7 +73,12 @@
         contributors
       </div>
       <div id="activator" [ngClass]="{'disabled': isMapEnabled || hasStatus(StatusKey.MAP, StatusValue.IN_PROGRESS)}" (click)="isMapEnabled = true">
-        {{'phenology.observation.step1.map_activator' | translate}}
+        <div class="d-has-cursor">
+          {{'phenology.observation.step1.map_activator' | translate}}
+        </div>
+        <div class="d-has-touch">
+          {{'phenology.observation.step1.map_activator_touch' | translate}}
+        </div>
       </div>
     </div>
 

@@ -5,6 +5,7 @@ import {TreeService} from '../../services/tree.service';
 import {Tree} from '../../entities/tree.entity';
 import {BeaconData} from '../../entities/beacon-data.entity';
 import {BeaconFrontend} from '../../entities/beacon-frontend.entity';
+import {BeaconDataRange} from '../../entities/beacon-data-range.entity';
 
 @Component({
   selector: 'ut-tree',
@@ -19,6 +20,11 @@ export class TreeComponent extends AbstractComponent implements OnInit {
 
   public StatusKey = StatusKey;
   public StatusValue = StatusValue;
+  public BeaconDataRange = BeaconDataRange;
+  public BEACON_DATA_RANGE_KEYS: string[] = Object.keys(BeaconDataRange);
+
+  public currentBeaconDataRangeType: BeaconDataRange = BeaconDataRange.LAST_24_H;
+  public maxDatapoints: number = 100;
 
   public tree: Tree;
 
@@ -129,21 +135,27 @@ export class TreeComponent extends AbstractComponent implements OnInit {
       this.tree = tree;
       this.setStatus(StatusKey.TREE_LOADING, StatusValue.SUCCESSFUL);
 
-      if (tree.beacons) {
-        this.loadBeaconData(tree.beacons);
-      }
+      this.loadBeaconData();
     }, (error, apiError) => {
       this.setStatus(StatusKey.TREE_LOADING, StatusValue.FAILED);
     });
 
   }
 
-  private loadBeaconData(beacons: Array<BeaconFrontend>): void {
+  public loadBeaconData(rangeType?: BeaconDataRange): void {
 
-    for (let beacon of beacons) {
+    if (rangeType !== undefined) {
+      this.currentBeaconDataRangeType = rangeType;
+    }
+
+    if (!this.tree || !this.tree.beacons) {
+      return;
+    }
+
+    for (let beacon of this.tree.beacons) {
 
       this.setStatus(StatusKey.BEACON_DATA, 0);
-      this.treeService.loadBeaconData(beacon.id, (beaconData: Array<BeaconData>) => {
+      this.treeService.loadBeaconData(beacon.id, this.maxDatapoints, this.currentBeaconDataRangeType, (beaconData: Array<BeaconData>) => {
         beacon.datasets = beaconData;
         beacon.populateChartData();
         this.setStatus(StatusKey.BEACON_DATA, this.getStatus(StatusKey.BEACON_DATA) + 1);

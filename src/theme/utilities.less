@@ -1,0 +1,21 @@
+// if device input is touch, hide element
+.d-has-cursor {
+  display: block;
+}
+
+@media (pointer: coarse) {
+  .d-has-cursor {
+    display: none;
+  }
+}
+
+// if device input is touchscreen, display element
+.d-has-touch {
+  display: none;
+}
+
+@media (pointer: coarse) {
+  .d-has-touch {
+    display: block;
+  }
+}

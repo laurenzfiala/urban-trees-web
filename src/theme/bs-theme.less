@@ -92,6 +92,50 @@
   }
 }
 
+
+/**
+  Dropdowns
+ */
+
+.dropdown-toggle {
+  z-index: (@dropdownZIndex + 1) !important;
+
+  &:hover {
+    z-index: (@dropdownZIndex + 1) !important;
+  }
+
+  &.btn-sm + .dropdown-menu {
+    margin-top: -2rem;
+    padding-top: 2rem;
+  }
+
+  + .dropdown-menu {
+    z-index: @dropdownZIndex;
+    border-radius: @borderRadiusNew;
+    margin-top: -2.5rem;
+    padding-top: 2.5rem;
+    padding-bottom: 1rem;
+
+    .dropdown-item {
+      cursor: default;
+    }
+  }
+}
+
+.btn-group.open {
+  .dropdown-toggle {
+    z-index: (@dropdownZIndex + 3) !important;
+
+    &:hover {
+      z-index: (@dropdownZIndex + 3) !important;
+    }
+
+    + .dropdown-menu {
+      z-index: (@dropdownZIndex + 2);
+    }
+  }
+}
+
 .list-group-item {
   border-color: @lightBorderColor;
 
@@ -100,6 +144,7 @@
     border-color: @secondaryColorHighlight;
   }
 }
+
 
 .page-link:hover {
   background-color: @medLightBgColor;

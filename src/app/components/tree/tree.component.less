@@ -39,6 +39,7 @@
 
   height: 16rem;
   background-color: @medLightBgColor;
+  border-radius: @borderRadiusOuterNew;
 }
 
 .tree-image {
@@ -47,20 +48,14 @@
   > img {
     max-height: 100%;
     max-width: 100%;
+    border-radius: @borderRadiusOuterNew;
   }
-}
-
-.line-chart-full {
-  display: block;
-  height: 20rem;
 }
 
 .beacon-id {
   display: inline-block;
   padding: @statusPadding;
-  background-color: @statusBg;
-  color: @statusColor;
-  border-radius: @borderRadiusNew;
+  color: @statusBg;
   font-weight: bold;
 }
 
@@ -93,4 +88,9 @@
   &.bg-danger {
     color: @white;
   }
+}
+
+.line-chart-full {
+  display: block;
+  height: 24rem;
 }

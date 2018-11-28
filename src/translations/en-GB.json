@@ -20,7 +20,10 @@
     "back": "Back"
 	},
   "home": {
-    "placeholder": "We are currently working on the app and will add content to this page in the future."
+    "placeholder": "We are currently working on the app and will add content to this page in the future.",
+    "choose": "Choose what to do",
+    "refTrees": "Check out all trees and their stats",
+    "refProjectAccount": "Log in to your project-account"
   },
 	"phenology": {
 		"observation_note": {
@@ -54,7 +57,8 @@
 				"tree_search_placeholder": "Enter Country, City, Street, Species or ID...",
 				"title": "Your tree",
 				"tree_not_found": "No tree found.",
-				"map_activator": "Click to use map"
+				"map_activator": "Click to use map",
+				"map_activator_touch": "Tap to use map"
 			},
 			"step2": {
         "nothing_to_observe": "There is nothing to observe set up for this tree. Should you suspect a mistake, please contact a system administrator.",
@@ -239,12 +243,22 @@
 		},
     "beacon": {
       "details": {
-        "heading": "Detailed Beacon Data"
+        "heading": "Detailed Beacon Data",
+        "range": "Data time range",
+        "maxdataentries": "Maximum datapoints"
       },
       "transfer": {
         "success": "Beacon data successfully transferred!",
         "success_note": "Information below is now up to date.",
         "failed": "Failed to get beacon data for this tree!"
+      },
+      "data": {
+        "missing": "No data for beacon in given timespan",
+        "range": {
+          "24h": "Last 24 hours",
+          "week": "Last week",
+          "month": "Last month"
+        }
       }
     },
     "audioimg": {

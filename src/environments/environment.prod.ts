@@ -17,6 +17,9 @@ export const environment = {
     statistics:                       '/ui/statistics',
     cities:                           '/tree/cities',
     beaconData:                       '/beacon/{beaconId}/data',
+    beaconDataTimespan:               '/beacon/{beaconId}/data?timespanMin={timespanMin}&timespanMax={timespanMax}',
+    beaconDataTimespanMin:            '/beacon/{beaconId}/data?timespanMin={timespanMin}',
+    beaconDataTimespanMax:            '/beacon/{beaconId}/data?timespanMax={timespanMax}',
 
     // Phenology
     phenologySpec:                    '/tree/{treeId}/phenology/spec',
@@ -43,6 +46,7 @@ export const environment = {
 
   security: {
     roles: {
+      user:                           ['ROLE_USER'],
       phenObs:                        ['ROLE_PHENOBS'],
       admin:                          ['ROLE_ADMIN']
     }
