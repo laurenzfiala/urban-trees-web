@@ -23,7 +23,13 @@
     "placeholder": "We are currently working on the app and will add content to this page in the future.",
     "choose": "Choose what to do",
     "refTrees": "Check out all trees and their stats",
-    "refProjectAccount": "Log in to your project-account"
+    "refProjectAccount": "Log in to your project-account",
+    "links": {
+      "tree_list": "Trees",
+      "phen_obs": "Phenology observation",
+      "account": "Account",
+      "infopage": "Info page"
+    }
   },
 	"phenology": {
 		"observation_note": {

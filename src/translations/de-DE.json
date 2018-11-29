@@ -23,7 +23,13 @@
     "placeholder": "Wird arbeiten derzeit an der App und werden hier in Zukunft Inhalte bereitstellen.",
     "choose": "Triff eine Auswahl",
     "refTrees": "Schau Dir alle Bäume und Statistiken an",
-    "refProjectAccount": "Einloggen in den Projekt-Account"
+    "refProjectAccount": "Einloggen in den Projekt-Account",
+    "links": {
+      "tree_list": "Bäume",
+      "phen_obs": "Phänologiebeobachtung",
+      "account": "Konto",
+      "infopage": "Info-Seite"
+    }
   },
 	"phenology": {
 		"observation_note": {
