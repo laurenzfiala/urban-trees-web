@@ -52,6 +52,7 @@ import { TextEditorComponent } from './components/text-editor/text-editor.compon
 import {ProjectPasswordResetComponent} from './components/project-password-reset/project-password-reset.component';
 import { PasswordChangeComponent } from './components/project-login/password-change/password-change.component';
 import {AudioImgComponent} from './components/audio-img/audio-img.component';
+import {NoAuthDirective} from "./directives/noauth.directive";
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, '/translations/');
@@ -83,6 +84,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     // Directives
     SpyDirective,
     AuthDirective,
+    NoAuthDirective,
 
     // Pipes
     StringModificationPipe,

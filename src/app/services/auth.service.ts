@@ -111,10 +111,10 @@ export class AuthService extends AbstractService {
   }
 
   /**
-   * TODO
-   * @param {PasswordReset} changePassword
-   * @param {() => void} successCallback
-   * @param {(error: HttpErrorResponse, apiError?: ApiError) => void} errorCallback
+   * Send change password request to backend.
+   * @param {PasswordReset} changePassword old and new password
+   * @param {() => void} successCallback called upon successful password change
+   * @param {(error: HttpErrorResponse, apiError?: ApiError) => void} errorCallback calle upon error
    */
   public changePassword(changePassword: PasswordReset,
                successCallback: () => void,

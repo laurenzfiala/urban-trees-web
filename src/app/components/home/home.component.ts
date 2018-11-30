@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {EnvironmentService} from "../../services/environment.service";
 
 @Component({
   selector: 'ut-home',
@@ -7,7 +8,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-  constructor() { }
+  constructor(public envService: EnvironmentService) { }
 
   ngOnInit() {
   }

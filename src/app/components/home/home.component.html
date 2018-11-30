@@ -13,11 +13,14 @@
       <div class="btn-img trees" tabindex="-1" routerLink="/trees">
         {{'home.links.tree_list' | translate}}
       </div>
-      <div class="btn-img phenology" tabindex="-1" routerLink="/phenology/observation/step">
+      <div *auth="[envService.security.rolesPhenObs]" class="btn-img phenology" tabindex="-1" routerLink="/phenology/observation/step">
         {{'home.links.phen_obs' | translate}}
       </div>
-      <div class="btn-img account" tabindex="-1" routerLink="/project">
+      <div *auth="[envService.security.rolesUser]" class="btn-img account" tabindex="-1" routerLink="/project">
         {{'home.links.account' | translate}}
+      </div>
+      <div *noauth class="btn-img login" tabindex="-1" routerLink="/login">
+        {{'home.links.login' | translate}}
       </div>
       <a class="btn-img infopage" tabindex="-1" href="http://stadt-baum-klima.sbg.ac.at/" target="_blank">
         {{'home.links.infopage' | translate}}

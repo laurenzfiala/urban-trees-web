@@ -28,7 +28,8 @@
       "tree_list": "Trees",
       "phen_obs": "Phenology observation",
       "account": "Account",
-      "infopage": "Info page"
+      "infopage": "Info page",
+      "login": "Sign in"
     }
   },
 	"phenology": {

@@ -127,6 +127,18 @@ a.btn-img {
       background-image: url("/assets/img/btn_img_bg_infopage_blur.png") !important;
     });
   }
+  &.login {
+    &:before {
+      background-image: url("/assets/img/btn_img_bg_account_blur.png");
+    }
+    &:after {
+      background-image: url("/assets/img/login_icon.svg");
+    }
+    background-image: url("/assets/img/btn_img_bg_login.svg");
+    .hover-unsupported({
+      background-image: url("/assets/img/btn_img_bg_account_blur.png") !important;
+    });
+  }
 }
 
 
