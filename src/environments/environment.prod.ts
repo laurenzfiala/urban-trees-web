@@ -16,6 +16,7 @@ export const environment = {
     allTrees:                         '/tree',
     statistics:                       '/ui/statistics',
     cities:                           '/tree/cities',
+    species:                          '/tree/species',
     beaconData:                       '/beacon/{beaconId}/data',
     beaconDataTimespan:               '/beacon/{beaconId}/data?timespanMin={timespanMin}&timespanMax={timespanMax}',
     beaconDataTimespanMin:            '/beacon/{beaconId}/data?timespanMin={timespanMin}',
@@ -29,6 +30,10 @@ export const environment = {
     // UI
     phenologyObservationResultImg:    '/ui/phenology/observation/result/{treeSpeciesId}/{resultId}/img',
     announcements:                    '/ui/announcements',
+
+    // Admin
+    addCity:                          '/admin/city',
+    addTree:                          '/admin/tree',
 
     // Authentication
     login:                            '/login',

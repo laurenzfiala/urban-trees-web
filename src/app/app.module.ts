@@ -21,7 +21,7 @@ import {
   BsDatepickerModule,
   BsDropdownModule,
   ButtonsModule,
-  CollapseModule,
+  CollapseModule, ModalModule,
   PopoverModule, TabsModule,
   TimepickerModule
 } from 'ngx-bootstrap';
@@ -52,7 +52,13 @@ import { TextEditorComponent } from './components/text-editor/text-editor.compon
 import {ProjectPasswordResetComponent} from './components/project-password-reset/project-password-reset.component';
 import { PasswordChangeComponent } from './components/project-login/password-change/password-change.component';
 import {AudioImgComponent} from './components/audio-img/audio-img.component';
-import {NoAuthDirective} from "./directives/noauth.directive";
+import {NoAuthDirective} from './directives/noauth.directive';
+import {AdminComponent} from './components/admin/admin.component';
+import {AdminBeaconComponent} from './components/admin/beacon/beacon.component';
+import {AdminUserComponent} from './components/admin/user/user.component';
+import { MapComponent } from './components/map/map.component';
+import {AdminTreeComponent} from './components/admin/tree/tree.component';
+import {AdminService} from './services/admin/admin.service';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, '/translations/');
@@ -80,6 +86,11 @@ export function HttpLoaderFactory(http: HttpClient) {
     ProjectPasswordResetComponent,
     PasswordChangeComponent,
     AudioImgComponent,
+    AdminComponent,
+    AdminTreeComponent,
+    AdminBeaconComponent,
+    AdminUserComponent,
+    MapComponent,
 
     // Directives
     SpyDirective,
@@ -103,6 +114,7 @@ export function HttpLoaderFactory(http: HttpClient) {
 
     // Ngx-Bootstrap
     BsDatepickerModule.forRoot(),
+    ModalModule.forRoot(),
     TimepickerModule.forRoot(),
     ButtonsModule.forRoot(),
     PopoverModule.forRoot(),
@@ -135,6 +147,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     // Component-Services
     PhenologyObservationService,
     TreeService,
+    AdminService,
 
     // Guards
     PhenologyObservationStepGuard,

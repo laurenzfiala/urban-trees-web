@@ -8,43 +8,8 @@ timepicker {
   display: inline-block;
 }
 
-#map {
-  position: relative;
-  display: block;
+.map-wrapper {
   height: 350px;
-  margin-top: -1rem;
-
-  > #activator {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    z-index: 99;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    text-align: center;
-    color: @white;
-    font-size: 1.25rem;
-    background-color: rgba(0, 0, 0, 0.15);
-    cursor: pointer;
-
-    &.disabled {
-      display: none;
-    }
-  }
-}
-
-#osm-copyright {
-  display: inline-block;
-  position: absolute;
-  right: 0.5rem;
-  bottom: 0.25rem;
-  z-index: 1;
-  background-color: rgba(201, 201, 201, 0.35);
-  padding: 1px 6px;
-  font-size: 0.8em;
 }
 
 .hide-map {
@@ -64,20 +29,17 @@ timepicker {
   }
 }
 
-#map::ng-deep {
-  .ol-viewport,
-  #osm-copyright,
-  #activator {
-    border-radius: @borderRadius;
-  }
-}
-
 #selected-tree {
   margin-bottom: -0.25rem;
   z-index: -1;
 
   > .list-group-item {
     padding-bottom: 1.5rem;
+  }
+
+  // map alignment only when tree is selected
+  + .map-wrapper {
+    margin-top: -1rem;
   }
 
   li {

@@ -114,3 +114,21 @@
     .round-right();
   }
 }
+
+// overwrite focus outline & border
+textarea:focus,
+textarea.form-control:focus,
+input.form-control:focus,
+input[type=text]:focus,
+input[type=password]:focus,
+input[type=email]:focus,
+input[type=number]:focus,
+[type=text].form-control:focus,
+[type=password].form-control:focus,
+[type=email].form-control:focus,
+[type=tel].form-control:focus,
+[contenteditable].form-control:focus,
+.btn:focus {
+  box-shadow: 0 0 0 @focusOutlineWidth @focusOutlineColor;
+  border-color: @focusBorderColor;
+}

@@ -17,20 +17,23 @@
     "logout": "Log out",
     "project_account_1": "Project-",
     "project_account_2": "Account",
-    "back": "Back"
-	},
-  "home": {
-    "placeholder": "We are currently working on the app and will add content to this page in the future.",
-    "choose": "Choose what to do",
-    "refTrees": "Check out all trees and their stats",
-    "refProjectAccount": "Log in to your project-account",
+    "back": "Back",
     "links": {
       "tree_list": "Trees",
       "phen_obs": "Phenology observation",
       "account": "Account",
       "infopage": "Info page",
-      "login": "Sign in"
+      "log_in": "Sign in",
+      "log_out": "Sign out",
+      "change_password": "Change password",
+      "change_username": "Change username"
     }
+	},
+  "home": {
+    "placeholder": "We are currently working on the app and will add content to this page in the future.",
+    "choose": "Choose what to do",
+    "refTrees": "Check out all trees and their stats",
+    "refProjectAccount": "Log in to your project-account"
   },
 	"phenology": {
 		"observation_note": {
@@ -58,15 +61,11 @@
 				"error_loading": {
 					"text": "Could not load tree data. Please try again later."
 				},
-				"error_map": {
-					"text": "Could not load map data. Please manually choose a tree below."
-				},
 				"tree_search_placeholder": "Enter Country, City, Street, Species or ID...",
 				"title": "Your tree",
 				"tree_not_found": "No tree found.",
-				"map_activator": "Click to use map",
-				"map_activator_touch": "Tap to use map"
-			},
+        "map_error_text": "Could not load map data. Please choose a tree below manually."
+      },
 			"step2": {
         "nothing_to_observe": "There is nothing to observe set up for this tree. Should you suspect a mistake, please contact a system administrator.",
 				"help": {
@@ -146,6 +145,9 @@
     "low": "low",
     "tree": {
       "location": "at {{street}}"
+    },
+    "error": {
+      "text": "We could not load the tree list, please try again."
     }
   },
   "tree_view": {
@@ -285,5 +287,10 @@
 		"os_projects": "Open Source Projects",
 		"os_projects_text": "Following is a list of open source projects used to create this website.",
 		"license_text": "Not currently defined."
-	}
+	},
+  "map": {
+    "error_default_text": "Could not load map data. Please try again.",
+    "activator": "Click to use map",
+    "activator_touch": "Tap to use map"
+  }
 }

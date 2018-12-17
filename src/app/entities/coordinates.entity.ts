@@ -11,4 +11,13 @@ export class Coordinates {
   public y: number;
   public projection: string;
 
+  constructor(x: number,
+              y: number,
+              projection: string) {
+    this.x = x;
+    this.y = y;
+    this.projection = projection;
+  }
+
+
 }

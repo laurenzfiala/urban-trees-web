@@ -1,5 +1,4 @@
 import {Component, Input, OnInit, ViewChild} from '@angular/core';
-import {animate, animation, style} from '@angular/animations';
 
 @Component({
   selector: 'ut-audio-img',
@@ -9,10 +8,10 @@ import {animate, animation, style} from '@angular/animations';
 export class AudioImgComponent implements OnInit {
 
   @Input()
-  private image: String;
+  private image: string;
 
   @Input()
-  private audio: String;
+  private audio: string;
 
   @ViewChild('player')
   private player: any;

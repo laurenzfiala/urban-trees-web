@@ -143,6 +143,10 @@ class EnvironmentEndpoints {
     return this.prependCommonPath(this.context.cities);
   }
 
+  get species() {
+    return this.prependCommonPath(this.context.species);
+  }
+
   get statistics() {
     return this.prependCommonPath(this.context.statistics);
   }
@@ -153,6 +157,14 @@ class EnvironmentEndpoints {
 
   get changePassword() {
     return this.prependCommonPath(this.context.changePassword);
+  }
+
+  get addCity() {
+    return this.prependCommonPath(this.context.addCity);
+  }
+
+  get addTree() {
+    return this.prependCommonPath(this.context.addTree);
   }
 
   public beaconData(beaconId: number, maxDatapoints?: number, timespanMin?: string, timespanMax?: string): string {

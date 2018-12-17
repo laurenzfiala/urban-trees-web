@@ -17,20 +17,23 @@
 		"logout": "Abmelden",
     "project_account_1": "Projekt-",
     "project_account_2": "Account",
-    "back": "Zurück"
-	},
-  "home": {
-    "placeholder": "Wird arbeiten derzeit an der App und werden hier in Zukunft Inhalte bereitstellen.",
-    "choose": "Triff eine Auswahl",
-    "refTrees": "Schau Dir alle Bäume und Statistiken an",
-    "refProjectAccount": "Einloggen in den Projekt-Account",
+    "back": "Zurück",
     "links": {
       "tree_list": "Bäume",
       "phen_obs": "Phänologiebeobachtung",
       "account": "Konto",
       "infopage": "Info-Seite",
-      "login": "Anmelden"
+      "log_in": "Anmelden",
+      "log_out": "Abmelden",
+      "change_password": "Passwort ändern",
+      "change_username": "Nutzername ändern"
     }
+	},
+  "home": {
+    "placeholder": "Wird arbeiten derzeit an der App und werden hier in Zukunft Inhalte bereitstellen.",
+    "choose": "Triff eine Auswahl",
+    "refTrees": "Schau Dir alle Bäume und Statistiken an",
+    "refProjectAccount": "Einloggen in den Projekt-Account"
   },
 	"phenology": {
 		"observation_note": {
@@ -58,17 +61,13 @@
 				"error_loading": {
 					"text": "Baum-Informationen konnten nicht geladen werden, bitte versuche es später noch einmal."
 				},
-				"error_map": {
-					"text": "Kartendaten konnten nicht geladen werden. Bitte wähle weiter unten einen Baum manuell aus."
-				},
 				"tree_search_placeholder": "Gib Land, Stadt, Straße, Spezies oder ID ein...",
 				"title": "Dein Baum",
 				"tree_not_found": "Keinen Baum gefunden.",
-				"map_activator": "Klicken, um die Karte zu nutzen",
-				"map_activator_touch": "Berühren, um die Karte zu nutzen"
+        "map_error_text": "Kartendaten konnten nicht geladen werden. Bitte wähle unten einen Baum manuell aus."
 			},
 			"step2": {
-        "nothing_to_observe": "An diesem Baum gibt es zur Zeit nichts zu beobachten. Falls Du einen Fehler vermutest, wende dich bitte an einen Systemadministrator,",
+        "nothing_to_observe": "An diesem Baum gibt es zur Zeit nichts zu beobachten. Falls Du einen Fehler vermutest, wende dich bitte an einen Systemadministrator.",
 				"help": {
 					"title": "Sieh dir die folgenden Objekte an und markiere das am besten passende Bild"
 				}
@@ -280,5 +279,10 @@
 		"os_projects": "Open-Source Projekte",
 		"os_projects_text": "Nachfolgend eine Liste der in dieser App benutzten Open-Source Projekte.",
 		"license_text": "Zur Zeit nicht definiert."
-	}
+	},
+  "map": {
+    "error_default_text": "Kartendaten konnten nicht geladen werden. Bitte versuche es erneut.",
+    "activator": "Klicken, um die Karte zu nutzen",
+    "activator_touch": "Berühren, um die Karte zu nutzen"
+  }
 }

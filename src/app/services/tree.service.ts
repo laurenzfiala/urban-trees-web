@@ -10,6 +10,8 @@ import {Announcement} from '../entities/announcement.entity';
 import {BeaconData} from '../entities/beacon-data.entity';
 import {BeaconDataRange} from '../entities/beacon-data-range.entity';
 import * as moment from 'moment';
+import {City} from '../entities/city.entity';
+import {Species} from '../entities/species.entity';
 
 /**
  * Service for backend calls on the tree-list
@@ -45,7 +47,9 @@ export class TreeService extends AbstractService {
         successCallback(result);
       }, (e: any) => {
         TreeService.LOG.error('Could not load statistics: ' + e.message, e);
-        errorCallback(e, this.safeApiError(e));
+        if (errorCallback) {
+          errorCallback(e, this.safeApiError(e));
+        }
       });
 
   }
@@ -66,7 +70,9 @@ export class TreeService extends AbstractService {
         successCallback(results);
       }, (e: any) => {
         TreeService.LOG.error('Could not load trees: ' + e.message, e);
-        errorCallback(e, this.safeApiError(e));
+        if (errorCallback) {
+          errorCallback(e, this.safeApiError(e));
+        }
       });
 
   }
@@ -91,7 +97,9 @@ export class TreeService extends AbstractService {
         successCallback(result);
       }, (e: any) => {
         TreeService.LOG.error('Could not load tree with id ' + treeId + ': ' + e.message, e);
-        errorCallback(e, this.safeApiError(e));
+        if (errorCallback) {
+          errorCallback(e, this.safeApiError(e));
+        }
       });
 
   }
@@ -134,28 +142,55 @@ export class TreeService extends AbstractService {
         successCallback(results);
       }, (e: any) => {
         TreeService.LOG.error('Could not load beacon data with beacon id ' + beaconId + ': ' + e.message, e);
-        errorCallback(e, this.safeApiError(e));
+        if (errorCallback) {
+          errorCallback(e, this.safeApiError(e));
+        }
       });
 
   }
 
   /**
-   * Loads all cities from the database.
-   * @param {(trees: Array<Tree>) => void} successCallback Called upon success
+   * Loads all cities from the backend.
+   * @param {(trees: Array<City>) => void} successCallback Called upon success
    * @param {(error: any) => void} errorCallback Called upon exception
    */
-  public loadCities(successCallback: (cities: Array<string>) => void,
+  public loadCities(successCallback: (cities: Array<City>) => void,
                    errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void) {
 
     TreeService.LOG.debug('Loading cities from ' + this.envService.endpoints.cities + ' ...');
 
-    this.http.get<Array<string>>(this.envService.endpoints.cities)
+    this.http.get<Array<City>>(this.envService.endpoints.cities)
       .timeout(this.envService.defaultTimeout)
-      .subscribe((results: Array<string>) => {
+      .subscribe((results: Array<City>) => {
         successCallback(results);
       }, (e: any) => {
         TreeService.LOG.error('Could not load cities: ' + e.message, e);
-        errorCallback(e, this.safeApiError(e));
+        if (errorCallback) {
+          errorCallback(e, this.safeApiError(e));
+        }
+      });
+
+  }
+
+  /**
+   * Loads all species from the backend.
+   * @param {(trees: Array<City>) => void} successCallback Called upon success
+   * @param {(error: any) => void} errorCallback Called upon exception
+   */
+  public loadSpecies(successCallback: (cities: Array<Species>) => void,
+                   errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void) {
+
+    TreeService.LOG.debug('Loading species from ' + this.envService.endpoints.species + ' ...');
+
+    this.http.get<Array<Species>>(this.envService.endpoints.species)
+      .timeout(this.envService.defaultTimeout)
+      .subscribe((results: Array<Species>) => {
+        successCallback(results);
+      }, (e: any) => {
+        TreeService.LOG.error('Could not load species: ' + e.message, e);
+        if (errorCallback) {
+          errorCallback(e, this.safeApiError(e));
+        }
       });
 
   }

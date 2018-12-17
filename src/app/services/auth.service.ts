@@ -44,13 +44,22 @@ export class AuthService extends AbstractService {
   /**
    * Return the users' roles if they are logged in,
    * null otherwise or if no roles can be found.
+   * - 2018/12/17: apiKey present now grants access to phenobs roles.
+   *               Please note that apiKey authorization is not checked client-side unline JWT auth.
+   *               Therefore unauthorizes users may access some pages, but they can't execute any server-side
+   *               functions.
+   *               TODO add backend lookup to validate apiKey
    * @returns {Array<String>} List of the current users' roles.
    */
   public getUserRoles(): Array<string> {
 
     const token = AuthService.getJWTTokenRaw();
+    const apiKey = this.getApiKey();
 
     if (!token) {
+      if (apiKey) {
+        return this.envService.security.rolesPhenObs;
+      }
       return null;
     }
 
@@ -69,7 +78,7 @@ export class AuthService extends AbstractService {
    * - Else, return false (deny access).
    * @param grantRoles Roles to grant access to (any match).
    */
-  public isUserRoleAccessGranted(grantRoles: string[]): boolean {
+  public isUserRoleAccessGranted(grantRoles: String[]): boolean {
 
     const userRoles = this.getUserRoles();
 
@@ -81,7 +90,10 @@ export class AuthService extends AbstractService {
       return true;
     }
 
-    return userRoles.some(userRole => grantRoles.indexOf(userRole) !== -1);
+    return userRoles.some(userRole => {
+      // double-equals is intentional here for comparing two separate entities
+      return grantRoles.findIndex(e => e == userRole) !== -1;
+    });
 
   }
 

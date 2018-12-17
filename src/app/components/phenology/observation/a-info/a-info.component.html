@@ -45,53 +45,20 @@
   <div [ngClass]="{'hide-map': !hasStatus(StatusKey.TREES, StatusValue.SUCCESSFUL)}" class="form-group map-container mb-0">
 
     <ul *ngIf="selectedTree" id="selected-tree" class="list-group">
-      <li class="list-group-item"
-          (click)="centerTree(selectedTree)"
-          (keydown)="centerTree(selectedTree)">
+      <li class="list-group-item">
         <span class="badge badge-light float-right">#{{selectedTree.id}}</span>
         <b>{{'tree.species.' + selectedTree.species | lowercase | translate}}</b>
         {{'phenology.observation.step1.tree_location' | translate:selectedTree.location}}
       </li>
     </ul>
 
-    <div id="map" class="has-status-overlay" (click)="onMapClick($event)">
-      <div *ngIf="hasStatus(StatusKey.MAP, StatusValue.IN_PROGRESS)" class="status-overlay load load-md"></div>
-      <div *ngIf="hasStatus(StatusKey.MAP, StatusValue.FAILED)" class="status-overlay">
-        <div class="status-content">
-          <div class="status-heading heading-danger">
-            {{'general.error' | translate}}
-          </div>
-          <div class="status-text">
-            {{'phenology.observation.step1.error_map.text' | translate}}
-          </div>
-          <div class="status-controls">
-            <button class="btn btn-light float-right" (click)="load()" (keydown)="load()">{{'general.retry' | translate}}</button>
-          </div>
-        </div>
-      </div>
-      <div id="osm-copyright">&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>
-        contributors
-      </div>
-      <div id="activator" [ngClass]="{'disabled': isMapEnabled || hasStatus(StatusKey.MAP, StatusValue.IN_PROGRESS)}" (click)="isMapEnabled = true">
-        <div class="d-has-cursor">
-          {{'phenology.observation.step1.map_activator' | translate}}
-        </div>
-        <div class="d-has-touch">
-          {{'phenology.observation.step1.map_activator_touch' | translate}}
-        </div>
-      </div>
+    <div class="map-wrapper">
+      <ut-map
+        [markers]="availableTrees"
+        [(selectedMarker)]="selectedTree"
+        (selectedMarkerChange)="selectTree(selectedTree.id)"
+        errorText="phenology.observation.step1.map_error_text"></ut-map>
     </div>
-
-    <!--<div class="status my-3">
-      <div class="status-content">
-        <div class="status-heading heading-danger">
-          {{'phenology.observation.step1.trees_changed_alert.title' | translate}}
-        </div>
-        <div class="status-text">
-          {{'phenology.observation.step1.trees_changed_alert.text' | translate}}
-        </div>
-      </div>
-    </div>-->
 
     <div class="form-group mt-2 mb-0">
       <input
@@ -106,8 +73,8 @@
       <li *ngFor="let tree of displayTrees[currentDisplayTreePage]"
           class="list-group-item list-group-item-action"
           [ngClass]="{'active': tree.id === selectedTree?.id}"
-          (click)="selectTree(tree.id); centerTree(tree)"
-          (keydown)="selectTree(tree.id); centerTree(tree)">
+          (click)="selectTree(tree.id);"
+          (keydown)="selectTree(tree.id);">
         <span class="badge badge-light float-right">#{{tree.id}}</span>
         <b>
           {{'tree.species.' + tree.species | lowercase | translate}}

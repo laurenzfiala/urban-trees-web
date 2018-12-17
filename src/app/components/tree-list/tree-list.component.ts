@@ -5,6 +5,8 @@ import {TreeFrontend} from '../../entities/tree-frontend.entity';
 import {TreeListStatistics} from '../../entities/tree-list-statistics.entity';
 import {Log} from '../../services/log.service';
 import {TreeService} from '../../services/tree.service';
+import {TranslateService} from '@ngx-translate/core';
+import {City} from '../../entities/city.entity';
 
 @Component({
   selector: 'ut-tree-list',
@@ -21,19 +23,30 @@ export class TreeListComponent extends AbstractComponent implements OnInit {
   public statistics: TreeListStatistics;
 
   /**
-   * All tress to display.
+   * Once loaded, contains all trees available.
    */
-  public trees: Array<Tree>;
+  public availableTrees: Array<TreeFrontend>;
+
+  /**
+   * Trees currently displayed.
+   */
+  public displayTrees: Array<TreeFrontend>;
 
   /**
    * All cities to display.
    */
-  public cities: Array<string>;
+  public cities: Array<City>;
+
+  /**
+   * Current tree search input.
+   */
+  public treeSearchInput: string;
 
   public StatusKey = StatusKey;
   public StatusValue = StatusValue;
 
-  constructor(private treeService: TreeService) {
+  constructor(private treeService: TreeService,
+              private translateService: TranslateService) {
     super();
   }
 
@@ -57,7 +70,9 @@ export class TreeListComponent extends AbstractComponent implements OnInit {
    * Load all cities & trees.
    */
   public loadTreeList(): void {
-    this.loadTrees();
+    this.loadTrees(() => {
+      this.displayTrees = this.availableTrees;
+    });
     this.loadCities();
   }
 
@@ -68,7 +83,7 @@ export class TreeListComponent extends AbstractComponent implements OnInit {
   private loadStatistics(successCallback?: () => void): void {
 
     this.setStatus(StatusKey.STATISTICS, StatusValue.IN_PROGRESS);
-    if (this.trees) {
+    if (this.availableTrees) {
       successCallback();
       return;
     }
@@ -92,13 +107,13 @@ export class TreeListComponent extends AbstractComponent implements OnInit {
   private loadTrees(successCallback?: () => void): void {
 
     this.setStatus(StatusKey.TREES, StatusValue.IN_PROGRESS);
-    if (this.trees) {
+    if (this.availableTrees) {
       successCallback();
       return;
     }
 
     this.treeService.loadTrees((trees: Array<Tree>) => {
-      this.trees = <Array<TreeFrontend>>trees;
+      this.availableTrees = <Array<TreeFrontend>>trees;
       this.setStatus(StatusKey.TREES, StatusValue.SUCCESSFUL);
       if (successCallback) {
         successCallback();
@@ -121,8 +136,8 @@ export class TreeListComponent extends AbstractComponent implements OnInit {
       return;
     }
 
-    this.treeService.loadCities((cities: Array<string>) => {
-      this.cities = <Array<string>>cities;
+    this.treeService.loadCities((cities: Array<City>) => {
+      this.cities = <Array<City>>cities;
       this.setStatus(StatusKey.CITIES, StatusValue.SUCCESSFUL);
       if (successCallback) {
         successCallback();
@@ -130,6 +145,34 @@ export class TreeListComponent extends AbstractComponent implements OnInit {
     }, () => {
       this.setStatus(StatusKey.CITIES, StatusValue.FAILED);
     });
+
+  }
+
+  /**
+   * Set tree search and filter displayed trees by input.
+   * @param {string} searchInput user's tree search input
+   */
+  public setTreeSearchInput(searchInput: string): void {
+
+    if (!searchInput) {
+      this.displayTrees = this.availableTrees;
+      return;
+    }
+
+    const idInput = Number(searchInput);
+    if (!Number.isNaN(idInput)) {
+      this.displayTrees = this.availableTrees.filter((tree: TreeFrontend) => {
+        return tree.id === idInput;
+      });
+      return;
+    }
+
+    this.displayTrees = this.availableTrees.filter((tree: TreeFrontend) => {
+        const translationKey = ('tree.species.' + tree.species).toLowerCase();
+        return this.translateService.instant(translationKey).toLowerCase().indexOf(searchInput.toLowerCase()) !== -1 ||
+          tree.location.street.toLowerCase().indexOf(searchInput.toLowerCase()) !== -1 ||
+          tree.location.city.toLowerCase().indexOf(searchInput.toLowerCase()) !== -1;
+      });
 
   }
 

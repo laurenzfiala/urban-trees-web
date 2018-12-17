@@ -17,6 +17,11 @@ import {ProjectHomeComponent} from './components/project-home/project-home.compo
 import {ProjectLoginComponent} from './components/project-login/project-login.component';
 import {ProjectLoginGuard} from './components/project-login/project-login.guard';
 import {PasswordChangeComponent} from './components/project-login/password-change/password-change.component';
+import {AdminComponent} from './components/admin/admin.component';
+import {environment} from '../environments/environment';
+import {AdminTreeComponent} from './components/admin/tree/tree.component';
+import {AdminBeaconComponent} from './components/admin/beacon/beacon.component';
+import {AdminUserComponent} from './components/admin/user/user.component';
 
 const routes: Routes = [
   {
@@ -58,6 +63,30 @@ const routes: Routes = [
     component: ProjectHomeComponent,
     canActivate: [ProjectLoginGuard]//,
     //data: {roles: environment.security.roles.phenObs}
+  },
+  {
+    path: 'admin',
+    component: AdminComponent,
+    canActivate: [ProjectLoginGuard],
+    data: {roles: environment.security.roles.admin}
+  },
+  {
+    path: 'admin/tree',
+    component: AdminTreeComponent,
+    canActivate: [ProjectLoginGuard],
+    data: {roles: environment.security.roles.admin}
+  },
+  {
+    path: 'admin/beacon',
+    component: AdminBeaconComponent,
+    canActivate: [ProjectLoginGuard],
+    data: {roles: environment.security.roles.admin}
+  },
+  {
+    path: 'admin/user',
+    component: AdminUserComponent,
+    canActivate: [ProjectLoginGuard],
+    data: {roles: environment.security.roles.admin}
   },
   {
     path: 'phenology',

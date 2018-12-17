@@ -14,4 +14,14 @@ export class TreeLocation {
   public street: string;
   public city: string;
 
+  constructor(id: number,
+              coordinates: Coordinates,
+              street: string,
+              city: string) {
+    this.id = id;
+    this.coordinates = coordinates;
+    this.street = street;
+    this.city = city;
+  }
+
 }

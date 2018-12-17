@@ -1,8 +1,8 @@
 <ut-header></ut-header>
 
-<div class="container my-2 my-lg-5 text-center">
+<div class="container my-2 my-lg-5">
 
-  <div class="text-subtle mt-4">
+  <div class="text-subtle text-center mt-4">
     {{'home.choose' | translate}}
   </div>
   <hr class="mt-1"/>
@@ -11,19 +11,19 @@
   <div class="btn-img-toolbar d-none d-lg-block">
     <div class="my-3 d-flex">
       <div class="btn-img trees" tabindex="-1" routerLink="/trees">
-        {{'home.links.tree_list' | translate}}
+        {{'navigation.links.tree_list' | translate}}
       </div>
       <div *auth="[envService.security.rolesPhenObs]" class="btn-img phenology" tabindex="-1" routerLink="/phenology/observation/step">
-        {{'home.links.phen_obs' | translate}}
+        {{'navigation.links.phen_obs' | translate}}
       </div>
       <div *auth="[envService.security.rolesUser]" class="btn-img account" tabindex="-1" routerLink="/project">
-        {{'home.links.account' | translate}}
+        {{'navigation.links.account' | translate}}
       </div>
       <div *noauth class="btn-img login" tabindex="-1" routerLink="/login">
-        {{'home.links.login' | translate}}
+        {{'navigation.links.log_in' | translate}}
       </div>
       <a class="btn-img infopage" tabindex="-1" href="http://stadt-baum-klima.sbg.ac.at/" target="_blank">
-        {{'home.links.infopage' | translate}}
+        {{'navigation.links.infopage' | translate}}
       </a>
     </div>
   </div>
@@ -32,18 +32,21 @@
   <div class="btn-img-toolbar d-md-block d-lg-none">
     <div class="my-3 d-flex">
       <div class="btn-img trees" tabindex="-1" routerLink="/trees">
-        {{'home.links.tree_list' | translate}}
+        {{'navigation.links.tree_list' | translate}}
       </div>
-      <div class="btn-img phenology" tabindex="-1" routerLink="/phenology/observation/step">
-        {{'home.links.phen_obs' | translate}}
+      <div *auth="[envService.security.rolesPhenObs]" class="btn-img phenology" tabindex="-1" routerLink="/phenology/observation/step">
+        {{'navigation.links.phen_obs' | translate}}
       </div>
     </div>
     <div class="my-3 d-flex">
-      <div class="btn-img account" tabindex="-1" routerLink="/project">
-        {{'home.links.account' | translate}}
+      <div *auth="[envService.security.rolesUser]" class="btn-img account" tabindex="-1" routerLink="/project">
+        {{'navigation.links.account' | translate}}
+      </div>
+      <div *noauth class="btn-img login" tabindex="-1" routerLink="/login">
+        {{'navigation.links.log_in' | translate}}
       </div>
       <a class="btn-img infopage" tabindex="-1" href="http://stadt-baum-klima.sbg.ac.at/" target="_blank">
-        {{'home.links.infopage' | translate}}
+        {{'navigation.links.infopage' | translate}}
       </a>
     </div>
   </div>

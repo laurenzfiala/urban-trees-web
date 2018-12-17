@@ -1,0 +1,191 @@
+// new image-buttons
+.btn-img-toolbar {
+  margin: 0 -10px;
+}
+
+// if hover is unsupported, display text & blurred background always
+.btn-img {
+  &:before {
+    .hover-unsupported({ display: none !important; });
+  }
+}
+
+a.btn-img {
+  text-decoration: none;
+  cursor: default;
+  color: white;
+}
+
+.btn-img {
+  position: relative;
+
+  margin: 0 10px;
+
+  flex-grow: 1;
+  flex-basis: 0;
+
+  width: auto;
+  height: 150px;
+
+  border-radius: @borderRadiusNew;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+  color: rgba(255, 255, 255, 0.85);
+  text-shadow: 0 0 2px black;
+  font-size: 0.8rem;
+  display: inline-flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 0.35rem;
+
+  user-select: none;
+
+  &:before,
+  &:after {
+    border-radius: @borderRadiusNew;
+
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: block;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 1;
+  }
+
+  &:before {
+    transition: opacity 0.25s;
+  }
+
+  &:after {
+    background-size: 65px;
+    transition: background-size 0.25s, opacity 0.25s;
+  }
+
+  &:hover {
+    &:before {
+      opacity: 0;
+    }
+    &:after {
+      opacity: 0.35;
+      background-size: 80px;
+    }
+  }
+
+  &.lg {
+    flex-grow: 2;
+  }
+
+  &.trees {
+    &:before {
+      background-image: url("/assets/img/btn-img-bg/tree_list_blur.png");
+    }
+    &:after {
+      background-image: url("/assets/img/icon/light/tree_icon.svg");
+    }
+    background-image: url("/assets/img/btn-img-bg/tree_list.png");
+    .hover-unsupported({
+      background-image: url("/assets/img/btn-img-bg/tree_list_blur.png") !important;
+    });
+  }
+  &.phenology {
+    &:before {
+      background-image: url("/assets/img/btn-img-bg/phenology_blur.png");
+    }
+    &:after {
+      background-image: url("/assets/img/icon/light/leaf_icon.svg");
+    }
+    background-image: url("/assets/img/btn-img-bg/phenology.png");
+    .hover-unsupported({
+      background-image: url("/assets/img/btn-img-bg/phenology_blur.png") !important;
+    });
+  }
+  &.account {
+    &:before {
+      background-image: url("/assets/img/btn-img-bg/account_blur.png");
+    }
+    &:after {
+      background-image: url("/assets/img/icon/light/user_icon.svg");
+    }
+    background-image: url("/assets/img/btn-img-bg/account.svg");
+    .hover-unsupported({
+      background-image: url("/assets/img/btn-img-bg/account_blur.png") !important;
+    });
+  }
+  &.infopage {
+    &:before {
+      background-image: url("/assets/img/btn-img-bg/infopage_blur.png");
+    }
+    &:after {
+      background-image: url("/assets/img/icon/light/infopage_icon.svg");
+    }
+    background-image: url("/assets/img/btn-img-bg/infopage.png");
+    .hover-unsupported({
+      background-image: url("/assets/img/btn-img-bg/infopage_blur.png") !important;
+    });
+  }
+  &.login {
+    &:before {
+      background-image: url("/assets/img/btn-img-bg/login_blur.png");
+    }
+    &:after {
+      background-image: url("/assets/img/icon/light/login_icon.svg");
+    }
+    background-image: url("/assets/img/btn-img-bg/login.svg");
+    .hover-unsupported({
+      background-image: url("/assets/img/btn-img-bg/login_blur.png") !important;
+    });
+  }
+  &.logout {
+    &:before {
+      background-image: url("/assets/img/btn-img-bg/login_blur.png");
+    }
+    &:after {
+      background-image: url("/assets/img/icon/light/logout_icon.svg");
+    }
+    background-image: url("/assets/img/btn-img-bg/login.svg");
+    .hover-unsupported({
+      background-image: url("/assets/img/btn-img-bg/login_blur.png") !important;
+    });
+  }
+  &.change-password {
+    &:before {
+      background-image: url("/assets/img/btn-img-bg/change_password_blur.png");
+    }
+    &:after {
+      background-image: url("/assets/img/icon/light/key_icon.svg");
+    }
+    background-image: url("/assets/img/btn-img-bg/change_password.svg");
+    .hover-unsupported({
+      background-image: url("/assets/img/btn-img-bg/change_password_blur.png") !important;
+    });
+  }
+  &.change-username {
+    &:before {
+      background-image: url("/assets/img/btn-img-bg/change_username_blur.png");
+    }
+    &:after {
+      background-image: url("/assets/img/icon/light/username_icon.svg");
+    }
+    background-image: url("/assets/img/btn-img-bg/change_username.svg");
+    .hover-unsupported({
+      background-image: url("/assets/img/btn-img-bg/change_username_blur.png") !important;
+    });
+  }
+  &.admin-console {
+    &:before {
+      background-image: url("/assets/img/btn-img-bg/admin.png");
+    }
+    &:after {
+      background-image: url("/assets/img/icon/light/admin_icon.svg");
+    }
+    background-image: url("/assets/img/btn-img-bg/admin.png");
+  }
+}
+
