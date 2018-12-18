@@ -47,9 +47,17 @@ li.nav-item {
   }
 
   &.dropdown {
+    &.open > .nav-link > .i-cog {
+      background-image: url("/assets/img/icon/dark/cog_solid.svg");
+    }
 
-    > .nav-link > .fa {
-      font-size: 1.25rem;
+    > .nav-link {
+      padding: 1rem;
+
+      > .i {
+        width: 1.6rem;
+        height: 1.6rem;
+      }
     }
 
     .dropdown-menu {
@@ -66,11 +74,6 @@ li.nav-item {
 
       &.lang-current {
         background-color: @bgColor;
-      }
-
-      &.sign-out > .fa {
-        padding-top: 0.25rem;
-        font-size: 1rem;
       }
     }
   }

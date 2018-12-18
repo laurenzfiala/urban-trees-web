@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Injectable, OnInit} from '@angular/core';
 import {AuthService} from '../../services/auth.service';
 import {Login} from '../../entities/login.entity';
 import {AbstractComponent} from '../abstract.component';
@@ -33,8 +33,7 @@ export class ProjectLoginComponent extends AbstractComponent implements OnInit {
   public username: string;
   public password: string;
 
-  constructor(public window: Window,
-              private router: Router,
+  constructor(private router: Router,
               private route: ActivatedRoute,
               private authService: AuthService) {
     super();
@@ -106,7 +105,9 @@ export class ProjectLoginComponent extends AbstractComponent implements OnInit {
    * Whether the client is on a secure connection or not.
    */
   public isSslConnection(): boolean {
-    return this.window.location.protocol === 'https:' || this.window.location.hostname === 'localhost' || this.window.location.hostname.indexOf('192.168.') === 0;
+    return window.location.protocol === 'https:' ||
+      window.location.hostname === 'localhost' ||
+      window.location.hostname.indexOf('192.168.') === 0;
   }
 
 }

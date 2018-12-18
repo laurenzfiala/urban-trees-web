@@ -48,8 +48,10 @@
       padding: 0.25rem 0.5rem;
 
       &:after {
-        font-family: FontAwesome;
-        font-size: 1.35rem;
+        content: "";
+        width: 1.75rem;
+        height: 1.75rem;
+        background-size: contain;
         float: right;
       }
 
@@ -57,7 +59,7 @@
         color: @success;
 
         &:after {
-          content: "\f046";
+          background-image: url("/assets/img/icon/check_mark_boxed_green.svg");
         }
       }
 
@@ -65,7 +67,7 @@
         color: @warning;
 
         &:after {
-          content: "\f071";
+          background-image: url("/assets/img/icon/warning_yellow.svg");
         }
       }
 
@@ -73,7 +75,7 @@
         color: @danger;
 
         &:after {
-          content: "\f071";
+          background-image: url("/assets/img/icon/warning_red.svg");
         }
       }
     }

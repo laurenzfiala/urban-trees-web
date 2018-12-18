@@ -8,10 +8,10 @@ import {Component, Input, OnInit, ViewChild} from '@angular/core';
 export class AudioImgComponent implements OnInit {
 
   @Input()
-  private image: string;
+  public image: string;
 
   @Input()
-  private audio: string;
+  public audio: string;
 
   @ViewChild('player')
   private player: any;

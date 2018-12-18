@@ -28,8 +28,8 @@
         </a>
       </li>
       <li dropdown class="nav-item dropdown pointer">
-        <a dropdownToggle class="nav-link">
-          <i class="fa fa-cog" aria-hidden="true"></i>
+        <a dropdownToggle class="nav-link d-flex">
+          <i class="i i-cog i-dark" aria-hidden="true"></i>
         </a>
         <div *dropdownMenu class="dropdown-menu dropdown-menu-right">
           <a *ngFor="let lang of availableLanguages"
@@ -42,8 +42,7 @@
             <div class="dropdown-divider"></div>
             <a class="dropdown-item sign-out"
                (click)="logout()">
-              <!--<i class="fa fa-sign-out-alt float-right" aria-hidden="true"></i>-->
-              <img class="float-right" src="../assets/img/logout_icon_black.svg" height="25px" />
+              <i class="i i-sm i-logout i-black float-right"></i>
               {{'navigation.logout' | translate}}
             </a>
           </div>

@@ -18,8 +18,8 @@
                  [(ngModel)]="dataset.uiObservationDate"
                  [maxDate]="dataset.uiMaxObservationDate">
           <div class="input-group-append">
-            <button class="btn btn-outline-secondary" type="button" (click)="dp.toggle()">
-              <i class="fa fa-calendar-o" aria-hidden="true"></i>
+            <button class="btn btn-outline-secondary d-flex" type="button" (click)="dp.toggle()">
+              <i class="i i-xs i-calendar i-dark" aria-hidden="true"></i>
             </button>
           </div>
         </div>
@@ -97,7 +97,7 @@
           <a class="page-link"
              (click)="displayTreePage(currentDisplayTreePage-1)"
              (keydown)="displayTreePage(currentDisplayTreePage-1)">
-            <i class="fa fa-angle-double-left" aria-hidden="true"></i>
+            <i class="i i-arrow-left i-dark" aria-hidden="true"></i>
           </a>
         </li>
         <li *ngFor="let page of displayTrees; let i = index" class="page-item">
@@ -112,7 +112,7 @@
           <a class="page-link"
              (click)="displayTreePage(currentDisplayTreePage+1)"
              (keydown)="displayTreePage(currentDisplayTreePage+1)">
-            <i class="fa fa-angle-double-right" aria-hidden="true"></i>
+            <i class="i i-arrow-right i-dark" aria-hidden="true"></i>
           </a>
         </li>
       </ul>

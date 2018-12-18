@@ -143,6 +143,7 @@
     "high": "Höchste",
     "average": "Durchschnitt",
     "low": "Geringste",
+    "none_found": "Keine Bäume gefunden.",
     "tree": {
       "location": "at {{street}}"
     }
@@ -169,6 +170,7 @@
     "status_insufficient_permissions": "Du bist nicht berechtigt, die angefragte Seite anzuzeigen",
     "description": "Dein persönlicher Projekt-Account ermöglicht es Dir, Deine Phänologiebeobachtungen einzutragen, projektbezogene Neuigkeiten anzuzeigen und vieles mehr.",
     "disclaimer": "Wir speichern keine persönlichen Daten, außer jene deutlich zum Abschicken markiert und für wissenschaftliche Zwecke.<br/>Es werden keine automatisierten E-Mails verschickt.<br/>Durch das Anmelden erlaubst Du, Deine Anmeldedaten lokal zu speichern.",
+    "reset_info": "Dein neues Passwort muss Folgendes erfüllen:<ul><li>Enthält mindestens 1 kleinbuchstaben (a-z)</li><li>Enthält mindestens 1 GROSSBUCHSTABEN (A-Z)</li><li>Enthält mindestens 1 Zahl (0-9)</li><li>Enthält mindestens 1 Symbol (!§$%&/()=?\"'+#<>,..-*~)</li><li>Ist mindestens 10 Zeichen lang</li></ul>",
     "already_logged_in": "Du bist bereits angemeldet."
   },
 	"en-GB": "English",

@@ -55,7 +55,7 @@
                 hasAnyStatus(StatusKey.SUBMISSION_FILE, StatusValue.IN_PROGRESS, StatusValue.SUCCESSFUL)">
     <i *ngIf="hasStatus(StatusKey.SUBMISSION_DATA, StatusValue.IN_PROGRESS) ||
               hasStatus(StatusKey.SUBMISSION_FILE, StatusValue.IN_PROGRESS)"
-      class="fa fa-spin load-xs fa-refresh float-left"></i>
+        class="i i-xs i-spin i-load float-left"></i>
     {{'phenology.observation.step4.submit_btn' | translate}}
   </button>
 
@@ -72,16 +72,16 @@
                                                              'inprogress': hasStatus(StatusKey.SUBMISSION_DATA, StatusValue.IN_PROGRESS),
                                                              'error': hasStatus(StatusKey.SUBMISSION_DATA, StatusValue.FAILED)}">
           <i *ngIf="hasStatus(StatusKey.SUBMISSION_DATA, StatusValue.PENDING)"
-             class="fa fa-chevron-right"
+             class="i i-arrow-right"
              aria-hidden="true"></i>
           <i *ngIf="hasStatus(StatusKey.SUBMISSION_DATA, StatusValue.IN_PROGRESS)"
-             class="fa fa-spin fa-refresh"
+             class="i i-spin i-load"
              aria-hidden="true"></i>
           <i *ngIf="hasStatus(StatusKey.SUBMISSION_DATA, StatusValue.SUCCESSFUL)"
-             class="fa fa-check"
+             class="i i-check"
              aria-hidden="true"></i>
           <i *ngIf="hasStatus(StatusKey.SUBMISSION_DATA, StatusValue.FAILED)"
-             class="fa fa-times"
+             class="i i-cross"
              aria-hidden="true"></i>
         </div>
       </div>
@@ -114,16 +114,16 @@
                                                              'inprogress': hasStatus(StatusKey.SUBMISSION_FILE, StatusValue.IN_PROGRESS),
                                                              'error': hasStatus(StatusKey.SUBMISSION_FILE, StatusValue.FAILED)}">
           <i *ngIf="hasStatus(StatusKey.SUBMISSION_FILE, StatusValue.PENDING)"
-             class="fa fa-chevron-right"
+             class="i i-arrow-right"
              aria-hidden="true"></i>
           <i *ngIf="hasStatus(StatusKey.SUBMISSION_FILE, StatusValue.IN_PROGRESS)"
-             class="fa fa-spin fa-refresh"
+             class="i i-spin i-load"
              aria-hidden="true"></i>
           <i *ngIf="hasStatus(StatusKey.SUBMISSION_FILE, StatusValue.SUCCESSFUL)"
-             class="fa fa-check"
+             class="i i-check"
              aria-hidden="true"></i>
           <i *ngIf="hasStatus(StatusKey.SUBMISSION_FILE, StatusValue.FAILED)"
-             class="fa fa-times"
+             class="i i-cross"
              aria-hidden="true"></i>
         </div>
       </div>

@@ -121,13 +121,17 @@
     [placeholder]="'phenology.observation.step1.tree_search_placeholder' | translate" />
 </div>
 
+<div *ngIf="cities?.size === 0" class="pt-3 pb-1 text-center text-subtle">
+  {{'tree_list.none_found' | translate}}
+</div>
+
 <div *ngFor="let city of cities">
 
   <div class="highlight-wrapper pt-3 pb-1">
 
     <div class="highlight-content container">
       <div class="hl-title hl-title-light">
-        {{city.name}}
+        {{city}}
       </div>
     </div>
 
@@ -140,7 +144,7 @@
       <ul class="list-group mt-2">
         <ng-container *ngFor="let tree of displayTrees">
 
-          <li *ngIf="tree.location.city === city.name"
+          <li *ngIf="tree.location.city === city"
               class="list-group-item list-group-item-action"
               [routerLink]="['/tree', tree.id]">
 

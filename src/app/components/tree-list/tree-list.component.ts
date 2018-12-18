@@ -35,7 +35,7 @@ export class TreeListComponent extends AbstractComponent implements OnInit {
   /**
    * All cities to display.
    */
-  public cities: Array<City>;
+  public cities: Set<string> = new Set<string>();
 
   /**
    * Current tree search input.
@@ -72,8 +72,19 @@ export class TreeListComponent extends AbstractComponent implements OnInit {
   public loadTreeList(): void {
     this.loadTrees(() => {
       this.displayTrees = this.availableTrees;
+      this.updateCities();
     });
-    this.loadCities();
+  }
+
+  /**
+   * Get all cities to display
+   * from displayTrees array.
+   */
+  private updateCities(): void {
+    this.cities.clear();
+    for (let t of this.displayTrees) {
+      this.cities.add(t.location.city);
+    }
   }
 
   /**
@@ -125,30 +136,6 @@ export class TreeListComponent extends AbstractComponent implements OnInit {
   }
 
   /**
-   * Load all cities using TreeListService.
-   * @param {() => void} successCallback when loading was successful.
-   */
-  private loadCities(successCallback?: () => void): void {
-
-    this.setStatus(StatusKey.CITIES, StatusValue.IN_PROGRESS);
-    if (this.cities) {
-      successCallback();
-      return;
-    }
-
-    this.treeService.loadCities((cities: Array<City>) => {
-      this.cities = <Array<City>>cities;
-      this.setStatus(StatusKey.CITIES, StatusValue.SUCCESSFUL);
-      if (successCallback) {
-        successCallback();
-      }
-    }, () => {
-      this.setStatus(StatusKey.CITIES, StatusValue.FAILED);
-    });
-
-  }
-
-  /**
    * Set tree search and filter displayed trees by input.
    * @param {string} searchInput user's tree search input
    */
@@ -156,6 +143,7 @@ export class TreeListComponent extends AbstractComponent implements OnInit {
 
     if (!searchInput) {
       this.displayTrees = this.availableTrees;
+      this.updateCities();
       return;
     }
 
@@ -164,6 +152,7 @@ export class TreeListComponent extends AbstractComponent implements OnInit {
       this.displayTrees = this.availableTrees.filter((tree: TreeFrontend) => {
         return tree.id === idInput;
       });
+      this.updateCities();
       return;
     }
 
@@ -173,6 +162,7 @@ export class TreeListComponent extends AbstractComponent implements OnInit {
           tree.location.street.toLowerCase().indexOf(searchInput.toLowerCase()) !== -1 ||
           tree.location.city.toLowerCase().indexOf(searchInput.toLowerCase()) !== -1;
       });
+    this.updateCities();
 
   }
 

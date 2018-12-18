@@ -25,7 +25,7 @@ export class ProjectPasswordResetComponent extends AbstractComponent {
 
   public newPasswordConfirm: string;
 
-  public passwordStrength: number = 0;
+  public isPasswordValid: boolean = false;
 
   public passwordStrengthClass: string = '';
 
@@ -45,50 +45,24 @@ export class ProjectPasswordResetComponent extends AbstractComponent {
    */
   public checkPasswordStrength(): void {
 
-    const SINGLE_VAL_SCORE: number = 50;
-
     const pw = this.passwordReset.newPassword;
-    let score = 0;
+    let passwordValid = false;
 
     // lowercase alphabetic chars
     let lowerLetterChars = (pw.match(/[a-z]/g) || []).length;
-    if ((lowerLetterChars - pw.length) !== 0) {
-      score += lowerLetterChars * SINGLE_VAL_SCORE;
-    }
-
-    // lowercase alphabetic chars
     let upperLetterChars = (pw.match(/[A-Z]/g) || []).length;
-    if ((upperLetterChars - pw.length) !== 0) {
-      score += upperLetterChars * SINGLE_VAL_SCORE;
-    }
-
-    // numeric chars
     let numericChars = (pw.match(/[0-9]/g) || []).length;
-    if ((numericChars - pw.length) !== 0) {
-      score += numericChars * SINGLE_VAL_SCORE;
-    }
-
-    // special chars
     let specialChars = (pw.match(/[^a-zA-Z0-9]/g) || []).length;
-    if ((specialChars - pw.length) !== 0) {
-      score += specialChars * SINGLE_VAL_SCORE;
+
+    if (lowerLetterChars !== 0 &&
+      upperLetterChars !== 0 &&
+      numericChars !== 0 &&
+      specialChars !== 0 &&
+      pw.length >= 10) {
+      passwordValid = true;
     }
 
-    if (score !== 0) {
-      score += (lowerLetterChars+1) * (upperLetterChars+1) * (numericChars+1) * (specialChars+1) / 3;
-    }
-
-    if (score > 100) {
-      score = 100;
-    }
-
-    this.passwordStrength = score;
-
-    if (score < 100) {
-      this.passwordStrengthClass = 'is-weak';
-    } else {
-      this.passwordStrengthClass = 'is-strong';
-    }
+    this.isPasswordValid = passwordValid;
 
   }
 
@@ -105,7 +79,7 @@ export class ProjectPasswordResetComponent extends AbstractComponent {
    * @returns {boolean}
    */
   public isValid(): boolean {
-    return this.passwordReset.oldPassword && this.isNewPasswordsMatching() && this.passwordStrength === 100;
+    return this.passwordReset.oldPassword && this.isNewPasswordsMatching() && this.isPasswordValid;
   }
 
 }

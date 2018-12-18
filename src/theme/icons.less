@@ -1,0 +1,115 @@
+
+@spinAnimationDuration: 1.25s;
+@iconPath: ~"/assets/img/icon/";
+@iconDirLight: ~"light/";
+@iconDirDark: ~"dark/";
+@iconDirBlack: ~"black/";
+@iconSuffix: ~".svg";
+@icons:
+  ~"admin",
+  ~"arrow-left",
+  ~"arrow-right",
+  ~"beacon",
+  ~"calendar",
+  ~"check",
+  ~"check-boxed",
+  ~"cog",
+  ~"cross",
+  ~"infopage",
+  ~"key",
+  ~"leaf",
+  ~"load",
+  ~"login",
+  ~"logout",
+  ~"search",
+  ~"tree",
+  ~"user",
+  ~"username"
+;
+
+// --------------------
+
+.i {
+  display: inline-block;
+
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: contain;
+
+  .i-md();
+}
+
+// --------------------
+
+.i-spin {
+  animation: i-spin-keyframes @spinAnimationDuration infinite linear;
+}
+
+.i-spin-clockwise {
+  animation: i-spin-keyframes @spinAnimationDuration infinite reverse;
+}
+
+@keyframes i-spin-keyframes
+{
+  0%   {transform: rotate(360deg); transform-origin: 50% 50%;}
+  100% {transform: rotate(0deg); transform-origin: 50% 50%;}
+}
+
+// --------------------
+
+.i-xxs {
+  width: 1rem;
+  height: 1rem;
+}
+
+.i-xs {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.i-sm {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.i-md {
+  width: 1.75rem;
+  height: 1.75rem;
+}
+
+.i-lg {
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
+.i-xl {
+  width: 3.5rem;
+  height: 3.5rem;
+}
+
+// --------------------
+
+.i-width-only {
+  height: auto;
+}
+
+// --------------------
+
+.loop(@i) when (@i < length(@icons)) {
+  @name: extract(@icons, @i);
+
+  .i-@{name} {
+    background-image: url("@{iconPath}@{iconDirLight}@{name}@{iconSuffix}");
+
+    &.i-dark {
+      background-image: url("@{iconPath}@{iconDirDark}@{name}@{iconSuffix}");
+    }
+    &.i-black {
+      background-image: url("@{iconPath}@{iconDirBlack}@{name}@{iconSuffix}");
+    }
+  }
+
+  .loop((@i + 1));
+}
+
+.loop(0);

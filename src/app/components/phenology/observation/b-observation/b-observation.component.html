@@ -19,7 +19,7 @@
         <div class="card-header-icon"></div>
         <div class="card-header-icon"></div>
 
-        <h5 class="mb-0" [ngClass]="{'todo': !type.done, 'done': type.done}">
+        <h5 class="mb-0" [ngClass]="{'done': type.done}">
           {{'phenology.observation.type.' + type.name + '.name_plural' | translate}}
         </h5>
       </div>

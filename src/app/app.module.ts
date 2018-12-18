@@ -48,7 +48,6 @@ import {NgxChartsModule} from '@swimlane/ngx-charts';
 import {TreeService} from './services/tree.service';
 import { DecimalPlacesPipe } from './pipes/decimal-places.pipe';
 import {AuthDirective} from './directives/auth.directive';
-import { TextEditorComponent } from './components/text-editor/text-editor.component';
 import {ProjectPasswordResetComponent} from './components/project-password-reset/project-password-reset.component';
 import { PasswordChangeComponent } from './components/project-login/password-change/password-change.component';
 import {AudioImgComponent} from './components/audio-img/audio-img.component';
@@ -101,8 +100,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     StringModificationPipe,
     CapitalizationPipe,
     LowercasePipe,
-    DecimalPlacesPipe,
-    TextEditorComponent
+    DecimalPlacesPipe
   ],
   imports: [
     // Core
@@ -135,9 +133,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     })
   ],
   providers: [
-    // Native providers
-    {provide: Window, useValue: window},
-
     // Core services
     EnvironmentService,
     SubscriptionManagerService,
