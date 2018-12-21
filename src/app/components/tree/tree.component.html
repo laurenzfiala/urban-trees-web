@@ -1,7 +1,7 @@
 <ut-header></ut-header>
 
 <div *ngIf="hasStatus(StatusKey.APP_TRANSFER_STATUS, StatusValue.SUCCESSFUL)" class="transfer-status success round">
-  <img src="../../../assets/img/alert_success.svg"/>
+  <img src="/assets/img/icon/round/success.svg"/>
   <div>
     {{'tree.beacon.transfer.success' | translate}}
     <div class="note">{{'tree.beacon.transfer.success_note' | translate}}</div>
@@ -9,7 +9,7 @@
 </div>
 
 <div *ngIf="hasStatus(StatusKey.APP_TRANSFER_STATUS, StatusValue.FAILED)" class="transfer-status danger round">
-  <img src="../../../assets/img/alert_danger.svg"/>
+  <img src="/assets/img/icon/round/error.svg"/>
   {{'tree.beacon.transfer.failed' | translate}}
 </div>
 
@@ -141,7 +141,7 @@
 
       </div>
 
-      <div *ngIf="beacon.chartData && beacon.datasets?.length > 0" class="line-chart-full mb-2">
+      <div *ngIf="beacon.chartData && beacon.datasets?.length > 0" class="line-chart-full">
         <ngx-charts-line-chart
           [scheme]="colorScheme"
           [results]="beacon.chartData"
@@ -154,8 +154,7 @@
           [showYAxisLabel]="showYAxisLabel"
           [xAxisLabel]="xAxisLabel"
           [yAxisLabel]="yAxisLabel"
-          [autoScale]="autoScale"
-          (select)="onSelect($event)">
+          [autoScale]="autoScale">
         </ngx-charts-line-chart>
       </div>
 

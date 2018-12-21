@@ -19,7 +19,8 @@
             "assets": [
               "src/assets",
               "src/translations",
-              "src/favicon.ico"
+              "src/favicon.ico",
+              "src/.htaccess"
             ],
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.css",

@@ -35,7 +35,7 @@ export class AudioImgComponent implements OnInit {
   public showOverlay: boolean = true;
 
   /**
-   * Level of audio volumne from 1-3.
+   * Level of audio volumne from 0-3.
    */
   public volumeLevel: number = 1;
 
@@ -86,7 +86,7 @@ export class AudioImgComponent implements OnInit {
   public toggleVolume(): void {
     this.volumeLevel++;
     if (this.volumeLevel > 3) {
-      this.volumeLevel = 1;
+      this.volumeLevel = 0;
     }
     this.setVolume();
   }
