@@ -2,11 +2,13 @@
 
 <div class="container mt-4 mb-2 my-lg-5">
 
+  <ut-user-overview *auth="[envService.security.rolesUser]"></ut-user-overview>
+
   <!-- For large devices -->
   <div class="btn-img-toolbar d-none d-lg-block">
     <div class="my-3 d-flex">
       <div *auth="[envService.security.rolesPhenObs]" class="btn-img lg phenology" tabindex="-1" routerLink="/phenology/observation/step">
-        {{'home.links.phen_obs' | translate}}
+        {{'navigation.links.phen_obs' | translate}}
       </div>
       <div class="btn-img change-password" tabindex="-1" routerLink="/account/changepassword">
         {{'navigation.links.change_password' | translate}}

@@ -1,0 +1,179 @@
+<div class="position-relative">
+
+  <div class="beacon-toolbar">
+
+    <!-- time range -->
+    <div *ngIf="showData" class="d-inline-block">
+
+      <div dropdown class="btn-group">
+        <button dropdownToggle type="button" class="btn btn-sm btn-outline-dark dropdown-toggle">
+          {{currentBeaconDataMode | translate}}
+        </button>
+        <div *dropdownMenu class="dropdown-menu">
+          <a *ngFor="let mode of BEACON_DATA_MODE_KEYS;" class="dropdown-item" (click)="loadBeaconData(BeaconDataMode[mode]);">{{BeaconDataMode[mode] | translate}}</a>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- add beacon (modify) -->
+    <div *ngIf="modify" class="d-inline-block" [ngClass]="{'ml-2': showData}">
+
+      <button class="btn btn-sm btn-outline-primary d-flex align-items-center" (click)="onAddBeaconClick()">
+        <i class="i i-xs i-beacon-info mr-1"></i>
+        Add beacon
+      </button>
+
+    </div>
+
+  </div>
+
+</div>
+
+<tabset *ngIf="tree?.beacons?.length !== 0">
+  <tab *ngFor="let beacon of tree.beacons" [id]="beacon.deviceId" [active]="isTabActive(beacon)">
+    <ng-template tabHeading>
+      <div class="d-flex justify-content-center align-items-center">
+        {{beacon.deviceId}}
+        <i class="beacon-status"
+           [ngClass]="{'ok': beacon.status === 'OK', 'new': beacon.status === 'INITIAL', 'error': beacon.status === 'LOCKED' || beacon.status === 'INVALID_SETTINGS'}"></i>
+      </div>
+    </ng-template>
+
+    <div *ngIf="showData && !(beacon.chartData && beacon.datasets?.length > 0)" class="beacon-warning my-4">
+      <div class="i mr-2"></div>
+      {{'tree.beacon.data.missing' | translate}}
+    </div>
+
+    <div *ngIf="showData && beacon.chartData && beacon.datasets?.length > 0" class="line-chart-full">
+      <ngx-charts-line-chart
+        [scheme]="colorScheme"
+        [results]="beacon.chartData"
+        [gradient]="true"
+        [xAxis]="true"
+        [yAxis]="true"
+        [legend]="true"
+        [legendPosition]="'below'"
+        [showXAxisLabel]="true"
+        [showYAxisLabel]="false"
+        [xAxisLabel]="'beacon.chart.xAxisLabel' | translate"
+        [autoScale]="true"
+        [roundDomains]="true">
+      </ngx-charts-line-chart>
+
+    </div>
+
+    <div *ngIf="modify" class="beacon-settings mt-3">
+
+      <table class="table table-striped">
+        <tr>
+          <td>Device ID</td>
+          <td>{{beacon.deviceName}}</td>
+        </tr>
+        <tr>
+          <td>Address</td>
+          <td>{{beacon.bluetoothAddress}}</td>
+        </tr>
+        <tr>
+          <td>Status</td>
+          <td>{{beacon.status}}</td>
+        </tr>
+      </table>
+
+      <div class="mt-3 d-flex justify-content-end">
+
+        <ng-template #removeBeaconConfirm>
+          <div class="mb-1">
+            Do you really want to remove this beacon?
+          </div>
+          <div *ngIf="hasStatus(StatusKey.REMOVE_BEACON, StatusValue.FAILED)" class="d-flex justify-content-center text-danger mb-1">
+            <i class="i i-sm i-warning-danger mr-2"></i>
+            Failed to remove
+          </div>
+          <button *ngIf="hasAnyStatus(StatusKey.REMOVE_BEACON, StatusValue.PENDING, StatusValue.FAILED)"
+                  class="btn btn-danger btn-block"
+                  (click)="onRemoveBeaconClick(beacon)">
+            Yes, remove
+          </button>
+          <button *ngIf="hasStatus(StatusKey.REMOVE_BEACON, StatusValue.IN_PROGRESS)" class="btn btn-danger btn-block">
+              <i class="i i-sm i-spin i-load float-left"></i>
+              Removing
+          </button>
+          <div *ngIf="hasStatus(StatusKey.REMOVE_BEACON, StatusValue.SUCCESSFUL)" class="d-flex justify-content-center text-success my-2">
+            <i class="i i-sm i-check-success mr-2"></i>
+            Successfully removed!
+          </div>
+        </ng-template>
+        <button class="btn btn-sm btn-outline-danger d-flex text-center"
+                [popover]="removeBeaconConfirm">
+          <i class="i i-xs i-trash-danger mr-1"></i>
+          Remove beacon
+        </button>
+
+      </div>
+
+      <hr/>
+
+      <div *ngIf="hasStatus(StatusKey.BEACON_SETTINGS, StatusValue.IN_PROGRESS)" class="beacon-message my-4">
+        <i class="i i-spin i-dark i-load mr-2"></i>
+        Loading beacon settings...
+      </div>
+
+      <div *ngIf="hasStatus(StatusKey.BEACON_SETTINGS, StatusValue.FAILED)" class="beacon-warning my-4">
+        <i class="i mr-2"></i>
+        Could not load beacon settings
+      </div>
+
+      <div *ngIf="beacon.settings">
+
+        <table class="table table-striped">
+        <tr>
+          <td>PIN</td>
+          <td>{{beacon.settings.pin}}</td>
+        </tr>
+        <tr>
+          <td>Reference Date</td>
+          <td>{{beacon.settings.refTime}}</td>
+        </tr>
+        <tr>
+          <td>Battery Level</td>
+          <td>{{beacon.settings.batteryLevel}}</td>
+        </tr>
+        <tr>
+          <td>Firmware version</td>
+          <td>{{beacon.settings.firmwareVersionCode}}</td>
+        </tr>
+        <tr>
+          <td>Logging interval</td>
+          <td>{{beacon.settings.loggingIntervalMin}} min</td>
+        </tr>
+        <tr>
+          <td>Sensor interval</td>
+          <td>{{beacon.settings.sensorIntervalSec}} sec</td>
+        </tr>
+        <tr>
+          <td>Transmit power</td>
+          <td>{{beacon.settings.transmitPowerDb}} db</td>
+        </tr>
+        </table>
+
+        <div class="text-center text-subtle text-sm">
+          <div *ngIf="beacon.status !== 'INITIAL'; else beaconSettingsNotFetched">
+            Settings last fetched from device at {{beacon.settings.checkDate}}
+          </div>
+          <ng-template #beaconSettingsNotFetched>
+            Settings are placeholder until they are fetched by the app at least once.
+          </ng-template>
+        </div>
+
+      </div>
+
+    </div>
+
+  </tab>
+</tabset>
+
+<div *ngIf="tree?.beacons?.length === 0" class="beacon-warning my-4">
+  <div class="i mr-2"></div>
+  {{'tree.beacon.details.none_attached' | translate}}
+</div>

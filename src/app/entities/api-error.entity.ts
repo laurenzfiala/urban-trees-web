@@ -33,7 +33,7 @@ export class ApiError {
    */
   public clientErrorCode: number;
 
-  constructor(status: string, timestamp: string, message: string, clientErrorCode?: number) {
+  constructor(status?: string, timestamp?: string, message?: string, clientErrorCode?: number) {
     this.status = status;
     this.timestamp = timestamp;
     this.message = message;
@@ -44,12 +44,12 @@ export class ApiError {
 
   /**
    * Construct new from untyped object.
-   * If given object is null, return null.
+   * If given object is null, return api error with unset properties.
    */
   public static fromObject(o: any): ApiError {
 
     if (!o) {
-      return null;
+      return new ApiError();
     }
 
     return new ApiError(

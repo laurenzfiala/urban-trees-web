@@ -1,0 +1,27 @@
+@import "../../../theme/variables";
+
+.search-input {
+  padding-left: 3.2rem;
+  background-image: url("/assets/img/icon/dark/search.svg");
+  background-position: 1rem 50%;
+  background-repeat: no-repeat;
+  background-size: 1.5rem;
+}
+
+ul {
+
+  > li.list-group-item-action:not(.active) {
+    cursor: pointer;
+  }
+
+  > li.list-group-item-action.new-tree {
+    font-weight: bold;
+    text-align: center;
+  }
+
+  > li.list-group-item.disabled {
+    color: @darkGrey;
+    font-size: 0.85rem;
+    text-align: center;
+  }
+}

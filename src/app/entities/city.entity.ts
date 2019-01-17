@@ -27,10 +27,18 @@ export class City {
   public static fromObject(o: any): City {
 
     return new City(
-      o.id,
-      o.name
+      o.name,
+      o.id
     );
 
+  }
+
+  /**
+   * Compare two cities to each other.
+   * If one or both of the cities are falsy, false is returned.
+   */
+  public static equals(a: City, b: City) {
+    return a && b && a.id === b.id;
   }
 
 }

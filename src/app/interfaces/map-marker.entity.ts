@@ -9,7 +9,5 @@ export interface MapMarker {
   getId(): number;
   getCoordsX(): number;
   getCoordsY(): number;
-  isSelected(): boolean;
-  setSelected(selected: boolean): void;
 
 }

@@ -1,6 +1,6 @@
 import {TreeLocation} from './tree-location.entity';
-import {Beacon} from './beacon.entity';
 import {BeaconFrontend} from './beacon-frontend.entity';
+import {TreeSpecies} from './tree-species.entity';
 
 /**
  * Single tree.
@@ -13,10 +13,7 @@ export class Tree {
   public id: number;
 
   public location: TreeLocation;
-  public speciesId: number;
-  public species: string;
-  public genusId: number;
-  public genus: string;
+  public species: TreeSpecies;
   public plantationYear: number;
   public isPlantationYearEstimate: boolean;
   public beacons: Array<BeaconFrontend>;
@@ -24,20 +21,14 @@ export class Tree {
   constructor(
     id: number,
     location: TreeLocation,
-    speciesId: number,
-    species: string,
-    genusId: number,
-    genus: string,
+    species: TreeSpecies,
     plantationYear: number,
     isPlantationYearEstimate: boolean,
     beacons: Array<BeaconFrontend>
   ) {
     this.id = id;
     this.location = location;
-    this.speciesId = speciesId;
     this.species = species;
-    this.genusId = genusId;
-    this.genus = genus;
     this.plantationYear = plantationYear;
     this.isPlantationYearEstimate = isPlantationYearEstimate;
     this.beacons = beacons;
@@ -47,11 +38,8 @@ export class Tree {
 
     return new Tree(
       o.id,
-      o.location,
-      o.speciesId,
-      o.species,
-      o.genusId,
-      o.genus,
+      TreeLocation.fromObject(o.location),
+      TreeSpecies.fromObject(o.species),
       o.plantationYear,
       o.isPlantationYearEstimate,
       o.beacons && o.beacons.map(b => BeaconFrontend.fromObject(b))

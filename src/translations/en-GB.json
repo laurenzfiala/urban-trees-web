@@ -30,10 +30,13 @@
     }
 	},
   "home": {
-    "placeholder": "We are currently working on the app and will add content to this page in the future.",
-    "choose": "Choose what to do",
-    "refTrees": "Check out all trees and their stats",
-    "refProjectAccount": "Log in to your project-account"
+    "greeting": "Hello, {{username}}!",
+    "level_up": "You reached level {{level}}!",
+    "loading_stats_achievements": "Loading achievements and statistics...",
+    "loading_stats_achievements_failed": "Failed to load achievements and statistics.",
+    "level": "Level",
+    "xp": "XP",
+    "next_level_difference": "more for level"
   },
 	"phenology": {
 		"observation_note": {
@@ -57,7 +60,7 @@
           "text": "We recently changed some trees and their species, as well as their location. Please be careful when searching by number (#x)!"
         },
 				"observation_date_label": "Observation time",
-				"tree_location": "at {{street}} in {{city}}",
+				"tree_location": "at {{street}} in {{city.name}}",
 				"error_loading": {
 					"text": "Could not load tree data. Please try again later."
 				},
@@ -254,21 +257,32 @@
 		},
     "beacon": {
       "details": {
-        "heading": "Detailed Beacon Data",
+        "heading": "Beacon Data",
         "range": "Data time range",
-        "maxdataentries": "Maximum datapoints"
+        "maxdataentries": "Maximum datapoints",
+        "none_attached": "This tree has no beacons attached to it."
       },
       "transfer": {
         "success": "Beacon data successfully transferred!",
         "success_note": "Information below is now up to date.",
-        "failed": "Failed to get beacon data for this tree!"
+        "failed": "Failed to get beacon data for this tree!",
+        "message": {
+          "title": "Thank you!",
+          "text": "You helped transfer {{amount}} datasets just now!"
+        }
       },
       "data": {
         "missing": "No data for beacon in given timespan",
-        "range": {
+        "datapoints": "datasets",
+        "mode": {
           "24h": "Last 24 hours",
           "week": "Last week",
-          "month": "Last month"
+          "temp_month_per_day": "Last month by day (temperature)",
+          "humidity_month_per_day": "Last month by day (humidity)"
+        },
+        "all_time": {
+          "control_label": "All time",
+          "info_popover": "Data below might be interpolated if too much data would be shown otherwise."
         }
       }
     },

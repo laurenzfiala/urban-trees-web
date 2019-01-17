@@ -1,108 +1,192 @@
 <ut-header></ut-header>
 
-<div class="container mt-3">
+<div class="container has-status-overlay mt-3">
 
-  <h4>
-    Add new tree
+  <h4 class="d-flex align-items-center">
+    <i class="i i-dark i-lg i-tree mr-2"></i>
+    <span *ngIf="isNewTree()">Add new tree</span>
+    <span *ngIf="!isNewTree()">Modify existing tree</span>
   </h4>
 
-  <div class="text-subtle text-center mt-4">
-    Select location
-  </div>
-  <hr class="mt-1" />
+  <div class="row mt-3">
+    <div class="col">
 
-  <div class="row">
-    <div class="col map-wrapper">
-      <ut-map
-        [userSetPin]="true"
-        [(selectedMarker)]="marker">
-      </ut-map>
+      <div class="text-subtle text-center mt-4">
+        Select tree / Create new tree
+      </div>
+      <hr class="mt-1" />
+
+      <ut-tree-select
+        [availableTrees]="availableTrees"
+        [selectedTree]="tree"
+        (selectedTreeChange)="onSelectedTreeChange($event)"
+        [selectNewTree]="true"
+      ></ut-tree-select>
+
     </div>
   </div>
 
-  <div class="text-subtle text-center mt-4">
-    Select properties
-  </div>
-  <hr class="mt-1" />
+  <div class="row mt-4">
+    <div class="col">
 
-  <form class="mt-2">
+      <div class="text-subtle text-center mt-4">
+        Select location
+      </div>
+      <hr class="mt-1" />
 
-    <div class="row">
-
-    <!-- LOCATION - CITY -->
-      <div class="col-sm-12 col-md-6 form-group">
-
-        <label for="city">City</label>
-
-        <div *ngIf="cities" class="form-row mb-2">
-          <div class="col">
-            <select id="city" name="citySelect" [(ngModel)]="selectedCity" class="form-control">
-              <option *ngFor="let c of cities" [ngValue]="c" [attr.selected]="c.name === selectedCity ? true : null">{{c.name}}</option>
-            </select>
-          </div>
-          <div class="col-auto">
-            <div class="add-btn" (click)="showNewCityModal(newCityModal)"></div>
-          </div>
+      <div class="row">
+        <div class="col map-wrapper">
+          <ut-map
+            [userSetPin]="true"
+            [(selectedMarker)]="marker">
+          </ut-map>
         </div>
-
       </div>
 
-      <!-- LOCATION - STREET -->
-      <div class="col-sm-12 col-md-6 form-group">
+      <div class="text-subtle text-center mt-4">
+        Select properties
+      </div>
+      <hr class="mt-1" />
 
-        <label for="species">Street &amp; house number</label>
+      <form class="mt-2">
 
-        <div class="form-row mb-2">
-          <div class="col">
-            <input [attr.disabled]="selectedCity ? null : true" class="form-control" type="text" name="street" [(ngModel)]="street" />
-            <div *ngIf="!selectedCity" class="text-danger text-sm">
-              Select city first.
+        <div class="row">
+
+          <!-- LOCATION - CITY -->
+          <div class="col-sm-12 col-md-6 form-group">
+
+            <label for="city">City</label>
+
+            <div *ngIf="cities" class="form-row mb-2">
+              <div class="col">
+                <select id="city" name="citySelect" [(ngModel)]="tree.location.city" [compareWith]="compareCities" class="form-control">
+                  <option *ngFor="let c of cities" [ngValue]="c">{{c.name}}</option>
+                </select>
+              </div>
+              <div class="col-auto">
+                <div class="add-btn" (click)="showNewCityModal(newCityModal)"></div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- LOCATION - STREET -->
+          <div class="col-sm-12 col-md-6 form-group">
+
+            <label for="location">Street &amp; house number</label>
+
+            <div class="form-row mb-2">
+              <div class="col">
+                <input id="location" [attr.disabled]="tree.location.city ? null : true" class="form-control" type="text" name="street" [(ngModel)]="tree.location.street" />
+                <div *ngIf="!tree.location.city" class="text-danger text-sm">
+                  Select city first.
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <!-- SPECIES -->
+          <div class="col-sm-12 col-md-6 form-group">
+
+            <label for="species">Species</label>
+
+            <div *ngIf="species" class="form-row mb-2">
+              <div class="col">
+                <select id="species" name="speciesSelect" [(ngModel)]="tree.species" [compareWith]="compareTreeSpecies" class="form-control">
+                  <option *ngFor="let s of species" [ngValue]="s">
+                    {{'tree.species.latin.' + s.name | lowercase | translate}}
+                  </option>
+                </select>
+              </div>
             </div>
           </div>
+
         </div>
 
-      </div>
-
-    </div>
-
-    <div class="row">
-
-      <!-- SPECIES -->
-      <div class="col-sm-12 col-md-6 form-group">
-
-        <label for="species">Species</label>
-
-        <div *ngIf="species" class="form-row mb-2">
+        <div class="row">
           <div class="col">
-            <select id="species" name="speciesSelect" [(ngModel)]="selectedSpecies" class="form-control">
-              <option *ngFor="let s of species" [ngValue]="s">{{s.name}}</option>
-            </select>
+
+            <hr />
+
+            <div class="float-left mx-4">
+
+              <span *ngIf="hasStatus(StatusKey.SAVE_TREE, StatusValue.IN_PROGRESS)" class="d-flex">
+                <i class="i i-spin i-black i-sm i-load mr-2"></i>
+                Saving tree...
+              </span>
+              <span *ngIf="hasStatus(StatusKey.SAVE_TREE, StatusValue.FAILED)" class="d-flex">
+                <i class="i i-sm i-warning-danger mr-2"></i>
+                Tree could not be saved.
+              </span>
+              <span *ngIf="hasStatus(StatusKey.SAVE_TREE, StatusValue.SUCCESSFUL)" class="d-flex">
+                <i class="i i-sm i-check-success mr-2"></i>
+                Tree successfully saved.
+              </span>
+              <span *ngIf="hasStatus(StatusKey.SAVE_TREE, StatusValue.TREE_MARKER_NOT_SET)">No tree marker was set. Not creating tree.</span>
+
+            </div>
+
+            <div class="text-right">
+
+              <button class="btn btn-default mr-2" routerLink="/admin">Cancel</button>
+              <button class="btn btn-primary" (click)="saveTree()">
+                <span *ngIf="isNewTree()">Create tree</span>
+                <span *ngIf="!isNewTree()">Modify tree</span>
+              </button>
+
+            </div>
+
           </div>
         </div>
-      </div>
+
+      </form>
 
     </div>
 
-  </form>
+  </div>
 
-  <hr />
+  <div *ngIf="isTreeSaved || !isNewTree()"  class="row mt-5">
 
-  <div class="float-left mx-4">
-
-    <span *ngIf="hasStatus(StatusKey.NEW_TREE, StatusValue.IN_PROGRESS)">Adding tree...</span>
-    <span *ngIf="hasStatus(StatusKey.NEW_TREE, StatusValue.FAILED)">Tree could not be added.</span>
-    <span *ngIf="hasStatus(StatusKey.NEW_TREE, StatusValue.TREE_MARKER_NOT_SET)">No tree marker was set. Not creating tree.</span>
+    <h4 class="d-flex align-items-center">
+      <i class="i i-dark i-lg i-beacon mr-2"></i>
+      Beacons
+    </h4>
 
   </div>
 
-  <div class="text-right">
+  <div *ngIf="isTreeSaved || !isNewTree()"  class="row mt-3">
 
-    <button class="btn btn-default mr-2" routerLink="/admin">Cancel</button>
-    <button class="btn btn-primary" (click)="addTree()">Create Tree</button>
+    <div class="col">
 
+      <ut-beacon-list
+        [tree]="tree"
+        [showData]="false"
+        [modify]="true"
+        (addBeacon)="showNewBeaconModal(newBeaconModal)"
+      ></ut-beacon-list>
+
+    </div>
+</div>
+
+<div *ngIf="hasAnyStatusKey([StatusKey.LOAD_TREES, StatusKey.LOAD_CITIES, StatusKey.LOAD_SPECIES], StatusValue.IN_PROGRESS)" class="status-overlay load load-md"></div>
+<div *ngIf="hasAnyStatusKey([StatusKey.LOAD_TREES, StatusKey.LOAD_CITIES, StatusKey.LOAD_SPECIES], StatusValue.FAILED)" class="status-overlay overlay-fixed">
+  <div class="status-content">
+    <div class="status-heading heading-danger">
+      {{'general.error' | translate}}
+    </div>
+    <div class="status-text">
+      Failed to load trees, cities or species
+    </div>
+    <div class="status-controls">
+      <button class="btn btn-light float-right" (click)="load()" (keydown)="load()">{{'general.retry' | translate}}</button>
+    </div>
   </div>
+</div>
 
 </div>
+
+<ut-footer></ut-footer>
 
 <!-- NEW CITY MODAL -->
 <ng-template #newCityModal>
@@ -111,7 +195,7 @@
   </div>
   <div class="modal-body">
     Name of new city:
-    <input [(ngModel)]="newCityName" type="text" class="form-control" />
+    <input [(ngModel)]="newCity.name" type="text" class="form-control" />
   </div>
   <div class="modal-footer">
     <div class="float-left mx-4">
@@ -122,3 +206,33 @@
     <button type="button" class="btn btn-primary" (click)="addCity()">Add city &amp; select</button>
   </div>
 </ng-template>
+
+<!-- NEW BEACON MODAL -->
+<ng-template #newBeaconModal>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Add new beacon</h4>
+  </div>
+  <div class="modal-body">
+    <div class="form-group">
+      <label for="beaconId">ID:</label>
+      <input id="beaconId" [(ngModel)]="newBeacon.deviceId" type="text" class="form-control" placeholder="W05" />
+    </div>
+    <div class="form-group">
+      <label for="beaconAddress">Address:</label>
+      <input id="beaconAddress" [(ngModel)]="newBeacon.bluetoothAddress" type="text" class="form-control" placeholder="AB:CD:EF:01:23:45" />
+    </div>
+    <div class="form-group">
+      <label for="beaconPin">PIN:</label>
+      <input id="beaconPin" [(ngModel)]="newBeacon.settings.pin" type="text" class="form-control" placeholder="0123"/>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="float-left mx-4">
+      <span *ngIf="hasStatus(StatusKey.NEW_BEACON, StatusValue.IN_PROGRESS)">Adding beacon...</span>
+      <span *ngIf="hasStatus(StatusKey.NEW_BEACON, StatusValue.FAILED)">Beacon could not be added.</span>
+    </div>
+    <button type="button" class="btn btn-secondary" (click)="hideNewBeaconModal()">Close</button>
+    <button type="button" class="btn btn-primary" (click)="addBeacon()">Add beacon</button>
+  </div>
+</ng-template>
+

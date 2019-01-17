@@ -11,6 +11,7 @@ import {LogoutReason} from '../components/project-login/logout-reason.enum';
 import {LoginStatus} from '../components/project-login/login-status.enum';
 import {JWTToken} from '../entities/jwt-token.entity';
 import {PasswordReset} from '../entities/password-reset.entity';
+import {isNullOrUndefined} from 'util';
 
 /**
  * Service for user authentication functionality.
@@ -53,7 +54,7 @@ export class AuthService extends AbstractService {
    */
   public getUserRoles(): Array<string> {
 
-    const token = AuthService.getJWTTokenRaw();
+    const token: JWTToken = this.getJWTToken();
     const apiKey = this.getApiKey();
 
     if (!token) {
@@ -63,9 +64,15 @@ export class AuthService extends AbstractService {
       return null;
     }
 
-    const tokenPayload = JWTToken.fromObject(this.jwtHelper.decodeToken(token));
-    return tokenPayload.getRoles();
+    return token.getRoles();
 
+  }
+
+  /**
+   * Returns the logged in users' username.
+   */
+  public getUsername(): string {
+    return this.getJWTToken().sub;
   }
 
   /**
@@ -168,14 +175,14 @@ export class AuthService extends AbstractService {
    */
   public getLogInStatus(): LoginStatus {
 
-    const token = AuthService.getJWTTokenRaw();
+    const token: JWTToken = this.getJWTToken();
     const apiKey = this.getApiKey();
 
     if (apiKey) {
       return LoginStatus.LOGGED_IN_API_KEY;
     }
 
-    if (token && !this.jwtHelper.isTokenExpired(token)) {
+    if (token) {
       return LoginStatus.LOGGED_IN_JWT;
     }
 
@@ -249,13 +256,19 @@ export class AuthService extends AbstractService {
 
   /**
    * Returns the decoded JWT token object.
+   * If the JWT token is expired, return undefined.
    */
   public getJWTToken(): JWTToken {
     const storedToken = AuthService.getJWTTokenRaw();
     if (!storedToken) {
       return undefined;
     }
-    return JWTToken.fromObject(this.jwtHelper.decodeToken(storedToken));
+
+    const token: JWTToken = JWTToken.fromObject(this.jwtHelper.decodeToken(storedToken));
+    if (!token || this.jwtHelper.isTokenExpired(storedToken)) {
+      return undefined;
+    }
+    return token;
   }
 
   /**

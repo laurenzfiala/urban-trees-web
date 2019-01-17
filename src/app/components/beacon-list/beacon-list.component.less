@@ -1,0 +1,71 @@
+@import (reference) "../../../theme/variables";
+
+.beacon-message {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.beacon-warning {
+  .beacon-message;
+
+  > .i {
+    background-image: url("/assets/img/icon/warning_yellow.svg");
+  }
+}
+
+.beacon-status {
+  margin-left: 0.5rem;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 1.5rem;
+  height: 1.5rem;
+
+  &.ok {
+    background-image: url("/assets/img/icon/special/check-badge.svg");
+  }
+
+  &.new {
+    background-image: url("/assets/img/icon/special/new-badge.svg");
+  }
+
+  &.error {
+    background-image: url("/assets/img/icon/special/cross-badge.svg");
+  }
+}
+
+.beacon-toolbar {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 2.5rem;
+  display: flex;
+  align-items: center;
+  background-color: @white;
+
+  padding-left: 0.75rem;
+
+  &:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 1px;
+    border-left: 1px solid @lightBorderColor;
+  }
+}
+
+.beacon-settings table td:first-child{
+  width: 200px;
+}
+
+::ng-deep .popover {
+  width: 250px;
+}
+
+.line-chart-full {
+  height: 60vh;
+  margin: 1rem 0;
+}

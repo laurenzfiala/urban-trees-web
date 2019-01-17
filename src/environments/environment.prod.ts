@@ -21,19 +21,26 @@ export const environment = {
     beaconDataTimespan:               '/beacon/{beaconId}/data?timespanMin={timespanMin}&timespanMax={timespanMax}',
     beaconDataTimespanMin:            '/beacon/{beaconId}/data?timespanMin={timespanMin}',
     beaconDataTimespanMax:            '/beacon/{beaconId}/data?timespanMax={timespanMax}',
+    beaconSettings:                   '/beacon/{beaconId}/settings',
 
     // Phenology
     phenologySpec:                    '/tree/{treeId}/phenology/spec',
     phenologyDatasetSubmission:       '/tree/{treeId}/phenology',
-    phenologyDatasetImageSubmission:  '/usercontent/phenology/observation/{phenologyId}/image',
+    phenologyDatasetImageSubmission:  '/user/phenology/observation/{phenologyId}/image',
 
     // UI
     phenologyObservationResultImg:    '/ui/phenology/observation/result/{treeSpeciesId}/{resultId}/img',
     announcements:                    '/ui/announcements',
 
+    // User
+    userAchievements:                 '/user/achievements',
+
     // Admin
     addCity:                          '/admin/city',
     addTree:                          '/admin/tree',
+    modifyTree:                       '/admin/tree/{treeId}',
+    addBeacon:                        '/admin/beacon',
+    deleteBeacon:                     '/admin/beacon/{beaconId}',
 
     // Authentication
     login:                            '/login',

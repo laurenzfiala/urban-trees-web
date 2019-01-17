@@ -1,0 +1,64 @@
+<div class="form-group mb-0">
+  <input
+    [ngModel]="treeSearchInput"
+    (ngModelChange)="setTreeSearchInput($event)"
+    name="treeSearchInput"
+    class="form-control search-input"
+    [placeholder]="'phenology.observation.step1.tree_search_placeholder' | translate" />
+</div>
+
+<ul *ngIf="displayTrees" class="list-group mt-2">
+  <li *ngIf="selectNewTree"
+      class="list-group-item list-group-item-action new-tree"
+      [ngClass]="{'active': selectedTree.id === 0}"
+      (click)="selectTree(null);"
+      (keydown)="selectTree(null);">
+    Create new tree
+  </li>
+  <li *ngFor="let tree of displayTrees[currentDisplayTreePage]"
+      class="list-group-item list-group-item-action"
+      [ngClass]="{'active': tree.id === selectedTree?.id}"
+      (click)="selectTree(tree.id);"
+      (keydown)="selectTree(tree.id);">
+    <span class="badge badge-light float-right">#{{tree.id}}</span>
+    <b>
+      {{'tree.species.' + tree.species.name | lowercase | translate}}
+    </b>
+    <small [ngClass]="(tree.id === selectedTree?.id) ? 'text-light' : 'text-subtle'">
+      {{'tree.species.latin.' + tree.species.name | lowercase | translate}}
+    </small>
+    <br/>
+    {{'phenology.observation.step1.tree_location' | translate:tree.location}}
+  </li>
+  <li *ngIf="displayTrees?.length === 0"
+      class="list-group-item disabled">
+    {{'phenology.observation.step1.tree_not_found' | translate}}
+  </li>
+</ul>
+
+<nav *ngIf="displayTreePagination">
+  <ul class="pagination mt-2 mb-0">
+    <li class="page-item">
+      <a class="page-link"
+         (click)="displayTreePage(currentDisplayTreePage-1)"
+         (keydown)="displayTreePage(currentDisplayTreePage-1)">
+        <i class="i i-arrow-left i-dark" aria-hidden="true"></i>
+      </a>
+    </li>
+    <li *ngFor="let page of displayTrees; let i = index" class="page-item">
+      <a class="page-link"
+         [ngClass]="{'active': currentDisplayTreePage === i}"
+         (click)="currentDisplayTreePage = i"
+         (keydown)="currentDisplayTreePage = i">
+        {{i+1}}
+      </a>
+    </li>
+    <li class="page-item">
+      <a class="page-link"
+         (click)="displayTreePage(currentDisplayTreePage+1)"
+         (keydown)="displayTreePage(currentDisplayTreePage+1)">
+        <i class="i i-arrow-right i-dark" aria-hidden="true"></i>
+      </a>
+    </li>
+  </ul>
+</nav>

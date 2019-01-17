@@ -30,10 +30,13 @@
     }
 	},
   "home": {
-    "placeholder": "Wird arbeiten derzeit an der App und werden hier in Zukunft Inhalte bereitstellen.",
-    "choose": "Triff eine Auswahl",
-    "refTrees": "Schau Dir alle Bäume und Statistiken an",
-    "refProjectAccount": "Einloggen in den Projekt-Account"
+    "greeting": "Hallo, {{username}}!",
+    "level_up": "Level {{level}} erreicht!",
+    "loading_stats_achievements": "Lade Errungenschaften und Statistiken...",
+    "loading_stats_achievements_failed": "Laden von Errungenschaften und Statistiken fehlgeschlagen.",
+    "level": "Level",
+    "xp": "XP",
+    "next_level_difference": "mehr für Level"
   },
 	"phenology": {
 		"observation_note": {
@@ -57,7 +60,7 @@
           "text": "Wir haben vor Kurzem einige Bäume, Spezies als auch ihre Standorte geändert. Bitte sei vorsichtig beim Suchen mittels Nummer (#x)!"
         },
 				"observation_date_label": "Beobachtungszeitpunkt",
-				"tree_location": "in der {{street}} in {{city}}",
+				"tree_location": "in der {{street}} in {{city.name}}",
 				"error_loading": {
 					"text": "Baum-Informationen konnten nicht geladen werden, bitte versuche es später noch einmal."
 				},
@@ -246,21 +249,32 @@
 		},
     "beacon": {
       "details": {
-        "heading": "Detaillierte Beacon Daten",
+        "heading": "Beacon-Daten",
         "range": "Zeitspanne",
-        "maxdataentries": "Anzahl Datenpunkte"
+        "maxdataentries": "Anzahl Datenpunkte",
+        "none_attached": "An diesem Baum sind keine Beacons angebracht."
       },
       "transfer": {
         "success": "Beacon-Daten erfolgreich übertragen!",
         "success_note": "Die Daten wurden aktualisiert.",
-        "failed": "Der Beacon für diesen Baum konnte nicht ausgelesen werden!"
+        "failed": "Der Beacon für diesen Baum konnte nicht ausgelesen werden!",
+        "message": {
+          "title": "Danke!",
+          "text": "{{amount}} Datensätze wurden soeben durch Deine Hilfe erfasst!"
+        }
       },
       "data": {
         "missing": "Keine Daten für Beacon aufgezeichnet",
-        "range": {
+        "datapoints": "Datensätze",
+        "mode": {
           "24h": "Letzte 24 Stunden",
-          "week": "Letzte 7 Tage",
-          "month": "Letzte 30 Tage"
+          "week": "Letzte Woche",
+          "temp_month_per_day": "Letztes Monat pro Tag (Temperatur)",
+          "humidity_month_per_day": "Letztes Monat pro Tag (Luftfeuchte)"
+        },
+        "all_time": {
+          "control_label": "Geamter Aufzeichnungszeitraum",
+          "info_popover": "Die Daten werden interpoliert falls sonst zu viele Daten angezeigt würden."
         }
       }
     },

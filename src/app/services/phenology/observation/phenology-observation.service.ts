@@ -78,27 +78,6 @@ export class PhenologyObservationService extends AbstractService {
   }
 
   /**
-   * Load all available trees.
-   * @param {(trees: Array<Tree>) => void} successCallback Called upon success
-   * @param {(error: any) => void} errorCallback Called upon exception
-   */
-  public loadTrees(successCallback: (trees: Array<Tree>) => void,
-                   errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void): void {
-
-    PhenologyObservationService.LOG.debug('Loading available trees from ' + this.envService.endpoints.allTrees + ' ...');
-
-    this.http.get<Array<Tree>>(this.envService.endpoints.allTrees)
-      .timeout(this.envService.defaultTimeout)
-      .subscribe((results: Array<Tree>) => {
-        successCallback(results);
-      }, (e: any) => {
-        PhenologyObservationService.LOG.error('Could not load trees: ' + e.message, e);
-        errorCallback(e, this.safeApiError(e));
-      });
-
-  }
-
-  /**
    * Load the observation specification for the currently selected tree.
    * @param {(types: Array<PhenologyObservationTypeFrontend>) => void} successCallback Called upon success
    * @param {(error: any) => void} errorCallback Called upon exception
@@ -112,7 +91,7 @@ export class PhenologyObservationService extends AbstractService {
       return;
     }
 
-    let selectedSpeciesId = this.selectedTree.speciesId;
+    let selectedSpeciesId = this.selectedTree.species.id;
     this.observationSpec = new Array<PhenologyObservationTypeFrontend>();
 
     this.http.get<Array<PhenologyObservationTypeFrontend>>(this.envService.endpoints.getPhenologySpec(selectedSpeciesId))
@@ -140,7 +119,7 @@ export class PhenologyObservationService extends AbstractService {
   public loadResultImg(resultId: number, successCallback: () => void,
                        errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void): void {
 
-    let selectedTreeSpeciesId = this.selectedTree.speciesId;
+    let selectedTreeSpeciesId = this.selectedTree.species.id;
 
     let t = this.envService.endpoints.getPhenologyObservationResultImg(selectedTreeSpeciesId, resultId);
     this.http.get<Image>(t)
@@ -263,7 +242,7 @@ export class PhenologyObservationService extends AbstractService {
    */
   public selectTree(tree: Tree): void {
     // force refresh of changed species spec
-    if (this.selectedTree && tree.speciesId !== this.selectedTree.speciesId) {
+    if (this.selectedTree && tree.species.id !== this.selectedTree.species.id) {
       this.observationSpec = null;
     }
     this.selectedTree = tree;

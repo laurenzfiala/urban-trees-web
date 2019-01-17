@@ -257,13 +257,29 @@ tabset .nav {
     margin-right: 0.5rem;
 
     .nav-link {
-      border-radius: @borderRadius;
-      color: black;
-      background-color: @lightBgColor;
+      border-top-left-radius: @borderRadiusNew;
+      border-top-right-radius: @borderRadiusNew;
+      font-weight: bold;
+      text-align: center;
+      min-width: 150px;
+      padding-top: 0.75rem;
+      padding-bottom: 0.75rem;
+      color: @medGrey;
+
+      &:hover {
+        border-bottom: 0;
+      }
+
+      i {
+        opacity: 0.4;
+      }
 
       &.active {
-        background-color: @secondaryColorHighlight;
-        color: @white;
+        color: @black;
+
+        i {
+          opacity: 1;
+        }
       }
     }
   }
@@ -281,4 +297,8 @@ tabset .nav {
 
 .modal-content {
   border-radius: @borderRadiusNew;
+}
+
+.form-control::placeholder {
+  color: @medGrey;
 }

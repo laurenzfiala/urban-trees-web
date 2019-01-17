@@ -1,0 +1,37 @@
+<div class="user-overview-container">
+  <div *ngIf="hasStatus(StatusKey.ACHIEVEMENTS_LOADING, StatusValue.SUCCESSFUL) && levelUp" class="level-container" [ngClass]="'level-' + level">
+    <img class="level" [src]="'/assets/img/level/' + level + '.svg'" />
+    <img class="level-highlight" [src]="'/assets/img/level/' + level + '_highlight.svg'" />
+    <div class="level-text">
+      {{'home.level_up' | translate:{'level': level} }}
+    </div>
+  </div>
+
+  <div class="info">
+    <div class="greeting mb-3" [ngClass]="{'text-center': !levelUp}">
+      {{'home.greeting' | translate:{'username': username} }}
+    </div>
+    <div class="stats-wrapper" [ngClass]="{'no-level-up': !levelUp}">
+      <div *ngIf="hasStatus(StatusKey.ACHIEVEMENTS_LOADING, StatusValue.IN_PROGRESS)" class="d-flex align-items-center justify-content-center">
+        <i class="i i-spin i-black i-load mr-2"></i>
+        {{'home.loading_stats_achievements' | translate}}
+      </div>
+      <div *ngIf="hasStatus(StatusKey.ACHIEVEMENTS_LOADING, StatusValue.FAILED)" class="d-flex align-items-center justify-content-center text-danger">
+        <i class="i i-warning-danger mr-2"></i>
+        {{'home.loading_stats_achievements_failed' | translate}}
+      </div>
+      <div *ngIf="hasStatus(StatusKey.ACHIEVEMENTS_LOADING, StatusValue.SUCCESSFUL)" class="d-flex align-items-center">
+        <div *ngIf="!levelUp" class="level">
+          <img [src]="'/assets/img/level/' + level + '.svg'" />
+        </div>
+        <div class="stats">
+          {{'home.level' | translate}} {{level}} / {{maxLevel}}<br/>
+          {{achievements?.xp}} {{'home.xp' | translate}} / {{maxLevelXp}} {{'home.xp' | translate}}
+          <div *ngIf="achievements?.xp < maxLevelXp">
+            {{nextLevelXp}} {{'home.next_level_difference' | translate}} {{nextLevel}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

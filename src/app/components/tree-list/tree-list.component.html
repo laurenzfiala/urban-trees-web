@@ -131,7 +131,7 @@
 
     <div class="highlight-content container">
       <div class="hl-title hl-title-light">
-        {{city}}
+        {{city.name}}
       </div>
     </div>
 
@@ -144,7 +144,7 @@
       <ul class="list-group mt-2">
         <ng-container *ngFor="let tree of displayTrees">
 
-          <li *ngIf="tree.location.city === city"
+          <li *ngIf="tree.location.city.id === city.id"
               class="list-group-item list-group-item-action"
               [routerLink]="['/tree', tree.id]">
 
@@ -154,10 +154,10 @@
 
             <span class="badge badge-light float-right">#{{tree.id}}</span>
             <b>
-              {{'tree.species.' + tree.species | lowercase | translate}}
+              {{'tree.species.' + tree.species.name | lowercase | translate}}
             </b>
             <small class="text-subtle">
-              {{'tree.species.latin.' + tree.species | lowercase | translate}}
+              {{'tree.species.latin.' + tree.species.name | lowercase | translate}}
             </small>
             <br/>
             {{'tree_list.tree.location' | translate:tree.location}}
@@ -176,7 +176,7 @@
 
 </div>
 
-<div *ngIf="hasAnyStatusKey([StatusKey.STATISTICS, StatusKey.TREES], StatusValue.FAILED)" class="status-overlay">
+<div *ngIf="hasAnyStatusKey([StatusKey.STATISTICS, StatusKey.TREES], StatusValue.FAILED)" class="status-overlay overlay-fixed">
   <div class="status-content">
     <div class="status-heading heading-danger">
       {{'general.error' | translate}}

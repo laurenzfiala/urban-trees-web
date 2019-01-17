@@ -1,6 +1,5 @@
-import {Component, OnInit, TemplateRef} from '@angular/core';
+import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {BsModalRef, BsModalService} from 'ngx-bootstrap';
-import {Species} from '../../../entities/species.entity';
 import {TreeService} from '../../../services/tree.service';
 import {AdminService} from '../../../services/admin/admin.service';
 import {City} from '../../../entities/city.entity';
@@ -11,6 +10,15 @@ import {MapMarker} from '../../../interfaces/map-marker.entity';
 import {Tree} from '../../../entities/tree.entity';
 import {TreeLocation} from '../../../entities/tree-location.entity';
 import {Coordinates} from '../../../entities/coordinates.entity';
+import {TreeFrontend} from "../../../entities/tree-frontend.entity";
+import {TreeSpecies} from '../../../entities/tree-species.entity';
+import {TreeGenus} from '../../../entities/tree-genus.entity';
+import {Beacon} from '../../../entities/beacon.entity';
+import {BeaconSettings} from '../../../entities/beacon-settings.entity';
+import {BeaconListComponent} from '../../beacon-list/beacon-list.component';
+import {TreeComponent} from '../../tree/tree.component';
+import {MapMarkerDefault} from '../../../entities/map-marker-default.entity';
+import Map = ol.Map;
 
 @Component({
   selector: 'ut-admin-tree',
@@ -22,17 +30,21 @@ export class AdminTreeComponent extends AbstractComponent implements OnInit {
   public StatusKey = StatusKey;
   public StatusValue = StatusValue;
 
+  public availableTrees: Array<TreeFrontend>;
+
+  public tree: TreeFrontend;
+
   private newCityModalRef: BsModalRef;
-  private newCityName: string;
+  private newCity: City;
 
-  public selectedCity: string;
+  private newBeaconModalRef: BsModalRef;
+  private newBeacon: Beacon;
+
   public cities: Array<City>;
-
-  public selectedSpecies: Species;
-  public species: Array<Species>;
-
+  public species: Array<TreeSpecies>;
   public marker: MapMarker;
-  public street: string;
+
+  public isTreeSaved: boolean = false;
 
   constructor(private treeService: TreeService,
               private adminService: AdminService,
@@ -41,89 +53,199 @@ export class AdminTreeComponent extends AbstractComponent implements OnInit {
   }
 
   ngOnInit() {
+    this.load();
+  }
+
+  /**
+   * Load all needed data.
+   */
+  public load(): void {
+    this.loadTrees();
     this.loadCities();
     this.loadSpecies();
+
+    this.onSelectedTreeChange(null);
   }
 
   public addCity(): void {
 
     this.setStatus(StatusKey.NEW_CITY, StatusValue.IN_PROGRESS);
-    this.adminService.addCity(new City(this.newCityName), () => {
+    this.adminService.addCity(this.newCity, (city: City) => {
       this.setStatus(StatusKey.NEW_CITY, StatusValue.SUCCESSFUL);
       this.newCityModalRef.hide();
-      this.loadCities(this.newCityName);
+      this.loadCities(city);
     }, (error: HttpErrorResponse, apiError: ApiError) => {
       this.setStatus(StatusKey.NEW_CITY, StatusValue.FAILED);
     });
 
   }
 
-  public addTree(): void {
+  public onSelectedTreeChange(selectedTree: TreeFrontend): void {
+
+    if (selectedTree) {
+      this.tree = selectedTree;
+      this.marker = selectedTree;
+    } else {
+      this.tree = new TreeFrontend(
+        new Tree(
+          0,
+          new TreeLocation(
+            0,
+            new Coordinates(
+              0,
+              0,
+              "EPSG:900913"
+            ),
+            "",
+            new City(null)
+          ),
+          new TreeSpecies(
+            0,
+            "",
+            new TreeGenus(
+              0,
+              ""
+            )
+          ),
+          9999,
+          false,
+          []
+        )
+      );
+      this.marker = null;
+    }
+
+  }
+
+  public saveTree(): void {
 
     if (!this.marker) {
-      this.setStatus(StatusKey.NEW_TREE, StatusValue.TREE_MARKER_NOT_SET);
+      this.setStatus(StatusKey.SAVE_TREE, StatusValue.TREE_MARKER_NOT_SET);
       return;
     }
 
-    this.setStatus(StatusKey.NEW_TREE, StatusValue.IN_PROGRESS);
-    this.adminService.addTree(new Tree(
-      0,
-      new TreeLocation(
-        0,
-        new Coordinates(
-          this.marker.getCoordsX(),
-          this.marker.getCoordsY(),
-          null
-        ),
-        null,
-        null
-      ),
-      this.selectedSpecies.id,
-      null,
-      this.selectedSpecies.genusId,
-      null,
-      0,
-      true,
-      []
-    ), () => {
-      this.setStatus(StatusKey.NEW_TREE, StatusValue.SUCCESSFUL);
-    }, (error: HttpErrorResponse, apiError: ApiError) => {
-      this.setStatus(StatusKey.NEW_TREE, StatusValue.FAILED);
+    this.tree.location.coordinates.x = this.marker.getCoordsX();
+    this.tree.location.coordinates.y = this.marker.getCoordsY();
+
+    if (this.tree.id) { // modify tree
+
+      this.setStatus(StatusKey.SAVE_TREE, StatusValue.IN_PROGRESS);
+      this.adminService.modifyTree(this.tree, () => {
+        this.setStatus(StatusKey.SAVE_TREE, StatusValue.SUCCESSFUL);
+      }, (error, apiError) => {
+        this.setStatus(StatusKey.SAVE_TREE, StatusValue.FAILED);
+      });
+
+    } else { // create new tree
+
+      this.setStatus(StatusKey.SAVE_TREE, StatusValue.IN_PROGRESS);
+      this.adminService.addTree(this.tree, () => {
+        this.setStatus(StatusKey.SAVE_TREE, StatusValue.SUCCESSFUL);
+      }, (error, apiError) => {
+        this.setStatus(StatusKey.SAVE_TREE, StatusValue.FAILED);
+      });
+
+    }
+
+
+  }
+
+  public addBeacon(): void {
+
+    this.setStatus(StatusKey.NEW_BEACON, StatusValue.IN_PROGRESS);
+    this.adminService.addBeacon(this.newBeacon, () => {
+      this.setStatus(StatusKey.NEW_BEACON, StatusValue.SUCCESSFUL);
+      this.newBeaconModalRef.hide();
+      this.loadTrees(this.tree.id);
+    }, (error, apiError) => {
+      this.setStatus(StatusKey.NEW_BEACON, StatusValue.FAILED);
     });
 
   }
 
-  private loadCities(selectCity?: string): void {
+  private loadTrees(selectTree?: number): void {
 
+    this.setStatus(StatusKey.LOAD_TREES, StatusValue.IN_PROGRESS);
+    this.treeService.loadTrees((trees: Array<Tree>) => {
+      this.availableTrees = trees.map(t => t && TreeFrontend.fromTree(t));
+      this.setStatus(StatusKey.LOAD_TREES, StatusValue.SUCCESSFUL);
+      if (selectTree) {
+        this.tree = this.availableTrees.find((t: TreeFrontend) => t.id === selectTree);
+      }
+    }, (error, apiError) => {
+      this.setStatus(StatusKey.LOAD_TREES, StatusValue.FAILED);
+    });
+
+  }
+
+  private loadCities(selectCity?: City): void {
+
+    this.setStatus(StatusKey.LOAD_CITIES, StatusValue.IN_PROGRESS);
     this.treeService.loadCities((cities: Array<City>) => {
-      this.selectedCity = selectCity;
+      this.tree.location.city = selectCity;
       this.cities = cities;
+      this.setStatus(StatusKey.LOAD_CITIES, StatusValue.SUCCESSFUL);
+    }, (error, apiError) => {
+      this.setStatus(StatusKey.LOAD_CITIES, StatusValue.FAILED);
     });
 
   }
 
   private loadSpecies(): void {
 
-    this.treeService.loadSpecies((species: Array<Species>) => {
+    this.setStatus(StatusKey.LOAD_SPECIES, StatusValue.IN_PROGRESS);
+    this.treeService.loadSpecies((species: Array<TreeSpecies>) => {
       this.species = species;
+      this.setStatus(StatusKey.LOAD_SPECIES, StatusValue.SUCCESSFUL);
+    }, (error, apiError) => {
+      this.setStatus(StatusKey.LOAD_SPECIES, StatusValue.FAILED);
     });
 
   }
 
   public showNewCityModal(modalTemplateRef: TemplateRef<any>): void {
     this.newCityModalRef = this.modalService.show(modalTemplateRef);
+    this.newCity = new City(null);
+  }
+
+  public showNewBeaconModal(modalTemplateRef: TemplateRef<any>): void {
+    this.newBeacon = new Beacon();
+    this.newBeacon.treeId = this.tree.id;
+    this.newBeacon.settings = new BeaconSettings();
+
+    this.newBeaconModalRef = this.modalService.show(modalTemplateRef);
   }
 
   public hideNewCityModal(): void {
     this.newCityModalRef.hide();
   }
 
+  public hideNewBeaconModal(): void {
+    this.newBeaconModalRef.hide();
+  }
+
+  public isNewTree(): boolean {
+    return this.tree.id === 0;
+  }
+
+  public compareCities(a: City, b: City) {
+    return City.equals(a, b);
+  }
+
+  public compareTreeSpecies(a: TreeSpecies, b: TreeSpecies) {
+    return TreeSpecies.equals(a, b);
+  }
+
 }
 
 export enum StatusKey {
 
+  LOAD_TREES,
+  LOAD_CITIES,
+  LOAD_SPECIES,
   NEW_CITY,
-  NEW_TREE
+  NEW_BEACON,
+  SAVE_TREE
 
 }
 

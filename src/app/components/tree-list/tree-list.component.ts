@@ -35,7 +35,7 @@ export class TreeListComponent extends AbstractComponent implements OnInit {
   /**
    * All cities to display.
    */
-  public cities: Set<string> = new Set<string>();
+  public cities: Set<City> = new Set<City>();
 
   /**
    * Current tree search input.
@@ -160,7 +160,7 @@ export class TreeListComponent extends AbstractComponent implements OnInit {
         const translationKey = ('tree.species.' + tree.species).toLowerCase();
         return this.translateService.instant(translationKey).toLowerCase().indexOf(searchInput.toLowerCase()) !== -1 ||
           tree.location.street.toLowerCase().indexOf(searchInput.toLowerCase()) !== -1 ||
-          tree.location.city.toLowerCase().indexOf(searchInput.toLowerCase()) !== -1;
+          tree.location.city.name.toLowerCase().indexOf(searchInput.toLowerCase()) !== -1;
       });
     this.updateCities();
 

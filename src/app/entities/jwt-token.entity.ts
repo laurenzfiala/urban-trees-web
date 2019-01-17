@@ -53,6 +53,10 @@ export class JWTToken {
 
   public static fromObject(o: any): JWTToken {
 
+    if (!o) {
+      return undefined;
+    }
+
     return new JWTToken(
       o.sub,
       o.exp,

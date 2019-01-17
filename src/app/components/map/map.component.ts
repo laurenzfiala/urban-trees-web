@@ -49,7 +49,7 @@ export class MapComponent extends AbstractComponent implements OnInit {
   public selectedMarkerChange: EventEmitter<MapMarker> = new EventEmitter<MapMarker>();
 
   /**
-   * TODO
+   * Whether the use may set a new pin on the map.
    */
   @Input()
   public userSetPin: boolean = false;
@@ -118,13 +118,22 @@ export class MapComponent extends AbstractComponent implements OnInit {
 
   @Input()
   set selectedMarker(marker: MapMarker) {
-    if (marker && marker !== this.selectedMarkerInternal) {
-      this.selectedMarkerInternal = marker;
-      this.centerMarker(marker);
-      this.updateMapMarkers();
+    if (marker) {
+      if (marker !== this.selectedMarkerInternal) {
+        if (this.userSetPin) {
+          this.markers = [marker];
+        }
+        this.centerMarker(marker);
+      }
     } else {
+      if (this.userSetPin) {
+        this.markers = [];
+      }
       this.selectedMarkerInternal = marker;
     }
+
+    this.selectedMarkerInternal = marker;
+    this.updateMapMarkers();
   }
 
   get selectedMarker(): MapMarker {
@@ -226,7 +235,7 @@ export class MapComponent extends AbstractComponent implements OnInit {
     if (this.markers) {
 
       Array.from(this.markers).sort((a, b) => {
-        if (a.isSelected()) {
+        if (this.mapMarkerEquals(a, b)) {
           return 1;
         } else {
           return 0;
@@ -235,12 +244,11 @@ export class MapComponent extends AbstractComponent implements OnInit {
 
         let iconFeature = new Feature({
           geometry: new Point([value.getCoordsX(), value.getCoordsY()]),
-          id: value.getId(),
-          selected: value.isSelected()
+          id: value.getId()
         });
 
 
-        if (value.isSelected()) {
+        if (this.mapMarkerEquals(this.selectedMarkerInternal, value)) {
           iconFeature.setStyle(iconStyleHighlight);
         } else {
           iconFeature.setStyle(iconStyle);
@@ -265,11 +273,24 @@ export class MapComponent extends AbstractComponent implements OnInit {
   }
 
   /**
-   * Add a new marker to the map.
+   * Compares two MapMarker by their ID.
+   * Null-safe.
+   * @param a MapMarker to compare to b
+   * @param bMapMarker to compare to a
+   */
+  private mapMarkerEquals(a: MapMarker, b: MapMarker): boolean {
+    if (!a || !b) {
+      return false;
+    }
+    return a.getId() === b.getId();
+  }
+
+  /**
+   * Add a new marker to the map and emit #selectedMarkerChange.
    * @see #markers
    * @param event the mouse click event on the map
    */
-  private addMarker(event: MouseEvent): void {
+  private addMarkerFromEvent(event: MouseEvent): void {
 
     if (!this.userSetPin) {
       return;
@@ -278,8 +299,7 @@ export class MapComponent extends AbstractComponent implements OnInit {
     let coords: Coordinate = this.map.getEventCoordinate(event);
     MapComponent.LOG.trace('Creating new map marker at: ' + coords);
     this.markers = [new MapMarkerDefault(coords[0], coords[1])];
-
-    this.updateMapMarkers();
+    this.selectMarker(this.markers[0].getId());
 
   }
 
@@ -305,7 +325,7 @@ export class MapComponent extends AbstractComponent implements OnInit {
 
     let found = <Array<any>>this.map.getFeaturesAtPixel([event.offsetX, event.offsetY]);
     if (!found) {
-      this.addMarker(event);
+      this.addMarkerFromEvent(event);
       return;
     }
 
@@ -352,18 +372,12 @@ export class MapComponent extends AbstractComponent implements OnInit {
   }
 
   /**
-   * TODO
-   * Select a single tree to continue observation.
-   * Resets all not-selected trees to selected = false.
+   * Select a single marker and emit a change event through #selectedMarkerChange.
    * @param {number} id id of that marker
    */
   public selectMarker(id: number) {
 
-    if (this.selectedMarker) {
-      this.selectedMarker.setSelected(false);
-    }
     this.selectedMarkerInternal = this.markers.find(value => value.getId() === id);
-    this.selectedMarker.setSelected(true);
 
     this.updateMapMarkers();
     this.selectedMarkerChange.emit(this.selectedMarker);
@@ -372,9 +386,8 @@ export class MapComponent extends AbstractComponent implements OnInit {
 
 
   /**
-   * TODO
-   * Center the given tree on the map.
-   * @param {TreeFrontend} tree The tree to be centered.
+   * Center the given MapMarker in the viewport.
+   * @param {MapMarker} marker The tree to be centered.
    */
   public centerMarker(marker: MapMarker) {
 

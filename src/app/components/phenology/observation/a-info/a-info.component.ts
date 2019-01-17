@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {PhenologyObservationService} from '../../../../services/phenology/observation/phenology-observation.service';
 
 import {Tree} from '../../../../entities/tree.entity';
@@ -8,8 +8,7 @@ import {TreeFrontend} from '../../../../entities/tree-frontend.entity';
 import {EnvironmentService} from '../../../../services/environment.service';
 import {PhenologyDatasetFrontend} from '../../../../entities/phenology-dataset-frontend.entity';
 import {TranslateService} from '@ngx-translate/core';
-import {MapComponent} from '../../../map/map.component';
-import {BeaconFrontend} from '../../../../entities/beacon-frontend.entity';
+import {TreeService} from '../../../../services/tree.service';
 
 /**
  * First step of a phenology observation.
@@ -35,29 +34,9 @@ export class AInfoComponent extends AbstractComponent implements OnInit, OnDestr
   public availableTrees: Array<TreeFrontend>;
 
   /**
-   * Trees currently displayed.
-   */
-  public displayTrees: Array<Array<TreeFrontend>>;
-
-  /**
-   * Whether or not to display the tree list pagination.
-   */
-  public displayTreePagination: boolean;
-
-  /**
-   * Page index to display.
-   */
-  public currentDisplayTreePage: number = 0;
-
-  /**
    * Tree currently selected.
    */
   public selectedTree: TreeFrontend;
-
-  /**
-   * Current tree search input.
-   */
-  public treeSearchInput: string;
 
   /**
    * Whether the map can currently be used, or its disabled.
@@ -65,7 +44,7 @@ export class AInfoComponent extends AbstractComponent implements OnInit, OnDestr
   public isMapEnabled: boolean = false;
 
   constructor(private observationsService: PhenologyObservationService,
-              private environmentService: EnvironmentService,
+              private treeService: TreeService,
               public translateService: TranslateService) {
     super();
   }
@@ -89,7 +68,7 @@ export class AInfoComponent extends AbstractComponent implements OnInit, OnDestr
 
       let alreadySelected = this.observationsService.selectedTree;
       if (alreadySelected) {
-        this.selectTree(alreadySelected.id);
+        this.selectTree(TreeFrontend.fromTree(alreadySelected));
       }
 
     });
@@ -103,16 +82,14 @@ export class AInfoComponent extends AbstractComponent implements OnInit, OnDestr
   private loadTrees(successCallback: () => void) {
 
     if (this.availableTrees) {
-      this.setDisplayTreesPaginated(this.availableTrees);
       successCallback();
       return;
     }
 
     this.setStatus(StatusKey.TREES, StatusValue.IN_PROGRESS);
-    this.observationsService.loadTrees((trees: Array<Tree>) => {
+    this.treeService.loadTrees((trees: Array<Tree>) => {
       this.availableTrees = trees.map(t => TreeFrontend.fromTree(t));
       this.setStatus(StatusKey.TREES, StatusValue.SUCCESSFUL);
-      this.setDisplayTreesPaginated(this.availableTrees);
       successCallback();
     }, () => {
       this.setStatus(StatusKey.TREES, StatusValue.FAILED);
@@ -122,99 +99,17 @@ export class AInfoComponent extends AbstractComponent implements OnInit, OnDestr
 
   /**
    * Select a single tree to continue observation.
-   * Resets all not-selected trees to selected = false.
-   * @param {number} treeId id of that tree
+   * @param {TreeFrontend} newSelectedTree tree that was newly selected
    */
-  public selectTree(treeId: number) {
+  public selectTree(newSelectedTree: TreeFrontend) {
 
-    if (this.selectedTree) {
-      this.selectedTree.selected = false;
-    }
-    this.selectedTree = this.availableTrees.find(value => value.id === treeId);
-    this.selectedTree.selected = true;
+    this.selectedTree = newSelectedTree;
 
-    if (this.observationsService.selectedTree && this.selectedTree.speciesId !== this.observationsService.selectedTree.speciesId) {
+    if (this.observationsService.selectedTree && this.selectedTree.species.id !== this.observationsService.selectedTree.species.id) {
       this.observationsService.setDone(0, true, true);
     } else {
       this.observationsService.setDone(0, true);
     }
-
-  }
-
-  /**
-   * Set tree search and filter displayed trees by input.
-   * @param {string} searchInput user's tree search input
-   */
-  public setTreeSearchInput(searchInput: string): void {
-
-    if (!searchInput) {
-      this.setDisplayTreesPaginated(this.availableTrees);
-      return;
-    }
-
-    const idInput = Number(searchInput);
-    if (!Number.isNaN(idInput)) {
-      this.setDisplayTreesPaginated(this.availableTrees.filter((tree: TreeFrontend) => {
-        return tree.id === idInput;
-      }));
-      return;
-    }
-
-    this.setDisplayTreesPaginated(
-      this.availableTrees.filter((tree: TreeFrontend) => {
-        const translationKey = ('tree.species.' + tree.species).toLowerCase();
-        return this.translateService.instant(translationKey).toLowerCase().indexOf(searchInput.toLowerCase()) !== -1 ||
-          tree.location.street.toLowerCase().indexOf(searchInput.toLowerCase()) !== -1 ||
-          tree.location.city.toLowerCase().indexOf(searchInput.toLowerCase()) !== -1;
-      })
-    );
-
-  }
-
-  /**
-   * Set the #displayTrees array using the correct pagination.
-   * @param {Array<TreeFrontend>} trees the filtered trees to display.
-   */
-  private setDisplayTreesPaginated(trees: Array<TreeFrontend>) {
-
-    const minPageSize = 10;
-    const pages = 5;
-    let pageSize = Math.ceil(this.availableTrees.length / pages);
-
-    if (pageSize < minPageSize) {
-      pageSize = minPageSize;
-    }
-
-    if (trees.length <= pageSize) {
-      this.displayTreePagination = false;
-    } else {
-      this.displayTreePagination = true;
-    }
-
-    let paginatedArray = new Array<Array<TreeFrontend>>();
-
-    let page = 0;
-    for (let i = 0; i < trees.length; i += pageSize) {
-      pageSize = i >= trees.length ? i - trees.length : pageSize;
-      paginatedArray[page] = trees.slice(i, i + pageSize);
-      page++;
-    }
-
-    this.currentDisplayTreePage = 0;
-    this.displayTrees = paginatedArray;
-
-  }
-
-  /**
-   * Change the currently displayed tree list page.
-   * @param {number} displayIndex index to display.
-   */
-  public displayTreePage(displayIndex: number): void {
-
-    if (displayIndex < 0 || displayIndex >= this.displayTrees.length) {
-      return;
-    }
-    this.currentDisplayTreePage = displayIndex;
 
   }
 

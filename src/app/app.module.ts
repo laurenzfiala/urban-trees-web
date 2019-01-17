@@ -58,6 +58,10 @@ import {AdminUserComponent} from './components/admin/user/user.component';
 import { MapComponent } from './components/map/map.component';
 import {AdminTreeComponent} from './components/admin/tree/tree.component';
 import {AdminService} from './services/admin/admin.service';
+import { BeaconListComponent } from './components/beacon-list/beacon-list.component';
+import { TreeSelectComponent } from './components/tree-select/tree-select.component';
+import { UserOverviewComponent } from './components/user-overview/user-overview.component';
+import {UserService} from './services/user.service';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, '/translations/');
@@ -90,6 +94,9 @@ export function HttpLoaderFactory(http: HttpClient) {
     AdminBeaconComponent,
     AdminUserComponent,
     MapComponent,
+    BeaconListComponent,
+    TreeSelectComponent,
+    UserOverviewComponent,
 
     // Directives
     SpyDirective,
@@ -143,6 +150,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     PhenologyObservationService,
     TreeService,
     AdminService,
+    UserService,
 
     // Guards
     PhenologyObservationStepGuard,

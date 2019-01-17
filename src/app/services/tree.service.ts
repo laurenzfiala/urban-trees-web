@@ -6,12 +6,14 @@ import {EnvironmentService} from './environment.service';
 import {AbstractService} from './abstract.service';
 import {Log} from './log.service';
 import {TreeListStatistics} from '../entities/tree-list-statistics.entity';
-import {Announcement} from '../entities/announcement.entity';
 import {BeaconData} from '../entities/beacon-data.entity';
-import {BeaconDataRange} from '../entities/beacon-data-range.entity';
 import * as moment from 'moment';
 import {City} from '../entities/city.entity';
-import {Species} from '../entities/species.entity';
+import {TreeSpecies} from '../entities/tree-species.entity';
+import {BeaconSettings} from '../entities/beacon-settings.entity';
+import {Beacon} from '../entities/beacon.entity';
+import {TreeFrontend} from '../entities/tree-frontend.entity';
+import {BeaconDataMode} from '../entities/beacon-data-mode.entity';
 
 /**
  * Service for backend calls on the tree-list
@@ -66,6 +68,7 @@ export class TreeService extends AbstractService {
 
     this.http.get<Array<Tree>>(this.envService.endpoints.allTrees)
       .timeout(this.envService.defaultTimeout)
+      .map(list => list && list.map(d => Tree.fromObject(d)))
       .subscribe((results: Array<Tree>) => {
         successCallback(results);
       }, (e: any) => {
@@ -108,25 +111,26 @@ export class TreeService extends AbstractService {
    * Load the given beacon's data.
    * @param beaconId id of beaocn to load data for
    * @param maxDatapoints maximum datapoints to receive
-   * @param rangeType time range of data to request
+   * @param mode mode of request
    * @param {(trees: Array<Tree>) => void} successCallback Called upon success
    * @param {(error: any) => void} errorCallback Called upon exception
    */
   public loadBeaconData(beaconId: number,
                   maxDatapoints: number,
-                  rangeType: BeaconDataRange,
+                  mode: BeaconDataMode,
                   successCallback: (beaconDatasets: Array<BeaconData>) => void,
                   errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void) {
 
     let rangeStart;
-    switch (rangeType) {
-      case BeaconDataRange.LAST_24_H:
+    switch (mode) {
+      case BeaconDataMode.LAST_24H:
         rangeStart = moment().utc().add(-24, 'hours').format(this.envService.outputDateFormat);
         break;
-      case BeaconDataRange.LAST_WEEK:
+      case BeaconDataMode.LAST_WEEK:
         rangeStart = moment().utc().add(-1, 'week').format(this.envService.outputDateFormat);
         break;
-      case BeaconDataRange.LAST_MONTH:
+      case BeaconDataMode.TEMP_LAST_MONTH_PER_DAY:
+      case BeaconDataMode.HUMI_LAST_MONTH_PER_DAY:
         rangeStart = moment().utc().add(-1, 'month').format(this.envService.outputDateFormat);
         break;
     }
@@ -142,6 +146,34 @@ export class TreeService extends AbstractService {
         successCallback(results);
       }, (e: any) => {
         TreeService.LOG.error('Could not load beacon data with beacon id ' + beaconId + ': ' + e.message, e);
+        if (errorCallback) {
+          errorCallback(e, this.safeApiError(e));
+        }
+      });
+
+  }
+
+  /**
+   * Load the given beacon's settings.
+   * @param beaconId id of beaocn to load data for
+   * @param {(trees: Array<Tree>) => void} successCallback Called upon success
+   * @param {(error: any) => void} errorCallback Called upon exception
+   */
+  public loadBeaconSettings(beaconId: number,
+                  successCallback: (beaconSettings: BeaconSettings) => void,
+                  errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void) {
+
+    const url = this.envService.endpoints.beaconSettings(beaconId);
+
+    TreeService.LOG.debug('Loading beacon settings for beacon id ' + beaconId + ' from ' + url + ' ...');
+
+    this.http.get<BeaconSettings>(url)
+      .timeout(this.envService.defaultTimeout)
+      .map(s => BeaconSettings.fromObject(s))
+      .subscribe((results: BeaconSettings) => {
+        successCallback(results);
+      }, (e: any) => {
+        TreeService.LOG.error('Could not load beacon settings with beacon id ' + beaconId + ': ' + e.message, e);
         if (errorCallback) {
           errorCallback(e, this.safeApiError(e));
         }
@@ -174,17 +206,17 @@ export class TreeService extends AbstractService {
 
   /**
    * Loads all species from the backend.
-   * @param {(trees: Array<City>) => void} successCallback Called upon success
+   * @param {(trees: Array<TreeSpecies>) => void} successCallback Called upon success
    * @param {(error: any) => void} errorCallback Called upon exception
    */
-  public loadSpecies(successCallback: (cities: Array<Species>) => void,
+  public loadSpecies(successCallback: (cities: Array<TreeSpecies>) => void,
                    errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void) {
 
     TreeService.LOG.debug('Loading species from ' + this.envService.endpoints.species + ' ...');
 
-    this.http.get<Array<Species>>(this.envService.endpoints.species)
+    this.http.get<Array<TreeSpecies>>(this.envService.endpoints.species)
       .timeout(this.envService.defaultTimeout)
-      .subscribe((results: Array<Species>) => {
+      .subscribe((results: Array<TreeSpecies>) => {
         successCallback(results);
       }, (e: any) => {
         TreeService.LOG.error('Could not load species: ' + e.message, e);

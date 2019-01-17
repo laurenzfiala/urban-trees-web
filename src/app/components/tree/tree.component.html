@@ -65,98 +65,32 @@
 
   <div class="row mb-2">
 
-    <div class="col-12 text-center">
+    <div class="col-12 text-center mt-5">
 
-      <h5 class="text-center mb-0">
+      <h4 class="d-flex align-items-center">
+        <i class="i i-dark i-lg i-beacon mr-2"></i>
         {{'tree.beacon.details.heading' | translate}}
-      </h5>
-      <span class="text-subtle">
-        {{tree.beacons?.length}} Beacon{{tree.beacons?.length > 1 ? 's' : ''}}
-      </span>
-      <hr class="mt-1 mb-0"/>
+      </h4>
 
     </div>
 
-    <div class="col-12 pb-2">
+    <div class="col-12 mt-2 text-center">
 
-      <div class="d-inline-block mr-2">
-
-        <div class="text-subtle text-sm pb-1">
-          {{'tree.beacon.details.range' | translate}}
-        </div>
-
-        <div dropdown class="btn-group">
-          <button dropdownToggle type="button" class="btn btn-sm btn-outline-dark dropdown-toggle">
-            {{currentBeaconDataRangeType | translate}}
-          </button>
-          <div  *dropdownMenu class="dropdown-menu">
-            <a *ngFor="let rangeType of BEACON_DATA_RANGE_KEYS;" class="dropdown-item" (click)="loadBeaconData(BeaconDataRange[rangeType]);">{{BeaconDataRange[rangeType] | translate}}</a>
-          </div>
-        </div>
-
-      </div>
-
-      <div class="d-inline-block">
-
-        <div class="text-subtle text-sm pb-1">
-          {{'tree.beacon.details.maxdataentries' | translate}}
-        </div>
-
-        <div dropdown class="btn-group">
-          <button dropdownToggle type="button" class="btn btn-sm btn-outline-dark dropdown-toggle">
-            {{maxDatapoints}}
-          </button>
-          <div  *dropdownMenu class="dropdown-menu">
-            <a class="dropdown-item" (click)="maxDatapoints = 100; loadBeaconData();">100</a>
-            <a class="dropdown-item" (click)="maxDatapoints = 250; loadBeaconData();">250</a>
-            <a class="dropdown-item" (click)="maxDatapoints = 500; loadBeaconData();">500</a>
-          </div>
-        </div>
-
+      <div *ngIf="appTransferAmount" class="transfer-message">
+        {{'tree.beacon.transfer.message.title' | translate}}
+        <span>
+          &mdash; {{'tree.beacon.transfer.message.text' | translate:{'amount': appTransferAmount} }}
+        </span>
       </div>
 
     </div>
 
-    <div *ngIf="!tree.beacons || tree.beacons.length === 0">
-      This tree has no beacons attached to it.
-    </div>
+    <div class="col-12 mb-2">
 
-    <div *ngFor="let beacon of tree.beacons" class="col-12">
-
-      <hr class="m-0"/>
-
-      <div class="position-relative my-2">
-
-        <div class="beacon-status" [ngClass]="{'bg-success': beacon.status === 'OK', 'bg-danger': beacon.status !== 'OK'}">
-          {{beacon.status}}
-        </div>
-
-        <div class="beacon-id">
-          <span class="text-subtle font-weight-normal">Beacon</span> {{beacon.deviceId}}
-        </div>
-
-        <div *ngIf="!(beacon.chartData && beacon.datasets?.length > 0)" class="beacon-description text-subtle">
-          {{'tree.beacon.data.missing' | translate}}
-        </div>
-
-      </div>
-
-      <div *ngIf="beacon.chartData && beacon.datasets?.length > 0" class="line-chart-full">
-        <ngx-charts-line-chart
-          [scheme]="colorScheme"
-          [results]="beacon.chartData"
-          [gradient]="gradient"
-          [xAxis]="showXAxis"
-          [yAxis]="showYAxis"
-          [legend]="showLegend"
-          [legendPosition]="'below'"
-          [showXAxisLabel]="showXAxisLabel"
-          [showYAxisLabel]="showYAxisLabel"
-          [xAxisLabel]="xAxisLabel"
-          [yAxisLabel]="yAxisLabel"
-          [autoScale]="autoScale">
-        </ngx-charts-line-chart>
-      </div>
+      <ut-beacon-list
+        [tree]="tree"
+        [preselectDeviceId]="beaconDeviceIdPreselect"
+      ></ut-beacon-list>
 
     </div>
 
@@ -165,7 +99,7 @@
 </div>
 
 <div *ngIf="hasAnyStatusKey([StatusKey.TREE_VALIDATION, StatusKey.TREE_LOADING], StatusValue.IN_PROGRESS)" class="load load-center load-md status-overlay overlay-fixed"></div>
-<div *ngIf="hasStatus(StatusKey.TREE_VALIDATION, StatusValue.FAILED)"
+<div *ngIf="hasAnyStatusKey([StatusKey.TREE_VALIDATION, StatusKey.TREE_LOADING], StatusValue.FAILED)"
      class="status-overlay overlay-fixed">
   <div class="status-content">
     <div class="status-heading heading-danger">

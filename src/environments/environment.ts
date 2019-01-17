@@ -7,8 +7,8 @@ export const environment = {
 
   production:                       false,
 
-  host:                             'http://192.168.0.80:80',
-  mapHost:                          'http://192.168.0.80:8081',
+  host:                             'http://localhost:80',
+  mapHost:                          'http://localhost:8081',
 
   endpoints: {
     // Tree
@@ -21,11 +21,15 @@ export const environment = {
     beaconDataTimespan:               '/beacon/{beaconId}/data?timespanMin={timespanMin}&timespanMax={timespanMax}',
     beaconDataTimespanMin:            '/beacon/{beaconId}/data?timespanMin={timespanMin}',
     beaconDataTimespanMax:            '/beacon/{beaconId}/data?timespanMax={timespanMax}',
+    beaconSettings:                   '/beacon/{beaconId}/settings',
 
     // Phenology
     phenologySpec:                    '/tree/{treeId}/phenology/spec',
     phenologyDatasetSubmission:       '/tree/{treeId}/phenology',
-    phenologyDatasetImageSubmission:  '/usercontent/phenology/observation/{phenologyId}/image',
+    phenologyDatasetImageSubmission:  '/user/phenology/observation/{phenologyId}/image',
+
+    // User
+    userAchievements:                 '/user/achievements',
 
     // UI
     phenologyObservationResultImg:    '/ui/phenology/observation/result/{treeSpeciesId}/{resultId}/img',
@@ -34,6 +38,9 @@ export const environment = {
     // Admin
     addCity:                          '/admin/city',
     addTree:                          '/admin/tree',
+    modifyTree:                       '/admin/tree/{treeId}',
+    addBeacon:                        '/admin/beacon',
+    deleteBeacon:                     '/admin/beacon/{beaconId}',
 
     // Authentication
     login:                            '/login',

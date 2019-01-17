@@ -12,16 +12,11 @@ import {BeaconFrontend} from './beacon-frontend.entity';
  */
 export class TreeFrontend extends Tree implements MapMarker {
 
-  public selected: boolean = false;
-
   constructor(tree: Tree) {
     super(
       tree.id,
       tree.location,
-      tree.speciesId,
       tree.species,
-      tree.genusId,
-      tree.genus,
       tree.plantationYear,
       tree.isPlantationYearEstimate,
       tree.beacons
@@ -39,14 +34,6 @@ export class TreeFrontend extends Tree implements MapMarker {
 
   public getId(): number {
     return this.id;
-  }
-
-  public isSelected(): boolean {
-    return this.selected;
-  }
-
-  public setSelected(selected: boolean): void {
-    this.selected = selected;
   }
 
   /**

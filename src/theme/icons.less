@@ -4,7 +4,10 @@
 @iconDirLight: ~"light/";
 @iconDirDark: ~"dark/";
 @iconDirBlack: ~"black/";
+@iconDirSpecial: ~"special/";
 @iconSuffix: ~".svg";
+
+// icons in standard color scheme light/dark/black
 @icons:
   ~"admin",
   ~"arrow-left",
@@ -23,14 +26,27 @@
   ~"logout",
   ~"pause",
   ~"play",
+  ~"plus",
   ~"search",
   ~"stop",
+  ~"trash",
   ~"tree",
   ~"user",
   ~"username",
   ~"volume-low",
   ~"volume-med",
   ~"volume-high"
+;
+
+// icons in special folder (e.g. not adhering to std. color scheme)
+@iconsSpecial:
+  ~"beacon-info",
+  ~"check-success",
+  ~"info-info",
+  ~"new-badge",
+  ~"trash-danger",
+  ~"warning-danger",
+  ~"warning-warning"
 ;
 
 // --------------------
@@ -101,7 +117,7 @@
 
 // --------------------
 
-.loop(@i) when (@i < length(@icons)) {
+.loop(@i) when (@i <= length(@icons)) {
   @name: extract(@icons, @i);
 
   .i-@{name} {
@@ -118,4 +134,19 @@
   .loop((@i + 1));
 }
 
-.loop(0);
+.loop(1);
+
+
+// --------------------
+
+.loopSpecial(@i) when (@i <= length(@iconsSpecial)) {
+  @name: extract(@iconsSpecial, @i);
+
+  .i-@{name} {
+    background-image: url("@{iconPath}@{iconDirSpecial}@{name}@{iconSuffix}");
+  }
+
+  .loopSpecial((@i + 1));
+}
+
+.loopSpecial(1);

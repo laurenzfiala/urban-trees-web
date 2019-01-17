@@ -135,6 +135,10 @@ class EnvironmentEndpoints {
 
   }
 
+  get userAchievements() {
+    return this.prependCommonPath(this.context.userAchievements);
+  }
+
   get announcements() {
     return this.prependCommonPath(this.context.announcements);
   }
@@ -167,6 +171,40 @@ class EnvironmentEndpoints {
     return this.prependCommonPath(this.context.addTree);
   }
 
+  public modifyTree(treeId: number): string {
+
+    let replacements: any[] = [
+      { placeholder: 'treeId', replacement: treeId }
+    ];
+
+    return this.prependCommonPath(
+      this.replaceParams(
+        this.context.modifyTree,
+        replacements
+      )
+    );
+
+  }
+
+  get addBeacon() {
+    return this.prependCommonPath(this.context.addBeacon);
+  }
+
+  public deleteBeacon(beaconId: number): string {
+
+    let replacements: any[] = [
+      { placeholder: 'beaconId', replacement: beaconId }
+    ];
+
+    return this.prependCommonPath(
+      this.replaceParams(
+        this.context.deleteBeacon,
+        replacements
+      )
+    );
+
+  }
+
   public beaconData(beaconId: number, maxDatapoints?: number, timespanMin?: string, timespanMax?: string): string {
 
     let url = this.context.beaconData;
@@ -195,6 +233,21 @@ class EnvironmentEndpoints {
     return this.prependCommonPath(
       this.replaceParams(
         url,
+        replacements
+      )
+    );
+
+  }
+
+  public beaconSettings(beaconId: number): string {
+
+    let replacements: any[] = [
+      { placeholder: 'beaconId', replacement: beaconId }
+    ];
+
+    return this.prependCommonPath(
+      this.replaceParams(
+        this.context.beaconSettings,
         replacements
       )
     );

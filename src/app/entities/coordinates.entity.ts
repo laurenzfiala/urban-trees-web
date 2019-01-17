@@ -1,3 +1,4 @@
+import {City} from './city.entity';
 
 /**
  * Describes the location of a tree.
@@ -19,5 +20,14 @@ export class Coordinates {
     this.projection = projection;
   }
 
+  public static fromObject(o: any): Coordinates {
+
+    return new Coordinates(
+      o.x,
+      o.y,
+      o.projection
+    );
+
+  }
 
 }
