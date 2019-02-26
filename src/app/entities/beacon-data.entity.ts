@@ -3,7 +3,7 @@
  * @author Laurenz Fiala
  * @since 2018/06/16
  */
-import * as moment from 'moment';
+import * as moment from 'moment/moment';
 
 /**
  * Single beacon data point.
@@ -29,7 +29,7 @@ export class BeaconData {
     this.temperature = temperature;
     this.humidity = humidity;
     this.dewPoint = dewPoint;
-    this.observationDate = moment(observationDate, 'YYYY-MM-DD[T]HH-mm-ss').toDate();
+    this.observationDate = moment.utc(observationDate, 'YYYY-MM-DD[T]HH-mm-ss').toDate(); // TODO config
   }
 
   public static fromObject(o: any): BeaconData {

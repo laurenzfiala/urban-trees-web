@@ -30,9 +30,10 @@
           minlength="5"
           maxlength="200"
           required
+          [disabled]="isLoginNotAnonymous()"
           class="form-control"
           [placeholder]="'phenology.observation.step3.observers_placeholder' | translate" />
-        <div class="input-group-append">
+        <div *ngIf="!isLoginNotAnonymous()" class="input-group-append">
           <span class="input-group-text" [ngClass]="{'is-invalid': !observersInput.valid}">
             {{dataset.observers ? dataset.observers.length : 0}} / 5-200
           </span>

@@ -3,6 +3,8 @@ import {PhenologyObservationService} from '../../../../services/phenology/observ
 import {Log} from '../../../../services/log.service';
 import {PhenologyDatasetFrontend} from '../../../../entities/phenology-dataset-frontend.entity';
 import {AbstractComponent} from '../../../abstract.component';
+import {AuthService} from '../../../../services/auth.service';
+import {LoginStatus} from '../../../project-login/login-status.enum';
 
 @Component({
   selector: 'ut-c-upload',
@@ -19,11 +21,22 @@ export class CUploadComponent extends AbstractComponent implements OnInit {
   @ViewChild('observersInput')
   public observersInput: any;
 
-  constructor(private observationService: PhenologyObservationService) {
+  /**
+   * TODO
+   */
+  public username: string;
+
+  constructor(private observationService: PhenologyObservationService,
+              public authService: AuthService) {
     super();
   }
 
   public ngOnInit(): void {
+    this.username = this.authService.getUsername();
+    if (this.isLoginNotAnonymous()) {
+      this.dataset.observers = this.username;
+    }
+
     this.scrollToTop();
     this.checkContinue();
   }
@@ -34,10 +47,14 @@ export class CUploadComponent extends AbstractComponent implements OnInit {
   public checkContinue() {
     this.observationService.setDone(2,
       this.dataset.observers &&
-      this.dataset.observers.length >= 5 &&
+      (this.isLoginNotAnonymous() || this.dataset.observers.length >= 5) &&
       this.isUserImageValid(),
       true
     );
+  }
+
+  public isLoginNotAnonymous(): boolean {
+    return this.username !== undefined;
   }
 
   /**

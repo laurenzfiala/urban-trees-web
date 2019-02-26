@@ -58,7 +58,6 @@ export class BeaconListComponent extends AbstractComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.setStatus(StatusKey.REMOVE_BEACON, StatusValue.PENDING);
     this.loadBeaconData();
   }
 
@@ -136,13 +135,13 @@ export class BeaconListComponent extends AbstractComponent implements OnInit {
   /**
    * Emit remove beacon signal for the containing component.
    */
-  public onRemoveBeaconClick(beacon: Beacon): void {
+  public onRemoveBeaconClick(beacon: BeaconFrontend): void {
 
-    this.setStatus(StatusKey.REMOVE_BEACON, StatusValue.IN_PROGRESS);
+    beacon.deleteStatus = StatusValue.IN_PROGRESS;
     this.adminService.deleteBeacon(beacon.id, () => {
-      this.setStatus(StatusKey.REMOVE_BEACON, StatusValue.SUCCESSFUL);
+      beacon.deleteStatus = StatusValue.SUCCESSFUL;
     }, (error, apiError) => {
-      this.setStatus(StatusKey.REMOVE_BEACON, StatusValue.FAILED);
+      beacon.deleteStatus = StatusValue.FAILED;
     });
 
   }
@@ -188,8 +187,7 @@ export class BeaconListComponent extends AbstractComponent implements OnInit {
 export enum StatusKey {
 
   BEACON_DATA,
-  BEACON_SETTINGS,
-  REMOVE_BEACON
+  BEACON_SETTINGS
 
 }
 

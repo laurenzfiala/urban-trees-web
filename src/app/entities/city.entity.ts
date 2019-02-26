@@ -38,7 +38,7 @@ export class City {
    * If one or both of the cities are falsy, false is returned.
    */
   public static equals(a: City, b: City) {
-    return a && b && a.id === b.id;
+    return a && b && ((a === b) || (a.id === b.id));
   }
 
 }

@@ -7,7 +7,8 @@
 
 @focusBorderColor:            darken(@secondaryColor, 5%);
 @focusOutlineWidth:           0.2rem;
-@focusOutlineColor:           rgba(red(@secondaryColor), green(@secondaryColor), blue(@secondaryColor), 0.4);
+@focusOutlineOpacity:         0.25;
+@focusOutlineColor:           rgba(@secondaryColor, @focusOutlineOpacity);
 
 @white:                       #ffffff;
 @lightGrey:                   #fdfdfd;
@@ -32,10 +33,17 @@
 @linkHoverColor:              darken(@linkColor, 15%);
 @linkHoverDecoration:         underline;
 
+@subtleTextColor:             @darkGrey;
+
 @danger:                      #dc3545;
 @warning:                     #ffc107;
 @info:                        #004085;
 @success:                     #28a745;
+
+@dangerOutline:               rgba(@danger, @focusOutlineOpacity);
+@warningOutline:              rgba(@warning, @focusOutlineOpacity);
+@infoOutline:                 rgba(@info, @focusOutlineOpacity);
+@successOutline:              rgba(@success, @focusOutlineOpacity);
 
 @dangerBg:                    lighten(@danger, 40%);
 @warningBg:                   lighten(@warning, 40%);

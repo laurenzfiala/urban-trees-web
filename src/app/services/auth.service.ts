@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Log} from './log.service';
 import {EnvironmentService} from './environment.service';
 import {HttpClient, HttpErrorResponse, HttpResponse} from '@angular/common/http';
@@ -7,11 +7,10 @@ import {Login} from '../entities/login.entity';
 import {ApiError} from '../entities/api-error.entity';
 import {JwtHelperService} from '@auth0/angular-jwt';
 import {Router} from '@angular/router';
-import {LogoutReason} from '../components/project-login/logout-reason.enum';
+import {LoginAccessReason} from '../components/project-login/logout-reason.enum';
 import {LoginStatus} from '../components/project-login/login-status.enum';
 import {JWTToken} from '../entities/jwt-token.entity';
 import {PasswordReset} from '../entities/password-reset.entity';
-import {isNullOrUndefined} from 'util';
 
 /**
  * Service for user authentication functionality.
@@ -24,10 +23,11 @@ export class AuthService extends AbstractService {
 
   private static LOG: Log = Log.newInstance(AuthService);
 
-  public static LOCAL_STORAGE_AUTH_KEY: string = 'jwt_access_token';
+  public static LOCAL_STORAGE_JWTTOKEN_KEY: string = 'jwt_access_token';
+  public static LOCAL_STORAGE_APIKEY_KEY: string = 'api_key';
 
   /**
-   * Key for the cookie and http header to set as
+   * Key for the localStorage and http header to set as
    * the api key to authenticate with the backend.
    */
   public static HEADER_API_KEY = 'x-api-key';
@@ -40,6 +40,9 @@ export class AuthService extends AbstractService {
               private router: Router,
               private envService: EnvironmentService) {
     super();
+
+    // make auth tokens accessible to the app
+    window['getJWTToken'] = () => AuthService.getJWTTokenRaw();
   }
 
   /**
@@ -55,7 +58,7 @@ export class AuthService extends AbstractService {
   public getUserRoles(): Array<string> {
 
     const token: JWTToken = this.getJWTToken();
-    const apiKey = this.getApiKey();
+    const apiKey = AuthService.getApiKeyRaw();
 
     if (!token) {
       if (apiKey) {
@@ -70,9 +73,15 @@ export class AuthService extends AbstractService {
 
   /**
    * Returns the logged in users' username.
+   * If the user is not logged in or login is anonymous (=> not JWT),
+   * return undefined.
    */
   public getUsername(): string {
-    return this.getJWTToken().sub;
+    let token = this.getJWTToken();
+    if (!token) {
+      return undefined;
+    }
+    return token.sub;
   }
 
   /**
@@ -153,6 +162,30 @@ export class AuthService extends AbstractService {
   }
 
   /**
+   * Send change username request to backend.
+   * @param {string} newUsername username to change to
+   * @param {() => void} successCallback called upon successful username change
+   * @param {(error: HttpErrorResponse, apiError?: ApiError) => void} errorCallback calle upon error
+   */
+  public changeUsername(newUsername: string,
+               successCallback: () => void,
+               errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void): void {
+
+    this.http.put(this.envService.endpoints.changeUsername, {'username': newUsername})
+      .subscribe((response: HttpResponse<any>) => {
+        AuthService.LOG.debug('Changed password successfully.');
+        this.logout();
+        successCallback();
+      }, (e: any) => {
+        AuthService.LOG.error('Could not change password: ' + e.message, e);
+        if (errorCallback) {
+          errorCallback(e, this.safeApiError(e));
+        }
+      });
+
+  }
+
+  /**
    * Delete JWT token from local storage.
    * @see AuthService#deleteJWTToken
    */
@@ -176,14 +209,15 @@ export class AuthService extends AbstractService {
   public getLogInStatus(): LoginStatus {
 
     const token: JWTToken = this.getJWTToken();
-    const apiKey = this.getApiKey();
-
-    if (apiKey) {
-      return LoginStatus.LOGGED_IN_API_KEY;
-    }
+    const apiKey = AuthService.getApiKeyRaw();
 
     if (token) {
       return LoginStatus.LOGGED_IN_JWT;
+    }
+
+    this.deleteJWTToken(); // delete possible left-overs
+    if (apiKey) {
+      return LoginStatus.LOGGED_IN_API_KEY;
     }
 
     return LoginStatus.NOT_AUTHENTICATED;
@@ -193,28 +227,23 @@ export class AuthService extends AbstractService {
   /**
    * Checks what reason should be displayed to
    * the user when logging out.
+   * @param backendForcedLogout whether the backend returned 403 (true) or not (false)
    * @returns {boolean} null if the user is in any way authenticated (see #getLogInStatus); the logout reason otherwise.
    */
-  public getLogOutReason(): LogoutReason {
-
-    const logInStatus = this.getLogInStatus();
-    if (logInStatus) {
-      return null;
-    }
+  public getLogOutReason(backendForcedLogout: boolean = false): LoginAccessReason {
 
     const token = AuthService.getJWTTokenRaw();
-    const apiKey = this.getApiKey();
-
-    if (apiKey) {
-      return null;
-    }
 
     if (!token) {
-      return LogoutReason.NOT_AUTHENTICATED;
+      return LoginAccessReason.NOT_AUTHENTICATED;
     }
 
     if (this.jwtHelper.isTokenExpired(token)) {
-      return LogoutReason.FORCE_LOGOUT_EXPIRED;
+      return LoginAccessReason.FORCE_LOGOUT_EXPIRED;
+    } else if (this.isAdmin() && backendForcedLogout) {
+      return LoginAccessReason.FORCE_CREDENTIALS_CONFIRM;
+    } else if (backendForcedLogout) {
+      return LoginAccessReason.FORCE_LOGOUT;
     }
 
     return null;
@@ -222,12 +251,36 @@ export class AuthService extends AbstractService {
   }
 
   /**
+   * Whether the logged in user is an admin or not.
+   */
+  public isAdmin(): boolean {
+    return this.isUserRoleAccessGranted(this.envService.security.rolesAdmin);
+  }
+
+  /**
+   * Whether the logged in user is anonymous or not.
+   * Also returns true if the user is not logged in at all.
+   */
+  public isUserAnonymous(): boolean {
+    return this.getLogInStatus() !== LoginStatus.LOGGED_IN_JWT;
+  }
+
+  /**
+   * TODO
+   * doc and add role to env
+   */
+  public isTempChangePasswordAuth(): boolean {
+    let roles = this.getUserRoles();
+    return roles && roles.indexOf(this.envService.security.roleTempChangePassword) !== -1;
+  }
+
+  /**
    * Redirect the user to the login page.
    * This is called from the http interceptor and the login guard.
-   * @param {LogoutReason} accessReason reason of redirect
+   * @param {LoginAccessReason} accessReason reason of redirect
    * @param {redirectTo} (optional) specify where to redirect to after successful login
    */
-  public redirectToLogin(accessReason: LogoutReason, redirectTo?: string): void {
+  public redirectToLogin(accessReason: LoginAccessReason, redirectTo?: string): void {
 
     this.router.navigate(
       ['/login'],
@@ -244,14 +297,14 @@ export class AuthService extends AbstractService {
    * @param {string} token token to set
    */
   private setJWTToken(token: string): void {
-    localStorage.setItem(AuthService.LOCAL_STORAGE_AUTH_KEY, token);
+    localStorage.setItem(AuthService.LOCAL_STORAGE_JWTTOKEN_KEY, token);
   }
 
   /**
    * Remove JWT token from local storage.
    */
   private deleteJWTToken(): void {
-    localStorage.removeItem(AuthService.LOCAL_STORAGE_AUTH_KEY);
+    localStorage.removeItem(AuthService.LOCAL_STORAGE_JWTTOKEN_KEY);
   }
 
   /**
@@ -276,7 +329,7 @@ export class AuthService extends AbstractService {
    * If not set, returns undefined.
    */
   public static getJWTTokenRaw(): string {
-    const storedToken = localStorage.getItem(AuthService.LOCAL_STORAGE_AUTH_KEY);
+    const storedToken = localStorage.getItem(AuthService.LOCAL_STORAGE_JWTTOKEN_KEY);
     if (!storedToken || storedToken === 'null') {
       return undefined;
     }
@@ -284,11 +337,15 @@ export class AuthService extends AbstractService {
   }
 
   /**
-   * Returns the API key from the cookies.
+   * Returns the API key like stored in localStorage.
    * If not set, returns undefined.
    */
-  public getApiKey(): string {
-    return this.getCookie(AuthService.HEADER_API_KEY);
+  public static getApiKeyRaw(): string {
+    const storedToken = localStorage.getItem(AuthService.LOCAL_STORAGE_APIKEY_KEY);
+    if (!storedToken || storedToken === 'null') {
+      return undefined;
+    }
+    return storedToken;
   }
 
 }

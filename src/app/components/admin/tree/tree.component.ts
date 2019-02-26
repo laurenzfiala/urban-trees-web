@@ -1,5 +1,6 @@
 import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
-import {BsModalRef, BsModalService} from 'ngx-bootstrap';
+import {BsModalRef} from 'ngx-bootstrap/modal';
+import {BsModalService} from 'ngx-bootstrap/modal';
 import {TreeService} from '../../../services/tree.service';
 import {AdminService} from '../../../services/admin/admin.service';
 import {City} from '../../../entities/city.entity';
@@ -19,6 +20,8 @@ import {BeaconListComponent} from '../../beacon-list/beacon-list.component';
 import {TreeComponent} from '../../tree/tree.component';
 import {MapMarkerDefault} from '../../../entities/map-marker-default.entity';
 import Map = ol.Map;
+import {PhenologyObservationTypeFrontend} from '../../../entities/phenology-observation-type-frontend.entity';
+import {PhenologyObservationService} from '../../../services/phenology/observation/phenology-observation.service';
 
 @Component({
   selector: 'ut-admin-tree',
@@ -47,6 +50,7 @@ export class AdminTreeComponent extends AbstractComponent implements OnInit {
   public isTreeSaved: boolean = false;
 
   constructor(private treeService: TreeService,
+              private phenobsService: PhenologyObservationService,
               private adminService: AdminService,
               private modalService: BsModalService) {
     super();
@@ -243,6 +247,7 @@ export enum StatusKey {
   LOAD_TREES,
   LOAD_CITIES,
   LOAD_SPECIES,
+  LOAD_PHENOBS_TYPES,
   NEW_CITY,
   NEW_BEACON,
   SAVE_TREE

@@ -1,3 +1,343 @@
-<p>
-  user works!
-</p>
+<ut-header></ut-header>
+
+<div class="container my-4">
+
+  <h4 class="d-flex align-items-center">
+    <i class="i i-dark i-lg i-user mr-2"></i>
+    Manage users
+  </h4>
+
+  <div class="d-flex mt-3">
+    <input
+      name="userSearchInput"
+      class="form-control search-input"
+      placeholder="Search for usernames and IDs"
+      [ngModel]="searchInput"
+      (ngModelChange)="setSearchInput($event)"/>
+    <button class="btn btn-default d-flex align-items-center flex-shrink-0 ml-2"
+            (click)="showNewUserModal(newUserModal)">
+      <i class="i i-sm i-dark i-plus mr-2"></i>
+      Add new user
+    </button>
+  </div>
+
+  <div *ngIf="hasStatus(StatusKey.USERS, StatusValue.IN_PROGRESS)"
+        class="d-flex justify-content-center align-items-center my-4">
+    <i class="i i-black i-spin i-load mr-2"></i>
+    Loading users
+  </div>
+
+  <div *ngIf="hasStatus(StatusKey.USERS, StatusValue.FAILED)"
+        class="d-flex justify-content-center align-items-center text-danger my-4">
+    <i class="i i-warning-danger mr-2"></i>
+    Could not load users
+  </div>
+
+  <ul class="list-group mt-2">
+    <li *ngFor="let u of displayUsers"
+        class="list-group-item user-container"
+        [ngClass]="{'disabled': u.deleteStatus === StatusValue.SUCCESSFUL}">
+
+      <div class="info-container">
+        {{u.username}}
+        <span *ngIf="u.deleteStatus === StatusValue.SUCCESSFUL"> &ndash; deleted</span>
+        <div class="text-subtle text-xs">
+          User ID: {{u.id}} &ndash; Roles: {{u?.roles?.length > 0 ? u.roles : '(none granted)'}}
+        </div>
+      </div>
+
+      <div class="status-container">
+
+        <div class="status"
+             [popover]="loginInfoPopover"
+             [popoverContext]="{user: u}"
+             placement="left"
+             outsideClick=true
+             container="body">
+          <i class="i i-sm i-info-info"></i>
+        </div>
+
+        <div class="status"
+             [popover]="statusPopover"
+             [popoverContext]="{user: u}"
+             placement="left"
+             outsideClick=true
+             container="body">
+          <i *ngIf="!u.active; else status2" class="i i-sm i-cross-danger"></i>
+          <ng-template #status2>
+            <i *ngIf="!u.nonLocked; else status3" class="i i-sm i-warning-danger"></i>
+          </ng-template>
+          <ng-template #status3>
+            <i *ngIf="!u.credentialsNonExpired; else status4" class="i i-sm i-warning-warning"></i>
+          </ng-template>
+          <ng-template #status4>
+            <i class="i i-sm i-check-success"></i>
+          </ng-template>
+        </div>
+
+        <div class="status dark"
+             [popover]="loginPopover"
+             (onShown)="setStatus(StatusKey.LOGIN_LINK, StatusValue.PENDING)"
+             [popoverContext]="{user: u}"
+             placement="left"
+             outsideClick=true
+             container="body">
+          <i class="i i-sm i-dark i-password-reset"></i>
+        </div>
+
+        <div class="status dark"
+             [popover]="lockPopover"
+             [popoverContext]="{user: u}"
+             placement="left"
+             outsideClick=true
+             container="body">
+          <i class="i i-sm i-dark i-document-protect"></i>
+        </div>
+
+        <div class="status danger"
+             [popover]="userDeletePopover"
+             [popoverContext]="{user: u}"
+             placement="left"
+             outsideClick=true
+             container="body">
+          <i class="i i-sm i-trash"></i>
+        </div>
+
+      </div>
+
+    </li>
+  </ul>
+
+</div>
+
+<ut-footer></ut-footer>
+
+<!-- LOGIN INFO POPOVER -->
+<ng-template #loginInfoPopover let-u="user">
+  <div class="info-popover">
+    <div class="info-item">
+      <i *ngIf="u.lastLoginDate" class="i i-sm i-check-success mr-2"></i>
+      <i *ngIf="!u.lastLoginDate" class="i i-sm i-cross-danger mr-2"></i>
+      <div>
+        Last login: {{u.lastLoginDate |  date:'dd.MM.yyyy HH:mm'}}
+        <div class="info-annotation text-subtle">Time of last successful user login.</div>
+      </div>
+    </div>
+    <div class="info-item">
+      <i class="i i-sm i-check-success mr-2"></i>
+      <div>
+        Last attempt: {{u.lastLoginAttemptDate |  date:'dd.MM.yyyy HH:mm'}}
+        <div class="info-annotation text-subtle">Time of last login attempt.</div>
+      </div>
+    </div>
+    <div class="info-item">
+      <i *ngIf="u.failedloginAttempts <= 10" class="i i-sm i-check-success mr-2"></i>
+      <i *ngIf="u.failedloginAttempts > 10" class="i i-sm i-warning-warning mr-2"></i>
+      <div>
+        Login attempts: {{u.failedloginAttempts}} / 10
+        <div class="info-annotation text-subtle">Amount of times the user entered invalid credentials.</div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<!-- USER ACCOUNT STATUS POPOVER -->
+<ng-template #statusPopover let-u="user">
+  <div class="info-popover">
+    <div *ngIf="u.active" class="info-item">
+      <i class="i i-sm i-check-success mr-2"></i>
+      Account active
+    </div>
+    <div *ngIf="!u.active" class="info-item">
+      <i class="i i-sm i-cross-danger mr-2"></i>
+      <div>
+        Account inactivated
+        <div class="info-annotation text-subtle">Admin set this account to be inactive. User is not allowed to log in.</div>
+      </div>
+    </div>
+    <div *ngIf="u.nonLocked" class="info-item">
+      <i class="i i-sm i-check-success mr-2"></i>
+      Unlocked
+    </div>
+    <div *ngIf="!u.nonLocked" class="info-item">
+      <i class="i i-sm i-warning-danger mr-2"></i>
+      <div>
+        Account locked
+        <div class="info-annotation text-subtle">Account locked for up to 5 minutes, because user entered their credentials wrong too often.</div>
+      </div>
+    </div>
+    <div *ngIf="u.credentialsNonExpired" class="info-item">
+      <i class="i i-sm i-check-success mr-2"></i>
+      <div>
+        Credentials valid
+      </div>
+    </div>
+    <div *ngIf="!u.credentialsNonExpired" class="info-item">
+      <i class="i i-sm i-warning-warning mr-2"></i>
+      <div>
+        Credentials expired
+        <div class="info-annotation text-subtle">User will be asked to enter new password upon login.</div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<!-- GET LONG LINK / EXPIRE CREDENTIALS POPOVER -->
+<ng-template #loginPopover let-u="user">
+  Expire credentials?
+  <div class="text-subtle text-sm">
+    User must enter their old password and change it upon next login.
+  </div>
+  <ng-template #credentialsValid>
+    <button *ngIf="!hasStatus(StatusKey.EXPIRE_CREDENTIALS, StatusValue.IN_PROGRESS)"
+            class="btn btn-outline-primary btn-block mt-2"
+            (click)="expireCredentials(u); $event.stopPropagation()">
+      Expire credentials of {{u.username}}
+    </button>
+    <button *ngIf="hasStatus(StatusKey.EXPIRE_CREDENTIALS, StatusValue.IN_PROGRESS)"
+            class="btn btn-primary btn-block mt-2" disabled>
+      <i class="i i-sm i-spin i-load float-left"></i>
+      Expiring credentials of {{u.username}}
+    </button>
+  </ng-template>
+  <div *ngIf="!u.credentialsNonExpired; else credentialsValid"
+       class="d-flex justify-content-center text-success my-2">
+    <i class="i i-sm i-check-success mr-2"></i>
+    Credentials expired
+  </div>
+  <hr/>
+  Get one-time login link?
+  <div class="text-subtle text-sm">
+    Give the link to a user who's forgotten their password.
+  </div>
+  <button *ngIf="!u.secureLoginLink && !hasStatus(StatusKey.LOGIN_LINK, StatusValue.IN_PROGRESS)"
+          class="btn btn-outline-primary btn-block mt-2"
+          (click)="requestSecureLink(u); $event.stopPropagation()">
+    Create link for {{u.username}}
+  </button>
+  <button *ngIf="hasStatus(StatusKey.LOGIN_LINK, StatusValue.IN_PROGRESS)"
+          class="btn btn-primary btn-block mt-2" disabled>
+    <i class="i i-sm i-spin i-load float-left"></i>
+    Creating link for {{u.username}}
+  </button>
+  <div *ngIf="u.secureLoginLink"
+       class="d-flex justify-content-center text-success my-2">
+    <i class="i i-sm i-check-success mr-2"></i>
+    Link created
+  </div>
+  <input #secureLoginLinkTextfield
+         *ngIf="u.secureLoginLink"
+         type="text"
+         readonly=true
+         class="get-link-copy-field form-control form-control-sm"
+         [ngModel]="u.secureLoginLink"
+         (click)="copySecureLink(u)"
+         tooltip="Copied link to clipboard!"
+         container="body"
+         triggers="focus" />
+</ng-template>
+
+<!-- CHANGE ROLES / (UN-)LOCK ACCOUNT POPOVER -->
+<ng-template #lockPopover let-u="user">
+  Change roles?
+  <div class="text-subtle text-sm">Control access permissions.</div>
+  <div class="role-container">
+    <div *ngFor="let r of availableRoles"
+         class="role"
+         [ngClass]="{'role-existing': containsRole(u.roles, r)}"
+         (click)="modifyRole(u, r)">
+      {{r}}
+    </div>
+  </div>
+
+  <hr/>
+  <div *ngIf="u.active">
+    Inactivate account?
+    <div class="text-subtle text-sm">User can't log in while their account is inactive.</div>
+    <button *ngIf="!hasStatus(StatusKey.INACTIVATE, StatusValue.IN_PROGRESS)"
+            class="btn btn-outline-danger btn-block mt-2"
+            (click)="inactivate(u); $event.stopPropagation()">
+      Inactivate {{u.username}}
+    </button>
+    <button *ngIf="hasStatus(StatusKey.INACTIVATE, StatusValue.IN_PROGRESS)"
+            class="btn btn-danger btn-block mt-2" disabled>
+      <i class="i i-sm i-spin i-load float-left"></i>
+      Inactivating {{u.username}}
+    </button>
+  </div>
+  <div *ngIf="!u.active">
+    Activate account?
+    <div class="text-subtle text-sm">User can't log in while their account is inactive.</div>
+    <button *ngIf="!hasStatus(StatusKey.ACTIVATE, StatusValue.IN_PROGRESS)"
+            class="btn btn-outline-success btn-block mt-2"
+            (click)="activate(u); $event.stopPropagation()">
+      Activate {{u.username}}
+    </button>
+    <button *ngIf="hasStatus(StatusKey.ACTIVATE, StatusValue.IN_PROGRESS)"
+            class="btn btn-success btn-block mt-2" disabled>
+      <i class="i i-sm i-spin i-load float-left"></i>
+      Activating {{u.username}}
+    </button>
+  </div>
+</ng-template>
+
+<!-- DELETE USER POPOVER -->
+<ng-template #userDeletePopover let-u="user">
+  <div class="d-flex flex-column">
+    Delete account?
+    <div class="text-subtle text-sm">Deletion can't be undone. Use the inactivation feature to lock a user instead.</div>
+    <button *ngIf="u.deleteStatus === undefined"
+            class="btn btn-outline-danger btn-block mt-2"
+            (click)="deleteUser(u); $event.stopPropagation()">
+      Delete {{u.username}}
+    </button>
+    <button *ngIf="u.deleteStatus === StatusValue.IN_PROGRESS"
+            class="btn btn-danger btn-block mt-2" disabled>
+      <i class="i i-sm i-spin i-load float-left"></i>
+      Deleting {{u.username}}
+    </button>
+    <div *ngIf="u.deleteStatus === StatusValue.SUCCESSFUL"
+         class="d-flex justify-content-center align-items-center text-success my-2">
+      <i class="i i-check-success mr-2"></i>
+      Deleted successfully
+    </div>
+    <div *ngIf="u.deleteStatus === StatusValue.FAILED"
+         class="d-flex justify-content-center align-items-center text-danger my-2">
+      <i class="i i-warning-danger mr-2"></i>
+      Could not delete announcment
+    </div>
+  </div>
+</ng-template>
+
+<!-- NEW USER MODAL -->
+<ng-template #newUserModal>
+  <div class="modal-header">
+    <h4 class="modal-title pull-left">Add new user</h4>
+  </div>
+  <div class="modal-body">
+    <div class="form-group">
+      <label for="beaconId">Username:</label>
+      <input id="beaconId"
+             [(ngModel)]="newUser.username"
+             type="text"
+             class="form-control"
+             [ngClass]="{'is-invalid': !isNewUserUsernameValid()}"/>
+    </div>
+    <div class="form-group">
+      <div *ngFor="let r of newUserRoles" class="form-check">
+        <input type="checkbox" class="form-check-input" [id]="'checkbox_role_' + r.name" [(ngModel)]="r.checked">
+        <label class="form-check-label" [for]="'checkbox_role_' + r.name">{{r}}</label>
+      </div>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <div class="float-left mx-4">
+      <span *ngIf="hasStatus(StatusKey.NEW_USER, StatusValue.IN_PROGRESS)">Adding user...</span>
+      <span *ngIf="hasStatus(StatusKey.NEW_USER, StatusValue.FAILED)">User could not be added.</span>
+      <span *ngIf="hasStatus(StatusKey.NEW_USER, StatusValue.SUCCESSFUL)">User was successfully added!</span>
+    </div>
+    <button type="button" class="btn btn-secondary" (click)="hideNewUserModal()">Close</button>
+    <button type="button" class="btn btn-primary" (click)="addUser()" [disabled]="!isNewUserUsernameValid()">Add user</button>
+  </div>
+</ng-template>
+

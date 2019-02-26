@@ -17,14 +17,15 @@ import {FormsModule} from '@angular/forms';
 import {StringModificationPipe} from './pipes/strmod.pipe';
 import {CapitalizationPipe} from './pipes/capitalize.pipe';
 import {LowercasePipe} from './pipes/lowercase.pipe';
-import {
-  BsDatepickerModule,
-  BsDropdownModule,
-  ButtonsModule,
-  CollapseModule, ModalModule,
-  PopoverModule, TabsModule,
-  TimepickerModule
-} from 'ngx-bootstrap';
+import {BsDatepickerModule} from 'ngx-bootstrap/datepicker';
+import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
+import {ButtonsModule} from 'ngx-bootstrap/buttons';
+import {CollapseModule} from 'ngx-bootstrap/collapse';
+import {ModalModule} from 'ngx-bootstrap/modal';
+import {PopoverModule} from 'ngx-bootstrap/popover';
+import {TabsModule} from 'ngx-bootstrap/tabs';
+import {TimepickerModule} from 'ngx-bootstrap/timepicker';
+import {TooltipModule} from 'ngx-bootstrap/tooltip';
 import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule} from '@angular/common/http';
 import {PhenologyObservationService} from './services/phenology/observation/phenology-observation.service';
 import {EnvironmentService} from './services/environment.service';
@@ -35,33 +36,39 @@ import {FooterComponent} from './components/footer/footer.component';
 import {AnnouncementService} from './services/announcement.service';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {ReportComponent} from './components/report/report.component';
-import { TreeComponent } from './components/tree/tree.component';
-import { TreeListComponent } from './components/tree-list/tree-list.component';
-import { SpyDirective } from './directives/spy.directive';
-import { ProjectHomeComponent } from './components/project-home/project-home.component';
-import { ProjectLoginComponent } from './components/project-login/project-login.component';
+import {TreeComponent} from './components/tree/tree.component';
+import {TreeListComponent} from './components/tree-list/tree-list.component';
+import {SpyDirective} from './directives/spy.directive';
+import {ProjectHomeComponent} from './components/project-home/project-home.component';
+import {ProjectLoginComponent} from './components/project-login/project-login.component';
 import {AuthInterceptor} from './interceptors/auth.interceptor';
 import {PhenologyObservationStepGuard} from './components/phenology/observation/phenology-observation-step.guard';
 import {AuthService} from './services/auth.service';
 import {ProjectLoginGuard} from './components/project-login/project-login.guard';
 import {NgxChartsModule} from '@swimlane/ngx-charts';
 import {TreeService} from './services/tree.service';
-import { DecimalPlacesPipe } from './pipes/decimal-places.pipe';
+import {DecimalPlacesPipe} from './pipes/decimal-places.pipe';
 import {AuthDirective} from './directives/auth.directive';
-import {ProjectPasswordResetComponent} from './components/project-password-reset/project-password-reset.component';
-import { PasswordChangeComponent } from './components/project-login/password-change/password-change.component';
 import {AudioImgComponent} from './components/audio-img/audio-img.component';
 import {NoAuthDirective} from './directives/noauth.directive';
 import {AdminComponent} from './components/admin/admin.component';
 import {AdminBeaconComponent} from './components/admin/beacon/beacon.component';
 import {AdminUserComponent} from './components/admin/user/user.component';
-import { MapComponent } from './components/map/map.component';
+import {MapComponent} from './components/map/map.component';
 import {AdminTreeComponent} from './components/admin/tree/tree.component';
 import {AdminService} from './services/admin/admin.service';
-import { BeaconListComponent } from './components/beacon-list/beacon-list.component';
-import { TreeSelectComponent } from './components/tree-select/tree-select.component';
-import { UserOverviewComponent } from './components/user-overview/user-overview.component';
+import {BeaconListComponent} from './components/beacon-list/beacon-list.component';
+import {TreeSelectComponent} from './components/tree-select/tree-select.component';
+import {UserOverviewComponent} from './components/user-overview/user-overview.component';
 import {UserService} from './services/user.service';
+import {UsernameChangeComponent} from './components/project-username-change/project-username-change.component';
+import {PasswordChangeComponent} from './components/project-password-change/project-password-change.component';
+import {ProjectLoginKeyComponent} from './components/project-login-key/project-login-key.component';
+import {AnnouncementsComponent} from './components/admin/announcements/announcements.component';
+import {CheckDirective} from './directives/check.directive';
+import {ValueaccessorDirective} from './directives/valueaccessor.directive';
+import {AdminGuard} from './components/admin/admin.guard';
+import {CssVariableDirective} from './directives/css-variable.directive';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, '/translations/');
@@ -86,7 +93,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     TreeListComponent,
     ProjectHomeComponent,
     ProjectLoginComponent,
-    ProjectPasswordResetComponent,
     PasswordChangeComponent,
     AudioImgComponent,
     AdminComponent,
@@ -97,17 +103,23 @@ export function HttpLoaderFactory(http: HttpClient) {
     BeaconListComponent,
     TreeSelectComponent,
     UserOverviewComponent,
+    UsernameChangeComponent,
+    ProjectLoginKeyComponent,
 
     // Directives
     SpyDirective,
     AuthDirective,
     NoAuthDirective,
+    CheckDirective,
+    CssVariableDirective,
 
     // Pipes
     StringModificationPipe,
     CapitalizationPipe,
     LowercasePipe,
-    DecimalPlacesPipe
+    DecimalPlacesPipe,
+    AnnouncementsComponent,
+    ValueaccessorDirective
   ],
   imports: [
     // Core
@@ -123,6 +135,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     TimepickerModule.forRoot(),
     ButtonsModule.forRoot(),
     PopoverModule.forRoot(),
+    TooltipModule.forRoot(),
     BsDropdownModule.forRoot(),
     CollapseModule.forRoot(),
     TabsModule.forRoot(),
@@ -155,6 +168,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     // Guards
     PhenologyObservationStepGuard,
     ProjectLoginGuard,
+    AdminGuard,
 
     // Interceptors
     {

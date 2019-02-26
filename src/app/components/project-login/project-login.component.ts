@@ -1,10 +1,11 @@
-import {Component, Injectable, OnInit} from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {AuthService} from '../../services/auth.service';
 import {Login} from '../../entities/login.entity';
 import {AbstractComponent} from '../abstract.component';
 import {ActivatedRoute, Router} from '@angular/router';
-import {LogoutReason} from './logout-reason.enum';
+import {LoginAccessReason} from './logout-reason.enum';
 import {LoginStatus} from './login-status.enum';
+import {AuthInterceptor} from '../../interceptors/auth.interceptor';
 
 @Component({
   selector: 'ut-project-login',
@@ -17,11 +18,11 @@ export class ProjectLoginComponent extends AbstractComponent implements OnInit {
 
   private static QUERY_PARAMS_REDIRECT_KEY: string = 'redirect';
 
-  public LoginAccessReason = LogoutReason;
+  public LoginAccessReason = LoginAccessReason;
   public StatusKey = StatusKey;
   public StatusValue = StatusValue;
 
-  public accessReason: LogoutReason;
+  public accessReason: LoginAccessReason;
 
   public redirectTo: string;
 
@@ -32,6 +33,8 @@ export class ProjectLoginComponent extends AbstractComponent implements OnInit {
 
   public username: string;
   public password: string;
+
+  public consecutiveFailedLoginAttempts: number = 0;
 
   constructor(private router: Router,
               private route: ActivatedRoute,
@@ -59,6 +62,12 @@ export class ProjectLoginComponent extends AbstractComponent implements OnInit {
 
     });
 
+    // pre-fill username if a token exists
+    let username = this.authService.getUsername();
+    if (username) {
+      this.username = username;
+    }
+
   }
 
   /**
@@ -71,12 +80,17 @@ export class ProjectLoginComponent extends AbstractComponent implements OnInit {
 
     this.authService.login(loginEntity, () => {
       this.setStatus(StatusKey.LOGIN, StatusValue.SUCCESSFUL);
+      this.consecutiveFailedLoginAttempts = 0;
 
+      if (this.authService.isTempChangePasswordAuth()) {
+        this.redirectTo = '/account/changepassword';
+      }
       if (this.redirectTo) {
         this.router.navigate([this.redirectTo]);
       }
     }, (error, apiError) => {
-      if (apiError.statusCode === 401) {
+      this.consecutiveFailedLoginAttempts++;
+      if (apiError.statusCode === 403) {
         this.setStatus(StatusKey.LOGIN, StatusValue.BAD_CREDENTIALS);
       } else {
         this.setStatus(StatusKey.LOGIN, StatusValue.FAILED);
@@ -90,7 +104,7 @@ export class ProjectLoginComponent extends AbstractComponent implements OnInit {
    */
   public logout(): void {
     this.authService.logout();
-    this.accessReason = LogoutReason.USER_LOGOUT;
+    this.accessReason = LoginAccessReason.USER_LOGOUT;
   }
 
   /**
@@ -98,7 +112,7 @@ export class ProjectLoginComponent extends AbstractComponent implements OnInit {
    * JWT login.
    */
   public isAlreadyLoggedIn(): boolean {
-    return this.authService.getLogInStatus() === LoginStatus.LOGGED_IN_JWT;
+    return this.authService.getLogInStatus() === LoginStatus.LOGGED_IN_JWT && this.accessReason !== LoginAccessReason.FORCE_CREDENTIALS_CONFIRM;
   }
 
   /**
@@ -108,6 +122,10 @@ export class ProjectLoginComponent extends AbstractComponent implements OnInit {
     return window.location.protocol === 'https:' ||
       window.location.hostname === 'localhost' ||
       window.location.hostname.indexOf('192.168.') === 0;
+  }
+
+  public hasManyFailedAttempts(): boolean {
+    return this.consecutiveFailedLoginAttempts >= 3;
   }
 
 }

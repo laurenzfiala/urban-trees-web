@@ -2,7 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import {AnnouncementService} from '../../services/announcement.service';
 import {TranslateService} from '@ngx-translate/core';
 import {AuthService} from '../../services/auth.service';
-import {LogoutReason} from '../project-login/logout-reason.enum';
+import {LoginAccessReason} from '../project-login/logout-reason.enum';
+import {Announcement} from '../../entities/announcement.entity';
+import {EnvironmentService} from '../../services/environment.service';
 
 @Component({
   selector: 'ut-header',
@@ -13,7 +15,7 @@ export class HeaderComponent implements OnInit {
 
   constructor(private announcementService: AnnouncementService,
               private translateService: TranslateService,
-              private authService: AuthService) { }
+              public authService: AuthService) { }
 
   ngOnInit() {
     this.announcementService.load();
@@ -24,7 +26,7 @@ export class HeaderComponent implements OnInit {
    */
   public logout(): void {
     this.authService.logout();
-    this.authService.redirectToLogin(LogoutReason.USER_LOGOUT);
+    this.authService.redirectToLogin(LoginAccessReason.USER_LOGOUT);
   }
 
   /**
@@ -32,6 +34,10 @@ export class HeaderComponent implements OnInit {
    */
   public isLoggedIn(): boolean {
     return this.authService.isLoggedIn();
+  }
+
+  public hideAnnoucement(annoucement: Announcement) {
+    this.announcements.splice(this.announcements.indexOf(annoucement), 1);
   }
 
   get announcements() {

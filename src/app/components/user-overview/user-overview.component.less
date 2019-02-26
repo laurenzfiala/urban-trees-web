@@ -8,10 +8,14 @@
 
   .info {
     padding: @gutter2x;
+    overflow: hidden;
+    border-bottom-left-radius: @borderRadiusNew;
+    border-bottom-right-radius: @borderRadiusNew;
 
     .greeting {
       font-size: @fontSizeLarge;
       text-shadow: 0px 0.5px 0.5px @darkGrey;
+      margin-right: @gutter2x;
     }
     .stats-wrapper {
       border-radius: @borderRadiusNew;
@@ -31,9 +35,25 @@
       margin-right: @gutter2x;
 
       > img {
-        width: 55px;
+        width: 65px;
         filter: drop-shadow( 0 1px 1px @black);
       }
+    }
+  }
+
+  .table-xp {
+
+    tr:nth-child(2) {
+      opacity: 0.5;
+    }
+
+    tr:nth-child(3) {
+      opacity: 0.25;
+    }
+
+    td:first-child {
+      padding-right: @gutter2x;
+      color: @subtleTextColor;
     }
   }
 }
@@ -57,249 +77,438 @@
 @level14Color:      rgb(240, 159, 102);
 @level15Color:      rgb(240, 118, 98);
 
-.level-container {
-  position: relative;
-  margin-top: 100px;
+.user-overview-container {
+  .level-container {
+    position: relative;
+    margin-top: 100px;
 
-  &:before {
-    content: "";
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    background-color: @white;
-    z-index: -2;
-    border-radius: @borderRadiusNew;
+    &:before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: @white;
+      z-index: -2;
+      border-radius: @borderRadiusNew;
+    }
+
+    .level {
+      width: 100px;
+      position: absolute;
+      top: -50px;
+      left: calc(50% - 50px);
+      z-index: 9999;
+      animation: i-level 2s;
+    }
+
+    .level-highlight {
+      width: 180px;
+      position: absolute;
+      top: -90px;
+      left: calc(50% - 90px);
+      animation: i-spin-keyframes 6s infinite linear;
+      opacity: 0.85;
+      z-index: -3;
+    }
+
+    .level-text {
+      text-align: center;
+      padding-top: 55px;
+      font-size: @fontSizeExtraLarge;
+      padding-bottom: @gutter2x;
+      text-shadow: 0px 0.5px 0.5px @black;
+    }
   }
 
-  .level {
-    width: 100px;
-    position: absolute;
-    top: -50px;
-    left: calc(50% - 50px);
-    z-index: 9999;
-    animation: i-level 2s;
-  }
+  .level-progress {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 
-  .level-highlight {
-    width: 180px;
-    position: absolute;
-    top: -90px;
-    left: calc(50% - 90px);
-    animation: i-spin-keyframes 6s infinite linear;
-    opacity: 0.85;
-    z-index: -3;
-  }
+    margin: @gutter2x -@gutter2x -@gutter2x -@gutter2x;
+    border-bottom-right-radius: @borderRadiusNew;
+    border-bottom-left-radius: @borderRadiusNew;
 
-  .level-text {
-    text-align: center;
-    padding-top: 55px;
-    font-size: @fontSizeExtraLarge;
-    padding-bottom: @gutter2x;
-    text-shadow: 0px 0.5px 0.5px @black;
+    .level-info {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 4;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      font-size: @fontSizeExtraSmall;
+      color: @lightGrey;
+      text-shadow: 0 1px 1px @darkerGrey;
+      margin: 0 @borderRadiusNew;
+    }
+
+    .level-icon {
+      height: (@borderRadiusNew * 2 - 1rem);
+      opacity: 0.8;
+    }
+
+    .bar {
+      height: (@borderRadiusNew * 2);
+      background: linear-gradient(to right, darken(@bgColor, 15%), darken(@bgColor, 20%));
+      width: 100%;
+      box-shadow: 0 0 0px 1px rgba(0, 0, 0, 0.1) inset;
+      margin-bottom: -1px;
+      position: relative;
+      border-radius: @borderRadiusNew;
+      overflow: hidden;
+
+      > .bar-inner {
+        height: 100%;
+        width: 0;
+        border-top-left-radius: @borderRadiusNew;
+        border-bottom-left-radius: @borderRadiusNew;
+        animation: 1.5s i-level-progress 0.75s forwards;
+      }
+    }
   }
 
   &.level-1 {
-    &:before {
+    .level-container {
+      &:before {
+        background: linear-gradient(to top right, @level1Color, darken(@level1Color, 15%));
+      }
+
+      .level {
+        filter: drop-shadow(@levelDropShadow @level1Color);
+      }
+
+      .level-text {
+        color: lighten(@level1Color, 35%);
+      }
+    }
+
+    .level-progress .bar-inner {
       background: linear-gradient(to top right, @level1Color, darken(@level1Color, 15%));
-    }
-    .level {
-      filter: drop-shadow( @levelDropShadow @level1Color);
-    }
-    .level-text {
-      color: lighten(@level1Color, 35%);
     }
   }
 
-  &.level-2 {
-    &:before {
-      background: linear-gradient(to top right, @level2Color, darken(@level2Color, 15%));
+  .level-progress .bar-inner {
+    background: linear-gradient(to right, @level1Color, lighten(@level1Color, 10%));
+    border-top: solid darken(@level1Color, 15%) 1px;
+    border-bottom: solid darken(@level1Color, 15%) 1px;
+  }
 
+  &.level-2 {
+    .level-container {
+      &:before {
+        background: linear-gradient(to top right, @level2Color, darken(@level2Color, 15%));
+      }
+
+      .level {
+        filter: drop-shadow(@levelDropShadow @level2Color);
+      }
+
+      .level-text {
+        color: lighten(@level2Color, 35%);
+      }
     }
-    .level {
-      filter: drop-shadow( @levelDropShadow @level2Color);
-    }
-    .level-text {
-      color: lighten(@level2Color, 35%);
+
+    .level-progress .bar-inner {
+      background: linear-gradient(to right, @level2Color, lighten(@level2Color, 10%));
+      border-top: solid darken(@level2Color, 15%) 1px;
+      border-bottom: solid darken(@level2Color, 15%) 1px;
     }
   }
 
   &.level-3 {
-    &:before {
-      background: linear-gradient(to top right, @level3Color, darken(@level3Color, 15%));
+    .level-container {
+      &:before {
+        background: linear-gradient(to top right, @level3Color, darken(@level3Color, 15%));
+      }
 
+      .level {
+        filter: drop-shadow(@levelDropShadow @level3Color);
+      }
+
+      .level-text {
+        color: lighten(@level3Color, 35%);
+      }
     }
-    .level {
-      filter: drop-shadow( @levelDropShadow @level3Color);
-    }
-    .level-text {
-      color: lighten(@level3Color, 35%);
+
+    .level-progress .bar-inner {
+      background: linear-gradient(to right, @level3Color, lighten(@level3Color, 10%));
+      border-top: solid darken(@level3Color, 15%) 1px;
+      border-bottom: solid darken(@level3Color, 15%) 1px;
     }
   }
 
   &.level-4 {
-    &:before {
-      background: linear-gradient(to top right, @level4Color, darken(@level4Color, 15%));
+    .level-container {
+      &:before {
+        background: linear-gradient(to top right, @level4Color, darken(@level4Color, 15%));
+      }
 
+      .level {
+        filter: drop-shadow(@levelDropShadow @level4Color);
+      }
+
+      .level-text {
+        color: lighten(@level4Color, 35%);
+      }
     }
-    .level {
-      filter: drop-shadow( @levelDropShadow @level4Color);
-    }
-    .level-text {
-      color: lighten(@level4Color, 35%);
+
+    .level-progress .bar-inner {
+      background: linear-gradient(to right, @level4Color, lighten(@level4Color, 10%));
+      border-top: solid darken(@level4Color, 15%) 1px;
+      border-bottom: solid darken(@level4Color, 15%) 1px;
     }
   }
 
   &.level-5 {
-    &:before {
-      background: linear-gradient(to top right, @level5Color, darken(@level5Color, 15%));
+    .level-container {
+      &:before {
+        background: linear-gradient(to top right, @level5Color, darken(@level5Color, 15%));
+      }
 
+      .level {
+        filter: drop-shadow(@levelDropShadow @level5Color);
+      }
+
+      .level-text {
+        color: lighten(@level5Color, 35%);
+      }
     }
-    .level {
-      filter: drop-shadow( @levelDropShadow @level5Color);
-    }
-    .level-text {
-      color: lighten(@level5Color, 35%);
+
+    .level-progress .bar-inner {
+      background: linear-gradient(to right, @level5Color, lighten(@level5Color, 10%));
+      border-top: solid darken(@level5Color, 15%) 1px;
+      border-bottom: solid darken(@level5Color, 15%) 1px;
     }
   }
 
   &.level-6 {
-    &:before {
-      background: linear-gradient(to top right, @level6Color, darken(@level6Color, 15%));
+    .level-container {
+      &:before {
+        background: linear-gradient(to top right, @level6Color, darken(@level6Color, 15%));
+      }
 
+      .level {
+        filter: drop-shadow(@levelDropShadow @level6Color);
+      }
+
+      .level-text {
+        color: lighten(@level6Color, 35%);
+      }
     }
-    .level {
-      filter: drop-shadow( @levelDropShadow @level6Color);
-    }
-    .level-text {
-      color: lighten(@level6Color, 35%);
+
+    .level-progress .bar-inner {
+      background: linear-gradient(to right, @level6Color, lighten(@level6Color, 10%));
+      border-top: solid darken(@level6Color, 15%) 1px;
+      border-bottom: solid darken(@level6Color, 15%) 1px;
     }
   }
 
   &.level-7 {
-    &:before {
-      background: linear-gradient(to top right, @level7Color, darken(@level7Color, 15%));
+    .level-container {
+      &:before {
+        background: linear-gradient(to top right, @level7Color, darken(@level7Color, 15%));
+      }
 
+      .level {
+        filter: drop-shadow(@levelDropShadow @level7Color);
+      }
+
+      .level-text {
+        color: lighten(@level7Color, 35%);
+      }
     }
-    .level {
-      filter: drop-shadow( @levelDropShadow @level7Color);
-    }
-    .level-text {
-      color: lighten(@level7Color, 35%);
+
+    .level-progress .bar-inner {
+      background: linear-gradient(to right, @level7Color, lighten(@level7Color, 10%));
+      border-top: solid darken(@level7Color, 15%) 1px;
+      border-bottom: solid darken(@level7Color, 15%) 1px;
     }
   }
 
   &.level-8 {
-    &:before {
-      background: linear-gradient(to top right, @level8Color, darken(@level8Color, 15%));
+    .level-container {
+      &:before {
+        background: linear-gradient(to top right, @level8Color, darken(@level8Color, 15%));
+      }
 
+      .level {
+        filter: drop-shadow(@levelDropShadow @level8Color);
+      }
+
+      .level-text {
+        color: lighten(@level8Color, 35%);
+      }
     }
-    .level {
-      filter: drop-shadow( @levelDropShadow @level8Color);
-    }
-    .level-text {
-      color: lighten(@level8Color, 35%);
+
+    .level-progress .bar-inner {
+      background: linear-gradient(to right, @level8Color, lighten(@level8Color, 10%));
+      border-top: solid darken(@level8Color, 15%) 1px;
+      border-bottom: solid darken(@level8Color, 15%) 1px;
     }
   }
 
   &.level-9 {
-    &:before {
-      background: linear-gradient(to top right, @level9Color, darken(@level9Color, 15%));
+    .level-container {
+      &:before {
+        background: linear-gradient(to top right, @level9Color, darken(@level9Color, 15%));
+      }
 
+      .level {
+        filter: drop-shadow(@levelDropShadow @level9Color);
+      }
+
+      .level-text {
+        color: lighten(@level9Color, 35%);
+      }
     }
-    .level {
-      filter: drop-shadow( @levelDropShadow @level9Color);
-    }
-    .level-text {
-      color: lighten(@level9Color, 35%);
+
+    .level-progress .bar-inner {
+      background: linear-gradient(to right, @level9Color, lighten(@level9Color, 10%));
+      border-top: solid darken(@level9Color, 15%) 1px;
+      border-bottom: solid darken(@level9Color, 15%) 1px;
     }
   }
 
   &.level-10 {
-    &:before {
-      background: linear-gradient(to top right, @level10Color, darken(@level10Color, 15%));
+    .level-container {
+      &:before {
+        background: linear-gradient(to top right, @level10Color, darken(@level10Color, 15%));
+      }
 
+      .level {
+        filter: drop-shadow(@levelDropShadow @level10Color);
+      }
+
+      .level-text {
+        color: lighten(@level10Color, 35%);
+      }
     }
-    .level {
-      filter: drop-shadow( @levelDropShadow @level10Color);
-    }
-    .level-text {
-      color: lighten(@level10Color, 35%);
+
+    .level-progress .bar-inner {
+      background: linear-gradient(to right, @level10Color, lighten(@level10Color, 10%));
+      border-top: solid darken(@level10Color, 15%) 1px;
+      border-bottom: solid darken(@level10Color, 15%) 1px;
     }
   }
 
   &.level-11 {
-    &:before {
-      background: linear-gradient(to top right, @level11Color, darken(@level11Color, 15%));
+    .level-container {
+      &:before {
+        background: linear-gradient(to top right, @level11Color, darken(@level11Color, 15%));
+      }
 
+      .level {
+        filter: drop-shadow(@levelDropShadow @level11Color);
+      }
+
+      .level-text {
+        color: darken(@level11Color, 45%);
+        text-shadow: 0px 0.5px 0.5px @white;
+      }
     }
-    .level {
-      filter: drop-shadow( @levelDropShadow @level11Color);
-    }
-    .level-text {
-      color: darken(@level11Color, 45%);
-      text-shadow: 0px 0.5px 0.5px @white;
+
+    .level-progress .bar-inner {
+      background: linear-gradient(to right, @level11Color, lighten(@level11Color, 10%));
+      border-top: solid darken(@level11Color, 15%) 1px;
+      border-bottom: solid darken(@level11Color, 15%) 1px;
     }
   }
 
   &.level-12 {
-    &:before {
-      background: linear-gradient(to top right, @level12Color, darken(@level12Color, 15%));
+    .level-container {
+      &:before {
+        background: linear-gradient(to top right, @level12Color, darken(@level12Color, 15%));
+      }
 
+      .level {
+        filter: drop-shadow(@levelDropShadow @level12Color);
+      }
+
+      .level-text {
+        color: lighten(@level12Color, 35%);
+      }
     }
-    .level {
-      filter: drop-shadow( @levelDropShadow @level12Color);
-    }
-    .level-text {
-      color: lighten(@level12Color, 35%);
+
+    .level-progress .bar-inner {
+      background: linear-gradient(to right, @level12Color, lighten(@level12Color, 10%));
+      border-top: solid darken(@level12Color, 15%) 1px;
+      border-bottom: solid darken(@level12Color, 15%) 1px;
     }
   }
 
   &.level-13 {
-    &:before {
-      background: linear-gradient(to top right, @level13Color, darken(@level13Color, 15%));
+    .level-container {
+      &:before {
+        background: linear-gradient(to top right, @level13Color, darken(@level13Color, 15%));
+      }
 
+      .level {
+        filter: drop-shadow(@levelDropShadow @level13Color);
+      }
+
+      .level-text {
+        color: lighten(@level13Color, 35%);
+      }
     }
-    .level {
-      filter: drop-shadow( @levelDropShadow @level13Color);
-    }
-    .level-text {
-      color: lighten(@level13Color, 35%);
+
+    .level-progress .bar-inner {
+      background: linear-gradient(to right, @level13Color, lighten(@level13Color, 10%));
+      border-top: solid darken(@level13Color, 15%) 1px;
+      border-bottom: solid darken(@level13Color, 15%) 1px;
     }
   }
 
   &.level-14 {
-    &:before {
-      background: linear-gradient(to top right, @level14Color, darken(@level14Color, 15%));
+    .level-container {
+      &:before {
+        background: linear-gradient(to top right, @level14Color, darken(@level14Color, 15%));
+      }
 
+      .level {
+        filter: drop-shadow(@levelDropShadow @level14Color);
+      }
+
+      .level-text {
+        color: lighten(@level14Color, 35%);
+      }
     }
-    .level {
-      filter: drop-shadow( @levelDropShadow @level14Color);
-    }
-    .level-text {
-      color: lighten(@level14Color, 35%);
+
+    .level-progress .bar-inner {
+      background: linear-gradient(to right, @level14Color, lighten(@level14Color, 10%));
+      border-top: solid darken(@level14Color, 15%) 1px;
+      border-bottom: solid darken(@level14Color, 15%) 1px;
     }
   }
 
   &.level-15 {
-    &:before {
-      background: linear-gradient(to top right, @level15Color, darken(@level15Color, 15%));
+    .level-container {
+      &:before {
+        background: linear-gradient(to top right, @level15Color, darken(@level15Color, 15%));
+      }
 
+      .level {
+        filter: drop-shadow(@levelDropShadow @level15Color);
+      }
+
+      .level-text {
+        color: lighten(@level15Color, 35%);
+      }
     }
-    .level {
-      filter: drop-shadow( @levelDropShadow @level15Color);
-    }
-    .level-text {
-      color: lighten(@level15Color, 35%);
+
+    .level-progress .bar-inner {
+      background: linear-gradient(to right, @level15Color, lighten(@level15Color, 10%));
+      border-top: solid darken(@level15Color, 15%) 1px;
+      border-bottom: solid darken(@level15Color, 15%) 1px;
     }
   }
-}
-
-@keyframes i-level-progress
-{
-  0%   {width: 0;}
-  100% {width: 87%;}
 }
 
 @keyframes i-level
@@ -319,4 +528,10 @@
 {
   0%   {transform: scale(1, 1); transform-origin: 50% 50%;}
   100% {transform: scale(1.1, 1.1); transform-origin: 50% 50%;}
+}
+
+@keyframes i-level-progress
+{
+  0%   {width: 0}
+  100% {width: var(--target-width)}
 }

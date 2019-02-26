@@ -76,7 +76,26 @@
   </div>
 
   <div
-    *ngIf="accessReason === LoginAccessReason.FORCE_LOGOUT_EXPIRED"
+    *ngIf="hasManyFailedAttempts()"
+    class="col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto login-annotation-container login-annotation-info">
+
+    {{'login.failed_attempts_info' | translate}}
+    <div class="text-subtle text-sm">
+      {{'login.failed_attempts_amount' | translate}}: {{consecutiveFailedLoginAttempts}}
+    </div>
+
+  </div>
+
+  <div
+    *ngIf="accessReason === LoginAccessReason.FORCE_CREDENTIALS_CONFIRM && hasStatus(StatusKey.LOGIN, StatusValue.PENDING)"
+    class="col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto login-annotation-container login-annotation-warning">
+
+    {{'login.status_force_credentials_confirm' | translate}}
+
+  </div>
+
+  <div
+    *ngIf="accessReason === LoginAccessReason.FORCE_LOGOUT_EXPIRED && hasStatus(StatusKey.LOGIN, StatusValue.PENDING)"
     class="col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto login-annotation-container login-annotation-warning">
 
     {{'login.status_expired' | translate}}
@@ -84,7 +103,7 @@
   </div>
 
   <div
-    *ngIf="accessReason === LoginAccessReason.FORCE_LOGOUT"
+    *ngIf="accessReason === LoginAccessReason.FORCE_LOGOUT && hasStatus(StatusKey.LOGIN, StatusValue.PENDING)"
     class="col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto login-annotation-container login-annotation-info">
 
     {{'login.status_force_logout' | translate}}
@@ -92,7 +111,7 @@
   </div>
 
   <div
-    *ngIf="accessReason === LoginAccessReason.INSUFFICIENT_PERMISSIONS"
+    *ngIf="accessReason === LoginAccessReason.INSUFFICIENT_PERMISSIONS && hasStatus(StatusKey.LOGIN, StatusValue.PENDING)"
     class="col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto login-annotation-container login-annotation-warning">
 
     {{'login.status_insufficient_permissions' | translate}}
@@ -100,7 +119,7 @@
   </div>
 
   <div
-    *ngIf="accessReason === LoginAccessReason.USER_LOGOUT"
+    *ngIf="accessReason === LoginAccessReason.USER_LOGOUT && hasStatus(StatusKey.LOGIN, StatusValue.PENDING)"
     class="col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto login-annotation-container login-annotation-success">
 
     {{'login.status_user_logout' | translate}}

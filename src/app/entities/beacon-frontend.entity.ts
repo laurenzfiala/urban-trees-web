@@ -18,6 +18,8 @@ export class BeaconFrontend extends Beacon {
 
   public chartData: Array<ChartDataSeries>;
 
+  public deleteStatus: number;
+
   constructor(
     id: number,
     deviceId: string,

@@ -12,11 +12,11 @@
     </tr>
     <tr>
       <th scope="row">{{'phenology.observation.step4.location' | translate}}</th>
-      <td>{{selectedTree?.location?.street}}<br/>{{selectedTree?.location?.city}}</td>
+      <td>{{selectedTree?.location?.street}}<br/>{{selectedTree?.location?.city?.name}}</td>
     </tr>
     <tr>
       <th scope="row">{{'phenology.observation.step4.species' | translate}}</th>
-      <td>{{selectedTree?.species}}</td>
+      <td>{{selectedTree?.species?.name}}</td>
     </tr>
     <tr>
       <th scope="row">{{'phenology.observation.step4.observation_time' | translate}}</th>

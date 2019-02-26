@@ -1,0 +1,23 @@
+@import (reference) "variables.less";
+
+// invalid state
+form.validate-on-submit.submitted .ng-invalid:not(form),
+form.validate-on-dirty .ng-invalid.ng-dirty:not(form) {
+  padding-right: (@gutter2x + @fontSizeLarge);
+  border-color: @dangerColor;
+  background-repeat: no-repeat;
+  background-position: center right @gutter;
+  background-size: @fontSizeLarge;
+  background-image: url("/assets/img/icon/special/cross-danger.svg");
+
+  &:focus {
+    box-shadow: 0 0 0 @focusOutlineWidth @dangerBg;
+    border-color: @dangerColor;
+  }
+}
+
+// allow submit only once
+form.validate-on-submit.submitted.ng-invalid [type="submit"] {
+  pointer-events: none;
+  opacity: 0.5;
+}

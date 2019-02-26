@@ -30,6 +30,7 @@
     }
 	},
   "home": {
+    "choose": "Triff eine Auswahl",
     "greeting": "Hallo, {{username}}!",
     "level_up": "Level {{level}} erreicht!",
     "loading_stats_achievements": "Lade Errungenschaften und Statistiken...",
@@ -157,24 +158,55 @@
       "text": "Wir konnten den Baum nicht laden, bitte gehe zurück und versuche es erneut."
     }
   },
+  "user": {
+    "level_action": {
+      "INITIAL": "Account erstellt",
+      "BEACON_READOUT": "Beacon ausgelesen",
+      "PHENOLOGY_IMAGE_UPLOAD": "Bild für Phänologie hochgeladen",
+      "PHENOLOGY_OBSERVATION": "Phänologiebeobachtung",
+      "UPGRADE_ACCOUNT": "Veralteter Account erneuert"
+    }
+  },
   "login": {
     "heading": "Dein Projekt-Account",
     "username_placeholder": "Nutzername",
     "password_placeholder": "Passwort",
+    "password_old_placeholder": "Derzeitiges Passwort",
+    "password_new_placeholder": "Neues Passwort",
+    "password_new_confirm_placeholder": "Neues Passwort (bestätigen)",
     "log_in": "Anmelden",
     "logging_in": "Melde an...",
+    "change_password": "Passwort ändern",
+    "changing_password": "Passwort wird geändert...",
     "status_connection_insecure": "Anmelden über eine unsichere Verbindung ist nicht erlaubt",
     "status_bad_credentials": "Nutzername und Passwort wurden nicht erkannt",
     "status_failed": "Anmeldung fehlgeschlagen, bitte versuche es erneut",
     "status_expired": "Anmeldedaten abgelaufen, bitte melde dich erneut an",
     "status_force_logout": "Du wurdest abgemeldet",
+    "status_force_credentials_confirm": "Bitte bestätige Dein Passwort, um diese Seite aufzurufen",
     "status_user_logout": "Erfolgreich abgemeldet",
-    "status_not_authenticated": "Bitte anmelden, um diese Seite anzuzeigen",
+    "status_not_authenticated": "Bitte anmelden, um diese Seite aufzurufen",
     "status_insufficient_permissions": "Du bist nicht berechtigt, die angefragte Seite anzuzeigen",
     "description": "Dein persönlicher Projekt-Account ermöglicht es Dir, Deine Phänologiebeobachtungen einzutragen, projektbezogene Neuigkeiten anzuzeigen und vieles mehr.",
     "disclaimer": "Wir speichern keine persönlichen Daten, außer jene deutlich zum Abschicken markiert und für wissenschaftliche Zwecke.<br/>Es werden keine automatisierten E-Mails verschickt.<br/>Durch das Anmelden erlaubst Du, Deine Anmeldedaten lokal zu speichern.",
     "reset_info": "Dein neues Passwort muss Folgendes erfüllen:<ul><li>Enthält mindestens 1 kleinbuchstaben (a-z)</li><li>Enthält mindestens 1 GROSSBUCHSTABEN (A-Z)</li><li>Enthält mindestens 1 Zahl (0-9)</li><li>Enthält mindestens 1 Symbol (!§$%&/()=?\"'+#<>,..-*~)</li><li>Ist mindestens 10 Zeichen lang</li></ul>",
-    "already_logged_in": "Du bist bereits angemeldet."
+    "username_change_info": "Dein neues Passwort muss Folgendes erfüllen:<ul><li>Ist mindestens 10 Zeichen lang</li><li>Ist nicht gleich dem jetzigen Nutzernamen</li><li>Existiert nicht bereits</li></ul>",
+    "already_logged_in": "Du bist bereits angemeldet.",
+    "username_new_placeholder": "Neuer Nutzername",
+    "change_username": "Nutzername ändern",
+    "changing_username": "Nutzername wird geändert...",
+    "username_changed": "Dein Nutzername wurde erfolgreich geändert",
+    "username_change_failed": "Dein Nutzername konnte nicht geändert werden",
+    "username_change_title": "Nutzernamen ändern",
+    "password_change_title": "Passwort ändern",
+    "password_change_title_set": "Passwort setzen",
+    "failed_attempts_info": "Dein Account wird nach 10 Versuchen für 5 Minuten gesperrt.",
+    "failed_attempts_amount": "Fehlgeschlagene Versuche",
+    "change_password_success": "Passwort wurde erfolgreich geändert",
+    "change_password_failed": "Passwort konnte nicht geändert werden, überprüfe das alte Passwort",
+    "change_password_failed_nooldpw": "Passwort konnte nicht geändert werden, bitte frage einen Administrator um Hilfe",
+    "log_in_again": "Neu anmelden, um fortzufahren",
+    "go_to_login": "Zum Login"
   },
 	"en-GB": "English",
 	"de-DE": "Deutsch",
@@ -268,7 +300,7 @@
         "datapoints": "Datensätze",
         "mode": {
           "24h": "Letzte 24 Stunden",
-          "week": "Letzte Woche",
+          "week": "Letzte Woche",t
           "temp_month_per_day": "Letztes Monat pro Tag (Temperatur)",
           "humidity_month_per_day": "Letztes Monat pro Tag (Luftfeuchte)"
         },
@@ -276,6 +308,9 @@
           "control_label": "Geamter Aufzeichnungszeitraum",
           "info_popover": "Die Daten werden interpoliert falls sonst zu viele Daten angezeigt würden."
         }
+      },
+      "chart": {
+        "xAxisLabel": "Zeit"
       }
     },
     "audioimg": {

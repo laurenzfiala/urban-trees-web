@@ -7,8 +7,9 @@ export const environment = {
 
   production:                       false,
 
-  host:                             'http://localhost:80',
-  mapHost:                          'http://localhost:8081',
+  webHost:                          'http://192.168.0.122:4200',
+  host:                             'http://192.168.0.122:80',
+  mapHost:                          'http://192.168.0.122xAxisLabel:8081',
 
   endpoints: {
     // Tree
@@ -38,13 +39,29 @@ export const environment = {
     // Admin
     addCity:                          '/admin/city',
     addTree:                          '/admin/tree',
+    addUser:                          '/admin/user',
     modifyTree:                       '/admin/tree/{treeId}',
+    phenologyObservationTypes:        '/admin/phenology/types',
     addBeacon:                        '/admin/beacon',
     deleteBeacon:                     '/admin/beacon/{beaconId}',
+    loadUsers:                        '/admin/users',
+    loadRole:                         '/admin/users/roles',
+    deleteUser:                       '/admin/users/{userId}',
+    expireCredentials:                '/admin/users/{userId}/expireCredentials',
+    activate:                         '/admin/users/{userId}/activate',
+    inactivate:                       '/admin/users/{userId}/inactivate',
+    addRoles:                         '/admin/users/{userId}/roles/add',
+    removeRoles:                      '/admin/users/{userId}/roles/remove',
+    loginKey:                         '/admin/users/{userId}/loginkey',
+    loginKeyUrl:                      '/login/{token}',
+    allAnnouncements:                 '/admin/announcements',
+    addAnnouncement:                  '/admin/announcement',
+    deleteAnnouncement:               '/admin/announcement/{announcementId}',
 
     // Authentication
     login:                            '/login',
-    changePassword:                   '/account/changepassword'
+    changePassword:                   '/account/changepassword',
+    changeUsername:                   '/account/changeusername'
   },
 
   defaultTimeout:                     10000,
@@ -57,10 +74,18 @@ export const environment = {
   },
 
   security: {
+    minUsernameLength:                5,
+    minPasswordLength:                10,
+    jwtTokenExpireMs:                 86400000,
+    adminTimeoutMs:                   1800000,
+
+    interceptorRedirectExclusions:    ['/login'],
+
     roles: {
       user:                           ['ROLE_USER'],
       phenObs:                        ['ROLE_PHENOBS'],
-      admin:                          ['ROLE_ADMIN']
+      admin:                          ['ROLE_ADMIN'],
+      tempChangePassword:             'ROLE_TEMP_CHANGE_PASSWORD'
     }
   }
 

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpErrorResponse} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {AbstractService} from '../abstract.service';
 import {Log} from '../log.service';
 import {EnvironmentService} from '../environment.service';
@@ -7,6 +7,10 @@ import {Tree} from '../../entities/tree.entity';
 import {ApiError} from '../../entities/api-error.entity';
 import {City} from '../../entities/city.entity';
 import {Beacon} from '../../entities/beacon.entity';
+import {User} from '../../entities/user.entity';
+import {Role} from '../../entities/role.entity';
+import {Announcement} from '../../entities/announcement.entity';
+import * as moment from 'moment';
 
 /**
  * Service for backend calls on the admin pages.
@@ -66,6 +70,40 @@ export class AdminService extends AbstractService {
         successCallback();
       }, (e: any) => {
         AdminService.LOG.error('Could not save tree: ' + e.message, e);
+        errorCallback(e, this.safeApiError(e));
+      });
+
+  }
+
+  public addUser(user: User,
+                 successCallback: () => void,
+                 errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void) {
+
+    AdminService.LOG.debug('Saving user to ' + this.envService.endpoints.addUser + ' ...');
+
+    this.http.put(this.envService.endpoints.addUser, user)
+      .timeout(this.envService.defaultTimeout)
+      .subscribe(() => {
+        successCallback();
+      }, (e: any) => {
+        AdminService.LOG.error('Could not save user: ' + e.message, e);
+        errorCallback(e, this.safeApiError(e));
+      });
+
+  }
+
+  public requestLoginKey(userId: number,
+                         successCallback: (loginKey: string) => void,
+                         errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void) {
+
+    AdminService.LOG.debug('Saving user to ' + this.envService.endpoints.addUser + ' ...');
+
+    this.http.get(this.envService.endpoints.loginKey(userId), {responseType: 'text'})
+      .timeout(this.envService.defaultTimeout)
+      .subscribe((response: string) => {
+        successCallback(response);
+      }, (e: any) => {
+        AdminService.LOG.error('Could not request login key: ' + e.message, e);
         errorCallback(e, this.safeApiError(e));
       });
 
@@ -137,6 +175,220 @@ export class AdminService extends AbstractService {
       }, (e: any) => {
         AdminService.LOG.error('Could not delete beacon: ' + e.message, e);
         errorCallback(e, this.safeApiError(e));
+      });
+
+  }
+
+  public loadUsers(successCallback: (users: Array<User>) => void,
+                   errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void) {
+
+    let url = this.envService.endpoints.loadUsers;
+    AdminService.LOG.debug('Loading users...');
+
+    this.http.get<Array<User>>(url)
+      .timeout(this.envService.defaultTimeout)
+      .map(list => list && list.map(u => User.fromObject(u)))
+      .subscribe((result: Array<User>) => {
+        successCallback(result);
+      }, (e: any) => {
+        AdminService.LOG.error('Could not load users: ' + e.message, e);
+        if (errorCallback) {
+          errorCallback(e, this.safeApiError(e));
+        }
+      });
+
+  }
+
+  public loadRoles(successCallback: (users: Array<Role>) => void,
+                   errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void) {
+
+    let url = this.envService.endpoints.loadRole;
+    AdminService.LOG.debug('Loading all user roles...');
+
+    this.http.get<Array<User>>(url)
+      .timeout(this.envService.defaultTimeout)
+      .map(list => list && list.map(r => Role.fromObject(r)))
+      .subscribe((result: Array<Role>) => {
+        successCallback(result);
+      }, (e: any) => {
+        AdminService.LOG.error('Could not load all user roles: ' + e.message, e);
+        if (errorCallback) {
+          errorCallback(e, this.safeApiError(e));
+        }
+      });
+
+  }
+
+  public addRoles(userId: number,
+                 roles: Array<Role>,
+                 successCallback: () => void,
+                 errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void) {
+
+    let url = this.envService.endpoints.addRoles(userId);
+    AdminService.LOG.debug('Adding user roles...');
+
+    this.http.put(url, roles)
+      .timeout(this.envService.defaultTimeout)
+      .subscribe(() => {
+        successCallback();
+      }, (e: any) => {
+        AdminService.LOG.error('Could not add roles to user: ' + e.message, e);
+        if (errorCallback) {
+          errorCallback(e, this.safeApiError(e));
+        }
+      });
+
+  }
+
+  public removeRoles(userId: number,
+                     roles: Array<Role>,
+                     successCallback: () => void,
+                     errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void) {
+
+    let url = this.envService.endpoints.removeRoles(userId);
+    AdminService.LOG.debug('Adding user role...');
+
+    this.http.put(url, roles)
+      .timeout(this.envService.defaultTimeout)
+      .subscribe(() => {
+        successCallback();
+      }, (e: any) => {
+        AdminService.LOG.error('Could not delete roles from user: ' + e.message, e);
+        if (errorCallback) {
+          errorCallback(e, this.safeApiError(e));
+        }
+      });
+
+  }
+
+  public deleteUser(user: User,
+                    successCallback: () => void,
+                    errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void) {
+
+    let url = this.envService.endpoints.deleteUser(user.id);
+    AdminService.LOG.debug('Deleting user ' + user.username + '...');
+
+    this.http.delete(url)
+      .timeout(this.envService.defaultTimeout)
+      .subscribe(() => {
+        successCallback();
+      }, (e: any) => {
+        AdminService.LOG.error('Could not delete user: ' + e.message, e);
+        if (errorCallback) {
+          errorCallback(e, this.safeApiError(e));
+        }
+      });
+
+  }
+
+  public expireCredentials(user: User,
+                           successCallback: () => void,
+                           errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void) {
+
+    let url = this.envService.endpoints.expireCredentials(user.id);
+    AdminService.LOG.debug('Expiring credentials of user ' + user.username + '...');
+
+    this.http.get(url)
+      .timeout(this.envService.defaultTimeout)
+      .subscribe(() => {
+        successCallback();
+      }, (e: any) => {
+        AdminService.LOG.error('Could not expire credentials: ' + e.message, e);
+        if (errorCallback) {
+          errorCallback(e, this.safeApiError(e));
+        }
+      });
+
+  }
+
+  public activate(user: User,
+                  successCallback: () => void,
+                  errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void) {
+
+    let url = this.envService.endpoints.activate(user.id);
+    AdminService.LOG.debug('Activating user ' + user.username + '...');
+
+    this.http.get(url)
+      .timeout(this.envService.defaultTimeout)
+      .subscribe(() => {
+        successCallback();
+      }, (e: any) => {
+        AdminService.LOG.error('Could not activate user: ' + e.message, e);
+        if (errorCallback) {
+          errorCallback(e, this.safeApiError(e));
+        }
+      });
+
+  }
+
+  public inactivate(user: User,
+                    successCallback: () => void,
+                    errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void) {
+
+    let url = this.envService.endpoints.inactivate(user.id);
+    AdminService.LOG.debug('Inactivating user ' + user.username + '...');
+
+    this.http.get(url)
+      .timeout(this.envService.defaultTimeout)
+      .subscribe(() => {
+        successCallback();
+      }, (e: any) => {
+        AdminService.LOG.error('Could not inactivate user: ' + e.message, e);
+        if (errorCallback) {
+          errorCallback(e, this.safeApiError(e));
+        }
+      });
+
+  }
+
+  public addAnnouncement(announcement: Announcement,
+                         successCallback: () => void,
+                         errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void) {
+
+    let url = this.envService.endpoints.addAnnouncement;
+    AdminService.LOG.debug('Adding announcement with title ' + announcement.title + '...');
+
+    let payload = JSON.stringify(announcement, (k, v) => {
+
+      if (announcement[k] instanceof Date) {
+        return moment.utc(announcement[k]).format('YYYY-MM-DD[T]HH-mm-ss');
+      }
+
+      return v;
+
+    });
+
+    this.http.put(url, payload, {headers: new HttpHeaders({
+        'Content-Type':  'application/json'
+      })})
+      .timeout(this.envService.defaultTimeout)
+      .subscribe(() => {
+        successCallback();
+      }, (e: any) => {
+        AdminService.LOG.error('Could not add announcement: ' + e.message, e);
+        if (errorCallback) {
+          errorCallback(e, this.safeApiError(e));
+        }
+      });
+
+  }
+
+  public deleteAnnouncement(announcmentId: number,
+                            successCallback: () => void,
+                            errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void) {
+
+    let url = this.envService.endpoints.deleteAnnouncement(announcmentId);
+    AdminService.LOG.debug('Deleting announcement with id ' + announcmentId + '...');
+
+    this.http.delete(url)
+      .timeout(this.envService.defaultTimeout)
+      .subscribe(() => {
+        successCallback();
+      }, (e: any) => {
+        AdminService.LOG.error('Could not delete announcement: ' + e.message, e);
+        if (errorCallback) {
+          errorCallback(e, this.safeApiError(e));
+        }
       });
 
   }

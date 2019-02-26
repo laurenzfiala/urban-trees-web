@@ -1,14 +1,15 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
 import {BObservationComponent} from './components/phenology/observation/b-observation/b-observation.component';
 import {Log} from './services/log.service';
+import {NavigationEnd, Router} from '@angular/router';
 
 @Component({
   selector: 'ut-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.less']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
 
   private static LOG: Log = Log.newInstance(AppComponent);
 
@@ -18,7 +19,8 @@ export class AppComponent {
   public static APP_NAME = 'Urban Trees';
 
   // TODO rework this
-  constructor(translate: TranslateService) {
+  constructor(private translate: TranslateService,
+              private router: Router) {
 
     translate.addLangs(['en-GB', 'de-DE']);
     translate.setDefaultLang('en-GB');
@@ -52,6 +54,20 @@ export class AppComponent {
 
   private setTitle(newTitle: string) {
     document.title = newTitle;
+  }
+
+  /**
+   * Scroll to top after route changes
+   */
+  public ngOnInit(): void {
+
+    this.router.events.subscribe((evt) => {
+      if (!(evt instanceof NavigationEnd)) {
+        return;
+      }
+      window.scrollTo(0, 0);
+    });
+
   }
 
 }

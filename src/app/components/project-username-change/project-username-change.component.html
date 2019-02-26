@@ -1,0 +1,75 @@
+<ut-header></ut-header>
+
+<div class="container-fluid mt-2 mt-lg-5 mb-5">
+
+  <div class="col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto login-container">
+
+    <h4 class="mb-3">
+      {{'login.username_change_title' | translate}}
+      <span class="text-sm text-subtle">
+        &ndash; {{username}}
+      </span>
+    </h4>
+
+    <form #form="ngForm" (ngSubmit)="form.valid && changeUsername()" class="validate-on-dirty validate-on-submit" [ngClass]="{'submitted': form.submitted}">
+      <fieldset>
+        <div class="form-group">
+          <input type="text"
+                 class="form-control"
+                 name="newUsername"
+                 [placeholder]="'login.username_new_placeholder' | translate"
+                 [(ngModel)]="this.newUsername"
+                 [check]="isUsernameValid"
+                 required>
+        </div>
+        <button type="submit"
+                class="btn btn-block btn-primary"
+                [disabled]="hasAnyStatus(StatusKey.CHANGE_USERNAME, StatusValue.IN_PROGRESS, StatusValue.SUCCESSFUL) ? true : null">
+          <span *ngIf="!hasStatus(StatusKey.CHANGE_USERNAME, StatusValue.IN_PROGRESS)">
+            {{'login.change_username' | translate}}
+          </span>
+          <span *ngIf="hasStatus(StatusKey.CHANGE_USERNAME, StatusValue.IN_PROGRESS)">
+            <i class="i i-sm i-spin i-load float-left"></i>
+            {{'login.changing_username' | translate}}
+          </span>
+        </button>
+      </fieldset>
+
+    </form>
+
+  </div>
+
+  <div
+    *ngIf="hasStatus(StatusKey.CHANGE_USERNAME, StatusValue.SUCCESSFUL)"
+    class="col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto login-annotation-container login-annotation-success">
+
+    {{'login.username_changed' | translate}}
+
+  </div>
+
+  <div
+    *ngIf="hasStatus(StatusKey.CHANGE_USERNAME, StatusValue.FAILED)"
+    class="col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto login-annotation-container login-annotation-danger">
+
+    {{'login.username_change_failed' | translate}}
+
+  </div>
+
+  <div
+    *ngIf="hasStatus(StatusKey.CHANGE_USERNAME, StatusValue.SUCCESSFUL)"
+    class="col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto login-annotation-container login-annotation-info">
+
+    {{'login.log_in_again' | translate}}
+
+    <button class="btn btn-sm btn-primary float-right" routerLink="/login">
+      <i class="i i-login i-sm mr-2 float-left"></i>
+      {{'login.go_to_login' | translate}}
+    </button>
+
+  </div>
+
+  <div class="col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto login-annotation-container">
+    <div class="info" [innerHtml]="'login.username_change_info' | translate"></div>
+  </div>
+
+</div>

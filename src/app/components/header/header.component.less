@@ -1,7 +1,10 @@
 @import (reference) "../../../theme/theme.less";
 
 .navbar {
-  padding: 0 0 0 1rem;
+  position: relative;
+  z-index: 1;
+  margin-top: -@borderRadiusNew;
+  padding: @borderRadiusNew 0 0 @gutter2x;
 }
 
 li.nav-item {
@@ -79,31 +82,86 @@ li.nav-item {
   }
 }
 
+@maxAnnoucements:  10;
+@announcementYPadding: 0.5rem;
+
 .announcement {
-  padding: 0.5rem;
+  position: relative;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-top: -@borderRadiusNew;
+  padding: (@borderRadiusNew + @announcementYPadding) @gutter2x @announcementYPadding @gutter2x;
   background-color: lighten(@info, 65%);
+  border-bottom-right-radius: @borderRadiusNew;
+  border-bottom-left-radius: @borderRadiusNew;
 
-  > .announcement-title {
-    color: @info;
+  .ordering(@i: 1) when (@i <= @maxAnnoucements) {
+    &:nth-child(@{i}) {
+      z-index: @maxAnnoucements - @i + 1;
+    }
+
+    .ordering(@i + 1);
+  }
+  .ordering();
+
+  &:before {
+    content: "";
+    width: 1.65rem;
+    height: 1.65rem;
+    background-image: url("/assets/img/icon/special/info-info.svg");
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    margin-right: @gutter2x;
   }
 
-  + .announcement {
-    padding-top: 0;
+  .announcement-content {
+    word-break: break-all;
+    flex-basis: 0;
+    flex-grow: 1;
+
+    > .announcement-title {
+      color: @info;
+    }
+
+    > .announcement-description {
+      font-size: 0.8em;
+      color: #676768;
+    }
   }
 
-  > .announcement-description {
-    font-size: 0.8em;
-    color: #676768;
+  > .announcement-close {
+    width: @fontSizeLarge;
+    height: @fontSizeLarge;
+    padding: @gutter2x;
+    background-image: url("/assets/img/icon/dark/cross.svg");
+    background-size: @fontSizeLarge;
+    background-repeat: no-repeat;
+    background-position: center;
+    cursor: pointer;
+    opacity: 0.6;
+
+    &:hover {
+      opacity: 1;
+    }
   }
 
   &.severity-high {
     background-color: lighten(@danger, 42%);
 
-    > .announcement-title {
-      color: darken(@danger, 10%);
+    &:before {
+      background-image: url("/assets/img/icon/special/warning-danger.svg");
     }
-    > .announcement-description {
-      color: darken(@danger, 50%);
+
+    .announcement-content {
+      > .announcement-title {
+        color: darken(@danger, 10%);
+      }
+
+      > .announcement-description {
+        color: darken(@danger, 50%);
+      }
     }
   }
 }

@@ -1,0 +1,196 @@
+<ut-header></ut-header>
+
+<div class="container my-4">
+
+  <h4 class="d-flex align-items-center">
+    <i class="i i-dark i-lg i-announce mr-2"></i>
+    Announcements
+  </h4>
+
+  <div class="d-flex mt-3 justify-content-end">
+    <button class="btn btn-default d-flex justify-content-center align-items-center"
+            (click)="showNewAnnouncementModal(newAnnouncementModal)">
+      <i class="i i-sm i-dark i-plus mr-2"></i>
+      Add new announcement
+    </button>
+  </div>
+
+  <div *ngIf="hasStatus(StatusKey.ANNOUNCEMENTS, StatusValue.IN_PROGRESS)"
+       class="d-flex justify-content-center align-items-center my-4">
+    <i class="i i-spin i-load mr-2"></i>
+    Loading announcements
+  </div>
+
+  <div *ngIf="hasStatus(StatusKey.ANNOUNCEMENTS, StatusValue.SUCCESSFUL) && announcements.length === 0"
+       class="d-flex justify-content-center align-items-center text-warning my-4">
+    <i class="i i-warning-warning mr-2"></i>
+    No announcements
+  </div>
+
+  <div *ngIf="hasStatus(StatusKey.ANNOUNCEMENTS, StatusValue.FAILED)"
+       class="d-flex justify-content-center align-items-center text-danger my-4">
+    <i class="i i-warning-danger mr-2"></i>
+    Could not load announcements
+  </div>
+
+  <ul class="list-group mt-2">
+    <li *ngFor="let a of announcements"
+        class="list-group-item announcement-container"
+        [ngClass]="{'disabled': a.deleteStatus === StatusValue.SUCCESSFUL}">
+
+      <div class="main-status-container">
+        <i class="i" [ngClass]="{'i-display-success': isDisplayNow(a), 'i-no-display-danger': !isDisplayNow(a)}"
+           [tooltip]="isDisplayNow(a) ? 'Is currently shown' : 'Is not currently shown'"
+           container="body"></i>
+      </div>
+
+      <div class="info-container">
+        {{a.title}}
+        <span *ngIf="a.deleteStatus === StatusValue.SUCCESSFUL"> &ndash; deleted</span>
+        <table class="text-subtle text-sm table-top">
+          <tr>
+            <td>Description:&ensp;</td>
+            <td class="word-break-all">{{a.description}}</td>
+          </tr>
+          <tr>
+            <td>Display:&ensp;</td>
+            <td>from <b>{{a.displayFromDate | date:'yyyy-MM-dd HH:mm'}}</b> to <b>{{a.displayToDate | date:'yyyy-MM-dd HH:mm'}}</b></td>
+          </tr>
+          <tr>
+            <td>Severity:&ensp;</td>
+            <td>{{a.severity > 10 ? 'High' : 'Medium'}}</td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="status-container">
+
+        <div class="status danger"
+             [popover]="announcementDeletePopover"
+             [popoverContext]="{announcement: a}"
+             placement="left"
+             outsideClick=true
+             container="body">
+          <i class="i i-sm i-trash"></i>
+        </div>
+
+      </div>
+
+    </li>
+  </ul>
+
+</div>
+
+<!-- DELETE ANNOUNCEMENT POPOVER -->
+<ng-template #announcementDeletePopover let-a="announcement">
+  <div class="d-flex flex-column">
+    Delete announcement?
+    <div class="text-subtle text-sm">Deletion can't be undone.</div>
+    <button *ngIf="a.deleteStatus === undefined"
+            class="btn btn-outline-danger btn-block mt-2"
+            (click)="deleteAnnouncement(a); $event.stopPropagation()">
+      Delete now
+    </button>
+    <button *ngIf="a.deleteStatus === StatusValue.IN_PROGRESS"
+            class="btn btn-danger btn-block mt-2" disabled>
+      <i class="i i-sm i-spin i-load float-left"></i>
+      Deleting
+    </button>
+    <div *ngIf="a.deleteStatus === StatusValue.SUCCESSFUL"
+         class="d-flex justify-content-center align-items-center text-success my-2">
+      <i class="i i-check-success mr-2"></i>
+      Deleted successfully
+    </div>
+    <div *ngIf="a.deleteStatus === StatusValue.FAILED"
+         class="d-flex justify-content-center align-items-center text-danger my-2">
+      <i class="i i-warning-danger mr-2"></i>
+      Could not delete user
+    </div>
+  </div>
+</ng-template>
+
+<!-- NEW ANNOUNCEMENT MODAL -->
+<ng-template #newAnnouncementModal>
+  <form #newAnnouncementForm="ngForm" (ngSubmit)="newAnnouncementForm.valid && addAnnouncement()" class="validate-on-submit" [ngClass]="{'submitted': newAnnouncementForm.submitted}">
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Add new announcment</h4>
+    </div>
+    <div class="modal-body">
+      <div class="form-group">
+        <label for="newAnnouncementTitleInput">Title:</label>
+        <input id="newAnnouncementTitleInput"
+               class="form-control"
+               type="text"
+               name="newAnnonucementName"
+               required
+               [(ngModel)]="newAnnouncement.title"
+               #newAnnonucementName="ngModel">
+      </div>
+      <div class="form-group">
+        <label for="newAnnouncementDescInput">Description:</label>
+        <textarea id="newAnnouncementDescInput"
+               class="form-control"
+               name="newAnnonucementDesc"
+               required
+               [(ngModel)]="newAnnouncement.description"
+               #newAnnonucementDesc="ngModel">
+        </textarea>
+      </div>
+      <div class="form-group mx--1">
+        <button type="button"
+                class="btn btn-default d-inline-flex align-items-center mx-1 mb-1"
+                id="newAnnouncementRange"
+                name="newAnnouncementRange"
+                #newAnnouncementRange="bsDaterangepicker"
+                (bsValueChange)="newAnnouncementDisplayDateRange = $event; newAnnouncementForm.controls['newAnnouncementRange'].updateValueAndValidity()"
+                bsDaterangepicker ngModel va
+                [check]="newAnnouncementDateRangeCheckExpression">
+          <i class="i i-dark i-clock i-xs mr-2"></i>
+          <ng-container *ngIf="newAnnouncementDisplayDateRange; else noDateRangeSet">
+            {{newAnnouncementDisplayDateRange[0] | date:'yyyy-MM-dd'}}
+            &ndash;
+            {{newAnnouncementDisplayDateRange[1] | date:'yyyy-MM-dd'}}
+          </ng-container>
+          <ng-template #noDateRangeSet>
+            Select Date Range
+          </ng-template>
+        </button>
+        <button type="button"
+                class="btn btn-default d-inline-flex align-items-center mx-1 mb-1"
+                id="newAnnouncementSeverityInput"
+                name="newAnnouncementSeverityInput"
+                [(ngModel)]="newAnnouncement.severity"
+                btnCheckbox
+                btnCheckboxTrue=11
+                btnCheckboxFalse=0>
+          <ng-container *ngIf="newAnnouncement.severity > 10; else defaultSeverity">
+            <i class="i i-dark i-arrow-up i-xs mr-2"></i>
+            High Severity
+          </ng-container>
+          <ng-template #defaultSeverity>
+            <i class="i i-dark i-arrow-down i-xs mr-2"></i>
+            Medium Severity
+          </ng-template>
+        </button>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <div class="float-left mx-4">
+        <span *ngIf="hasStatus(StatusKey.NEW_ANNOUNCEMENT, StatusValue.IN_PROGRESS)">Adding...</span>
+        <span *ngIf="hasStatus(StatusKey.NEW_ANNOUNCEMENT, StatusValue.FAILED)">Failed to add.</span>
+        <span *ngIf="hasStatus(StatusKey.NEW_ANNOUNCEMENT, StatusValue.SUCCESSFUL)">Successfully added!</span>
+      </div>
+      <button type="button"
+              class="btn btn-secondary"
+              (click)="hideNewAnnouncementModal()">
+        Close
+      </button>
+      <button type="submit"
+              class="btn btn-primary">
+        Add announcement
+      </button>
+    </div>
+  </form>
+</ng-template>
+
+<ut-footer></ut-footer>

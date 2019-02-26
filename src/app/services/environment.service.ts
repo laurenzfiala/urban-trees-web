@@ -14,7 +14,7 @@ export class EnvironmentService {
   private context = environment;
 
   public endpoints: EnvironmentEndpoints = new EnvironmentEndpoints();
-  public security: SecurityEndpoints = new SecurityEndpoints();
+  public security: Security = new Security();
 
   get defaultTimeout() {
     return this.context.defaultTimeout;
@@ -143,6 +143,29 @@ class EnvironmentEndpoints {
     return this.prependCommonPath(this.context.announcements);
   }
 
+  get allAnnouncements() {
+    return this.prependCommonPath(this.context.allAnnouncements);
+  }
+
+  get addAnnouncement() {
+    return this.prependCommonPath(this.context.addAnnouncement);
+  }
+
+  public deleteAnnouncement(announcementId: number): string {
+
+    let replacements: any[] = [
+      { placeholder: 'announcementId', replacement: announcementId }
+    ];
+
+    return this.prependCommonPath(
+      this.replaceParams(
+        this.context.deleteAnnouncement,
+        replacements
+      )
+    );
+
+  }
+
   get cities() {
     return this.prependCommonPath(this.context.cities);
   }
@@ -163,12 +186,20 @@ class EnvironmentEndpoints {
     return this.prependCommonPath(this.context.changePassword);
   }
 
+  get changeUsername() {
+    return this.prependCommonPath(this.context.changeUsername);
+  }
+
   get addCity() {
     return this.prependCommonPath(this.context.addCity);
   }
 
   get addTree() {
     return this.prependCommonPath(this.context.addTree);
+  }
+
+  get addUser() {
+    return this.prependCommonPath(this.context.addUser);
   }
 
   public modifyTree(treeId: number): string {
@@ -184,6 +215,10 @@ class EnvironmentEndpoints {
       )
     );
 
+  }
+
+  get phenologyObservationTypes() {
+    return this.prependCommonPath(this.context.phenologyObservationTypes);
   }
 
   get addBeacon() {
@@ -203,6 +238,117 @@ class EnvironmentEndpoints {
       )
     );
 
+  }
+
+  get loadUsers() {
+    return this.prependCommonPath(this.context.loadUsers);
+  }
+
+  get loadRole() {
+    return this.prependCommonPath(this.context.loadRole);
+  }
+
+  public deleteUser(userId: number): string {
+    let replacements: any[] = [
+      { placeholder: 'userId', replacement: userId }
+    ];
+
+    return this.prependCommonPath(
+      this.replaceParams(
+        this.context.deleteUser,
+        replacements
+      )
+    );
+  }
+
+  public expireCredentials(userId: number): string {
+    let replacements: any[] = [
+      { placeholder: 'userId', replacement: userId }
+    ];
+
+    return this.prependCommonPath(
+      this.replaceParams(
+        this.context.expireCredentials,
+        replacements
+      )
+    );
+  }
+
+  public activate(userId: number): string {
+    let replacements: any[] = [
+      { placeholder: 'userId', replacement: userId }
+    ];
+
+    return this.prependCommonPath(
+      this.replaceParams(
+        this.context.activate,
+        replacements
+      )
+    );
+  }
+
+  public inactivate(userId: number): string {
+    let replacements: any[] = [
+      { placeholder: 'userId', replacement: userId }
+    ];
+
+    return this.prependCommonPath(
+      this.replaceParams(
+        this.context.inactivate,
+        replacements
+      )
+    );
+  }
+
+  public addRoles(userId: number): string {
+    let replacements: any[] = [
+      { placeholder: 'userId', replacement: userId }
+    ];
+
+    return this.prependCommonPath(
+      this.replaceParams(
+        this.context.addRoles,
+        replacements
+      )
+    );
+  }
+
+  public removeRoles(userId: number): string {
+    let replacements: any[] = [
+      { placeholder: 'userId', replacement: userId }
+    ];
+
+    return this.prependCommonPath(
+      this.replaceParams(
+        this.context.removeRoles,
+        replacements
+      )
+    );
+  }
+
+  public loginKey(userId: number): string {
+    let replacements: any[] = [
+      { placeholder: 'userId', replacement: userId }
+    ];
+
+    return this.prependCommonPath(
+      this.replaceParams(
+        this.context.loginKey,
+        replacements
+      )
+    );
+  }
+
+  public loginKeyUrl(token: string): string {
+    let replacements: any[] = [
+      { placeholder: 'token', replacement: token }
+    ];
+
+    return environment.webHost +
+      this.replaceParams(
+        this.context.loginKeyUrl,
+        replacements
+      );
   }
 
   public beaconData(beaconId: number, maxDatapoints?: number, timespanMin?: string, timespanMax?: string): string {
@@ -256,9 +402,29 @@ class EnvironmentEndpoints {
 
 }
 
-class SecurityEndpoints {
+class Security {
 
   private context = environment.security;
+
+  get minUsernameLength() {
+    return this.context.minUsernameLength;
+  }
+
+  get minPasswordLength() {
+    return this.context.minPasswordLength;
+  }
+
+  get interceptorRedirectExclusions() {
+    return this.context.interceptorRedirectExclusions;
+  }
+
+  get jwtTokenExpireMs() {
+    return this.context.jwtTokenExpireMs;
+  }
+
+  get adminTimeoutMs() {
+    return this.context.adminTimeoutMs;
+  }
 
   get rolesUser() {
     return this.context.roles.user;
@@ -270,6 +436,10 @@ class SecurityEndpoints {
 
   get rolesAdmin() {
     return this.context.roles.admin;
+  }
+
+  get roleTempChangePassword() {
+    return this.context.roles.tempChangePassword;
   }
 
 }

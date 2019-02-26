@@ -1,5 +1,5 @@
-<div class="user-overview-container">
-  <div *ngIf="hasStatus(StatusKey.ACHIEVEMENTS_LOADING, StatusValue.SUCCESSFUL) && levelUp" class="level-container" [ngClass]="'level-' + level">
+<div class="user-overview-container" [ngClass]="'level-' + level">
+  <div *ngIf="hasStatus(StatusKey.ACHIEVEMENTS_LOADING, StatusValue.SUCCESSFUL) && levelUp" class="level-container">
     <img class="level" [src]="'/assets/img/level/' + level + '.svg'" />
     <img class="level-highlight" [src]="'/assets/img/level/' + level + '_highlight.svg'" />
     <div class="level-text">
@@ -12,6 +12,7 @@
       {{'home.greeting' | translate:{'username': username} }}
     </div>
     <div class="stats-wrapper" [ngClass]="{'no-level-up': !levelUp}">
+
       <div *ngIf="hasStatus(StatusKey.ACHIEVEMENTS_LOADING, StatusValue.IN_PROGRESS)" class="d-flex align-items-center justify-content-center">
         <i class="i i-spin i-black i-load mr-2"></i>
         {{'home.loading_stats_achievements' | translate}}
@@ -20,18 +21,58 @@
         <i class="i i-warning-danger mr-2"></i>
         {{'home.loading_stats_achievements_failed' | translate}}
       </div>
-      <div *ngIf="hasStatus(StatusKey.ACHIEVEMENTS_LOADING, StatusValue.SUCCESSFUL)" class="d-flex align-items-center">
-        <div *ngIf="!levelUp" class="level">
-          <img [src]="'/assets/img/level/' + level + '.svg'" />
-        </div>
-        <div class="stats">
-          {{'home.level' | translate}} {{level}} / {{maxLevel}}<br/>
-          {{achievements?.xp}} {{'home.xp' | translate}} / {{maxLevelXp}} {{'home.xp' | translate}}
-          <div *ngIf="achievements?.xp < maxLevelXp">
-            {{nextLevelXp}} {{'home.next_level_difference' | translate}} {{nextLevel}}
+      <div *ngIf="hasStatus(StatusKey.ACHIEVEMENTS_LOADING, StatusValue.SUCCESSFUL)" class="d-flex flex-row align-items-stretch justify-content-between">
+
+        <div class="d-flex flex-row align-items-center">
+
+          <div *ngIf="!levelUp" class="level">
+            <img [src]="'/assets/img/level/' + level + '.svg'" />
           </div>
+
+          <div>
+            <div>
+              {{'home.level' | translate}} {{level}} <span class="text-subtle">/ {{maxLevel}}</span>
+            </div>
+            <div>
+              {{achievements?.xp}} {{'home.xp' | translate}} <span class="text-subtle">/ {{maxLevelXp}} {{'home.xp' | translate}}</span>
+            </div>
+          </div>
+
+        </div>
+
+        <div class="d-none d-md-flex flex-row align-items-end">
+          <table class="table-xp">
+            <tr *ngFor="let l of achievements.xpHistory.slice(0, 3); let i = index">
+              <td>
+                + {{l.xp - (i < achievements.xpHistory.length-1 ? achievements.xpHistory[i+1].xp : 0)}} {{'home.xp' | translate}}
+              </td>
+              <td>
+                {{'user.level_action.' + l.action | translate}}
+              </td>
+            </tr>
+          </table>
+        </div>
+
+      </div>
+
+      <div class="level-progress" *ngIf="achievements?.xp < maxLevelXp">
+        <div class="level-info">
+
+          <div>
+            <img class="level-icon mr-2" [src]="'/assets/img/level/' + level + '.svg'" />
+            {{levelXp}} {{'home.xp' | translate}}
+          </div>
+          <div>
+            {{nextLevelXp}} {{'home.xp' | translate}}
+            <img class="level-icon ml-2" [src]="'/assets/img/level/' + (level+1 > 15 ? 15 : level+1) + '.svg'" />
+          </div>
+
+        </div>
+        <div class="bar">
+          <div class="bar-inner" [cssvar]="{name: '--target-width', value: ((achievements.xp - levelXp) / (nextLevelXp - levelXp) * 100) + '%'}"></div>
         </div>
       </div>
+
     </div>
   </div>
 </div>

@@ -1,3 +1,6 @@
+import * as moment from 'moment/moment';
+import {Role} from './role.entity';
+
 /**
  * Holds user account information.
  *
@@ -8,12 +11,39 @@ export class User {
 
   public id: number;
   public username: string;
-  public email: string;
+  public active: boolean;
+  public credentialsNonExpired: boolean;
+  public nonLocked: boolean;
+  public failedloginAttempts: number;
+  public lastLoginAttemptDate: Date;
+  public lastLoginDate: Date;
+  public roles: Array<Role>;
 
-  constructor(id: number, username: string, email: string) {
+  public deleteStatus: number;
+  public secureLoginLink: string;
+
+  constructor(id?: number,
+              username?: string,
+              active?: boolean,
+              credentialsNonExpired?: boolean,
+              nonLocked?: boolean,
+              failedloginAttempts?: number,
+              lastLoginAttemptDate?: string,
+              lastLoginDate?: string,
+              roles?: Array<Role>) {
     this.id = id;
     this.username = username;
-    this.email = email;
+    this.active = active;
+    this.credentialsNonExpired = credentialsNonExpired;
+    this.nonLocked = nonLocked;
+    this.failedloginAttempts = failedloginAttempts;
+    if (lastLoginAttemptDate) {
+      this.lastLoginAttemptDate = moment.utc(lastLoginAttemptDate, 'YYYY-MM-DD[T]HH-mm-ss').toDate();
+    }
+    if (lastLoginDate) {
+      this.lastLoginDate = moment.utc(lastLoginDate, 'YYYY-MM-DD[T]HH-mm-ss').toDate();
+    }
+    this.roles = roles;
   }
 
   public static fromObject(o: any): User {
@@ -21,7 +51,13 @@ export class User {
     return new User(
       o.id,
       o.username,
-      o.email
+      o.active,
+      o.credentialsNonExpired,
+      o.nonLocked,
+      o.failedloginAttempts,
+      o.lastLoginAttemptDate,
+      o.lastLoginDate,
+      o.roles && o.roles.map(r => Role.fromObject(r))
     );
 
   }

@@ -4,7 +4,7 @@ import {ActivatedRouteSnapshot, RouterStateSnapshot} from '@angular/router/src/r
 import {Log} from '../../services/log.service';
 import {AuthService} from '../../services/auth.service';
 import {Observable} from 'rxjs/observable';
-import {LogoutReason} from './logout-reason.enum';
+import {LoginAccessReason} from './logout-reason.enum';
 
 /**
  * Guard to check valid authentication before accessing
@@ -49,12 +49,12 @@ export class ProjectLoginGuard implements CanActivate, CanActivateChild {
 
     const isLoggedIn = this.authService.isLoggedIn();
     const isAccessGranted = this.isRoleAccessGranted(route);
-    let unauthorized: LogoutReason;
+    let unauthorized: LoginAccessReason;
     if (isLoggedIn) {
       if (isAccessGranted) {
         return true;
       }
-      unauthorized = LogoutReason.INSUFFICIENT_PERMISSIONS;
+      unauthorized = LoginAccessReason.INSUFFICIENT_PERMISSIONS;
     }
 
     // TODO refactor with e.g. flatMap

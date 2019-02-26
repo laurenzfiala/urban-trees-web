@@ -35,7 +35,7 @@ export class TreeListComponent extends AbstractComponent implements OnInit {
   /**
    * All cities to display.
    */
-  public cities: Set<City> = new Set<City>();
+  public cities: Array<City> = new Array<City>();
 
   /**
    * Current tree search input.
@@ -81,9 +81,19 @@ export class TreeListComponent extends AbstractComponent implements OnInit {
    * from displayTrees array.
    */
   private updateCities(): void {
-    this.cities.clear();
+    this.cities = new Array<City>();
+    let found;
     for (let t of this.displayTrees) {
-      this.cities.add(t.location.city);
+      found = false;
+      for (let c of this.cities) {
+        if (City.equals(t.location.city, c)) {
+          found = true;
+          break;
+        }
+      }
+      if (!found) {
+        this.cities.push(t.location.city);
+      }
     }
   }
 

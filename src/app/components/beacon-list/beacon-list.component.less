@@ -39,7 +39,7 @@
   position: absolute;
   right: 0;
   top: 0;
-  height: 2.5rem;
+  height: 3rem;
   display: flex;
   align-items: center;
   background-color: @white;
@@ -50,8 +50,8 @@
     content: "";
     position: absolute;
     left: 0;
-    top: 0;
-    bottom: 0;
+    top: 0.25rem;
+    bottom: 0.25rem;
     width: 1px;
     border-left: 1px solid @lightBorderColor;
   }
@@ -68,4 +68,14 @@
 .line-chart-full {
   height: 60vh;
   margin: 1rem 0;
+}
+
+.scroll-x {
+  overflow-y: hidden;
+  overflow-x: auto;
+}
+
+.chart-tabs-container {
+  min-width: 600px;
+  padding-bottom: 2.5rem;
 }

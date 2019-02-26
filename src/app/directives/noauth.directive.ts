@@ -22,12 +22,12 @@ export class NoAuthDirective {
   ) {}
 
   @Input()
-  set noauth(dummyInput: string[]) {
+  set noauth(includeAnonymous: boolean) {
 
-    if (this.authService.isLoggedIn()) {
-      this.viewContainer.clear();
-    } else {
+    if (!this.authService.isLoggedIn() || (includeAnonymous && this.authService.isUserAnonymous())) {
       this.viewContainer.createEmbeddedView(this.templateRef);
+    } else {
+      this.viewContainer.clear();
     }
 
   }

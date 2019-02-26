@@ -3,6 +3,7 @@ import {TreeLocation} from './tree-location.entity';
 import {Tree} from './tree.entity';
 import {MapMarker} from '../interfaces/map-marker.entity';
 import {BeaconFrontend} from './beacon-frontend.entity';
+import {PhenologyObservationTypeFrontend} from './phenology-observation-type-frontend.entity';
 
 /**
  * Single tree with frontend state variables.
@@ -11,6 +12,8 @@ import {BeaconFrontend} from './beacon-frontend.entity';
  * @since 2018/02/18
  */
 export class TreeFrontend extends Tree implements MapMarker {
+
+  public phenologyObservationTypes: Array<PhenologyObservationTypeFrontend>;
 
   constructor(tree: Tree) {
     super(

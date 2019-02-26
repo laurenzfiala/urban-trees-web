@@ -110,6 +110,29 @@ export class PhenologyObservationService extends AbstractService {
   }
 
   /**
+   * Load all available observation types.
+   * Currently not used in phenology observation, but in admin console.
+   * @param successCallback executed upon success
+   * @param errorCallback executed upon error
+   */
+  public loadAllPhenologyObservationTypes(successCallback: (types: Array<PhenologyObservationTypeFrontend>) => void,
+                                          errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void): void {
+
+    this.http.get<Array<PhenologyObservationTypeFrontend>>(this.envService.endpoints.phenologyObservationTypes)
+      .timeout(this.envService.defaultTimeout)
+      .map(value => value && value.map(element => PhenologyObservationTypeFrontend.fromObject(element)))
+      .subscribe((types: Array<PhenologyObservationTypeFrontend>) => {
+        successCallback(types);
+      }, (e: any) => {
+        PhenologyObservationService.LOG.error('Couldn\'t load observation types: ' + e.message, e);
+        if (errorCallback) {
+          errorCallback(e, this.safeApiError(e));
+        }
+      });
+
+  }
+
+  /**
    * Load the result image for the given resultId using the set
    * #selectedTree#speciesId.
    * @param {number} resultId id of the result image to get

@@ -1,6 +1,9 @@
 <div *ngFor="let a of announcements" class="announcement" [ngClass]="{'severity-high': a.severity > 10}">
-  <div class="announcement-title">{{a.title}}</div>
-  <div class="announcement-description">{{a.description}}</div>
+  <div class="announcement-content">
+    <div class="announcement-title">{{a.title}}</div>
+    <div class="announcement-description">{{a.description}}</div>
+  </div>
+  <div class="announcement-close" (click)="hideAnnoucement(a)"></div>
 </div>
 
 <nav class="navbar navbar-expand navbar-light round bg-light">
@@ -38,7 +41,7 @@
              (click)="setLanguage(lang)">
             {{lang | translate}}
           </a>
-          <div *ngIf="isLoggedIn()">
+          <div *ngIf="!authService.isUserAnonymous()">
             <div class="dropdown-divider"></div>
             <a class="dropdown-item sign-out"
                (click)="logout()">

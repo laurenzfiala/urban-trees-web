@@ -16,12 +16,16 @@ import {TreeListComponent} from './components/tree-list/tree-list.component';
 import {ProjectHomeComponent} from './components/project-home/project-home.component';
 import {ProjectLoginComponent} from './components/project-login/project-login.component';
 import {ProjectLoginGuard} from './components/project-login/project-login.guard';
-import {PasswordChangeComponent} from './components/project-login/password-change/password-change.component';
 import {AdminComponent} from './components/admin/admin.component';
 import {environment} from '../environments/environment';
 import {AdminTreeComponent} from './components/admin/tree/tree.component';
 import {AdminBeaconComponent} from './components/admin/beacon/beacon.component';
 import {AdminUserComponent} from './components/admin/user/user.component';
+import {UsernameChangeComponent} from './components/project-username-change/project-username-change.component';
+import {PasswordChangeComponent} from './components/project-password-change/project-password-change.component';
+import {ProjectLoginKeyComponent} from './components/project-login-key/project-login-key.component';
+import {AnnouncementsComponent} from './components/admin/announcements/announcements.component';
+import {AdminGuard} from './components/admin/admin.guard';
 
 const routes: Routes = [
   {
@@ -54,9 +58,20 @@ const routes: Routes = [
     component: ProjectLoginComponent
   },
   {
+    path: 'login/:token',
+    component: ProjectLoginKeyComponent
+  },
+  {
     path: 'account/changepassword',
     component: PasswordChangeComponent,
-    canActivate: [ProjectLoginGuard]
+    canActivate: [ProjectLoginGuard],
+    data: {roles: [...environment.security.roles.user, environment.security.roles.tempChangePassword]}
+  },
+  {
+    path: 'account/changeusername',
+    component: UsernameChangeComponent,
+    canActivate: [ProjectLoginGuard],
+    data: {roles: environment.security.roles.user}
   },
   {
     path: 'project',
@@ -67,25 +82,31 @@ const routes: Routes = [
   {
     path: 'admin',
     component: AdminComponent,
-    canActivate: [ProjectLoginGuard],
+    canActivate: [ProjectLoginGuard, AdminGuard],
     data: {roles: environment.security.roles.admin}
   },
   {
     path: 'admin/tree',
     component: AdminTreeComponent,
-    canActivate: [ProjectLoginGuard],
+    canActivate: [ProjectLoginGuard, AdminGuard],
     data: {roles: environment.security.roles.admin}
   },
   {
     path: 'admin/beacon',
     component: AdminBeaconComponent,
-    canActivate: [ProjectLoginGuard],
+    canActivate: [ProjectLoginGuard, AdminGuard],
     data: {roles: environment.security.roles.admin}
   },
   {
     path: 'admin/user',
     component: AdminUserComponent,
-    canActivate: [ProjectLoginGuard],
+    canActivate: [ProjectLoginGuard, AdminGuard],
+    data: {roles: environment.security.roles.admin}
+  },
+  {
+    path: 'admin/announcements',
+    component: AnnouncementsComponent,
+    canActivate: [ProjectLoginGuard, AdminGuard],
     data: {roles: environment.security.roles.admin}
   },
   {

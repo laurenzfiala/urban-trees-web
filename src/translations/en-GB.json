@@ -30,6 +30,7 @@
     }
 	},
   "home": {
+    "choose": "Choose what to do",
     "greeting": "Hello, {{username}}!",
     "level_up": "You reached level {{level}}!",
     "loading_stats_achievements": "Loading achievements and statistics...",
@@ -160,6 +161,15 @@
       "text": "We could not load the given tree, please go back and try again."
     }
   },
+  "user": {
+    "level_action": {
+      "INITIAL": "Account creation",
+      "BEACON_READOUT": "Beacon readout",
+      "PHENOLOGY_IMAGE_UPLOAD": "Phenology image uploaded",
+      "PHENOLOGY_OBSERVATION": "Phenology observation",
+      "UPGRADE_ACCOUNT": "Legacy account upgraded"
+    }
+  },
   "login": {
     "heading": "Your Project-Account",
     "username_placeholder": "Username",
@@ -172,17 +182,34 @@
     "change_password": "Change password",
     "changing_password": "Changing password...",
     "status_connection_insecure": "You may not log in using an insecure connection",
-    "status_bad_credentials": "The username and password were not recognized",
+    "status_bad_credentials": "Username and password were not recognized",
     "status_failed": "Login failed, please retry",
     "status_expired": "Your login expired, please log in again",
     "status_force_logout": "You have been logged out",
+    "status_force_credentials_confirm": "Please confirm your password to access the requested page",
     "status_user_logout": "Logged out successfully",
     "status_not_authenticated": "Please log in to view this page",
     "status_insufficient_permissions": "You are not allowed to access the requested page",
     "description": "Your personal project account enables you to enter phenology observations, access project-related news and much more.",
     "disclaimer": "We don't store any personal data except those needed for scientific research clearly marked to be sent off for submission.<br/>No automated E-Mails are sent out at any time to any user.<br/>By logging in you agree to store your personal login information inside your browser.",
     "reset_info": "Your new password must meet these requirements:<ul><li>Contains at least 1 lowercase letter (a-z)</li><li>Contains at least 1 UPPERCASE letter (A-Z)</li><li>Contains at least 1 number (0-9)</li><li>Contains at least 1 symbol (!§$%&/()=?\"'+#<>,..-*~)</li><li>Is at least 10 characters long</li></ul>",
-    "already_logged_in": "You are already logged in."
+    "username_change_info": "Your new username must meet these requirements:<ul><li>Is at least 5 characters long</li><li>Is different to your current username</li><li>Does not already exist</li></ul>",
+    "already_logged_in": "You are already logged in.",
+    "username_new_placeholder": "New username",
+    "change_username": "Change username",
+    "changing_username": "Changing username...",
+    "username_changed": "Your username was successfully changed",
+    "username_change_failed": "Your username could not be changed",
+    "username_change_title": "Change your username",
+    "password_change_title": "Change your password",
+    "password_change_title_set": "Set your password",
+    "failed_attempts_info": "Your account will be locked for 5 minutes after 10 failed login attempts.",
+    "failed_attempts_amount": "Failed attempts",
+    "change_password_success": "Your password was successfully changed",
+    "change_password_failed": "Your password could not be changed, check if your old password is correct",
+    "change_password_failed_nooldpw": "Your password could not be changed, please contact an admin",
+    "log_in_again": "Log in to continue",
+    "go_to_login": "Go to login"
   },
 	"en-GB": "English",
 	"de-DE": "Deutsch",
@@ -284,6 +311,9 @@
           "control_label": "All time",
           "info_popover": "Data below might be interpolated if too much data would be shown otherwise."
         }
+      },
+      "chart": {
+        "xAxisLabel": "Time"
       }
     },
     "audioimg": {

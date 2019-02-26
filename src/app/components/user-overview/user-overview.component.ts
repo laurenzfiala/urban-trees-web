@@ -37,7 +37,17 @@ export class UserOverviewComponent extends AbstractComponent implements OnInit {
   /**
    * TODO
    */
+  public nextLevelRemainingXp: number;
+
+  /**
+   * TODO
+   */
   public level: number = 0;
+
+  /**
+   * TODO
+   */
+  public levelXp: number = 0;
 
   /**
    * TODO
@@ -97,12 +107,38 @@ export class UserOverviewComponent extends AbstractComponent implements OnInit {
       xp = this.maxLevelXp;
     }
     this.level = this.calcLevel(xp);
-    this.lastLevel = this.calcLevel(this.achievements.lastXp);
+    this.levelXp = this.calcRequiredXp(this.level);
+    const recentXp = this.getRecentXp();
+    if (recentXp === -1) {
+      this.lastLevel = this.level;
+    } else {
+      this.lastLevel = this.calcLevel(recentXp);
+    }
     this.nextLevel = this.level < this.maxLevel ? this.level + 1 : this.maxLevel
-    this.nextLevelXp = this.calcRequiredXp(this.nextLevel) - xp;
+    this.nextLevelXp = this.calcRequiredXp(this.nextLevel);
+    this.nextLevelRemainingXp = this.nextLevelXp - xp;
     if (this.level > this.lastLevel) {
       this.levelUp = true;
     }
+
+  }
+
+  /**
+   * Returns the oldest found xp-increase in side the last 5 minutes.
+   * If nothing is found, return -1.
+   */
+  private getRecentXp(): number {
+
+    const recentThresholdSec = 300;
+    const recentDate = new Date().getTime() - (recentThresholdSec * 1000);
+
+    for (let i = this.achievements.xpHistory.length-1; i >= 0; i--) {
+      if (this.achievements.xpHistory[i].date.getTime() >= recentDate) {
+        return this.achievements.xpHistory[i].xp;
+      }
+    }
+
+    return -1;
 
   }
 

@@ -1,3 +1,5 @@
+import * as moment from 'moment';
+
 /**
  * Announcement to show fetched from the backend.
  *
@@ -10,12 +12,18 @@ export class Announcement {
   public title: string;
   public description: string;
   public severity: number;
+  public displayFromDate: Date;
+  public displayToDate: Date;
 
-  constructor(id: number, title: string, description: string, severity: number) {
+  public deleteStatus: number;
+
+  constructor(id?: number, title?: string, description?: string, severity?: number, displayFromDate?: Date, displayToDate?: Date) {
     this.id = id;
     this.title = title;
     this.description = description;
     this.severity = severity;
+    this.displayFromDate = displayFromDate;
+    this.displayToDate = displayToDate;
   }
 
   public static fromObject(o: any): Announcement {
@@ -24,7 +32,9 @@ export class Announcement {
       o.id,
       o.title,
       o.description,
-      o.severity
+      o.severity,
+      moment.utc(o.displayFromDate, 'YYYY-MM-DD[T]HH-mm-ss').toDate(),
+      moment.utc(o.displayToDate, 'YYYY-MM-DD[T]HH-mm-ss').toDate()
     );
 
   }
