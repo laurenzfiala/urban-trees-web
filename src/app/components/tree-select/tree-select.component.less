@@ -25,3 +25,31 @@ ul {
     text-align: center;
   }
 }
+
+.pagination {
+  justify-content: stretch;
+
+  li {
+    flex-grow: 1;
+    text-align: center;
+
+    &:first-child a {
+      border-top-left-radius: @borderRadiusNew;
+      border-bottom-left-radius: @borderRadiusNew;
+    }
+
+    &:last-child a {
+      border-top-right-radius: @borderRadiusNew;
+      border-bottom-right-radius: @borderRadiusNew;
+    }
+
+    a.active {
+        background-color: @medLightBgColor;
+    }
+
+    i {
+      margin-top: -0.5rem;
+      margin-bottom: -0.5rem;
+    }
+  }
+}

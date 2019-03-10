@@ -25,7 +25,6 @@
     "@ngx-translate/core": "11.0.1",
     "@ngx-translate/http-loader": "4.0.0",
     "@swimlane/ngx-charts": "10.1.0",
-    "@types/openlayers": "4.3.15",
     "bootstrap": "4.2.1",
     "core-js": "2.6.3",
     "jquery": "3.3.1",

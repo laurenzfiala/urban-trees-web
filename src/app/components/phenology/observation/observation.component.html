@@ -19,15 +19,15 @@
   <div class="row">
     <div *ngIf="isPreviousStepAllowed()" class="col">
       <button [routerLink]="[previousStep?.routerLink]" class="btn btn-light btn-block d-flex justify-content-center" type="button">
-        <i class="i i-width-only i-arrow-left i-dark pr-2" aria-hidden="true"></i>
+        <i class="i i-sm i-arrow-left i-dark pr-2" aria-hidden="true"></i>
         <span class="d-none d-sm-inline">{{'phenology.observation.navigation.previous' | translate}}</span>
       </button>
     </div>
     <div *ngIf="isNextStepAllowed()" class="col ml-auto">
       <button [routerLink]="[nextStep.routerLink]" class="btn btn-dark btn-block d-flex justify-content-center" type="button">
         {{'phenology.observation.navigation.continue' | translate}}
-        <span class="d-none d-sm-inline">&nbsp;{{'phenology.observation.navigation.to' | translate}} {{'phenology.observation.navigation.step' + nextStep.routerLink | translate}}</span>
-        <i class="i i-width-only i-arrow-right pl-2" aria-hidden="true"></i>
+        <span class="d-none d-sm-none d-md-inline">&nbsp;{{'phenology.observation.navigation.to' | translate}} {{'phenology.observation.navigation.step' + nextStep.routerLink | translate}}</span>
+        <i class="i i-sm i-arrow-right pl-2" aria-hidden="true"></i>
       </button>
     </div>
   </div>

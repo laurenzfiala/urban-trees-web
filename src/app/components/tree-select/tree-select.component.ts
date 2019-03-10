@@ -14,7 +14,7 @@ import {TranslateService} from "@ngx-translate/core";
   templateUrl: './tree-select.component.html',
   styleUrls: ['./tree-select.component.less']
 })
-export class TreeSelectComponent extends AbstractComponent implements OnInit, OnChanges {
+export class TreeSelectComponent extends AbstractComponent {
 
   private static LOG: Log = Log.newInstance(TreeSelectComponent);
 
@@ -37,6 +37,7 @@ export class TreeSelectComponent extends AbstractComponent implements OnInit, On
 
   @Input() set availableTrees(value: Array<TreeFrontend>) {
     this.availableTreesInternal = value;
+    this.setDisplayTreesPaginated(value);
     if (this.selectedTree) {
       this.selectTree(this.selectedTree.id);
     }
@@ -71,13 +72,6 @@ export class TreeSelectComponent extends AbstractComponent implements OnInit, On
 
   constructor(public translateService: TranslateService) {
     super();
-  }
-
-  ngOnInit() {
-  }
-
-  ngOnChanges() {
-    this.setDisplayTreesPaginated(this.availableTreesInternal);
   }
 
   /**

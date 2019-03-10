@@ -71,7 +71,7 @@ import {AdminGuard} from './components/admin/admin.guard';
 import {CssVariableDirective} from './directives/css-variable.directive';
 
 export function HttpLoaderFactory(http: HttpClient) {
-  return new TranslateHttpLoader(http, '/translations/');
+  return new TranslateHttpLoader(http, '/translations/', '.json?cacheBust=' + new Date().getTime());
 }
 
 @NgModule({

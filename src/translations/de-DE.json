@@ -300,7 +300,7 @@
         "datapoints": "Datensätze",
         "mode": {
           "24h": "Letzte 24 Stunden",
-          "week": "Letzte Woche",t
+          "week": "Letzte Woche",
           "temp_month_per_day": "Letztes Monat pro Tag (Temperatur)",
           "humidity_month_per_day": "Letztes Monat pro Tag (Luftfeuchte)"
         },
