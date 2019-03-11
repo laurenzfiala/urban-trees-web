@@ -154,7 +154,9 @@
 
     <a *ngIf="!showDataDisclaimer"
        (click)="showDataDisclaimer = true"
-       (keydown)="showDataDisclaimer = true">Learn more</a>
+       (keydown)="showDataDisclaimer = true">
+      {{'login.learn_more' | translate}}
+    </a>
 
   </div>
 

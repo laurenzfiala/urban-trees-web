@@ -206,7 +206,8 @@
     "change_password_failed": "Passwort konnte nicht geändert werden, überprüfe das alte Passwort",
     "change_password_failed_nooldpw": "Passwort konnte nicht geändert werden, bitte frage einen Administrator um Hilfe",
     "log_in_again": "Neu anmelden, um fortzufahren",
-    "go_to_login": "Zum Login"
+    "go_to_login": "Zum Login",
+    "learn_more": "Mehr erfahren"
   },
 	"en-GB": "English",
 	"de-DE": "Deutsch",

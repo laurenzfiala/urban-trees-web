@@ -209,7 +209,8 @@
     "change_password_failed": "Your password could not be changed, check if your old password is correct",
     "change_password_failed_nooldpw": "Your password could not be changed, please contact an admin",
     "log_in_again": "Log in to continue",
-    "go_to_login": "Go to login"
+    "go_to_login": "Go to login",
+    "learn_more": "Learn more"
   },
 	"en-GB": "English",
 	"de-DE": "Deutsch",
