@@ -58,12 +58,12 @@
       <div class="level-progress" *ngIf="achievements?.xp < maxLevelXp">
         <div class="level-info">
 
-          <div>
+          <div class="d-flex flex-row align-items-center">
             <img class="level-icon mr-2" [src]="'/assets/img/level/' + level + '.svg'" />
-            {{levelXp}} {{'home.xp' | translate}}
+            <div>{{levelXp}} {{'home.xp' | translate}}</div>
           </div>
-          <div>
-            {{nextLevelXp}} {{'home.xp' | translate}}
+          <div class="d-flex flex-row align-items-center">
+            <div>{{nextLevelXp}} {{'home.xp' | translate}}</div>
             <img class="level-icon ml-2" [src]="'/assets/img/level/' + (level+1 > 15 ? 15 : level+1) + '.svg'" />
           </div>
 
