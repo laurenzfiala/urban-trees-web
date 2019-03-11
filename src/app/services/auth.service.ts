@@ -49,8 +49,8 @@ export class AuthService extends AbstractService {
    * Return the users' roles if they are logged in,
    * null otherwise or if no roles can be found.
    * - 2018/12/17: apiKey present now grants access to phenobs roles.
-   *               Please note that apiKey authorization is not checked client-side unline JWT auth.
-   *               Therefore unauthorizes users may access some pages, but they can't execute any server-side
+   *               Please note that apiKey authorization is not checked client-side unlike JWT auth.
+   *               Therefore unauthorized users may access some pages, but they can't execute any server-side
    *               functions.
    *               TODO add backend lookup to validate apiKey
    * @returns {Array<String>} List of the current users' roles.

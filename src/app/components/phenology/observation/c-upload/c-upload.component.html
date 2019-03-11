@@ -21,7 +21,7 @@
 
       <h6>{{'phenology.observation.step3.observers_title' | translate}}</h6>
 
-      <div class="input-group mb-3">
+      <div [ngClass]="{'input-group': !isLoginNotAnonymous()}" class="mb-3">
         <input
           [(ngModel)]="dataset.observers"
           #observersInput="ngModel"

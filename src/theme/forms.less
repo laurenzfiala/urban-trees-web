@@ -21,3 +21,64 @@ form.validate-on-submit.submitted.ng-invalid [type="submit"] {
   pointer-events: none;
   opacity: 0.5;
 }
+
+// floating placeholder (form-controls)
+.fp-bg-white {
+  .fp-group .fp:after {
+    background-color: @white;
+  }
+}
+.fp-bg-light {
+  .fp-group .fp:after {
+    background-color: @lightBgColor;
+  }
+}
+.fp-bg-medlight {
+  .fp-group .fp:after {
+    background-color: @medLightBgColor;
+  }
+}
+.fp-bg {
+  .fp-group .fp:after {
+    background-color: @bgColor;
+  }
+}
+.fp-bg-dark {
+  .fp-group .fp:after {
+    background-color: @darkBgColor;
+  }
+}
+
+.fp-group {
+  position: relative;
+
+  .fp {
+    position: absolute;
+    top: -0.65rem;
+    left: @borderRadiusNew;
+    z-index: 1;
+    padding: 0 (@gutter / 2);
+    color: @darkGrey;
+    font-size: @fontSizeExtraSmall;
+
+    &:before {
+      content: "";
+      position: absolute;
+      top: 0.65rem;
+      left: 0;
+      right: 0;
+      height: 1px;
+      z-index: -1;
+      background-color: @white;
+    }
+    &:after {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0.425rem;
+      left: 0;
+      right: 0;
+      z-index: -2;
+    }
+  }
+}

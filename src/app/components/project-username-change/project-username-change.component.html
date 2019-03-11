@@ -11,13 +11,16 @@
       </span>
     </h4>
 
-    <form #form="ngForm" (ngSubmit)="form.valid && changeUsername()" class="validate-on-dirty validate-on-submit" [ngClass]="{'submitted': form.submitted}">
+    <form #form="ngForm"
+          (ngSubmit)="form.valid && changeUsername()"
+          class="validate-on-dirty validate-on-submit fp-bg-medlight"
+          [ngClass]="{'submitted': form.submitted}">
       <fieldset>
-        <div class="form-group">
+        <div class="form-group fp-group">
+          <div class="fp">{{'login.username_new_placeholder' | translate}}</div>
           <input type="text"
                  class="form-control"
                  name="newUsername"
-                 [placeholder]="'login.username_new_placeholder' | translate"
                  [(ngModel)]="this.newUsername"
                  [check]="isUsernameValid"
                  required>
@@ -57,14 +60,16 @@
 
   <div
     *ngIf="hasStatus(StatusKey.CHANGE_USERNAME, StatusValue.SUCCESSFUL)"
-    class="col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto login-annotation-container login-annotation-info">
+    class="col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto login-annotation-container login-annotation-info center-icon">
 
-    {{'login.log_in_again' | translate}}
+    <div class="d-flex flex-row align-items-center flex-grow-1">
+      <div class="flex-grow-1">{{'login.log_in_again' | translate}}</div>
 
-    <button class="btn btn-sm btn-primary float-right" routerLink="/login">
-      <i class="i i-login i-sm mr-2 float-left"></i>
-      {{'login.go_to_login' | translate}}
-    </button>
+      <button class="btn btn-sm btn-primary" routerLink="/login">
+        <i class="i i-login i-sm mr-2 float-left"></i>
+        {{'login.go_to_login' | translate}}
+      </button>
+    </div>
 
   </div>
 

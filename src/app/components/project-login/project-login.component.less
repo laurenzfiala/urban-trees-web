@@ -15,34 +15,67 @@
   font-size: @fontSizeSmall;
   border-bottom-left-radius: @borderRadiusOuterNew;
   border-bottom-right-radius: @borderRadiusOuterNew;
-  padding: @gutter + @borderRadiusOuterNew @gutter2x @gutter2x @gutter2x;
+  padding: (@gutter2x + @borderRadiusOuterNew) @gutter2x @gutter2x @gutter2x;
   margin-top: -@borderRadiusOuterNew;
 
   &.login-annotation-danger,
   &.login-annotation-success,
   &.login-annotation-warning,
   &.login-annotation-info {
+    display: flex;
+    flex-direction: row;
     font-size: 1rem;
+
+    &.center-icon {
+      align-items: center;
+    }
+
+    &:before {
+      content: "";
+      display: inline-block;
+      flex-grow: 0;
+      flex-shrink: 0;
+      background-size: contain;
+      background-repeat: no-repeat;
+      margin-right: @gutter;
+      .i-sm;
+    }
   }
 
   &.login-annotation-danger {
     color: @dangerColor;
     background-color: @dangerBg;
+
+    &:before {
+      background-image: url("/assets/img/icon/special/cross-danger.svg");
+    }
   }
 
   &.login-annotation-success {
     color: @successColor;
     background-color: @successBg;
+
+    &:before {
+      background-image: url("/assets/img/icon/special/check-success.svg");
+    }
   }
 
   &.login-annotation-warning {
     color: @warningColor;
     background-color: @warningBg;
+
+    &:before {
+      background-image: url("/assets/img/icon/special/warning-warning.svg");
+    }
   }
 
   &.login-annotation-info {
     color: @infoColor;
     background-color: @infoBg;
+
+    &:before {
+      background-image: url("/assets/img/icon/special/info-info.svg");
+    }
   }
 
   .ordering(@i: 1) when (@i <= @maxAnnotations) {

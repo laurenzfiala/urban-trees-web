@@ -168,8 +168,13 @@
 
 input.form-control,
 textarea.form-control,
+select.form-control,
 label.custom-file-label:after,
-label.custom-file-label,
+label.custom-file-label {
+  border-color: @borderColor;
+}
+
+
 .page-link,
 .page-link:hover,
 hr {
@@ -231,7 +236,7 @@ hr {
   }
 
   > .input-group-append {
-    border: solid @lightBorderColor 1px;
+    border: solid @borderColor 1px;
     border-bottom-right-radius: @borderRadiusNew;
     border-top-right-radius: @borderRadiusNew;
 
