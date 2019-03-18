@@ -1,0 +1,26 @@
+<!--<div class="item">
+
+  <div class="title-container">
+    <div class="title">This is a title</div>
+    <div class="annotations">
+      <div class="annotation">
+        2018-12-24 12:07
+      </div>
+    </div>
+  </div>
+
+  <div class="content">
+    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis in nisl ac erat iaculis tempus nec ac libero. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque ultrices sollicitudin dui et pulvinar. Praesent venenatis leo sed lacus sodales, ut faucibus purus tristique. Morbi tempus sagittis tortor id semper. Donec posuere ultricies dignissim. Donec felis sem, pharetra eu mauris ac, molestie consequat metus. Maecenas finibus at leo nec elementum.
+    </p>
+    <p>Sed at arcu eu nibh finibus hendrerit. Mauris finibus sapien leo, quis elementum sapien iaculis a. Vivamus sollicitudin augue urna, eu lobortis risus vestibulum a. Duis maximus iaculis orci, vitae tempus justo luctus quis. Donec lobortis consectetur libero, et efficitur turpis. Sed cursus magna sit amet nunc vestibulum suscipit. Pellentesque luctus odio diam.
+    </p>
+    <p>Curabitur accumsan accumsan gravida. Interdum et malesuada fames ac ante ipsum primis in faucibus. Donec vel maximus nisl. Cras tristique at nisl sed sollicitudin. Fusce auctor sed dui in suscipit. Cras condimentum quis libero in maximus. Aenean at erat a massa tempus convallis. Quisque tincidunt magna ac urna tempus, nec dictum risus aliquet. Aenean ut hendrerit lectus.
+    </p>
+  </div>
+
+</div>-->
+<div *ngFor="let c of newsContent" class="item">
+
+  <ut-user-content *ngIf="tags" [addTags]="tags" [content]="c"></ut-user-content>
+
+</div>

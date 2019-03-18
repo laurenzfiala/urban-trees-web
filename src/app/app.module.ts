@@ -69,6 +69,9 @@ import {CheckDirective} from './directives/check.directive';
 import {ValueaccessorDirective} from './directives/valueaccessor.directive';
 import {AdminGuard} from './components/admin/admin.guard';
 import {CssVariableDirective} from './directives/css-variable.directive';
+import { NewsComponent } from './components/news/news.component';
+import { UserContentComponent } from './components/user-content/user-content.component';
+import {UserContentService} from './services/user-content.service';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, '/translations/', '.json?cacheBust=' + new Date().getTime());
@@ -119,7 +122,9 @@ export function HttpLoaderFactory(http: HttpClient) {
     LowercasePipe,
     DecimalPlacesPipe,
     AnnouncementsComponent,
-    ValueaccessorDirective
+    ValueaccessorDirective,
+    NewsComponent,
+    UserContentComponent
   ],
   imports: [
     // Core
@@ -164,6 +169,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     TreeService,
     AdminService,
     UserService,
+    UserContentService,
 
     // Guards
     PhenologyObservationStepGuard,

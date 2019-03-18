@@ -33,6 +33,10 @@ export const environment = {
     phenologyObservationResultImg:    '/ui/phenology/observation/result/{treeSpeciesId}/{resultId}/img',
     announcements:                    '/ui/announcements',
 
+    // User Content
+    userContentById:                  '/content/{contentId}',
+    userContentByTag:                 '/content/{contentTag}',
+
     // User
     userAchievements:                 '/user/achievements',
 
@@ -68,6 +72,7 @@ export const environment = {
   imageUploadTimeout:                 60000,
 
   outputDateFormat:                   'YYYY-MM-DD[T]HH-mm-ss',
+  inputDateFormat:                    'YYYY-MM-DD[T]HH-mm-ss',
 
   log: {
     level:                            LogLevel.TRACE

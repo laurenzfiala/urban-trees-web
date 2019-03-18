@@ -1,0 +1,55 @@
+@import (reference) "../../../theme/theme.less";
+
+.item {
+  margin-left: -@gutter2x;
+  margin-right: -@gutter2x;
+  padding: @gutter2x;
+  background: linear-gradient(to bottom left, transparent 50%, @bgColor);
+  border-bottom-left-radius: @borderRadiusNew;
+  border-bottom-right-radius: @borderRadiusNew;
+
+  ::ng-deep .user-content {
+    .title-container {
+       display: flex;
+       flex-direction: row;
+       justify-content: space-between;
+       margin-bottom: @gutter;
+
+       > .title {
+         font-size: @fontSizeLarge;
+         text-shadow: 0px 1px 1px @white;
+       }
+
+       > .annotations {
+         display: flex;
+         flex-direction: row;
+         align-items: center;
+
+         > .annotation {
+           font-size: @fontSizeSmall;
+           color: @darkerGrey;
+           margin: 0 @gutter;
+         }
+       }
+     }
+
+    .content {
+      color: @darkestGrey;
+    }
+
+    .annotations {
+      display: flex;
+      flex-direction: row;
+
+      .annotation {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        color: @subtleTextColor;
+        font-size: @fontSizeSmall;
+        margin-left: @gutter2x;
+        margin-right: @gutter2x;
+      }
+    }
+  }
+}

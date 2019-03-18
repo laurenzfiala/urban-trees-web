@@ -1,0 +1,13 @@
+@import (reference) "../../../theme/variables";
+
+.user-content ::ng-deep {
+  ul li {
+    list-style-type: none;
+
+    &:before {
+      content: "–";
+      color: @subtleTextColor;
+      margin-right: @gutter;
+    }
+  }
+}
