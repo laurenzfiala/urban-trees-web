@@ -47,7 +47,7 @@
     <ul *ngIf="selectedTree" id="selected-tree" class="list-group">
       <li class="list-group-item">
         <span class="badge badge-light float-right">#{{selectedTree.id}}</span>
-        <b>{{'tree.species.' + selectedTree.species | lowercase | translate}}</b>
+        <b>{{'tree.species.' + selectedTree.species.name | lowercase | translate}}</b>
         {{'phenology.observation.step1.tree_location' | translate:selectedTree.location}}
       </li>
     </ul>
