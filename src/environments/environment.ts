@@ -29,12 +29,16 @@ export const environment = {
     phenologyDatasetSubmission:       '/tree/{treeId}/phenology',
     phenologyDatasetImageSubmission:  '/user/phenology/observation/{phenologyId}/image',
 
-    // User
-    userAchievements:                 '/user/achievements',
-
     // UI
     phenologyObservationResultImg:    '/ui/phenology/observation/result/{treeSpeciesId}/{resultId}/img',
     announcements:                    '/ui/announcements',
+
+    // User Content
+    userContentById:                  '/content/{contentId}',
+    userContentByTag:                 '/content/{contentTag}',
+
+    // User
+    userAchievements:                 '/user/achievements',
 
     // Admin
     addCity:                          '/admin/city',
@@ -68,6 +72,7 @@ export const environment = {
   imageUploadTimeout:                 60000,
 
   outputDateFormat:                   'YYYY-MM-DD[T]HH-mm-ss',
+  inputDateFormat:                    'YYYY-MM-DD[T]HH-mm-ss',
 
   log: {
     level:                            LogLevel.TRACE

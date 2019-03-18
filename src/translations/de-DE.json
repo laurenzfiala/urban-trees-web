@@ -37,7 +37,10 @@
     "loading_stats_achievements_failed": "Laden von Errungenschaften und Statistiken fehlgeschlagen.",
     "level": "Level",
     "xp": "XP",
-    "next_level_difference": "mehr für Level"
+    "next_level_difference": "mehr für Level",
+    "news": {
+      "title": "Neuigkeiten"
+    }
   },
 	"phenology": {
 		"observation_note": {

@@ -37,7 +37,10 @@
     "loading_stats_achievements_failed": "Failed to load achievements and statistics.",
     "level": "Level",
     "xp": "XP",
-    "next_level_difference": "more for level"
+    "next_level_difference": "more for level",
+    "news": {
+      "title": "News"
+    }
   },
 	"phenology": {
 		"observation_note": {

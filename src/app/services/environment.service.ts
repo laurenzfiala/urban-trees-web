@@ -166,6 +166,36 @@ class EnvironmentEndpoints {
 
   }
 
+  public userContentById(contentId: number): string {
+
+    let replacements: any[] = [
+      { placeholder: 'contentId', replacement: contentId }
+    ];
+
+    return this.prependCommonPath(
+      this.replaceParams(
+        this.context.userContentById,
+        replacements
+      )
+    );
+
+  }
+
+  public userContentByTag(contentTag: string): string {
+
+    let replacements: any[] = [
+      { placeholder: 'contentTag', replacement: contentTag }
+    ];
+
+    return this.prependCommonPath(
+      this.replaceParams(
+        this.context.userContentByTag,
+        replacements
+      )
+    );
+
+  }
+
   get cities() {
     return this.prependCommonPath(this.context.cities);
   }
