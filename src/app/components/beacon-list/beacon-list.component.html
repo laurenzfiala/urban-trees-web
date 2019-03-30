@@ -9,7 +9,7 @@
         <button dropdownToggle type="button" class="btn btn-sm btn-outline-dark dropdown-toggle">
           {{currentBeaconDataMode | translate}}
         </button>
-        <div *dropdownMenu class="dropdown-menu">
+        <div *dropdownMenu class="dropdown-menu dropdown-menu-right">
           <a *ngFor="let mode of BEACON_DATA_MODE_KEYS;" class="dropdown-item" (click)="loadBeaconData(BeaconDataMode[mode]);">{{BeaconDataMode[mode] | translate}}</a>
         </div>
       </div>
