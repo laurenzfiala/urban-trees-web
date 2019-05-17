@@ -30,6 +30,10 @@ export class UserContent {
     }
   }
 
+  public toString(): string {
+    return this.id + '/' + this.language;
+  }
+
   public static fromObject(o: any): UserContent {
 
     return new UserContent(

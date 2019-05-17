@@ -17,10 +17,6 @@ export class MarkupTagTitle extends AbstractMarkupTag {
 
 export class MarkupTagParagraph extends AbstractMarkupTag {
 
-  public tag(): string {
-    return 'paragraph';
-  }
-
   public parse(markup: string): string {
     return '<p>' + markup + '</p>';
   }
@@ -28,10 +24,6 @@ export class MarkupTagParagraph extends AbstractMarkupTag {
 }
 
 export class MarkupTagListItem extends AbstractMarkupTag {
-
-  public tag(): string {
-    return 'list-item';
-  }
 
   public parse(markup: string): string {
     return '<li>' + markup + '</li>';
@@ -91,6 +83,14 @@ export class MarkupTagUnderline extends AbstractMarkupTag {
 
   public parse(markup: string): string {
     return '<span style="text-decoration: underline">' +  markup + '</span>';
+  }
+
+}
+
+export class MarkupTagInvalid extends AbstractMarkupTag {
+
+  public parse(markup: string): string {
+    return '<div class="invalid">' +  markup + '</div>';
   }
 
 }

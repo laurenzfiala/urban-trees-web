@@ -2,7 +2,7 @@ import {Component, EventEmitter, Input, OnInit, Output, SecurityContext} from '@
 import {State} from './user-content-state';
 import {MarkupTagInterface} from './user-content-markup-tags-interface';
 import {
-  MarkupTagBold, MarkupTagColor,
+  MarkupTagBold, MarkupTagColor, MarkupTagInvalid,
   MarkupTagList,
   MarkupTagListItem,
   MarkupTagParagraph,
@@ -11,6 +11,7 @@ import {
 import {DomSanitizer, SafeHtml} from '@angular/platform-browser';
 import {TreeFrontend} from '../../entities/tree-frontend.entity';
 import {UserContent} from '../../entities/user-content.entity';
+import {Log} from '../../services/log.service';
 
 @Component({
   selector: 'ut-user-content',
@@ -18,6 +19,8 @@ import {UserContent} from '../../entities/user-content.entity';
   styleUrls: ['./user-content.component.less']
 })
 export class UserContentComponent {
+
+  private static LOG: Log = Log.newInstance(UserContentComponent);
 
   @Output()
   public state: EventEmitter<State> = new EventEmitter<State>();
@@ -69,7 +72,7 @@ export class UserContentComponent {
     this.tags.set('list',      new MarkupTagList());
     this.tags.set('bold',      new MarkupTagBold());
     this.tags.set('color',     new MarkupTagColor());
-    this.tags.set('underline',     new MarkupTagUnderline());
+    this.tags.set('underline', new MarkupTagUnderline());
   }
 
   private parseContent(markup: string): void {
@@ -103,9 +106,10 @@ export class UserContentComponent {
         }
       }
 
-      const tag: MarkupTagInterface = this.getTag(closingTagPositions[0]['1']);
+      let tag: MarkupTagInterface = this.getTag(closingTagPositions[0]['1']);
       if (!tag) {
-        throw new Error('tag undefined'); //TODO
+        UserContentComponent.LOG.debug('Invalid tag encountered in ' + this._content.toString());
+        tag = new MarkupTagInvalid();
       }
 
       let currentKey, currentVal, attrMap = new Map<string, string>();

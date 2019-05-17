@@ -25,9 +25,9 @@ export class MarkupTagNewsAnnotations extends AbstractMarkupTag {
   }
 }
 
-export class MarkupTagNewsAnnotation extends AbstractMarkupTag {
+export class MarkupTagNewsTimestamp extends AbstractMarkupTag {
   public parse(markup: string): string {
-    return '<div class="annotation">' + markup + '</div>';
+    return '<div class="annotation timestamp">' + markup + '</div>';
   }
 }
 

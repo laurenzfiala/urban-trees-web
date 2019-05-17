@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {MarkupTagInterface} from '../user-content/user-content-markup-tags-interface';
 import {
-  MarkupTagNewsAnnotation,
-  MarkupTagNewsAnnotations, MarkupTagNewsContent,
+  MarkupTagNewsAnnotations, MarkupTagNewsContent, MarkupTagNewsTimestamp,
   MarkupTagNewsTitle,
   MarkupTagNewsTitleContainer
 } from './news-content-markup-tags';
@@ -39,7 +38,7 @@ export class NewsComponent implements OnInit {
     this.tags.set('title-container', new MarkupTagNewsTitleContainer());
     this.tags.set('title', new MarkupTagNewsTitle());
     this.tags.set('annotations', new MarkupTagNewsAnnotations());
-    this.tags.set('annotation', new MarkupTagNewsAnnotation());
+    this.tags.set('timestamp', new MarkupTagNewsTimestamp());
     this.tags.set('content', new MarkupTagNewsContent());
 
   }

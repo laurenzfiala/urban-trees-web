@@ -1,12 +1,26 @@
 @import (reference) "../../../theme/theme.less";
 
 .item {
-  margin-left: -@gutter2x;
-  margin-right: -@gutter2x;
-  padding: @gutter2x;
-  background: linear-gradient(to bottom left, transparent 50%, @bgColor);
-  border-bottom-left-radius: @borderRadiusNew;
-  border-bottom-right-radius: @borderRadiusNew;
+  margin-left: -@newsPaddingX;
+  margin-right: -@newsPaddingX;
+  padding: @newsPaddingTop @newsPaddingX 0 @newsPaddingX;
+  //background: linear-gradient(to bottom left, transparent 50%, lighten(@bgColor, 5%));
+
+  &:after {
+    content: "";
+    display: block;
+    height: 1px;
+    margin-top: @newsPaddingBottom;
+    background-color: @borderColor;
+  }
+
+  &:last-child {
+    border-bottom-left-radius: @borderRadiusNew;
+    border-bottom-right-radius: @borderRadiusNew;
+    &:after {
+      background-color: transparent;
+    }
+  }
 
   ::ng-deep .user-content {
     .title-container {
@@ -49,6 +63,14 @@
         font-size: @fontSizeSmall;
         margin-left: @gutter2x;
         margin-right: @gutter2x;
+
+        &.timestamp:before {
+          content: "";
+          background-image: url("/assets/img/icon/dark/clock.svg");
+          width: 1rem;
+          height: 1rem;
+          margin-right: @gutter;
+        }
       }
     }
   }
