@@ -69,15 +69,24 @@
         <div class="hl-title cool-warm">
           <div class="hl-flex-row hl-warm">
             <div class="hl-opacity-85">{{statistics.beaconTempMaximum | decimalPlaces:4}} °C</div>
-            <div class="hl-subtitle hl-flex-col hl-opacity-75">{{'tree_list.high' | translate }}</div>
+            <div class="hl-subtitle hl-flex-col hl-opacity-75">
+              <span class="d-inline d-md-none i i-max i-special i-xs"></span>
+              <span class="d-none d-md-inline">{{'tree_list.max' | translate}}</span>
+            </div>
           </div>
           <div class="hl-flex-row hl-med">
             <div class="hl-opacity-85">{{statistics.beaconTempAverage | decimalPlaces:4}} °C</div>
-            <div class="hl-subtitle hl-flex-col hl-opacity-75">{{'tree_list.average' | translate }}</div>
+            <div class="hl-subtitle hl-flex-col hl-opacity-75">
+              <span class="d-inline d-md-none  i i-avg i-special i-xs"></span>
+              <span class="d-none d-md-inline">{{'tree_list.avg' | translate}}</span>
+            </div>
           </div>
           <div class="hl-flex-row hl-cool">
             <div class="hl-opacity-85">{{statistics.beaconTempMinimum | decimalPlaces:4}} °C</div>
-            <div class="hl-subtitle hl-flex-col hl-opacity-75">{{'tree_list.low' | translate }}</div>
+            <div class="hl-subtitle hl-flex-col hl-opacity-75">
+              <span class="d-inline d-md-none i i-min i-special i-xs"></span>
+              <span class="d-none d-md-inline">{{'tree_list.min' | translate}}</span>
+            </div>
           </div>
         </div>
         <div class="hl-annotation text-center">
@@ -88,15 +97,24 @@
         <div class="hl-title">
           <div class="hl-flex-row hl-warm">
             <div class="hl-opacity-85">{{statistics.beaconHumidityMaximum | decimalPlaces:4}} %</div>
-            <div class="hl-subtitle hl-flex-col hl-opacity-75">{{'tree_list.high' | translate }}</div>
+            <div class="hl-subtitle hl-flex-col hl-opacity-75">
+              <span class="d-inline d-md-none i i-max i-special i-xs"></span>
+              <span class="d-none d-md-inline">{{'tree_list.max' | translate}}</span>
+            </div>
           </div>
           <div class="hl-flex-row hl-med">
             <div class="hl-opacity-75">{{statistics.beaconHumidityAverage | decimalPlaces:4}} %</div>
-            <div class="hl-subtitle hl-flex-col hl-opacity-75">{{'tree_list.average' | translate }}</div>
+            <div class="hl-subtitle hl-flex-col hl-opacity-75">
+              <span class="d-inline d-md-none i i-avg i-special i-xs"></span>
+              <span class="d-none d-md-inline">{{'tree_list.avg' | translate}}</span>
+            </div>
           </div>
           <div class="hl-flex-row hl-cool">
             <div class="hl-opacity-75">{{statistics.beaconHumidityMinimum | decimalPlaces:4}} %</div>
-            <div class="hl-subtitle hl-flex-col hl-opacity-75">{{'tree_list.low' | translate }}</div>
+            <div class="hl-subtitle hl-flex-col hl-opacity-75">
+              <span class="d-inline d-md-none i i-min i-special i-xs"></span>
+              <span class="d-none d-md-inline">{{'tree_list.min' | translate}}</span>
+            </div>
           </div>
         </div>
         <div class="hl-annotation text-center">

@@ -144,9 +144,9 @@
     "datasets": "Datasets",
     "temperature": "Temperature",
     "humidity": "Humidity",
-    "high": "high",
-    "average": "avg",
-    "low": "low",
+    "max": "high",
+    "avg": "avg",
+    "min": "low",
     "none_found": "Couldn't find any trees.",
     "tree": {
       "location": "at {{street}}"

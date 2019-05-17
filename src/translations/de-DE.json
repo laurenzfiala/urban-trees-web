@@ -144,9 +144,9 @@
     "datasets": "Datensätze",
     "temperature": "Temperatur",
     "humidity": "Luftfeuchtigkeit",
-    "high": "Höchste",
-    "average": "Durchschnitt",
-    "low": "Geringste",
+    "max": "Höchste",
+    "avg": "Durchschnitt",
+    "min": "Geringste",
     "none_found": "Keine Bäume gefunden.",
     "tree": {
       "location": "at {{street}}"
