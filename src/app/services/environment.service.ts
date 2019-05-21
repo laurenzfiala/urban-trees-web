@@ -1,5 +1,6 @@
 import {Injectable} from '@angular/core';
 import {environment} from '../../environments/environment';
+import {BeaconLogSeverity} from '../entities/BeaconLogSeverity';
 
 /**
  * This service should be used to access all environment configurations, since
@@ -237,6 +238,39 @@ class EnvironmentEndpoints {
         replacements
       )
     );
+
+  }
+
+  public loadBeaconLogs(beaconId: number, minSeverity: BeaconLogSeverity, offset: number, maxLogs: number): string {
+
+    let url = this.context.loadBeaconLogs;
+    let params = [];
+
+    if (beaconId) {
+      params.push('beaconId=' + beaconId);
+    }
+    if (minSeverity) {
+      params.push('minSeverity=' + minSeverity);
+    }
+    if (offset) {
+      params.push('offset=' + offset);
+    }
+    if (maxLogs) {
+      params.push('maxLogs=' + maxLogs);
+    }
+
+    let first = true;
+    for (let param of params) {
+      if (first) {
+        first = false;
+        url = url + '?';
+      } else {
+        url = url + '&';
+      }
+      url = url + param;
+    }
+
+    return this.prependCommonPath(url);
 
   }
 

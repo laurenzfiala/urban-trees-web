@@ -229,10 +229,13 @@
   <div class="modal-footer">
     <div class="float-left mx-4">
       <span *ngIf="hasStatus(StatusKey.NEW_BEACON, StatusValue.IN_PROGRESS)">Adding beacon...</span>
-      <span *ngIf="hasStatus(StatusKey.NEW_BEACON, StatusValue.FAILED)">Beacon could not be added.</span>
+      <span *ngIf="hasStatus(StatusKey.NEW_BEACON, StatusValue.FAILED)">
+        Beacon could not be added.
+        <span *ngIf="getStatus(StatusKey.NEW_BEACON_ERROR) === 30">(Duplicate ID or address)</span>
+      </span>
     </div>
-    <button type="button" class="btn btn-secondary" (click)="hideNewBeaconModal()">Close</button>
-    <button type="button" class="btn btn-primary" (click)="addBeacon()">Add beacon</button>
+    <button type="button" class="btn btn-secondary flex-shrink-0" (click)="hideNewBeaconModal()">Close</button>
+    <button type="button" class="btn btn-primary flex-shrink-0b" (click)="addBeacon()">Add beacon</button>
   </div>
 </ng-template>
 

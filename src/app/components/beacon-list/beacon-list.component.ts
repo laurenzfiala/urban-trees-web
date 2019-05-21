@@ -1,13 +1,15 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {BeaconData} from "../../entities/beacon-data.entity";
-import {TreeFrontend} from "../../entities/tree-frontend.entity";
-import {AbstractComponent} from "../abstract.component";
-import {TreeService} from "../../services/tree.service";
+import {BeaconData} from '../../entities/beacon-data.entity';
+import {TreeFrontend} from '../../entities/tree-frontend.entity';
+import {AbstractComponent} from '../abstract.component';
+import {TreeService} from '../../services/tree.service';
 import {Beacon} from '../../entities/beacon.entity';
 import {BeaconSettings} from '../../entities/beacon-settings.entity';
 import {BeaconFrontend} from '../../entities/beacon-frontend.entity';
 import {AdminService} from '../../services/admin/admin.service';
 import {BeaconDataMode} from '../../entities/beacon-data-mode.entity';
+import {BeaconLogSeverity} from '../../entities/BeaconLogSeverity';
+import {BeaconLog} from '../../entities/beacon-log.entity';
 
 @Component({
   selector: 'ut-beacon-list',
@@ -15,6 +17,9 @@ import {BeaconDataMode} from '../../entities/beacon-data-mode.entity';
   styleUrls: ['./beacon-list.component.less']
 })
 export class BeaconListComponent extends AbstractComponent implements OnInit {
+
+  private static EFFECTIVE_BATTERY_CAPACITY: number = 30;
+  public static BEACON_LOGS_PAGE_SIZE: number = 25;
 
   public StatusKey = StatusKey;
   public StatusValue = StatusValue;
@@ -46,7 +51,11 @@ export class BeaconListComponent extends AbstractComponent implements OnInit {
   public BeaconDataMode = BeaconDataMode;
   public BEACON_DATA_MODE_KEYS: string[] = Object.keys(BeaconDataMode);
 
-  public currentBeaconDataMode: BeaconDataMode = BeaconDataMode.LAST_WEEK;
+  public BeaconLogSeverity = BeaconLogSeverity;
+  public BEACON_LOG_SEVERITY: string[] = Object.keys(BeaconLogSeverity);
+  public selectedMinLogSeverity: BeaconLogSeverity = BeaconLogSeverity.TRACE;
+
+  public currentBeaconDataMode: BeaconDataMode = BeaconDataMode.LAST_24H;
   public maxDatapoints: number = 10000;
 
   // color scheme for charts
@@ -61,6 +70,19 @@ export class BeaconListComponent extends AbstractComponent implements OnInit {
     this.loadBeaconData();
   }
 
+  /**
+   * Given battery level by device is percent of voltage and not actual battery level.
+   * We assume 70% of voltage is the minimum.
+   * @see https://www.bluemaestro.com/wp-content/uploads/2016/11/Temperature-Humidity-Data-Logger-Commands-API-2.4.pdf (p.9)
+   * @param actualBattLvl battery level from device/db
+   * @return number from 0-100
+   */
+  public calcEffectiveBatteryLevel(actualBattLvl: number): number {
+    return Math.max(0, Math.floor(
+      (actualBattLvl - 100 + BeaconListComponent.EFFECTIVE_BATTERY_CAPACITY)
+      / BeaconListComponent.EFFECTIVE_BATTERY_CAPACITY * 100
+    ));
+  }
 
   public loadBeaconData(mode?: BeaconDataMode, forceRefresh?: boolean): void {
 
@@ -126,6 +148,51 @@ export class BeaconListComponent extends AbstractComponent implements OnInit {
   }
 
   /**
+   * Load beacon logs, but only if none are already loaded.
+   */
+  public loadBeaconLogsInitial(beacon: BeaconFrontend): void {
+    if (beacon.logs.length === 0) {
+      this.loadBeaconLogs(beacon);
+    }
+  }
+
+  /**
+   * Load the logs for the given beacon.
+   * @param beacon
+   */
+  public loadBeaconLogs(beacon: BeaconFrontend): void {
+
+    beacon.logLoadingStatus = StatusValue.IN_PROGRESS;
+    this.adminService.loadBeaconLogs(
+      beacon.id,
+      this.selectedMinLogSeverity,
+      beacon.logs.length,
+      BeaconListComponent.BEACON_LOGS_PAGE_SIZE,
+      (logs: Array<BeaconLog>) => {
+      beacon.canShowMoreLogs = logs.length >= BeaconListComponent.BEACON_LOGS_PAGE_SIZE;
+      beacon.logs.push(...logs);
+      beacon.logLoadingStatus = StatusValue.SUCCESSFUL;
+      beacon.isLogsShown = true;
+    }, (error, apiError) => {
+      beacon.logLoadingStatus = StatusValue.FAILED;
+      if (beacon.logs.length === 0) {
+        beacon.isLogsShown = false;
+      }
+    });
+
+  }
+
+  public setBeaconLogSeverity(severity: BeaconLogSeverity): void {
+    this.selectedMinLogSeverity = severity;
+    for (let beacon of this.tree.beacons) {
+      beacon.logs = [];
+      if (beacon.isLogsShown) {
+        this.loadBeaconLogsInitial(beacon);
+      }
+    }
+  }
+
+  /**
    * Emit add beacon signal for the containing component.
    */
   public onAddBeaconClick(): void {
@@ -187,7 +254,8 @@ export class BeaconListComponent extends AbstractComponent implements OnInit {
 export enum StatusKey {
 
   BEACON_DATA,
-  BEACON_SETTINGS
+  BEACON_SETTINGS,
+  BEACON_LOGS
 
 }
 

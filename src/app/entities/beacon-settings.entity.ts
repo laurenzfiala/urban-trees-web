@@ -19,7 +19,7 @@ export class BeaconSettings {
   public physicalButtonEnabled: boolean;
   public temperatureCalibration: number;
   public humidityCalibration: number;
-  public loggingIntervalMin: number;
+  public loggingIntervalSec: number;
   public sensorIntervalSec: number;
   public advertisingFrequencyMs: number;
   public pin: number;
@@ -39,7 +39,7 @@ export class BeaconSettings {
     physicalButtonEnabled?: boolean,
     temperatureCalibration?: number,
     humidityCalibration?: number,
-    loggingIntervalMin?: number,
+    loggingIntervalSec?: number,
     sensorIntervalSec?: number,
     advertisingFrequencyMs?: number,
     pin?: number,
@@ -59,7 +59,7 @@ export class BeaconSettings {
     this.physicalButtonEnabled = physicalButtonEnabled;
     this.temperatureCalibration = temperatureCalibration;
     this.humidityCalibration = humidityCalibration;
-    this.loggingIntervalMin = loggingIntervalMin;
+    this.loggingIntervalSec = loggingIntervalSec;
     this.sensorIntervalSec = sensorIntervalSec;
     this.advertisingFrequencyMs = advertisingFrequencyMs;
     this.pin = pin;
@@ -82,7 +82,7 @@ export class BeaconSettings {
       o.physicalButtonEnabled,
       o.temperatureCalibration,
       o.humidityCalibration,
-      o.loggingIntervalMin,
+      o.loggingIntervalSec,
       o.sensorIntervalSec,
       o.advertisingFrequencyMs,
       o.pin,

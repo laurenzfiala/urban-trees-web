@@ -5,6 +5,8 @@
  * @author Laurenz Fiala
  * @since 2018/04/23
  */
+import {ApiError} from '../entities/api-error.entity';
+
 export abstract class AbstractStatusComponent {
 
   /**
@@ -36,6 +38,16 @@ export abstract class AbstractStatusComponent {
    */
   public getStatus(key: number): number {
     return this.statuses.get(key);
+  }
+
+  /**
+   * Get the error associated with the status
+   * with given id.
+   * @param {number} key category id
+   * @returns {ApiError} associated error or null
+   */
+  public getStatusError(key: number): ApiError {
+    return this.statuses.get(key)[1];
   }
 
   /**

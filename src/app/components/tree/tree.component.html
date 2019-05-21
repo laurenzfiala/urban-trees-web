@@ -18,11 +18,11 @@
   <div class="text-center">
 
     <h4 class="mt-4">
-      {{'tree.species.' + tree.species | lowercase | translate}}
+      {{'tree.species.' + tree.species.name | lowercase | translate}}
     </h4>
     <div class="text-subtle mb-2">
-      {{'tree.species.latin.' + tree.species | lowercase | translate}}
-      ({{tree.genus}})
+      {{'tree.species.latin.' + tree.species.name | lowercase | translate}}
+      ({{tree.species.genus.name}})
     </div>
     <hr class="mt-1"/>
 

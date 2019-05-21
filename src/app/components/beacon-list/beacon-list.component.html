@@ -72,7 +72,7 @@
           <table class="table table-striped">
             <tr>
               <td>Device ID</td>
-              <td>{{beacon.deviceName}}</td>
+              <td>{{beacon.deviceId}}</td>
             </tr>
             <tr>
               <td>Address</td>
@@ -80,7 +80,19 @@
             </tr>
             <tr>
               <td>Status</td>
-              <td>{{beacon.status}}</td>
+              <td>
+                {{beacon.status}}
+                <div *ngIf="beacon.status === 'LOCKED' || beacon.status === 'INVALID_SETTINGS'"
+                     class="d-flex align-items-center mt-2 text-sm text-danger">
+                  <i class="i i-sm i-special i-warning-danger mr-2"></i>
+                  <div *ngIf="beacon.status === 'LOCKED'">
+                    This beacon has a PIN that is not equal to the one shown below and can't be accessed.
+                  </div>
+                  <div *ngIf="beacon.status === 'INVALID_SETTINGS'">
+                    This beacon has invalid settings that <b>prevent read-out</b>.
+                  </div>
+                </div>
+              </td>
             </tr>
           </table>
 
@@ -96,7 +108,7 @@
               </div>
               <button *ngIf="beacon.deleteStatus === undefined || beacon.deleteStatus === StatusValue.FAILED"
                       class="btn btn-danger btn-block"
-                      (click)="onRemoveBeaconClick(beacon)">
+                      (click)="onRemoveBeaconClick(beacon); $event.stopPropagation()">
                 Yes, remove
               </button>
               <button *ngIf="beacon.deleteStatus === StatusValue.IN_PROGRESS" class="btn btn-danger btn-block">
@@ -108,12 +120,92 @@
                 Successfully removed!
               </div>
             </ng-template>
+            <div *ngIf="beacon.logs.length === 0 && beacon.logLoadingStatus === StatusValue.IN_PROGRESS" class="beacon-message text-sm mr-4">
+              <i class="i i-sm i-spin i-dark i-load mr-2"></i>
+              Loading beacon logs...
+            </div>
+            <div *ngIf="beacon.logs.length === 0 && beacon.logLoadingStatus === StatusValue.FAILED" class="beacon-warning text-sm mr-4">
+              <i class="i i-sm mr-2"></i>
+              Could not load beacon logs
+            </div>
+            <button *ngIf="!beacon.isLogsShown"
+                    (click)="beacon.isLogsShown = true; loadBeaconLogsInitial(beacon)"
+                    class="btn btn-sm btn-outline-dark d-flex text-center mr-2">
+              <i class="i i-xs i-dark i-log mr-1"></i>
+              Show logs
+            </button>
+            <button *ngIf="beacon.isLogsShown"
+                    (click)="beacon.isLogsShown = false;"
+                    class="btn btn-sm btn-outline-dark d-flex text-center mr-2">
+              <i class="i i-xs i-dark i-log mr-1"></i>
+              Hide logs
+            </button>
+            <div dropdown class="btn-group mr-2">
+              <button dropdownToggle type="button" class="btn btn-sm btn-outline-dark dropdown-toggle">
+                <i class="i i-xs i-dark i-warning mr-1 float-left"></i>
+                Log Level: {{selectedMinLogSeverity}}
+              </button>
+              <div *dropdownMenu class="dropdown-menu dropdown-menu-right">
+                <a *ngFor="let severity of BEACON_LOG_SEVERITY;" class="dropdown-item" (click)="setBeaconLogSeverity(BeaconLogSeverity[severity])">
+                  {{severity}}
+                </a>
+              </div>
+            </div>
             <button class="btn btn-sm btn-outline-danger d-flex text-center"
-                    [popover]="removeBeaconConfirm">
+                    [ngClass]="{'remove-disabled': beacon.deleteStatus === StatusValue.SUCCESSFUL}"
+                    [popover]="removeBeaconConfirm"
+                    outsideClick=true>
               <i class="i i-xs i-trash-danger mr-1"></i>
               Remove beacon
             </button>
 
+          </div>
+
+          <div *ngIf="beacon.isLogsShown && beacon.logs.length > 0">
+
+            <hr/>
+
+            <table class="table table-sm table-striped logs mb-0" *ngIf="beacon.logs?.length > 0">
+              <tr *ngFor="let log of beacon.logs">
+                <td>
+                  <div class="log-severity" [ngClass]="'level-' + log.severity | lowercase">{{log.severity}}</div>
+                </td>
+                <td>
+                  {{log.message}}
+                </td>
+                <td>
+                  {{log.eventDate | date:'yyyy-MM-dd HH:mm:ss'}}
+                </td>
+              </tr>
+            </table>
+
+            <div *ngIf="beacon.logLoadingStatus === StatusValue.SUCCESSFUL && beacon.canShowMoreLogs"
+                 (click)="loadBeaconLogs(beacon)"
+                 class="btn btn-sm btn-block btn-link">
+              Load more
+            </div>
+            <div *ngIf="beacon.logLoadingStatus === StatusValue.SUCCESSFUL && !beacon.canShowMoreLogs"
+                 class="text-subtle text-sm text-center my-2">
+              All logs loaded
+            </div>
+            <div *ngIf="beacon.logLoadingStatus === StatusValue.IN_PROGRESS" class="beacon-message text-sm my-2">
+              <i class="i i-sm i-spin i-dark i-load mr-2"></i>
+              Loading beacon logs...
+            </div>
+            <div *ngIf="beacon.logLoadingStatus === StatusValue.FAILED"
+                 class="beacon-warning text-sm my-2">
+              <i class="i i-sm mr-2"></i>
+              Could not load more logs
+            </div>
+
+          </div>
+
+          <div *ngIf="beacon.logs.length === 0 && !beacon.canShowMoreLogs && beacon.isLogsShown">
+            <hr/>
+            <div class="beacon-warning my-2">
+              <i class="i mr-2"></i>
+              No logs found for given log levels
+            </div>
           </div>
 
           <hr/>
@@ -133,15 +225,34 @@
             <table class="table table-striped">
               <tr>
                 <td>PIN</td>
-                <td>{{beacon.settings.pin}}</td>
+                <td class="pin">{{beacon.settings.pin}}</td>
               </tr>
               <tr>
                 <td>Reference Date</td>
-                <td>{{beacon.settings.refTime}}</td>
+                <td>{{beacon.settings.refTime}} <small>(original device-local date; not UTC)</small></td>
               </tr>
               <tr>
                 <td>Battery Level</td>
-                <td>{{beacon.settings.batteryLevel}}</td>
+                <td>
+                  {{calcEffectiveBatteryLevel(beacon.settings.batteryLevel)}} %
+                  <small>(estimated capacity)</small>
+                  <span class="battery-popover-btn ml-2 i i-xs i-dark i-info pointer"
+                        [popover]="batteryPopover"
+                        outsideClick=true
+                        container="body"
+                        placement="top"
+                  ></span>
+                  <ng-template #batteryPopover>
+                    Actual percentage received from device: <b>{{beacon.settings.batteryLevel}} %</b>
+                    <div class="pt-1 battery-popover-warning-text d-flex justify-content-center align-items-center">
+                      <div class="pr-2"><span class="i i-sm i-special i-warning-warning"></span></div>
+                      <div>
+                        Battery percentage from the device ({{beacon.settings.batteryLevel}} %) is
+                        misleading and does not represent the capacity, but <b>voltage</b>.
+                      </div>
+                    </div>
+                  </ng-template>
+                </td>
               </tr>
               <tr>
                 <td>Firmware version</td>
@@ -149,7 +260,7 @@
               </tr>
               <tr>
                 <td>Logging interval</td>
-                <td>{{beacon.settings.loggingIntervalMin}} min</td>
+                <td>{{beacon.settings.loggingIntervalSec}} sec</td>
               </tr>
               <tr>
                 <td>Sensor interval</td>
@@ -173,6 +284,7 @@
           </div>
 
         </div>
+
 
       </tab>
     </tabset>

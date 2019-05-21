@@ -44,6 +44,7 @@ export const environment = {
     phenologyObservationTypes:        '/admin/phenology/types',
     addBeacon:                        '/admin/beacon',
     deleteBeacon:                     '/admin/beacon/{beaconId}',
+    loadBeaconLogs:                   '/admin/beacon/logs',
     loadUsers:                        '/admin/users',
     loadRole:                         '/admin/users/roles',
     deleteUser:                       '/admin/users/{userId}',

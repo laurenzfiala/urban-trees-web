@@ -5,6 +5,8 @@ import {ChartDataSeries} from './chart-data-series.entity';
 import {ChartData} from './chart-data.entity';
 import * as moment from 'moment';
 import {BeaconDataMode} from './beacon-data-mode.entity';
+import {BeaconLog} from './beacon-log.entity';
+import {BeaconLogSeverity} from './BeaconLogSeverity';
 
 /**
  * Used to attach beacon data to the beacon info.
@@ -19,6 +21,11 @@ export class BeaconFrontend extends Beacon {
   public chartData: Array<ChartDataSeries>;
 
   public deleteStatus: number;
+
+  public isLogsShown: boolean = false;
+  public logLoadingStatus: number;
+  public canShowMoreLogs: boolean = true;
+  public logs: Array<BeaconLog> = new Array<BeaconLog>();
 
   constructor(
     id: number,

@@ -79,3 +79,50 @@
   min-width: 600px;
   padding-bottom: 2.5rem;
 }
+
+.pin {
+  font-family: Consolas, Arial;
+}
+
+.battery-popover-btn {
+  vertical-align: text-bottom;
+}
+
+.battery-popover-warning-text {
+  color: darken(@warning, 8%);
+}
+
+.remove-disabled {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+table.logs {
+  font-size: @fontSizeSmall;
+
+  td:first-child {
+    max-width: 6rem;
+  }
+
+  .log-severity {
+    color: @white;
+    border-radius: @borderRadius;
+    text-align: center;
+
+    &.level-error {
+      background-color: #df867c;
+    }
+    &.level-warn {
+      background-color: #dfbb69;
+    }
+    &.level-info {
+      background-color: #5b9bdf;
+    }
+    &.level-debug {
+      background-color: #a6c8df;
+    }
+    &.level-trace {
+      background-color: #c4d4df;
+    }
+  }
+}

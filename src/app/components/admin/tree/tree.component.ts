@@ -38,10 +38,10 @@ export class AdminTreeComponent extends AbstractComponent implements OnInit {
   public tree: TreeFrontend;
 
   private newCityModalRef: BsModalRef;
-  private newCity: City;
+  public newCity: City;
 
   private newBeaconModalRef: BsModalRef;
-  private newBeacon: Beacon;
+  public newBeacon: Beacon;
 
   public cities: Array<City>;
   public species: Array<TreeSpecies>;
@@ -163,6 +163,7 @@ export class AdminTreeComponent extends AbstractComponent implements OnInit {
       this.loadTrees(this.tree.id);
     }, (error, apiError) => {
       this.setStatus(StatusKey.NEW_BEACON, StatusValue.FAILED);
+      this.setStatus(StatusKey.NEW_BEACON_ERROR, apiError.clientErrorCode);
     });
 
   }
@@ -250,6 +251,7 @@ export enum StatusKey {
   LOAD_PHENOBS_TYPES,
   NEW_CITY,
   NEW_BEACON,
+  NEW_BEACON_ERROR,
   SAVE_TREE
 
 }

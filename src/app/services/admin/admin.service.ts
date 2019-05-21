@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {AbstractService} from '../abstract.service';
 import {Log} from '../log.service';
@@ -11,6 +11,8 @@ import {User} from '../../entities/user.entity';
 import {Role} from '../../entities/role.entity';
 import {Announcement} from '../../entities/announcement.entity';
 import * as moment from 'moment';
+import {BeaconLog} from '../../entities/beacon-log.entity';
+import {BeaconLogSeverity} from '../../entities/BeaconLogSeverity';
 
 /**
  * Service for backend calls on the admin pages.
@@ -43,8 +45,8 @@ export class AdminService extends AbstractService {
     this.http.post(this.envService.endpoints.addCity, city)
       .timeout(this.envService.defaultTimeout)
       .map(c => City.fromObject(c))
-      .subscribe((city: City) => {
-        successCallback(city);
+      .subscribe((result: City) => {
+        successCallback(result);
       }, (e: any) => {
         AdminService.LOG.error('Could not save city: ' + e.message, e);
         errorCallback(e, this.safeApiError(e));
@@ -162,8 +164,8 @@ export class AdminService extends AbstractService {
    * @param errorCallback called upon error
    */
   public deleteBeacon(beaconId: number,
-                   successCallback: () => void,
-                   errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void) {
+                      successCallback: () => void,
+                      errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void) {
 
     let url = this.envService.endpoints.deleteBeacon(beaconId);
     AdminService.LOG.debug('Deleting beacon - ' +  + ' ...');
@@ -174,6 +176,35 @@ export class AdminService extends AbstractService {
         successCallback();
       }, (e: any) => {
         AdminService.LOG.error('Could not delete beacon: ' + e.message, e);
+        errorCallback(e, this.safeApiError(e));
+      });
+
+  }
+
+  /**
+   * Delete beacon from the backend.
+   * @param beacon The id of the beacon to delete
+   * @param minSeverity Minimum log severity to show
+   * @param successCallback called upon successful execution
+   * @param errorCallback called upon error
+   */
+  public loadBeaconLogs(beaconId: number,
+                      minSeverity: BeaconLogSeverity,
+                      offset: number,
+                      maxLogs: number,
+                      successCallback: (result: Array<BeaconLog>) => void,
+                      errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void) {
+
+    let url = this.envService.endpoints.loadBeaconLogs(beaconId, minSeverity, offset, maxLogs);
+    AdminService.LOG.debug('Loading beacon logs...');
+
+    this.http.get<Array<BeaconLog>>(url)
+      .timeout(this.envService.defaultTimeout)
+      .map(list => list && list.map(l => BeaconLog.fromObject(l)))
+      .subscribe((result: Array<BeaconLog>) => {
+        successCallback(result);
+      }, (e: any) => {
+        AdminService.LOG.error('Could not load beacon logs: ' + e.message, e);
         errorCallback(e, this.safeApiError(e));
       });
 
