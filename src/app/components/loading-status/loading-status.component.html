@@ -1,0 +1,39 @@
+<div class="d-flex align-items-center">
+
+  <i *ngIf="hasStatus(StatusKey.EXTERNAL_STATUS, StatusValue.IN_PROGRESS)"
+     class="i i-dark i-xs i-load i-spin ml-1"></i>
+
+  <i *ngIf="hasStatus(StatusKey.EXTERNAL_STATUS, StatusValue.FAILED)"
+     class="i i-dark i-xs i-warning ml-1 pointer"
+     [popover]="reportPopover"
+     placement="auto"
+     outsideClick=true
+     container="body"></i>
+
+</div>
+
+<ng-template #reportPopover>
+
+  <div class="d-flex flex-row align-items-center mb-1">
+    <i class="i i-dark i-xs i-cross-circle mr-1 flex-shrink-0"></i>
+    {{errorDescription | translate}}
+  </div>
+  <div class="text-subtle text-sm">
+    <ng-container *ngIf="internalError?.statusCode === 500">
+      This happened, because the server encountered an error.
+    </ng-container>
+    <ng-container *ngIf="internalError?.statusCode >= 400 && internalError?.statusCode < 500">
+      This happened, because a problem in the web-application occurred.
+    </ng-container>
+    <ng-container *ngIf="internalError?.statusCode === 0">
+      The server could not be reached.<br/>
+      Possible Reasons:
+      <ul>
+        <li>Interrupted internet connection</li>
+        <li>Ongoing server update</li>
+      </ul>
+      Wait a few minutes and try to refresh the page.
+    </ng-container>
+  </div>
+
+</ng-template>

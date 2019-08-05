@@ -1,5 +1,6 @@
 import {PhenologyDataset} from './phenology-dataset.entity';
 import * as moment from 'moment';
+import {TranslateService} from '@ngx-translate/core';
 
 /**
  * Used to collect the users' input and values for the backend,
@@ -18,9 +19,10 @@ export class PhenologyDatasetFrontend extends PhenologyDataset {
   /**
    * Apply the frontend values to the backend object
    * and return the downcast backend object.
+   * @param string date format
    */
-  public apply(): PhenologyDataset {
-    this.observationDate = moment(this.uiObservationDate).utc().format('YYYY-MM-DD[T]HH-mm-ss');
+  public apply(dateFormat: string): PhenologyDataset {
+    this.observationDate = moment(this.uiObservationDate).utc().format(dateFormat);
     return <PhenologyDataset>this;
   }
 

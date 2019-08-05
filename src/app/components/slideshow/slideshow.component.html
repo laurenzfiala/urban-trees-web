@@ -1,0 +1,17 @@
+<div class="slideshow"
+     (mouseover)="pause = true"
+     (mouseout)="pause = false">
+  <div class="position-relative">
+    <ng-container [ngTemplateOutlet]="getCurrentSlide()"></ng-container>
+    <div class="slide-progress">
+      <div class="inner" [ngStyle]="{'width.%': getProgress()}"></div>
+    </div>
+    <div class="slide-previous" (click)="previousSlide()"></div>
+    <div class="slide-next" (click)="nextSlide()"></div>
+  </div>
+  <div *ngIf="getCurrentSubtitle()"
+       class="subtitle">
+    {{getCurrentSubtitle()}}
+  </div>
+</div>
+

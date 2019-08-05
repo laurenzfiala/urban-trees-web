@@ -1,232 +1,265 @@
-<ut-header></ut-header>
+<div class="content-cat">
+  <div class="container">
+    <div class="content-cat-heading">
+      {{'imprint.title' | translate}}
+    </div>
+    <div *ngIf="translateService.currentLang !== 'de-DE'"
+      class="content-cat-text d-flex flex-row align-items-center text-sm text-warning">
+      <i class="i i-xs i-warning-warning mr-1"></i>
+      {{'imprint.title_disclaimer' | translate}}
+    </div>
+  </div>
+</div>
 
-<div class="container my-4">
+<div class="content-cat">
+  <div class="container">
+    <div class="content-cat-heading">Medieninhaber, Herausgeber, inhaltliche und redaktionelle Verantwortung</div>
 
-  <h2>{{'general.imprint' | translate}}</h2>
-
-  <h4>Medieninhaber, Herausgeber, inhaltliche und redaktionelle Verantwortung</h4>
-
-  <p>
-    O.Univ.-Prof. Dr.Franz Neubauer<br/>
-    Universität Salzburg<br/>
-    Fachbereich Geographie und Geologie<br/>
-    Hellbrunnerstraße 34<br/>
-    5020 Salzburg<br/>
-    Österreich<br/>
-  </p>
-
-  <h4>Vertreten durch</h4>
-  <p>
-    Ass.-Prof. Dr. Angela Hof<br/>
-    <a href="mailto:stadtbaum-sparklingscience@sbg.ac.at">stadtbaum-sparklingscience@sbg.ac.at</a>
-  </p>
-
-  <hr/>
-
-  <h4>Kontakt</h4>
-  <p>
-    Heidrun Eibl-Göschl<br/>
-    Telefon: <a href="tel:+43 662 8044 5244">+43 662 8044 5244</a><br/>
-    Fax: +43 662 8044 525<br/>
-  </p>
-
-  <table class="table">
-    <tbody>
-    <tr>
-      <th scope="row">Umsatzsteuer-Identifikationsnummer (UID) der Universität Salzburg</th>
-      <td>ATU 57532824</td>
-    </tr>
-    <tr>
-      <th scope="row">Datenverarbeitungsregister-Nummer</th>
-      <td>0079481</td>
-    </tr>
-    <tr>
-      <th scope="row">Aufsichtsbehörde der Universität Salzburg</th>
-      <td>Bundesministerium für Wissenschaft, Forschung und Wirtschaft</td>
-    </tr>
-    </tbody>
-  </table>
-
-  <hr/>
-
-  <h4>Urheberrecht</h4>
-  <p>
-    Die Inhalte sind im World-Wide-Web für den Online-Zugriff veröffentlicht. Das Urheberrecht und die Nutzungsrechte für Texte, Graphiken, Design, Quellcode und Bildmaterial – sofern nicht im Metatext des Bildes (Rolloverfunktion) mit der Kennung zum Beispiel „© Name bzw. Künstlername des Fotografen/der Fotografin / Fotolia.com" oder „© Name bzw. Künstlername des Fotografen/der Fotografin / Pixelio.de“ gekennzeichnet – liegen bei der Universität Salzburg.<br/>
-    Die Erstellung, die Verwendung und die nicht kommerzielle Weitergabe von Kopien in elektronischer oder ausgedruckter Form sind erlaubt, wenn der Inhalt unverändert bleibt und die Quelle angeben wird (Quelle: Universität Salzburg).<br/>
-    Die inhaltliche, textliche Betreuung der Seite www.uni-salzburg.at obliegt dem BdR Büro für Public Relation & Kommunikation. Die technische Betreuung des WWW-Servers www.uni-salzburg.at erfolgt durch die IT-Services der Universität Salzburg.<br/>
-    Grafisches Konzept, Informationsstruktur und die technische Realisierung sind Eigenentwicklungen der Universität Salzburg, BdR Büro für Public Relation & Kommunikation sowie der Abteilung ITS auf Basis von Typo3. Die Informationen der einzelnen Institute und sonstigen Einrichtungen der Universität Salzburg sowie der anderen InformationsanbieterInnen werden von diesen eigenverantwortlich erarbeitet und in das System eingebracht.<br/>
-    Die Unterrichtsmaterialien auf der Startseite sind mit freundlicher Genehmigung von BEAGLE (http://www.beagleproject.org/de/) bereitgestellt worden.
-  </p>
-
-  <hr/>
-
-  <h4>Subdomain</h4>
-  <p>
-    Organisationseinheiten und akademische Einheiten laut Organisationsplan können eigene Subdomains der URL www.uni-salzburg.at betreiben, für deren Inhalt sie auch verantwortlich sind. Anfragen sind daher direkt an den Webmaster / Webmistress der jeweiligen Einheit zu richten.
-  </p>
-
-  <hr/>
-
-  <h4>Haftung</h4>
-  <p>
-    Die Texte auf der Homepage wurden vor der Veröffentlichung einer sorgfältigen Prüfung unterzogen. Dessen ungeachtet kann keine Garantie für die Richtigkeit, Vollständigkeit und Aktualität der Angaben übernommen werden. Eine Haftung der Universität Salzburg wird daher ausgeschlossen. Die Links zu anderen Seiten wurden gewissenhaft ausgewählt.
-    Da die Universität Salzburg auf deren Inhalte keinen Einfluss hat, übernimmt die Universität Salzburg dafür auch keine Verantwortung. Weder die IT-Services noch die Universität Salzburg können für fehlende oder irrtümliche Informationen haftbar gemacht werden. Irrtümer vorbehalten.
-  </p>
-
-  <p>
-    <img class="logo" src="/assets/img/logos/Uni_Salzburg.JPG" />
-  </p>
-
-  <hr/>
-
-  <h2>{{'imprint.partners' | translate}}</h2>
-
-  <div class="card-columns no-link-style">
-
-    <a href="https://uni-salzburg.at/" target="_blank">
-      <div class="card">
-        <img class="card-img-top" src="/assets/img/logos/Uni_Salzburg.JPG" alt="University of Salzburg">
-        <div class="card-body">
-          <p class="card-text">University of Salzburg</p>
-        </div>
-      </div>
-    </a>
-
-    <a href="http://www.sparklingscience.at/en" target="_blank">
-      <div class="card">
-        <img class="card-img-top" src="/assets/img/logos/SparklingScienceENGLISH.jpg" alt="Sparkling Science">
-        <div class="card-body">
-          <p class="card-text">Sparkling Science</p>
-        </div>
-      </div>
-    </a>
-
-    <a href="http://www.bernoulligymnasium.at/" target="_blank">
-      <div class="card">
-        <img class="card-img-top" src="/assets/img/logos/Bernoulli_Gymnasium.jpg" alt="Bernoulli Gymnasium">
-        <div class="card-body">
-          <p class="card-text">Bernoulli Gymnasium</p>
-        </div>
-      </div>
-    </a>
-
-    <a href="http://manos-dresden.de/" target="_blank">
-      <div class="card">
-        <img class="card-img-top" src="/assets/img/logos/Gymnasium_Dresden.gif" alt="Martin-Andersen-Nexö-Gymnasium Dresden">
-        <div class="card-body">
-          <p class="card-text">Martin-Andersen-Nexö-Gymnasium Dresden</p>
-        </div>
-      </div>
-    </a>
-
-    <a href="http://hbla.ursprung.at/web/" target="_blank">
-      <div class="card">
-          <img class="card-img-top" src="/assets/img/logos/HBLA_Ursprung.jpg" alt="HBLA Ursprung">
-        <div class="card-body">
-          <p class="card-text">HBLA Ursprung</p>
-        </div>
-      </div>
-    </a>
-
-    <a href="https://www.holztechnikum.at/" target="_blank">
-      <div class="card">
-        <img class="card-img-top" src="/assets/img/logos/Holztechnikum_Kuchl.jpg" alt="Bernoulli Gymnasium">
-        <div class="card-body">
-          <p class="card-text">Holztechnikum Kuchl</p>
-        </div>
-      </div>
-    </a>
-
-    <a href="http://www.lwg.bayern.de/" target="_blank">
-      <div class="card">
-        <img class="card-img-top" src="/assets/img/logos/LWG.png" alt="LWG">
-        <div class="card-body">
-          <p class="card-text">Bayerische Landesanstalt für Weinbau und Gartenbau</p>
-        </div>
-      </div>
-    </a>
-
-    <a href="http://www.hsweer.at/" target="_blank">
-      <div class="card">
-        <img class="card-img-top" src="/assets/img/logos/NMS_Weer.png" alt="NMS Weer">
-        <div class="card-body">
-          <p class="card-text">Neue Mittelschule Weer</p>
-        </div>
-      </div>
-    </a>
-
-    <a href="http://otto-pankok-schule.de/" target="_blank">
-      <div class="card">
-        <img class="card-img-top" src="/assets/img/logos/Otto-Pankok_Schule.jpg" alt="Otto-Pankok-Schule">
-        <div class="card-body">
-          <p class="card-text">Otto-Pankok-Schule</p>
-        </div>
-      </div>
-    </a>
-
-    <a href="https://www.stadt-salzburg.at/internet/wirtschaft_umwelt/natur.htm" target="_blank">
-      <div class="card">
-        <img class="card-img-top" src="/assets/img/logos/Stadtgärten.png" alt="Stadt:Salzburg Stadt:Gärten">
-        <div class="card-body">
-          <p class="card-text">Stadtgärten Salzburg</p>
-        </div>
-      </div>
-    </a>
-
-    <div class="card">
-      <img class="card-img-top" src="/assets/img/logos/Szegedi_Gymnasium.jpg" alt="Szegedi Tömörkény István Gimnázium és Művészeti Szakgimnázium">
-      <div class="card-body">
-        <p class="card-text">Szegedi Tömörkény István Gimnázium és Művészeti Szakgimnázium</p>
-      </div>
+    <div class="content-cat-text">
+      O.Univ.-Prof. Dr.Franz Neubauer<br/>
+      Universität Salzburg<br/>
+      Fachbereich Geographie und Geologie<br/>
+      Hellbrunnerstraße 34<br/>
+      5020 Salzburg<br/>
+      Österreich<br/>
     </div>
 
-    <a href="https://tu-dresden.de/" target="_blank">
-      <div class="card">
-        <img class="card-img-top" src="/assets/img/logos/TU_Dresden.png" alt="TU Desden">
-        <div class="card-body">
-          <p class="card-text">Technische Universität Dresden</p>
-        </div>
-      </div>
-    </a>
+  </div>
+</div>
 
-    <a href="https://www.u-szeged.hu/english" target="_blank">
-      <div class="card">
-        <img class="card-img-top" src="/assets/img/logos/Uni_Szeged.png" alt="University of Szeged">
-        <div class="card-body">
-          <p class="card-text">University of Szeged</p>
-        </div>
-      </div>
-    </a>
+<div class="content-cat">
+  <div class="container">
+    <div class="content-cat-heading">Kontakt</div>
 
-    <a href="https://www.stadt-salzburg.at/internet/websites/wissen.htm" target="_blank">
-      <div class="card">
-        <img class="card-img-top" src="/assets/img/logos/Wissenstadt_Salzburg.png" alt="Wissen:Stadt Salzburg">
-        <div class="card-body">
-          <p class="card-text">Wissen:Stadt Salzburg</p>
-        </div>
-      </div>
-    </a>
+    <div class="content-cat-text">
+      Heidrun Eibl-Göschl<br/>
+      Telefon: <a href="tel:+43 662 8044 5244">+43 662 8044 5244</a><br/>
+      Fax: +43 662 8044 525<br/>
+    </div>
+
+    <table class="table mt-2">
+      <tbody>
+      <tr>
+        <th scope="row">Umsatzsteuer-Identifikationsnummer (UID) der Universität Salzburg</th>
+        <td>ATU 57532824</td>
+      </tr>
+      <tr>
+        <th scope="row">Datenverarbeitungsregister-Nummer</th>
+        <td>0079481</td>
+      </tr>
+      <tr>
+        <th scope="row">Aufsichtsbehörde der Universität Salzburg</th>
+        <td>Bundesministerium für Wissenschaft, Forschung und Wirtschaft</td>
+      </tr>
+      </tbody>
+    </table>
 
   </div>
+</div>
 
-  <hr/>
+<div class="content-cat">
+  <div class="container">
+    <div class="content-cat-heading">Urheberrecht</div>
 
-  <h2>{{'imprint.os_projects' | translate}}</h2>
+    <div class="content-cat-text">
+      Die Inhalte sind im World-Wide-Web für den Online-Zugriff veröffentlicht. Das Urheberrecht und die Nutzungsrechte für Texte, Graphiken, Design, Quellcode und Bildmaterial – sofern nicht im Metatext des Bildes (Rolloverfunktion) mit der Kennung zum Beispiel „© Name bzw. Künstlername des Fotografen/der Fotografin / Fotolia.com" oder „© Name bzw. Künstlername des Fotografen/der Fotografin / Pixelio.de“ gekennzeichnet – liegen bei der Universität Salzburg.<br/>
+      Die Erstellung, die Verwendung und die nicht kommerzielle Weitergabe von Kopien in elektronischer oder ausgedruckter Form sind erlaubt, wenn der Inhalt unverändert bleibt und die Quelle angeben wird (Quelle: Universität Salzburg).<br/>
+      Die inhaltliche, textliche Betreuung der Seite www.uni-salzburg.at obliegt dem BdR Büro für Public Relation & Kommunikation. Die technische Betreuung des WWW-Servers www.uni-salzburg.at erfolgt durch die IT-Services der Universität Salzburg.<br/>
+      Grafisches Konzept, Informationsstruktur und die technische Realisierung sind Eigenentwicklungen der Universität Salzburg, BdR Büro für Public Relation & Kommunikation sowie der Abteilung ITS auf Basis von Typo3. Die Informationen der einzelnen Institute und sonstigen Einrichtungen der Universität Salzburg sowie der anderen InformationsanbieterInnen werden von diesen eigenverantwortlich erarbeitet und in das System eingebracht.<br/>
+      Die Unterrichtsmaterialien auf der Startseite sind mit freundlicher Genehmigung von BEAGLE (http://www.beagleproject.org/de/) bereitgestellt worden.
+    </div>
 
-  {{'imprint.os_projects_text' | translate}}
+  </div>
+</div>
 
-  <ul class="list-group pt-2">
-    <li class="list-group-item"><a href="https://openlayers.org/" target="_blank">OpenLayers</a> For the tree location map</li>
-    <li class="list-group-item"><a href="https://www.openstreetmap.org/copyright" target="_blank">OpenSteetMap</a> For the tree location map resources</li>
-    <li class="list-group-item"><a href="https://angular.io/" target="_blank">Angular</a> Application Framework</li>
-    <li class="list-group-item"><a href="https://angular.io/" target="_blank">Bootstrap</a> Design framework</li>
-    <li class="list-group-item"><a href="https://valor-software.com/ngx-bootstrap" target="_blank">ngx-bootstrap</a> For awesome Angular Bootstrap components</li>
-    <li class="list-group-item"><a href="https://github.com/ngx-translate/core" target="_blank">ngx-translate</a> For translation</li>
-    <li class="list-group-item"><a href="http://jquery.com/" target="_blank">jQuery</a> Easy-to-use JavaScript API</li>
-    <li class="list-group-item"><a href="https://github.com/zloirock/core-js" target="_blank">core-js</a> Modular standard library for JavaScript</li>
-    <li class="list-group-item"><a href="https://momentjs.com/" target="_blank">Moment.js</a> Date and time library</li>
-    <li class="list-group-item"><a href="https://github.com/ReactiveX/rxjs" target="_blank">RxJS</a> Reactive JS extensions</li>
-    <li class="list-group-item"><a href="https://github.com/angular/zone.js/" target="_blank">Zone.js</a> Javascript zones</li>
-    <li class="list-group-item"><a href="https://fontawesome.com/license/free" target="_blank">Font Awesome</a> For most of the icons</li>
-  </ul>
+<div class="content-cat">
+  <div class="container">
+    <div class="content-cat-heading">Subdomain</div>
+
+    <div class="content-cat-text">
+      Organisationseinheiten und akademische Einheiten laut Organisationsplan können eigene Subdomains der URL www.uni-salzburg.at betreiben, für deren Inhalt sie auch verantwortlich sind. Anfragen sind daher direkt an den Webmaster / Webmistress der jeweiligen Einheit zu richten.
+    </div>
+
+  </div>
+</div>
+
+<div class="content-cat">
+  <div class="container">
+    <div class="content-cat-heading">Haftung</div>
+
+    <div class="content-cat-text">
+      Die Texte auf der Homepage wurden vor der Veröffentlichung einer sorgfältigen Prüfung unterzogen. Dessen ungeachtet kann keine Garantie für die Richtigkeit, Vollständigkeit und Aktualität der Angaben übernommen werden. Eine Haftung der Universität Salzburg wird daher ausgeschlossen. Die Links zu anderen Seiten wurden gewissenhaft ausgewählt.
+      Da die Universität Salzburg auf deren Inhalte keinen Einfluss hat, übernimmt die Universität Salzburg dafür auch keine Verantwortung. Weder die IT-Services noch die Universität Salzburg können für fehlende oder irrtümliche Informationen haftbar gemacht werden. Irrtümer vorbehalten.
+    </div>
+
+  </div>
+</div>
+
+<div class="content-cat">
+  <div class="container">
+
+    <img class="logo" src="/assets/img/logos/Uni_Salzburg.JPG" />
+
+  </div>
+</div>
+
+<div class="content-cat">
+  <div class="container">
+    <div class="content-cat-heading">{{'imprint.partners' | translate}}</div>
+
+    <div class="card-columns no-link-style">
+
+      <a href="https://uni-salzburg.at/" target="_blank">
+        <div class="card">
+          <img class="card-img-top" src="/assets/img/logos/Uni_Salzburg.JPG" alt="University of Salzburg">
+          <div class="card-body">
+            <p class="card-text">University of Salzburg</p>
+          </div>
+        </div>
+      </a>
+
+      <a href="http://www.sparklingscience.at/en" target="_blank">
+        <div class="card">
+          <img class="card-img-top" src="/assets/img/logos/SparklingScienceENGLISH.jpg" alt="Sparkling Science">
+          <div class="card-body">
+            <p class="card-text">Sparkling Science</p>
+          </div>
+        </div>
+      </a>
+
+      <a href="http://www.bernoulligymnasium.at/" target="_blank">
+        <div class="card">
+          <img class="card-img-top" src="/assets/img/logos/Bernoulli_Gymnasium.jpg" alt="Bernoulli Gymnasium">
+          <div class="card-body">
+            <p class="card-text">Bernoulli Gymnasium</p>
+          </div>
+        </div>
+      </a>
+
+      <a href="http://manos-dresden.de/" target="_blank">
+        <div class="card">
+          <img class="card-img-top" src="/assets/img/logos/Gymnasium_Dresden.gif" alt="Martin-Andersen-Nexö-Gymnasium Dresden">
+          <div class="card-body">
+            <p class="card-text">Martin-Andersen-Nexö-Gymnasium Dresden</p>
+          </div>
+        </div>
+      </a>
+
+      <a href="http://hbla.ursprung.at/web/" target="_blank">
+        <div class="card">
+          <img class="card-img-top" src="/assets/img/logos/HBLA_Ursprung.jpg" alt="HBLA Ursprung">
+          <div class="card-body">
+            <p class="card-text">HBLA Ursprung</p>
+          </div>
+        </div>
+      </a>
+
+      <a href="https://www.holztechnikum.at/" target="_blank">
+        <div class="card">
+          <img class="card-img-top" src="/assets/img/logos/Holztechnikum_Kuchl.jpg" alt="Bernoulli Gymnasium">
+          <div class="card-body">
+            <p class="card-text">Holztechnikum Kuchl</p>
+          </div>
+        </div>
+      </a>
+
+      <a href="http://www.lwg.bayern.de/" target="_blank">
+        <div class="card">
+          <img class="card-img-top" src="/assets/img/logos/LWG.png" alt="LWG">
+          <div class="card-body">
+            <p class="card-text">Bayerische Landesanstalt für Weinbau und Gartenbau</p>
+          </div>
+        </div>
+      </a>
+
+      <a href="http://www.hsweer.at/" target="_blank">
+        <div class="card">
+          <img class="card-img-top" src="/assets/img/logos/NMS_Weer.png" alt="NMS Weer">
+          <div class="card-body">
+            <p class="card-text">Neue Mittelschule Weer</p>
+          </div>
+        </div>
+      </a>
+
+      <a href="http://otto-pankok-schule.de/" target="_blank">
+        <div class="card">
+          <img class="card-img-top" src="/assets/img/logos/Otto-Pankok_Schule.jpg" alt="Otto-Pankok-Schule">
+          <div class="card-body">
+            <p class="card-text">Otto-Pankok-Schule</p>
+          </div>
+        </div>
+      </a>
+
+      <a href="https://www.stadt-salzburg.at/internet/wirtschaft_umwelt/natur.htm" target="_blank">
+        <div class="card">
+          <img class="card-img-top" src="/assets/img/logos/Stadtgärten.png" alt="Stadt:Salzburg Stadt:Gärten">
+          <div class="card-body">
+            <p class="card-text">Stadtgärten Salzburg</p>
+          </div>
+        </div>
+      </a>
+
+      <div class="card">
+        <img class="card-img-top" src="/assets/img/logos/Szegedi_Gymnasium.jpg" alt="Szegedi Tömörkény István Gimnázium és Művészeti Szakgimnázium">
+        <div class="card-body">
+          <p class="card-text">Szegedi Tömörkény István Gimnázium és Művészeti Szakgimnázium</p>
+        </div>
+      </div>
+
+      <a href="https://tu-dresden.de/" target="_blank">
+        <div class="card">
+          <img class="card-img-top" src="/assets/img/logos/TU_Dresden.png" alt="TU Desden">
+          <div class="card-body">
+            <p class="card-text">Technische Universität Dresden</p>
+          </div>
+        </div>
+      </a>
+
+      <a href="https://www.u-szeged.hu/english" target="_blank">
+        <div class="card">
+          <img class="card-img-top" src="/assets/img/logos/Uni_Szeged.png" alt="University of Szeged">
+          <div class="card-body">
+            <p class="card-text">University of Szeged</p>
+          </div>
+        </div>
+      </a>
+
+      <a href="https://www.stadt-salzburg.at/internet/websites/wissen.htm" target="_blank">
+        <div class="card">
+          <img class="card-img-top" src="/assets/img/logos/Wissenstadt_Salzburg.png" alt="Wissen:Stadt Salzburg">
+          <div class="card-body">
+            <p class="card-text">Wissen:Stadt Salzburg</p>
+          </div>
+        </div>
+      </a>
+
+    </div>
+
+  </div>
+</div>
+
+<div class="content-cat">
+  <div class="container">
+    <div class="content-cat-heading">{{'imprint.os_projects' | translate}}</div>
+
+    <div class="content-cat-text">
+      {{'imprint.os_projects_text' | translate}}
+    </div>
+
+    <ul class="list-group pt-2">
+      <li class="list-group-item"><a href="https://openlayers.org/" target="_blank">OpenLayers</a> For the tree location map</li>
+      <li class="list-group-item"><a href="https://www.openstreetmap.org/copyright" target="_blank">OpenSteetMap</a> For the tree location map resources</li>
+      <li class="list-group-item"><a href="https://angular.io/" target="_blank">Angular</a> Application Framework</li>
+      <li class="list-group-item"><a href="https://angular.io/" target="_blank">Bootstrap</a> Design framework</li>
+      <li class="list-group-item"><a href="https://valor-software.com/ngx-bootstrap" target="_blank">ngx-bootstrap</a> For awesome Angular Bootstrap components</li>
+      <li class="list-group-item"><a href="https://github.com/ngx-translate/core" target="_blank">ngx-translate</a> For translation</li>
+      <li class="list-group-item"><a href="http://jquery.com/" target="_blank">jQuery</a> Easy-to-use JavaScript API</li>
+      <li class="list-group-item"><a href="https://github.com/zloirock/core-js" target="_blank">core-js</a> Modular standard library for JavaScript</li>
+      <li class="list-group-item"><a href="https://momentjs.com/" target="_blank">Moment.js</a> Date and time library</li>
+      <li class="list-group-item"><a href="https://github.com/ReactiveX/rxjs" target="_blank">RxJS</a> Reactive JS extensions</li>
+      <li class="list-group-item"><a href="https://github.com/angular/zone.js/" target="_blank">Zone.js</a> Javascript zones</li>
+      <li class="list-group-item"><a href="https://github.com/swimlane/ngx-charts" target="_blank">ngx-charts</a> Clientside angular D3.js charts</li>
+    </ul>
+
+  </div>
 </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {UserService} from '../../services/user.service';
 import {UserAchievements} from '../../entities/user-achievement.entity';
 import {AbstractComponent} from '../abstract.component';
@@ -50,16 +50,23 @@ export class UserOverviewComponent extends AbstractComponent implements OnInit {
   public levelXp: number = 0;
 
   /**
-   * TODO
-   */
-  public lastLevel: number = 0;
-
-  /**
    * Whether the user has levelled up recently.
    * The levelling data is fetched from the backend
    * by userService in #loadLevels.
    */
   public levelUp: boolean = false;
+
+  /**
+   * Emits the current level, if the user as recently levelled up.
+   */
+  @Output()
+  public levelUpOutput: EventEmitter<number> = new EventEmitter<number>();
+
+  /**
+   * Emits the current loading status.
+   */
+  @Output()
+  public status: EventEmitter<any[]> = new EventEmitter<any[]>();
 
   /**
    * TODO
@@ -86,13 +93,16 @@ export class UserOverviewComponent extends AbstractComponent implements OnInit {
   private loadAchievements(): void {
 
     this.setStatus(StatusKey.ACHIEVEMENTS_LOADING, StatusValue.IN_PROGRESS);
+    this.status.emit([this.getStatus(StatusKey.ACHIEVEMENTS_LOADING), this.getStatusError(StatusKey.ACHIEVEMENTS_LOADING)]);
     this.userService.loadAchievements((achievements: UserAchievements) => {
       this.achievements = achievements;
       this.updateLevels();
       this.setStatus(StatusKey.ACHIEVEMENTS_LOADING, StatusValue.SUCCESSFUL);
+      this.status.emit([this.getStatus(StatusKey.ACHIEVEMENTS_LOADING), this.getStatusError(StatusKey.ACHIEVEMENTS_LOADING)]);
     }, (error1, apiError) => {
-      this.setStatus(StatusKey.ACHIEVEMENTS_LOADING, StatusValue.FAILED);
-    })
+      this.setStatus(StatusKey.ACHIEVEMENTS_LOADING, StatusValue.FAILED, apiError);
+      this.status.emit([this.getStatus(StatusKey.ACHIEVEMENTS_LOADING), this.getStatusError(StatusKey.ACHIEVEMENTS_LOADING)]);
+    });
 
   }
 
@@ -113,6 +123,7 @@ export class UserOverviewComponent extends AbstractComponent implements OnInit {
     this.nextLevelRemainingXp = this.nextLevelXp - xp;
     if (this.hasRecentLevelUp(this.level) ) {
       this.levelUp = true;
+      this.levelUpOutput.emit(this.level);
     }
 
   }
@@ -170,14 +181,16 @@ export class UserOverviewComponent extends AbstractComponent implements OnInit {
 
 export enum StatusKey {
 
-  ACHIEVEMENTS_LOADING
+  ACHIEVEMENTS_LOADING,
+  DETAILS
 
 }
 
 export enum StatusValue {
 
-  IN_PROGRESS,
-  SUCCESSFUL,
-  FAILED
+  IN_PROGRESS = 0,
+  SUCCESSFUL = 1,
+  FAILED = 2,
+  SHOW
 
 }

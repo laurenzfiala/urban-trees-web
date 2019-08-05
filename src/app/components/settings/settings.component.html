@@ -1,0 +1,94 @@
+<div class="content-cat">
+  <div class="container">
+    <div class="content-cat-heading">{{'settings.language.title' | translate}}</div>
+    <div class="content-cat-text">
+      {{'settings.language.desc' | translate}}
+
+      <div *ngFor="let lang of availableLanguages"
+           class="d-flex flex-row align-items-center mt-2 lang"
+           [ngClass]="{'active': lang === currentLanguage}"
+           (click)="setLanguage(lang)">
+        <img class="lang-icon" [attr.src]="'/assets/img/icon/lang/' + lang + '.svg'" />
+        <a class="link">
+          {{'settings.langs.' + lang | translate}}
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *auth="[envService.security.rolesUser]"
+     class="content-cat">
+  <div class="container">
+    <div class="content-cat-heading">{{'settings.account.title' | translate}}</div>
+    <div class="content-cat-text">
+      {{'settings.account.desc' | translate}}
+
+      <div class="d-flex flex-row align-items-center mt-2">
+        <i class="i i-user i-dark mr-1"></i>
+        <a class="link" routerLink="/account/changeusername">{{'settings.account.change_username' | translate}}</a>
+      </div>
+
+      <div class="d-flex flex-row align-items-center mt-2">
+        <i class="i i-key i-dark mr-1"></i>
+        <a class="link" routerLink="/account/changepassword">{{'settings.account.change_password' | translate}}</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *auth
+     class="content-cat">
+  <div class="container">
+    <div class="content-cat-heading">{{'settings.support.title' | translate}}</div>
+    <div class="content-cat-text">
+      {{'settings.support.desc' | translate}}
+    </div>
+    <a class="content-cat-link" routerLink="/account/support">{{'settings.support.link' | translate}}</a>
+  </div>
+</div>
+
+<div *auth="[envService.security.rolesUser];checkChanges:false"
+     class="content-cat">
+  <div class="container">
+    <div class="content-cat-heading">{{'settings.delete_account.title' | translate}}</div>
+    <div class="content-cat-text">
+      {{'settings.delete_account.desc' | translate}}<br/>
+      <span class="font-italic">{{'settings.delete_account.warning' | translate}}</span><br/>
+    </div>
+    <a class="content-cat-link danger"
+       [popover]="deleteAccountPopover"
+       placement="right"
+       outsideClick=true
+       container="body">
+      {{'settings.delete_account.btn' | translate}}
+    </a>
+  </div>
+</div>
+
+<ng-template #deleteAccountPopover>
+  <div *ngIf="user" class="d-flex flex-column">
+    {{'settings.delete_account.popover_title' | translate}}
+    <div class="text-subtle text-sm">{{'settings.delete_account.popover_desc' | translate}}</div>
+    <button *ngIf="user.deleteStatus === undefined"
+            class="btn btn-outline-danger btn-block mt-2"
+            (click)="deleteUser(); $event.stopPropagation()">
+      {{'settings.delete_account.popover_btn' | translate}}
+    </button>
+    <button *ngIf="user.deleteStatus === StatusValue.IN_PROGRESS"
+            class="btn btn-danger btn-block mt-2" disabled>
+      <i class="i i-sm i-spin i-load float-left"></i>
+      {{'settings.delete_account.popover_btn_progress' | translate}}
+    </button>
+    <div *ngIf="user.deleteStatus === StatusValue.SUCCESSFUL"
+         class="d-flex justify-content-center align-items-center text-success my-2">
+      <i class="i i-check-success mr-2"></i>
+      {{'settings.delete_account.popover_btn_success' | translate}}
+    </div>
+    <div *ngIf="user.deleteStatus === StatusValue.FAILED"
+         class="d-flex justify-content-center align-items-center text-danger my-2">
+      <i class="i i-warning-danger mr-2"></i>
+      {{'settings.delete_account.popover_btn_failed' | translate}}
+    </div>
+  </div>
+</ng-template>

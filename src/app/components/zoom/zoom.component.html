@@ -1,0 +1,16 @@
+<div class="wrapper"
+     (click)="open()">
+  <ng-container *ngTemplateOutlet="content"></ng-container>
+  <div class="expand"></div>
+</div>
+
+<div class="fullscreen-wrapper"
+     [ngClass]="{'show': isShown, 'closing': isClosing}"
+     (click)="close()">
+  <div class="fullscreen-close close"
+       (click)="close()"></div>
+  <div class="fullscreen-content-wrapper"
+       (click)="$event.stopPropagation()">
+    <ng-container *ngTemplateOutlet="fullscreenContent"></ng-container>
+  </div>
+</div>

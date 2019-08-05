@@ -1,10 +1,14 @@
-import { Injectable } from '@angular/core';
+import {Injectable, OnDestroy} from '@angular/core';
 import {Log} from './log.service';
 import {EnvironmentService} from './environment.service';
-import {HttpClient, HttpErrorResponse, HttpResponse} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {AbstractService} from './abstract.service';
 import {ApiError} from '../entities/api-error.entity';
 import {UserAchievements} from '../entities/user-achievement.entity';
+import {UserData} from '../entities/user-data.entity';
+import {interval} from 'rxjs';
+import {SubscriptionManagerService} from './subscription-manager.service';
+import {AuthService} from './auth.service';
 
 /**
  * Service for user functionality.
@@ -13,13 +17,24 @@ import {UserAchievements} from '../entities/user-achievement.entity';
  * @since 2019/01/15
  */
 @Injectable()
-export class UserService extends AbstractService {
+export class UserService extends AbstractService implements OnDestroy {
+
+  private static SUBSCRIPTION_TAG = 'user-svc';
 
   private static LOG: Log = Log.newInstance(UserService);
 
+  private cachedUserData: UserData;
+  private loadingUserData: boolean = false;
+
   constructor(private http: HttpClient,
-              private envService: EnvironmentService) {
+              private envService: EnvironmentService,
+              private subs: SubscriptionManagerService,
+              private authService: AuthService) {
     super();
+  }
+
+  public ngOnDestroy(): void {
+    this.subs.unsubscribe(UserService.SUBSCRIPTION_TAG);
   }
 
   /**
@@ -37,6 +52,92 @@ export class UserService extends AbstractService {
         successCallback(response);
       }, (e: any) => {
         UserService.LOG.error('Could not get user achievements: ' + e.message, e);
+        if (errorCallback) {
+          errorCallback(e, this.safeApiError(e));
+        }
+      });
+
+  }
+
+  /**
+   * Fetch user data.
+   * @param successCallback
+   * @param errorCallback
+   */
+  public loadUserData(successCallback: (userdata: UserData) => void,
+              errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void): void {
+
+    this.http.get(this.envService.endpoints.userData)
+      .map(a => a && UserData.fromObject(a))
+      .subscribe((response: UserData) => {
+        UserService.LOG.debug('Received user data.');
+        successCallback(response);
+      }, (e: any) => {
+        UserService.LOG.error('Could not get user data: ' + e.message, e);
+        if (errorCallback) {
+          errorCallback(e, this.safeApiError(e));
+        }
+      });
+
+  }
+
+  /**
+   * Returns undefined as long as user data has not
+   * successfully been retrieved from backend.
+   * Then the cached result is returned immediately
+   * from that point onwards.
+   */
+  public getUserData(): UserData {
+    if (!this.authService.isAdmin()) {
+      return undefined;
+    }
+    if (!this.cachedUserData && !this.loadingUserData) {
+      this.loadingUserData = true;
+      this.loadUserData(userdata => {
+        this.cachedUserData = userdata;
+        this.loadingUserData = false;
+        this.startUserDataRefresh();
+      });
+    }
+    return this.cachedUserData;
+  }
+
+  /**
+   * Starts interval scheduled refresh of user data.
+   */
+  private startUserDataRefresh(): void {
+
+    this.authService.onStateChanged().subscribe(value => {
+      if (this.authService.isUserAnonymous()) {
+        this.cachedUserData = undefined;
+        this.subs.unsubscribe(UserService.SUBSCRIPTION_TAG);
+      }
+    });
+
+    this.subs.register(interval(this.envService.userDataRefreshIntervalMs)
+      .subscribe(i => {
+        UserService.LOG.trace('Updating user data...');
+        this.loadUserData(userdata => {
+          this.cachedUserData = userdata;
+        });
+      }), UserService.SUBSCRIPTION_TAG);
+
+  }
+
+  /**
+   * TODO
+   * @param successCallback
+   * @param errorCallback
+   */
+  public deleteUser(successCallback: () => void,
+              errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void): void {
+
+    this.http.delete(this.envService.endpoints.userDeleteAccount)
+      .subscribe(() => {
+        UserService.LOG.info('Successfully deleted user account.');
+        successCallback();
+      }, (e: any) => {
+        UserService.LOG.error('Could not delete user account: ' + e.message, e);
         if (errorCallback) {
           errorCallback(e, this.safeApiError(e));
         }

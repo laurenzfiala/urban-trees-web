@@ -1,197 +1,79 @@
-<ut-header></ut-header>
-
-<div class="highlight-wrapper py-3 mb-4">
-
-  <div class="highlight-background highlight-background-top round"></div>
-
-  <div *ngIf="hasStatus(StatusKey.STATISTICS, StatusValue.IN_PROGRESS)"
-       class="highlight-content container load load-md"></div>
-
-  <div *ngIf="statistics"
-       class="highlight-content container">
-
-    <div class="hl-row py-4">
-      <div class="hl-item hl-item-even">
-        <div class="hl-title">
-          {{statistics.cityAmount}}
-        </div>
-        <div class="hl-annotation">
-          {{'tree_list.cities' | translate }}
-        </div>
-      </div>
-      <div class="hl-item hl-item-even">
-        <div class="hl-title">
-          {{statistics.treeSpeciesAmount}}
-        </div>
-        <div class="hl-annotation">
-          {{'tree_list.species' | translate }}
-        </div>
-      </div>
-      <div class="hl-item hl-item-even">
-        <div class="hl-title">
-          {{statistics.treeAmount}}
-        </div>
-        <div class="hl-annotation">
-          {{'tree_list.trees' | translate }}
-        </div>
-      </div>
-    </div>
-
-    <div class="hl-row py-4">
-      <div class="hl-item hl-item-even">
-        <div class="hl-title">
-          {{statistics.phenologyObservationAmount}}
-        </div>
-        <div class="hl-annotation">
-          {{'tree_list.observations' | translate }}
-        </div>
-      </div>
-      <div class="hl-item hl-item-even">
-        <div class="hl-title">
-          {{statistics.beaconAmount}}
-        </div>
-        <div class="hl-annotation">
-          {{'tree_list.beacons' | translate }}
-        </div>
-      </div>
-      <div class="hl-item hl-item-even">
-        <div class="hl-title">
-          {{statistics.beaconDatasetAmount}}
-        </div>
-        <div class="hl-annotation">
-          {{'tree_list.datasets' | translate }}
-        </div>
-      </div>
-    </div>
-
-    <div class="hl-row py-4">
-      <div class="hl-item hl-item-even hl-flex-basis-content">
-        <div class="hl-title cool-warm">
-          <div class="hl-flex-row hl-warm">
-            <div class="hl-opacity-85">{{statistics.beaconTempMaximum | decimalPlaces:4}} °C</div>
-            <div class="hl-subtitle hl-flex-col hl-opacity-75">
-              <span class="d-inline d-md-none i i-max i-special i-xs"></span>
-              <span class="d-none d-md-inline">{{'tree_list.max' | translate}}</span>
-            </div>
-          </div>
-          <div class="hl-flex-row hl-med">
-            <div class="hl-opacity-85">{{statistics.beaconTempAverage | decimalPlaces:4}} °C</div>
-            <div class="hl-subtitle hl-flex-col hl-opacity-75">
-              <span class="d-inline d-md-none  i i-avg i-special i-xs"></span>
-              <span class="d-none d-md-inline">{{'tree_list.avg' | translate}}</span>
-            </div>
-          </div>
-          <div class="hl-flex-row hl-cool">
-            <div class="hl-opacity-85">{{statistics.beaconTempMinimum | decimalPlaces:4}} °C</div>
-            <div class="hl-subtitle hl-flex-col hl-opacity-75">
-              <span class="d-inline d-md-none i i-min i-special i-xs"></span>
-              <span class="d-none d-md-inline">{{'tree_list.min' | translate}}</span>
-            </div>
-          </div>
-        </div>
-        <div class="hl-annotation text-center">
-          {{'tree_list.temperature' | translate }}
-        </div>
-      </div>
-      <div class="hl-item hl-item-even hl-flex-basis-content">
-        <div class="hl-title">
-          <div class="hl-flex-row hl-warm">
-            <div class="hl-opacity-85">{{statistics.beaconHumidityMaximum | decimalPlaces:4}} %</div>
-            <div class="hl-subtitle hl-flex-col hl-opacity-75">
-              <span class="d-inline d-md-none i i-max i-special i-xs"></span>
-              <span class="d-none d-md-inline">{{'tree_list.max' | translate}}</span>
-            </div>
-          </div>
-          <div class="hl-flex-row hl-med">
-            <div class="hl-opacity-75">{{statistics.beaconHumidityAverage | decimalPlaces:4}} %</div>
-            <div class="hl-subtitle hl-flex-col hl-opacity-75">
-              <span class="d-inline d-md-none i i-avg i-special i-xs"></span>
-              <span class="d-none d-md-inline">{{'tree_list.avg' | translate}}</span>
-            </div>
-          </div>
-          <div class="hl-flex-row hl-cool">
-            <div class="hl-opacity-75">{{statistics.beaconHumidityMinimum | decimalPlaces:4}} %</div>
-            <div class="hl-subtitle hl-flex-col hl-opacity-75">
-              <span class="d-inline d-md-none i i-min i-special i-xs"></span>
-              <span class="d-none d-md-inline">{{'tree_list.min' | translate}}</span>
-            </div>
-          </div>
-        </div>
-        <div class="hl-annotation text-center">
-          {{'tree_list.humidity' | translate }}
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-</div>
-
 <div *ngIf="hasStatus(StatusKey.TREES, StatusValue.IN_PROGRESS) || hasStatus(StatusKey.CITIES, StatusValue.IN_PROGRESS)"
      class="container load load-md">
 </div>
 
-<div class="container form-group my-0">
-  <input
-    [ngModel]="treeSearchInput"
-    (ngModelChange)="setTreeSearchInput($event)"
-    class="form-control form-control-lg search-input"
-    [placeholder]="'phenology.observation.step1.tree_search_placeholder' | translate" />
+<div class="content-cat">
+  <div class="container map-wrapper">
+    <ut-map
+      [markers]="availableTrees"
+      [selectedMarker]="selectedTree"
+      (selectedMarkerChange)="selectTreeOnMap($event)"
+      errorText="phenology.observation.step1.map_error_text"></ut-map>
+  </div>
+</div>
+
+<div class="content-cat">
+  <div class="container">
+    <input
+      [ngModel]="treeSearchInput"
+      (ngModelChange)="setTreeSearchInput($event)"
+      class="form-control form-control-lg search-input"
+      [placeholder]="'phenology.observation.step1.tree_search_placeholder' | translate" />
+    <div class="text-xs text-subtle">
+      {{'general.input_annotation' | translate}}
+    </div>
+  </div>
 </div>
 
 <div *ngIf="cities?.length === 0" class="pt-3 pb-1 text-center text-subtle">
   {{'tree_list.none_found' | translate}}
 </div>
 
-<div *ngFor="let city of cities">
+<div *ngFor="let city of cities"
+     class="content-cat">
+  <div class="container">
 
-  <div class="highlight-wrapper pt-3 pb-1">
-
-    <div class="highlight-content container">
-      <div class="hl-title hl-title-light">
-        {{city.name}}
-      </div>
+    <div class="content-cat-heading mb-2">
+      {{city.name}}
     </div>
 
-  </div>
+    <div class="has-status-overlay m--2">
 
-  <div class="container my-2 has-status-overlay">
+      <ng-container *ngFor="let tree of displayTrees">
 
-    <div class="mb-4">
+        <div *ngIf="tree.location.city.id === city.id"
+             class="tree-container">
+          <div class="inner d-flex flex-column pointer m-2"
+               [routerLink]="['/tree', tree.id]">
 
-      <ul class="list-group mt-2">
-        <ng-container *ngFor="let tree of displayTrees">
-
-          <li *ngIf="tree.location.city.id === city.id"
-              class="list-group-item list-group-item-action"
-              [routerLink]="['/tree', tree.id]">
-
-
-            <div class="tree-img-round"></div>
-
-
-            <span class="badge badge-light float-right">#{{tree.id}}</span>
-            <b>
+            <div class="title p-2">
+              <i class="i i-md i-dark i-tree mr-2"></i>
               {{'tree.species.' + tree.species.name | lowercase | translate}}
-            </b>
-            <small class="text-subtle">
-              {{'tree.species.latin.' + tree.species.name | lowercase | translate}}
-            </small>
-            <br/>
-            {{'tree_list.tree.location' | translate:tree.location}}
-          </li>
-          <li *ngIf="displayTrees?.length === 0"
-              class="list-group-item disabled">
-            {{'phenology.observation.step1.tree_not_found' | translate}}
-          </li>
+            </div>
+            <div class="info p-2">
+              <div class="d-flex flex-row align-items-center mt-1">
+                <i class="i i-xs i-black i-id mr-2"></i>
+                {{'tree.species.latin.' + tree.species.name | lowercase | translate}}
+              </div>
+              <div class="d-flex flex-row align-items-center mt-1">
+                <i class="i i-xs i-black i-location mr-2"></i>
+                {{'tree_list.tree.location' | translate:tree.location}}
+              </div>
+              <div class="text-right mt-1">
+                <a class="link">
+                  {{'tree_list.tree.link' | translate}}
+                </a>
+              </div>
+            </div>
 
-        </ng-container>
-      </ul>
+          </div>
+        </div>
+
+      </ng-container>
 
     </div>
 
   </div>
-
 </div>
 
 <div *ngIf="hasAnyStatusKey([StatusKey.STATISTICS, StatusKey.TREES], StatusValue.FAILED)" class="status-overlay overlay-fixed">
@@ -207,5 +89,3 @@
     </div>
   </div>
 </div>
-
-<ut-footer></ut-footer>

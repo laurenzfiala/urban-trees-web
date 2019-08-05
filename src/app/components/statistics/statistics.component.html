@@ -1,0 +1,143 @@
+<div class="content-cat">
+  <div class="container">
+    <div class="content-cat-heading">
+      {{'statistics.beaconreadouts.title' | translate}}
+      <ut-loading-status
+        errorDescription="statistics.beaconreadouts.error"
+        [status]="getStatusObservable(StatusKey.STATISTICS)"
+        [error]="getStatusErrorObservable(StatusKey.STATISTICS)"></ut-loading-status>
+    </div>
+    <div class="content-cat-text">
+      {{'statistics.beaconreadouts.desc' | translate}}<br/>
+      <a class="link mt-2" routerLink="/help/beaconreadout">{{'statistics.beaconreadouts.help_link' | translate}}</a>
+    </div>
+
+    <div *ngIf="hasStatus(StatusKey.STATISTICS, StatusValue.SUCCESSFUL)"
+         class="content-cat-highlight-bar mt-2">
+      <div class="item flex-grow-1" style="max-height: 5rem">
+        <ngx-charts-line-chart
+          [scheme]="colorScheme"
+          [results]="beaconChartData"
+          [xAxis]="true"
+          [yAxis]="false"
+          [legend]="false"
+          [showGridLines]="false">
+        </ngx-charts-line-chart>
+      </div>
+      <div class="item">
+        <div class="big">{{beaconChartData[0].series[beaconChartData[0].series.length-1].value}}</div>
+        <div class="desc">{{'statistics.beaconreadouts.readouts_today' | translate}}</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="content-cat">
+  <div class="container">
+    <div class="content-cat-heading">
+      {{'statistics.phenologyobs.title' | translate}}
+      <ut-loading-status
+        errorDescription="statistics.phenologyobs.error"
+        [status]="getStatusObservable(StatusKey.STATISTICS)"
+        [error]="getStatusErrorObservable(StatusKey.STATISTICS)"></ut-loading-status>
+    </div>
+    <div class="content-cat-text">
+      {{'statistics.phenologyobs.desc' | translate}}<br/>
+      <a class="link mt-2" routerLink="/help/phenology">{{'statistics.phenologyobs.help_link' | translate}}</a>
+    </div>
+
+    <div *ngIf="hasStatus(StatusKey.STATISTICS, StatusValue.SUCCESSFUL)"
+         class="content-cat-highlight-bar mt-2">
+      <div class="item" style="max-height: 5rem">
+        <ngx-charts-line-chart
+          [scheme]="colorScheme"
+          [results]="phenologyObsChartData"
+          [xAxis]="true"
+          [yAxis]="false"
+          [legend]="false"
+          [showGridLines]="false">
+        </ngx-charts-line-chart>
+      </div>
+      <div class="item">
+        <div class="big">{{phenologyObsChartData[0].series[phenologyObsChartData[0].series.length-1].value}}</div>
+        <div class="desc">{{'statistics.phenologyobs.obs_today' | translate}}</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="content-cat">
+  <div class="container">
+    <div class="content-cat-heading">
+      {{'statistics.data.title' | translate}}
+      <ut-loading-status
+        errorDescription="statistics.data.error"
+        [status]="getStatusObservable(StatusKey.STATISTICS)"
+        [error]="getStatusErrorObservable(StatusKey.STATISTICS)"></ut-loading-status>
+    </div>
+    <div class="content-cat-text">
+      {{'statistics.data.desc' | translate}}
+    </div>
+
+    <div *ngIf="hasStatus(StatusKey.STATISTICS, StatusValue.SUCCESSFUL)"
+         class="content-cat-highlight-bar mt-2">
+      <div class="item">
+        <div class="big">{{statistics.cityAmount}}</div>
+        <div class="desc">{{'statistics.data.cities' | translate}}</div>
+      </div>
+      <div class="item">
+        <div class="big">{{statistics.treeSpeciesAmount}}</div>
+        <div class="desc">{{'statistics.data.tree_species' | translate}}</div>
+      </div>
+      <div class="item">
+        <div class="big">{{statistics.treeAmount}}</div>
+        <div class="desc">{{'statistics.data.trees' | translate}}</div>
+      </div>
+      <div class="item">
+        <div class="big">{{statistics.beaconAmount}}</div>
+        <div class="desc">{{'statistics.data.beacons' | translate}}</div>
+      </div>
+      <div class="item">
+        <div class="big">{{statistics.beaconDatasetAmount}}</div>
+        <div class="desc">{{'statistics.data.beacon_readouts' | translate}}</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="content-cat">
+  <div class="container">
+    <div class="content-cat-heading">
+      {{'statistics.phenology.title' | translate}}
+      <ut-loading-status
+        errorDescription="statistics.phenology.error"
+        [status]="getStatusObservable(StatusKey.STATISTICS)"
+        [error]="getStatusErrorObservable(StatusKey.STATISTICS)"></ut-loading-status>
+    </div>
+    <div class="content-cat-text">
+      {{'statistics.phenology.desc' | translate}}
+    </div>
+
+    <div *ngIf="hasStatus(StatusKey.STATISTICS, StatusValue.SUCCESSFUL)"
+         class="content-cat-highlight-bar mt-2">
+      <div class="item-h">
+        <div class="icon"><i class="i i-lg i-dark i-observation-tree"></i></div>
+        <div class="item-v">
+          <div class="big">{{statistics.phenologyObservationAmount}}</div>
+          <div class="desc">{{'statistics.phenology.obs_trees' | translate}}</div>
+        </div>
+      </div>
+      <div class="item-h">
+        <div class="icon"><i class="i i-lg i-dark i-observation-bud"></i></div>
+        <div class="item-v">
+          <div class="big">{{statistics.phenologyObservationObjectAmount}}</div>
+          <div class="desc">{{'statistics.phenology.obs_obj' | translate}}</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

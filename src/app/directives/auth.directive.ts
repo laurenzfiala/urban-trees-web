@@ -1,5 +1,13 @@
-import {Directive, ElementRef, Input, TemplateRef, ViewContainerRef} from '@angular/core';
+import {
+  Directive,
+  ElementRef,
+  Input, OnDestroy,
+  OnInit,
+  TemplateRef,
+  ViewContainerRef
+} from '@angular/core';
 import {AuthService} from '../services/auth.service';
+import {Subscription} from 'rxjs';
 
 /**
  * Conditional directive to hide elements
@@ -12,7 +20,20 @@ import {AuthService} from '../services/auth.service';
 @Directive({
   selector: '[auth]'
 })
-export class AuthDirective {
+export class AuthDirective implements OnInit, OnDestroy {
+
+  @Input('auth')
+  private grantRoles: string[];
+
+  @Input('authCheckChanges')
+  private authCheckChanges: boolean = true;
+
+  /**
+   * Rarely content may be added multiple times, which we prevent with this switch.
+   */
+  private isRemoved: boolean = true;
+
+  private authServiceOnStateChanged: Subscription;
 
   constructor(
     private authService: AuthService,
@@ -21,14 +42,38 @@ export class AuthDirective {
     private viewContainer: ViewContainerRef
   ) {}
 
-  @Input()
-  set auth(grantRoles: string[]) {
+  public ngOnInit(): void {
+
+    this.do();
+    if (this.authCheckChanges) {
+      this.authServiceOnStateChanged = this.authService.onStateChanged().subscribe(value => {
+        this.do();
+      });
+    }
+
+  }
+
+  private do(): void {
 
     // if user roles are accepted by the service, or we accept logged in users if no grant roles are required
-    if (this.authService.isUserRoleAccessGranted(grantRoles) || (this.authService.isLoggedIn() && !grantRoles)) {
-      this.viewContainer.createEmbeddedView(this.templateRef);
+    if (this.authService.isUserRoleAccessGranted(this.grantRoles) || (this.authService.isLoggedIn() && !this.grantRoles)) {
+      if (this.isRemoved) {
+        this.viewContainer.createEmbeddedView(this.templateRef);
+      }
+      this.isRemoved = false;
     } else {
-      this.viewContainer.clear();
+      if (!this.isRemoved) {
+        this.viewContainer.clear();
+      }
+      this.isRemoved = true;
+    }
+
+  }
+
+  public ngOnDestroy(): void {
+
+    if (this.authServiceOnStateChanged) {
+      this.authServiceOnStateChanged.unsubscribe();
     }
 
   }

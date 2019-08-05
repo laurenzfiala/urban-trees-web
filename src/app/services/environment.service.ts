@@ -25,6 +25,10 @@ export class EnvironmentService {
     return this.context.imageUploadTimeout;
   }
 
+  get userDataRefreshIntervalMs() {
+    return this.context.userDataRefreshIntervalMs;
+  }
+
   get outputDateFormat() {
     return this.context.outputDateFormat;
   }
@@ -140,6 +144,14 @@ class EnvironmentEndpoints {
     return this.prependCommonPath(this.context.userAchievements);
   }
 
+  get userData() {
+    return this.prependCommonPath(this.context.userData);
+  }
+
+  get userDeleteAccount() {
+    return this.prependCommonPath(this.context.userDelete);
+  }
+
   get announcements() {
     return this.prependCommonPath(this.context.announcements);
   }
@@ -167,6 +179,55 @@ class EnvironmentEndpoints {
 
   }
 
+  get allReports() {
+    return this.prependCommonPath(this.context.allReports);
+  }
+
+  public updateReportRemark(reportId: number): string {
+
+    let replacements: any[] = [
+      { placeholder: 'reportId', replacement: reportId }
+    ];
+
+    return this.prependCommonPath(
+      this.replaceParams(
+        this.context.updateReportRemark,
+        replacements
+      )
+    );
+
+  }
+
+  public unresolveReport(reportId: number): string {
+
+    let replacements: any[] = [
+      { placeholder: 'reportId', replacement: reportId }
+    ];
+
+    return this.prependCommonPath(
+      this.replaceParams(
+        this.context.unresolveReport,
+        replacements
+      )
+    );
+
+  }
+
+  public resolveReport(reportId: number): string {
+
+    let replacements: any[] = [
+      { placeholder: 'reportId', replacement: reportId }
+    ];
+
+    return this.prependCommonPath(
+      this.replaceParams(
+        this.context.resolveReport,
+        replacements
+      )
+    );
+
+  }
+
   get cities() {
     return this.prependCommonPath(this.context.cities);
   }
@@ -175,8 +236,12 @@ class EnvironmentEndpoints {
     return this.prependCommonPath(this.context.species);
   }
 
-  get statistics() {
-    return this.prependCommonPath(this.context.statistics);
+  get measurementsStatistics() {
+    return this.prependCommonPath(this.context.measurementsStatistics);
+  }
+
+  get systemStatistics() {
+    return this.prependCommonPath(this.context.systemStatistics);
   }
 
   get login() {
@@ -239,6 +304,10 @@ class EnvironmentEndpoints {
       )
     );
 
+  }
+
+  get loadBeacons() {
+    return this.prependCommonPath(this.context.loadBeacons);
   }
 
   public loadBeaconLogs(beaconId: number, minSeverity: BeaconLogSeverity, offset: number, maxLogs: number): string {

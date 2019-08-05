@@ -55,7 +55,7 @@ form.validate-on-submit.submitted.ng-invalid [type="submit"] {
   .fp {
     position: absolute;
     top: -0.65rem;
-    left: @borderRadiusNew;
+    left: max(@borderRadiusNew, @gutter);
     z-index: 1;
     padding: 0 (@gutter / 2);
     color: @darkGrey;

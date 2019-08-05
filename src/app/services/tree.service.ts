@@ -5,14 +5,11 @@ import {ApiError} from '../entities/api-error.entity';
 import {EnvironmentService} from './environment.service';
 import {AbstractService} from './abstract.service';
 import {Log} from './log.service';
-import {TreeListStatistics} from '../entities/tree-list-statistics.entity';
 import {BeaconData} from '../entities/beacon-data.entity';
 import * as moment from 'moment';
 import {City} from '../entities/city.entity';
 import {TreeSpecies} from '../entities/tree-species.entity';
 import {BeaconSettings} from '../entities/beacon-settings.entity';
-import {Beacon} from '../entities/beacon.entity';
-import {TreeFrontend} from '../entities/tree-frontend.entity';
 import {BeaconDataMode} from '../entities/beacon-data-mode.entity';
 
 /**
@@ -30,30 +27,6 @@ export class TreeService extends AbstractService {
   constructor(private http: HttpClient,
               private envService: EnvironmentService) {
     super();
-  }
-
-  /**
-   * Load all available trees.
-   * @param {(trees: Array<Tree>) => void} successCallback Called upon success
-   * @param {(error: any) => void} errorCallback Called upon exception
-   */
-  public loadStatistics(successCallback: (statistics: TreeListStatistics) => void,
-                   errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void) {
-
-    TreeService.LOG.debug('Loading statistics from ' + this.envService.endpoints.statistics + ' ...');
-
-    this.http.get<TreeListStatistics>(this.envService.endpoints.statistics)
-      .timeout(this.envService.defaultTimeout)
-      .map(s => s && TreeListStatistics.fromObject(s))
-      .subscribe((result: TreeListStatistics) => {
-        successCallback(result);
-      }, (e: any) => {
-        TreeService.LOG.error('Could not load statistics: ' + e.message, e);
-        if (errorCallback) {
-          errorCallback(e, this.safeApiError(e));
-        }
-      });
-
   }
 
   /**

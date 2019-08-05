@@ -22,6 +22,7 @@ import TileEvent = ol.source.TileEvent;
 import Coordinate = ol.Coordinate;
 import {MapMarker} from '../../interfaces/map-marker.entity';
 import {MapMarkerDefault} from '../../entities/map-marker-default.entity';
+import {mark} from '@angular/compiler-cli/src/ngtsc/perf/src/clock';
 
 @Component({
   selector: 'ut-map',
@@ -108,6 +109,9 @@ export class MapComponent extends AbstractComponent implements OnInit {
 
   @Input()
   set markers(markers: Array<MapMarker>) {
+    if (!markers) {
+      return;
+    }
     this.markersInternal = markers;
     this.updateMapMarkers();
   }

@@ -1,104 +1,169 @@
-<ut-header></ut-header>
-
-<div *ngIf="hasStatus(StatusKey.APP_TRANSFER_STATUS, StatusValue.SUCCESSFUL)" class="transfer-status success round">
-  <img src="/assets/img/icon/round/success.svg"/>
-  <div>
+<div *ngIf="hasStatus(StatusKey.APP_TRANSFER_STATUS, StatusValue.SUCCESSFUL)" class="content-status success">
+  <div class="container d-flex flex-row align-items-center">
     {{'tree.beacon.transfer.success' | translate}}
-    <div class="note">{{'tree.beacon.transfer.success_note' | translate}}</div>
   </div>
 </div>
 
-<div *ngIf="hasStatus(StatusKey.APP_TRANSFER_STATUS, StatusValue.FAILED)" class="transfer-status danger round">
-  <img src="/assets/img/icon/round/error.svg"/>
-  {{'tree.beacon.transfer.failed' | translate}}
+<div *ngIf="hasStatus(StatusKey.APP_TRANSFER_STATUS, StatusValue.FAILED)" class="content-status danger">
+  <div class="container d-flex flex-row align-items-center">
+    {{'tree.beacon.transfer.failed' | translate}}
+  </div>
 </div>
 
-<div *ngIf="tree" class="container mb-5">
+<ng-container *ngIf="tree">
 
-  <div class="text-center">
-
-    <h4 class="mt-4">
-      {{'tree.species.' + tree.species.name | lowercase | translate}}
-    </h4>
-    <div class="text-subtle mb-2">
+<div class="content-cat">
+  <div class="container">
+    <div class="content-cat-heading">{{'tree.species.' + tree.species.name | lowercase | translate}}</div>
+    <div class="content-cat-text">
       {{'tree.species.latin.' + tree.species.name | lowercase | translate}}
       ({{tree.species.genus.name}})
     </div>
-    <hr class="mt-1"/>
-
   </div>
+</div>
 
-  <div class="row mb-5">
-
-    <div *ngIf="tree.id !== 1" class="col-sm-6 col-md-3 mb-2 mb-sm-0 image-placeholder">
-
-      Tree image goes here
-
+<div *ngIf="tree.id === 1" class="content-cat">
+  <div class="container tree-image">
+    <div class="content-cat-heading">Information</div>
+    <div class="content-cat-flex">
+      <div class="content-cat-text flex-grow-1">
+        Test
+      </div>
+      <ut-zoom [content]="treeImg" [fullscreenContent]="treeImgFull">
+      </ut-zoom>
+      <ng-template #treeImg>
+        <img class="content-cat-img" src="../../../assets/content/img/tree_1.jpg"/>
+      </ng-template>
+      <ng-template #treeImgFull>
+        <img class="fullscreen-content" src="../../../assets/content/img/tree_1.jpg"/>
+      </ng-template>
     </div>
-
-    <div *ngIf="tree.id === 1" class="col-sm-6 col-md-3 mb-2 mb-sm-0 tree-image">
-
-      <img src="../../../assets/content/img/tree_1.jpg"/>
-
-    </div>
-
-    <div class="col-sm-6 col-md-9">
-
-
-
-    </div>
-
   </div>
+</div>
 
-  <div class="row mb-5">
-
-    <div class="col-sm-12 col-md-6 mb-2">
-
-      <img src="/assets/content/img/abkuehlunsleistung_2019_03.PNG" class="w-100 round">
-
+<div class="content-cat">
+  <div class="container tree-image">
+    <div class="content-cat-heading">Bäume zwischen den Jahreszeiten</div>
+    <div class="content-cat-flex flex-md-nowrap">
+      <div class="content-cat-text flex-grow-1">
+        Sieh dir hier ein Beispiel eines Baums im Jahresverlauf an.<br/>
+        Die Bilder wurden von den Projektteilnehmer_innen während der Phänologiebeobachtungen aufgenommen.
+        <div class="text-subtle text-xs mt-2">
+          Information zuletzt im August 2019 aktualisiert.
+        </div>
+      </div>
+      <ut-slideshow [slides]="[treeSlide1, treeSlide2, treeSlide3]"
+                    [slideSubtitles]="['Frühling', 'Sommer', 'Herbst']"
+                    [intervalMs]="5000"
+                    [pause]="pauseTreeSlideshow">
+      </ut-slideshow>
+      <ng-template #treeSlide1>
+        <ut-zoom [content]="img"
+                 [fullscreenContent]="imgFull"
+                 (opening)="pauseTreeSlideshow = true"
+                 (closed)="pauseTreeSlideshow = false">
+        </ut-zoom>
+        <ng-template #img>
+          <img class="content-cat-img" src="../../../assets/content/img/tree_1.jpg"/>
+        </ng-template>
+        <ng-template #imgFull>
+          <img class="fullscreen-content" src="../../../assets/content/img/tree_1.jpg"/>
+        </ng-template>
+      </ng-template>
+      <ng-template #treeSlide2>
+        <ut-zoom [content]="img"
+                 [fullscreenContent]="imgFull"
+                 (opening)="pauseTreeSlideshow = true"
+                 (closed)="pauseTreeSlideshow = false">
+        </ut-zoom>
+        <ng-template #img>
+          <img class="content-cat-img" src="../../../assets/content/img/blattentfaltung_2018_10.jpeg"/>
+        </ng-template>
+        <ng-template #imgFull>
+          <img class="fullscreen-content" src="../../../assets/content/img/blattentfaltung_2018_10.jpeg"/>
+        </ng-template>
+      </ng-template>
+      <ng-template #treeSlide3>
+        <ut-zoom [content]="img"
+                 [fullscreenContent]="imgFull"
+                 (opening)="pauseTreeSlideshow = true"
+                 (closed)="pauseTreeSlideshow = false">
+        </ut-zoom>
+        <ng-template #img>
+          <img class="content-cat-img" src="../../../assets/content/img/abkuehlunsleistung_2019_03.PNG"/>
+        </ng-template>
+        <ng-template #imgFull>
+          <img class="fullscreen-content" src="../../../assets/content/img/abkuehlunsleistung_2019_03.PNG"/>
+        </ng-template>
+      </ng-template>
     </div>
-
-    <div class="col-sm-12 col-md-6">
-
-      <ut-audio-img image="../../../assets/content/img/blattentfaltung_2018_10.jpeg" audio="../../../assets/content/audio/blattentfaltung_2018_10.mp3" class="w-100"></ut-audio-img>
-
-    </div>
-
   </div>
+</div>
 
-  <div class="row mb-2">
-
-    <div class="col-12 text-center mt-5">
-
-      <h4 class="d-flex align-items-center">
-        <i class="i i-dark i-lg i-beacon mr-2"></i>
-        {{'tree.beacon.details.heading' | translate}}
-      </h4>
-
+<div class="content-cat">
+  <div class="container tree-image">
+    <div class="content-cat-heading">Abkühlungsleistung unserer Untersuchungsbäume</div>
+    <div class="content-cat-flex flex-md-nowrap">
+      <div class="content-cat-text flex-grow-1">
+        Die <b>maximale</b> von uns gemessene <b>Abkühlungsleistung</b> der Untersuchungsbäume lag bei <b>5,3 °C</b>.
+        <div class="my-2">
+          Dazu werden an jeder Schule die Lufttemperaturen der Referenzstation in der Sonne, mit den Lufttemperaturen in
+          den Baumkronen verglichen und die Abweichungen ermittelt.
+        </div>
+        <div class="text-subtle text-xs">
+          Information zuletzt im März 2019 aktualisiert.
+        </div>
+      </div>
+      <img class="content-cat-img" src="../../../assets/content/img/tree-temp.svg"/>
     </div>
+  </div>
+</div>
 
-    <div class="col-12 mt-2 text-center">
+<div class="content-cat">
+  <div class="container tree-image">
+    <div class="content-cat-heading">Blattentfaltung</div>
+    <div class="content-cat-flex flex-lg-nowrap">
+      <div class="content-cat-text flex-grow-1">
+        Wir haben zur Veranschaulichung der Ergebnisse unseres ersten Aufzeichnungsjahres diese Grafik mit
+        Audiokommentar erstellt. Klicke auf den Abspielen-Button, um den Kommentar anzuhören.
+        <div class="text-subtle text-xs mt-2">
+          Information zuletzt im Oktober 2018 aktualisiert.
+        </div>
+      </div>
+      <ut-audio-img
+        image="../../../assets/content/img/blattentfaltung_2018_10.jpeg"
+        audio="../../../assets/content/audio/blattentfaltung_2018_10.mp3"
+        class="content-cat-img-lg">
+      </ut-audio-img>
+    </div>
+  </div>
+</div>
 
-      <div *ngIf="appTransferAmount" class="transfer-message">
-        {{'tree.beacon.transfer.message.title' | translate}}
-        <span>
+<div class="content-cat">
+  <div class="container tree-image">
+    <div class="content-cat-heading">
+      <i *ngIf="appTransferAmount" class="feature-pointer mr-1"></i>
+      {{'tree.beacon.details.heading' | translate}}
+    </div>
+    <div *ngIf="appTransferAmount" class="transfer-message">
+      {{'tree.beacon.transfer.message.title' | translate}}
+      <span>
           &mdash; {{'tree.beacon.transfer.message.text' | translate:{'amount': appTransferAmount} }}
         </span>
-      </div>
-
     </div>
-
-    <div class="col-12 mb-2">
-
+    <div *ngIf="tree.beacons && tree.beacons.length > 0"
+         class="mt-3">
       <ut-beacon-list
-        [tree]="tree"
+        [beacons]="tree.beacons"
         [preselectDeviceId]="beaconDeviceIdPreselect"
       ></ut-beacon-list>
-
     </div>
-
+    <div *ngIf="!tree.beacons || tree.beacons.length === 0"
+         class="d-flex flex-row align-items-center mt-2 text-warning">
+      <i class="i i-warning-warning mr-1"></i>
+      {{'tree.beacon.details.none_attached' | translate}}
+    </div>
   </div>
-
 </div>
 
 <div *ngIf="hasAnyStatusKey([StatusKey.TREE_VALIDATION, StatusKey.TREE_LOADING], StatusValue.IN_PROGRESS)" class="load load-center load-md status-overlay overlay-fixed"></div>
@@ -117,4 +182,4 @@
   </div>
 </div>
 
-<ut-footer></ut-footer>
+</ng-container>

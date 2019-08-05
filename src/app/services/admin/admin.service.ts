@@ -57,19 +57,20 @@ export class AdminService extends AbstractService {
   /**
    * Submit new tree to the backend.
    * @param tree the tree to be submitted
-   * @param successCallback called upon successful execution
+   * @param successCallback called upon successful execution with updated tree
    * @param errorCallback called upon error
    */
   public addTree(tree: Tree,
-                  successCallback: () => void,
+                  successCallback: (result: Tree) => void,
                   errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void) {
 
     AdminService.LOG.debug('Saving tree to ' + this.envService.endpoints.addTree + ' ...');
 
     this.http.post(this.envService.endpoints.addTree, tree)
       .timeout(this.envService.defaultTimeout)
-      .subscribe(() => {
-        successCallback();
+      .map(t => Tree.fromObject(t))
+      .subscribe((result: Tree) => {
+        successCallback(result);
       }, (e: any) => {
         AdminService.LOG.error('Could not save tree: ' + e.message, e);
         errorCallback(e, this.safeApiError(e));
@@ -118,15 +119,16 @@ export class AdminService extends AbstractService {
    * @param errorCallback called upon error
    */
   public modifyTree(tree: Tree,
-                  successCallback: () => void,
+                  successCallback: (result: Tree) => void,
                   errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void) {
 
     AdminService.LOG.debug('Saving tree (modified) to ' + this.envService.endpoints.addTree + ' ...');
 
     this.http.post(this.envService.endpoints.modifyTree(tree.id), tree)
       .timeout(this.envService.defaultTimeout)
-      .subscribe(() => {
-        successCallback();
+      .map(t => Tree.fromObject(t))
+      .subscribe((result: Tree) => {
+        successCallback(result);
       }, (e: any) => {
         AdminService.LOG.error('Could not save tree (modified): ' + e.message, e);
         errorCallback(e, this.safeApiError(e));
@@ -382,7 +384,7 @@ export class AdminService extends AbstractService {
     let payload = JSON.stringify(announcement, (k, v) => {
 
       if (announcement[k] instanceof Date) {
-        return moment.utc(announcement[k]).format('YYYY-MM-DD[T]HH-mm-ss');
+        return moment.utc(announcement[k]).format(this.envService.outputDateFormat);
       }
 
       return v;

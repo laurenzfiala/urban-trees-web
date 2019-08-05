@@ -11,16 +11,11 @@ import {MapMarker} from '../../../interfaces/map-marker.entity';
 import {Tree} from '../../../entities/tree.entity';
 import {TreeLocation} from '../../../entities/tree-location.entity';
 import {Coordinates} from '../../../entities/coordinates.entity';
-import {TreeFrontend} from "../../../entities/tree-frontend.entity";
+import {TreeFrontend} from '../../../entities/tree-frontend.entity';
 import {TreeSpecies} from '../../../entities/tree-species.entity';
 import {TreeGenus} from '../../../entities/tree-genus.entity';
 import {Beacon} from '../../../entities/beacon.entity';
 import {BeaconSettings} from '../../../entities/beacon-settings.entity';
-import {BeaconListComponent} from '../../beacon-list/beacon-list.component';
-import {TreeComponent} from '../../tree/tree.component';
-import {MapMarkerDefault} from '../../../entities/map-marker-default.entity';
-import Map = ol.Map;
-import {PhenologyObservationTypeFrontend} from '../../../entities/phenology-observation-type-frontend.entity';
 import {PhenologyObservationService} from '../../../services/phenology/observation/phenology-observation.service';
 
 @Component({
@@ -36,6 +31,7 @@ export class AdminTreeComponent extends AbstractComponent implements OnInit {
   public availableTrees: Array<TreeFrontend>;
 
   public tree: TreeFrontend;
+  public savedTree: TreeFrontend;
 
   private newCityModalRef: BsModalRef;
   public newCity: City;
@@ -98,17 +94,17 @@ export class AdminTreeComponent extends AbstractComponent implements OnInit {
             new Coordinates(
               0,
               0,
-              "EPSG:900913"
+              'EPSG:900913'
             ),
-            "",
+            '',
             new City(null)
           ),
           new TreeSpecies(
             0,
-            "",
+            '',
             new TreeGenus(
               0,
-              ""
+              ''
             )
           ),
           9999,
@@ -134,7 +130,8 @@ export class AdminTreeComponent extends AbstractComponent implements OnInit {
     if (this.tree.id) { // modify tree
 
       this.setStatus(StatusKey.SAVE_TREE, StatusValue.IN_PROGRESS);
-      this.adminService.modifyTree(this.tree, () => {
+      this.adminService.modifyTree(this.tree, (result: Tree) => {
+        this.savedTree = TreeFrontend.fromTree(result);
         this.setStatus(StatusKey.SAVE_TREE, StatusValue.SUCCESSFUL);
       }, (error, apiError) => {
         this.setStatus(StatusKey.SAVE_TREE, StatusValue.FAILED);
@@ -143,7 +140,8 @@ export class AdminTreeComponent extends AbstractComponent implements OnInit {
     } else { // create new tree
 
       this.setStatus(StatusKey.SAVE_TREE, StatusValue.IN_PROGRESS);
-      this.adminService.addTree(this.tree, () => {
+      this.adminService.addTree(this.tree, (result: Tree) => {
+        this.savedTree = TreeFrontend.fromTree(result);
         this.setStatus(StatusKey.SAVE_TREE, StatusValue.SUCCESSFUL);
       }, (error, apiError) => {
         this.setStatus(StatusKey.SAVE_TREE, StatusValue.FAILED);
@@ -248,7 +246,6 @@ export enum StatusKey {
   LOAD_TREES,
   LOAD_CITIES,
   LOAD_SPECIES,
-  LOAD_PHENOBS_TYPES,
   NEW_CITY,
   NEW_BEACON,
   NEW_BEACON_ERROR,

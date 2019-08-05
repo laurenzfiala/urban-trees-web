@@ -49,7 +49,7 @@ export class AdminUserComponent extends AbstractComponent implements OnInit {
    */
   public secureLoginLink: string = 'test';
 
-  @ViewChild('secureLoginLinkTextfield')
+  @ViewChild('secureLoginLinkTextfield', { static: false })
   public secureLoginLinkTextfield: ElementRef;
 
   constructor(private adminService: AdminService,

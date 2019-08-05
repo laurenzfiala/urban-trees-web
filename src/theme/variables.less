@@ -2,7 +2,7 @@
 @primaryColor:                #007bff;
 @primaryColorHighlight:       lighten(@primaryColor, 10%);
 @secondaryColor:              #008000;
-@secondaryColorHighlight:     lighten(@secondaryColor, 5%);
+@secondaryColorHighlight:     lighten(@secondaryColor, 10%);
 @textColorHighlight:          #474747;
 
 @focusBorderColor:            darken(@secondaryColor, 5%);
@@ -11,18 +11,18 @@
 @focusOutlineColor:           rgba(@secondaryColor, @focusOutlineOpacity);
 
 @white:                       #ffffff;
-@lightGrey:                   #fdfdfd;
+@lightGrey:                   #fbfbfb;
 @medLight:                    #f8f9fa;
-@grey:                        #E9ECEF;
-@medLightGrey:                #D5D6D7;
+@grey:                        #eef1f4;
+@medLightGrey:                #e4e5e6;
 @medGrey:                     #ADAEAF;
 @darkGrey:                    #818283;
 @darkerGrey:                  #555555;
-@darkestGrey:                 #434343;
+@darkestGrey:                 #3b3b3b;
 @black:                       #000000;
 
-@lightBgColor:                @lightGrey;
-@medLightBgColor:             @medLight;
+@lightBgColor:                @medLight;
+@medLightBgColor:             @grey;
 @bgColor:                     @grey;
 @darkBgColor:                 @darkGrey;
 
@@ -30,10 +30,9 @@
 @borderColor:                 @medGrey;
 @darkBorderColor:             @darkGrey;
 
-@linkColor:                   #007bff;
-@linkDecoration:              none;
-@linkHoverColor:              darken(@linkColor, 15%);
-@linkHoverDecoration:         underline;
+@linkColor:                   @darkBorderColor;
+@linkHoverColor:              @darkestGrey;
+@linkBorder:                  solid @linkColor 1.5px;
 
 @subtleTextColor:             @darkGrey;
 
@@ -57,25 +56,36 @@
 @infoColor:                   @info;
 @successColor:                darken(@success, 10%);
 
-@borderRadius:                1.25rem;
-@borderRadiusNew:             1.25rem;
-@borderRadiusOuterNew:        1.5rem;
+@borderRadius:                0;
+@borderRadiusNew:             0;
+@borderRadiusOuterNew:        0;
 
 @btnPadding:                  1rem 2rem;
 @btnIconPadding:              2rem;
-@gutter:                      0.5rem;
-@gutter2x:                    1rem;
+@gutter:                      0.75rem;
+@gutter2x:                    1.5rem;
 
 @fontSizeBase:                1rem;
 @fontSizeExtraSmall:          0.75rem;
 @fontSizeSmall:               0.875rem;
-@fontSizeMedium:              1.25rem;
+@fontSizeMedium:              1.15rem;
 @fontSizeLarge:               1.35rem;
 @fontSizeExtraLarge:          1.5rem;
+
+@navLinkColor:                @linkColor;
+@navLinkColorActive:          @linkHoverColor;
+@navFontSize:                 @fontSizeBase;
+@navBgColor:                  @bgColor;
+@navDropwdownBgColor:         @darkBgColor;
+
+@boxShadowHighlight:          0 3px 6px -3px rgba(0, 0, 0, 0.75);
+@boxShadowHighlightHover:     0 6px 9px -4px rgba(0, 0, 0, 0.75);
+@boxShadowZoom:               0 6px 12px -6px rgba(0, 0, 0, 0.85);
 
 @statusOverlayZIndex:         30;
 @navZIndex:                   40;
 @dropdownZIndex:              50;
+@zoomZIndex:                  45;
 
 @dropdownBorder:              0;
 
@@ -84,4 +94,7 @@
 @statusColor:                 @white;
 
 @xs:                          ~"only screen and (max-width: 575px)";
-@sm:                          ~"only screen and (max-width: 767px)";
+@sm:                          ~"only screen and (min-width: 576px) and (max-width: 767px)";
+@md:                          ~"only screen and (min-width: 768px) and (max-width: 991px)";
+@lg:                          ~"only screen and (min-width: 992px) and (max-width: 1199px)";
+@xl:                          ~"only screen and (min-width: 1200px)";

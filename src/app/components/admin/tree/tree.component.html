@@ -1,5 +1,3 @@
-<ut-header></ut-header>
-
 <div class="container has-status-overlay mt-3">
 
   <h4 class="d-flex align-items-center">
@@ -121,7 +119,7 @@
               </span>
               <span *ngIf="hasStatus(StatusKey.SAVE_TREE, StatusValue.SUCCESSFUL)" class="d-flex">
                 <i class="i i-sm i-check-success mr-2"></i>
-                Tree successfully saved.
+                Tree {{savedTree.id}} successfully saved.
               </span>
               <span *ngIf="hasStatus(StatusKey.SAVE_TREE, StatusValue.TREE_MARKER_NOT_SET)">No tree marker was set. Not creating tree.</span>
 
@@ -160,7 +158,7 @@
     <div class="col">
 
       <ut-beacon-list
-        [tree]="tree"
+        [beacons]="tree.beacons"
         [showData]="false"
         [modify]="true"
         (addBeacon)="showNewBeaconModal(newBeaconModal)"

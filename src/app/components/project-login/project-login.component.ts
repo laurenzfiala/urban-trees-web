@@ -5,7 +5,6 @@ import {AbstractComponent} from '../abstract.component';
 import {ActivatedRoute, Router} from '@angular/router';
 import {LoginAccessReason} from './logout-reason.enum';
 import {LoginStatus} from './login-status.enum';
-import {AuthInterceptor} from '../../interceptors/auth.interceptor';
 
 @Component({
   selector: 'ut-project-login',
@@ -57,7 +56,7 @@ export class ProjectLoginComponent extends AbstractComponent implements OnInit {
       if (redirectVal) {
         this.redirectTo = redirectVal;
       } else {
-        this.redirectTo = '/project';
+        this.redirectTo = '/home';
       }
 
     });

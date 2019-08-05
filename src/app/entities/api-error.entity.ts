@@ -42,6 +42,21 @@ export class ApiError {
     }
   }
 
+  public withStatusCode(statusCode: number): ApiError {
+    this.statusCode = statusCode;
+    return this;
+  }
+
+  public toString(): string {
+    let msg = '';
+    msg += 'status: ' + this.status + ', ';
+    msg += 'timestamp: ' + this.timestamp + ', ';
+    msg += 'message: ' + this.message + ', ';
+    msg += 'statusCode: ' + this.statusCode + ', ';
+    msg += 'clientErrorCode: ' + this.clientErrorCode;
+    return '[' + msg + ']';
+  }
+
   /**
    * Construct new from untyped object.
    * If given object is null, return api error with unset properties.
@@ -59,11 +74,6 @@ export class ApiError {
       o.clientErrorCode
     );
 
-  }
-
-  public withStatusCode(statusCode: number): ApiError {
-    this.statusCode = statusCode;
-    return this;
   }
 
 }

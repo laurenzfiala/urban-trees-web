@@ -1,0 +1,112 @@
+<div class="content-cat">
+  <div class="container">
+    <div class="content-cat-heading">
+      {{'measurements.temperature.title' | translate}}
+      <ut-loading-status
+        errorDescription="measurements.temperature.error"
+        [status]="getStatusObservable(StatusKey.STATISTICS)"
+        [error]="getStatusErrorObservable(StatusKey.STATISTICS)"></ut-loading-status>
+    </div>
+
+    <div *ngIf="hasStatus(StatusKey.STATISTICS, StatusValue.SUCCESSFUL)"
+         class="content-cat-highlight-bar mt-2">
+      <div class="item-h">
+        <div class="icon"><i class="i i-lg i-max-temp"></i></div>
+        <div class="item-v">
+          <div class="big">{{statistics.beaconTempMaximum.toFixed(2)}} °C</div>
+          <div class="desc">{{'measurements.temperature.max_temp' | translate}}</div>
+        </div>
+      </div>
+      <div class="item-h">
+        <div class="icon"><i class="i i-lg i-avg-temp"></i></div>
+        <div class="item-v">
+          <div class="big">{{statistics.beaconTempAverage.toFixed(2)}} °C</div>
+          <div class="desc">{{'measurements.temperature.avg_temp' | translate}}</div>
+        </div>
+      </div>
+      <div class="item-h">
+        <div class="icon"><i class="i i-lg i-min-temp"></i></div>
+        <div class="item-v">
+          <div class="big">{{statistics.beaconTempMinimum.toFixed(2)}} °C</div>
+          <div class="desc">{{'measurements.temperature.min_temp' | translate}}</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="content-cat">
+  <div class="container">
+    <div class="content-cat-heading">
+      {{'measurements.humidity.title' | translate}}
+      <ut-loading-status
+        errorDescription="measurements.humidity.error"
+        [status]="getStatusObservable(StatusKey.STATISTICS)"
+        [error]="getStatusErrorObservable(StatusKey.STATISTICS)"
+        (retry)="loadStatistics()"></ut-loading-status>
+    </div>
+
+    <div *ngIf="hasStatus(StatusKey.STATISTICS, StatusValue.SUCCESSFUL)"
+         class="content-cat-highlight-bar mt-2">
+      <div class="item-h">
+        <div class="icon"><i class="i i-lg i-max-humi"></i></div>
+        <div class="item-v">
+          <div class="big">{{statistics.beaconHumidityMaximum.toFixed(2)}} %</div>
+          <div class="desc">{{'measurements.humidity.max_humi' | translate}}</div>
+        </div>
+      </div>
+      <div class="item-h">
+        <div class="icon"><i class="i i-lg i-avg-humi"></i></div>
+        <div class="item-v">
+          <div class="big">{{statistics.beaconHumidityAverage.toFixed(2)}} %</div>
+          <div class="desc">{{'measurements.humidity.avg_humi' | translate}}</div>
+        </div>
+      </div>
+      <div class="item-h">
+        <div class="icon"><i class="i i-lg i-min-humi"></i></div>
+        <div class="item-v">
+          <div class="big">{{statistics.beaconHumidityMinimum.toFixed(2)}} %</div>
+          <div class="desc">{{'measurements.humidity.min_humi' | translate}}</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div class="content-cat">
+  <div class="container">
+    <div class="content-cat-heading">
+      {{'measurements.beacons.title' | translate}}
+      <ut-loading-status
+        errorDescription="measurements.beacons.error"
+        [status]="getStatusObservable(StatusKey.STATISTICS)"
+        [error]="getStatusErrorObservable(StatusKey.STATISTICS)"></ut-loading-status>
+    </div>
+    <div class="content-cat-text">
+      {{'measurements.beacons.desc' | translate}}<br/>
+      <span class="font-italic">{{'measurements.beacons.help' | translate}} </span>
+      <a class="link" routerLink="/help/beaconreadout">{{'measurements.beacons.help_link' | translate}}</a>
+    </div>
+    <input
+      [ngModel]="beaconSearchInput"
+      (ngModelChange)="onBeaconSearchInputChange($event)"
+      [disabled]="hasStatus(StatusKey.BEACONS, StatusValue.FAILED)"
+      class="form-control form-control-lg search-input mt-3"
+      [placeholder]="'measurements.beacons.search_placeholder' | translate" />
+    <div class="text-xs text-subtle">
+      {{'general.input_annotation' | translate}}
+    </div>
+
+    <div class="mt-2">
+
+      <div class="pt-3">
+        <ut-beacon-list *ngIf="hasStatus(StatusKey.BEACONS, StatusValue.SUCCESSFUL)"
+                        [beacons]="displayBeacons"
+                        [showData]="true"></ut-beacon-list>
+      </div>
+    </div>
+
+  </div>
+</div>

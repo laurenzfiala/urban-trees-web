@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import {AnnouncementService} from '../../services/announcement.service';
-import {TranslateService} from '@ngx-translate/core';
 import {AuthService} from '../../services/auth.service';
 import {LoginAccessReason} from '../project-login/logout-reason.enum';
 import {Announcement} from '../../entities/announcement.entity';
 import {EnvironmentService} from '../../services/environment.service';
+import {UserService} from '../../services/user.service';
+import {UserData} from '../../entities/user-data.entity';
 
 @Component({
   selector: 'ut-header',
@@ -13,9 +14,14 @@ import {EnvironmentService} from '../../services/environment.service';
 })
 export class HeaderComponent implements OnInit {
 
+  get userdata(): UserData {
+    return this.userService.getUserData();
+  }
+
   constructor(private announcementService: AnnouncementService,
-              private translateService: TranslateService,
-              public authService: AuthService) { }
+              public authService: AuthService,
+              public userService: UserService,
+              public envService: EnvironmentService) { }
 
   ngOnInit() {
     this.announcementService.load();
@@ -42,18 +48,6 @@ export class HeaderComponent implements OnInit {
 
   get announcements() {
     return this.announcementService.getAnnouncements();
-  }
-
-  get currentLanguage(): string {
-    return this.translateService.currentLang ? this.translateService.currentLang : this.translateService.defaultLang;
-  }
-
-  get availableLanguages(): Array<string> {
-    return this.translateService.getLangs();
-  }
-
-  public setLanguage(lang: string) {
-    this.translateService.use(lang);
   }
 
 }

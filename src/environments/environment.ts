@@ -7,17 +7,19 @@ export const environment = {
 
   production:                       false,
 
-  webHost:                          'http://192.168.137.1:4200',
-  host:                             'http://192.168.137.1:80',
-  mapHost:                          'http://192.168.137.1:8081',
+  webHost:                          'http://localhost:4200',
+  host:                             'http://localhost:80',
+  mapHost:                          'http://localhost:8081',
 
   endpoints: {
     // Tree
     tree:                             '/tree/{treeId}',
     allTrees:                         '/tree',
-    statistics:                       '/ui/statistics',
+    measurementsStatistics:           '/ui/statistics/measurements',
+    systemStatistics:                 '/ui/statistics/system',
     cities:                           '/tree/cities',
     species:                          '/tree/species',
+    loadBeacons:                      '/beacon',
     beaconData:                       '/beacon/{beaconId}/data',
     beaconDataTimespan:               '/beacon/{beaconId}/data?timespanMin={timespanMin}&timespanMax={timespanMax}',
     beaconDataTimespanMin:            '/beacon/{beaconId}/data?timespanMin={timespanMin}',
@@ -31,6 +33,8 @@ export const environment = {
 
     // User
     userAchievements:                 '/user/achievements',
+    userData:                         '/user/data',
+    userDelete:                       '/user/delete',
 
     // UI
     phenologyObservationResultImg:    '/ui/phenology/observation/result/{treeSpeciesId}/{resultId}/img',
@@ -58,6 +62,10 @@ export const environment = {
     allAnnouncements:                 '/admin/announcements',
     addAnnouncement:                  '/admin/announcement',
     deleteAnnouncement:               '/admin/announcement/{announcementId}',
+    allReports:                       '/admin/report?resolved=false',
+    updateReportRemark:               '/admin/report/{reportId}/remark',
+    unresolveReport:                  '/admin/report/{reportId}/unresolve',
+    resolveReport:                    '/admin/report/{reportId}/resolve',
 
     // Authentication
     login:                            '/login',
@@ -67,6 +75,8 @@ export const environment = {
 
   defaultTimeout:                     10000,
   imageUploadTimeout:                 60000,
+
+  userDataRefreshIntervalMs:          30000,
 
   outputDateFormat:                   'YYYY-MM-DD[T]HH-mm-ss',
 

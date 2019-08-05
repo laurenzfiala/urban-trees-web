@@ -1,12 +1,19 @@
 {
 	"app": {
 		"title": "Stadtbäume",
-		"subtitle": "als Klimabotschafter"
+		"subtitle": "als Klimabotschafter",
+    "date_format": "DD.MM.YYYY HH:SS",
+    "date_format_short": "DD.MM. HH:SS",
+    "date_format_day": "DD.MM",
+    "date_format_time": "HH:SS"
 	},
 	"navigation": {
 		"home": "Start",
 		"phenology": "Phänologie",
 		"tree_list": "Bäume",
+    "measurements": "Messdaten",
+    "statistics": "Statistiken",
+    "admin": "Administratorkonsole",
 		"footer": {
 			"report": "Problem melden",
 			"imprint": "Impressum",
@@ -26,15 +33,17 @@
       "log_in": "Anmelden",
       "log_out": "Abmelden",
       "change_password": "Passwort ändern",
-      "change_username": "Nutzername ändern"
+      "change_username": "Nutzername ändern",
+      "measurements": "Beacon Messdaten",
+      "statistics": "Statistiken"
     }
 	},
   "home": {
     "choose": "Triff eine Auswahl",
     "greeting": "Hallo, {{username}}!",
     "level_up": "Level {{level}} erreicht!",
-    "loading_stats_achievements": "Lade Errungenschaften und Statistiken...",
-    "loading_stats_achievements_failed": "Laden von Errungenschaften und Statistiken fehlgeschlagen.",
+    "loading_stats_achievements": "Lade Punktestand...",
+    "loading_stats_achievements_failed": "Punktestand konnte nicht geladen werden.",
     "level": "Level",
     "xp": "XP",
     "next_level_difference": "mehr für Level"
@@ -149,7 +158,8 @@
     "min": "Geringste",
     "none_found": "Keine Bäume gefunden.",
     "tree": {
-      "location": "at {{street}}"
+      "location": "{{street}}",
+      "link": "Baum ansehen"
     }
   },
   "tree_view": {
@@ -209,8 +219,6 @@
     "go_to_login": "Zum Login",
     "learn_more": "Mehr erfahren"
   },
-	"en-GB": "English",
-	"de-DE": "Deutsch",
 	"tree": {
 		"species": {
 			"gingko biloba": "Ginkgo",
@@ -285,11 +293,14 @@
         "heading": "Beacon-Daten",
         "range": "Zeitspanne",
         "maxdataentries": "Anzahl Datenpunkte",
-        "none_attached": "An diesem Baum sind keine Beacons angebracht."
+        "none_attached": "Mit diesem Baum sind keine Beacons verknüpft.",
+        "status_locked": "Dieser Beacon kann derzeit nicht ausgelesen werden, weil die Zugangsdaten unbekannt oder falsch sind.",
+        "status_invalid_settings": "Dieser Beacon kann derzeit nicht ausgelesen werden, weil er falsch konfiguriert wurde, was das Auslesen verhindert.",
+        "status_initial": "Dieser Beacon wurde neu hinzugefügt. Er wurde noch nicht ausgelesen.",
+        "no_beacon_found": "Keinen Beacon gefunden"
       },
       "transfer": {
         "success": "Beacon-Daten erfolgreich übertragen!",
-        "success_note": "Die Daten wurden aktualisiert.",
         "failed": "Der Beacon für diesen Baum konnte nicht ausgelesen werden!",
         "message": {
           "title": "Danke!",
@@ -297,6 +308,7 @@
         }
       },
       "data": {
+        "error": "Die Aufzeichnungsdaten für diesen Beacon konnten nicht geladen werden",
         "missing": "Keine Daten für Beacon aufgezeichnet",
         "datapoints": "Datensätze",
         "mode": {
@@ -317,24 +329,168 @@
     "audioimg": {
       "help": {
         "controls": "Für Steuerung klicken"
-      }
+      },
+      "incompatible": "Dein Browser unterstützt unglücklicherweise dieses Audio-Format nicht."
     }
 	},
 	"general": {
 		"retry": "Nochmals versuchen",
 		"error": "Fehler",
-		"imprint": "Impressum"
-	},
-	"imprint": {
-		"partners": "Partner",
-		"license": "Lizenz",
-		"os_projects": "Open-Source Projekte",
-		"os_projects_text": "Nachfolgend eine Liste der in dieser App benutzten Open-Source Projekte.",
-		"license_text": "Zur Zeit nicht definiert."
+		"imprint": "Impressum",
+    "input_annotation": "Suchergebnisse werden automatisch während der Eingabe aktualisiert."
 	},
   "map": {
     "error_default_text": "Kartendaten konnten nicht geladen werden. Bitte versuche es erneut.",
     "activator": "Klicken, um die Karte zu nutzen",
     "activator_touch": "Berühren, um die Karte zu nutzen"
+  },
+  "settings": {
+    "language": {
+      "title": "Sprache",
+      "desc":  "Wähle eine Sprache für die gesamte Seite."
+    },
+    "account": {
+      "title": "Konto verwalten",
+      "desc":  "Ändere Deinen Nutznamen oder Passwort hier.",
+      "change_username":  "Nutzername ändern",
+      "change_password":  "Passwort ändern"
+    },
+    "support": {
+      "title": "Hilfe anfordern",
+      "desc":  "Hilfe vom Projektteam anfordern oder uns auf etwaige Probleme aufmerksam machen.",
+      "link":  "Hilfe anfordern"
+    },
+    "delete_account": {
+      "title": "Konto löschen",
+      "desc": "Falls Du Dein Konto für immer löschen möchtest, kannst Du das hier tun.",
+      "warning": "Das kann nicht rückgängig gemacht werden.",
+      "btn": "Konto löschen",
+      "popover_title": "Konto löschen?",
+      "popover_desc": "Löschung kann nicht rückgängig gemacht werden.",
+      "popover_btn": "Konto jetzt löschen",
+      "popover_btn_progress": "Konto wird gelöscht",
+      "popover_btn_success": "Erfolgreich gelöscht",
+      "popover_btn_failed": "Konto konnte nicht gelöscht werden"
+    },
+    "langs": {
+      "en-GB": "English",
+      "de-DE": "Deutsch"
+    }
+  },
+  "missing": {
+    "title": "Seite nicht gefunden",
+    "desc": "Es scheint Du wurdest zu einer nicht existierenden Seite verlinkt. Nutze die Navigationsleiste oben."
+  },
+  "measurements": {
+    "temperature": {
+      "title": "Aufgezeichnete Temperaturen",
+      "error": "Daten zur Temperatur konnten nicht geladen werden",
+      "max_temp": "Maximale Temperatur",
+      "avg_temp": "Durchschnittliche Temperatur",
+      "min_temp": "Minimale Temperatur"
+    },
+    "humidity": {
+      "title": "Aufgezeichnete Luftfeuchtigkeit",
+      "error": "Daten zur Luftfeuchtigkeit konnten nicht geladen werden",
+      "max_humi": "Maximale Luftfeuchtigkeit",
+      "avg_humi": "Durchschnittliche Luftfeuchtigkeit",
+      "min_humi": "Minimale Luftfeuchtigkeit"
+    },
+    "beacons": {
+      "title": "Beacon-Daten",
+      "desc": "Finde einzelne Beacons und deren aufgezeichnete Daten hier.",
+      "error": "Beacons konnten nicht geladen werden",
+      "help": "Willst du helfen Daten zu sammeln?",
+      "help_link": "Finde heraus wie",
+      "search_placeholder": "Gib einen Beaconnamen ein..."
+    }
+  },
+  "statistics": {
+    "beaconreadouts": {
+      "title": "Augelesene Beacons",
+      "desc": "Hier kannst du sehen wie oft Projektteilnehmer_innen unsere Bluetooth-Beacons jeden Tag ausgelesen haben. Jede dieser Auslesungen hilft uns enorm und wir danken jeder Person, die uns dabei hilft!",
+      "error": "Systemstatistiken konnten nicht geladen werden",
+      "help_link": "Wie kann ich helfen?",
+      "readouts_today": "Auslesungen heute"
+    },
+    "phenologyobs": {
+      "title": "Phänologiebeobachtungen",
+      "desc": "Hier kannst du sehen, wie oft Projektteilnehmer_innen eine Phänologiebeobachtung durchgeführt haben. Jede dieser Beobachtungen dauert ungefähr 10 Minuten und hilft uns Stadtbäume besser zu verstehen!",
+      "error": "Systemstatistiken konnten nicht geladen werden",
+      "help_link": "Wie kann ich helfen?",
+      "obs_today": "Beobachtungen heute"
+    },
+    "data": {
+      "title": "Welche Daten werden gesammelt?",
+      "desc": "Folgende Dinge werden derzeit in unserem System erfasst.",
+      "error": "Systemstatistiken konnten nicht geladen werden",
+      "cities": "Städte mit Bäumen",
+      "tree_species": "Baum-Spezies",
+      "trees": "Bäume",
+      "beacons": "Beacons",
+      "beacon_readouts": "Beacon-Auslesungen"
+    },
+    "phenology": {
+      "title": "Phänologie",
+      "desc": "Wir beobachten regelmäßig Baumknospen und überprüfen, ob diese offen, halb-offen oder noch geschlossen sind. Damit erhalten wir wertvolle Daten zum Vergleich von Bäumen und Baum-Spezies zwischen den verschiedenen Standorten.",
+      "error": "Systemstatistiken konnten nicht geladen werden",
+      "obs_trees": "Beobachtete Bäume (x Knospen, etc.)",
+      "obs_obj": "Beobachtete Objekte (Knospen, etc.)"
+    }
+  },
+  "imprint": {
+    "title": "Impressum",
+    "title_disclaimer": "Some of the information below is only available in german",
+    "partners": "Partner",
+    "license": "Lizenz",
+    "os_projects": "Open-Source Projekte",
+    "os_projects_text": "Nachfolgend eine Liste der in dieser App benutzten Open-Source Projekte."
+  },
+  "home": {
+    "title": "Willkommen bei&nbsp;<b>Stadtbäume als Klimabotschafter</b>!",
+    "desc": "Du kannst diese Website benutzen, um Phänologiedaten zu Bäumen einzutragen, Informationen und Statistiken üder die Bäume und Beacons anzusehen und Punkte durch Mithelfen zu erhalten!",
+    "title_user": "Willkommen zurück bei&nbsp;<b>Stadtbäume als Klimabotschafter</b>, {{username}}!",
+    "desc_user_1": "Wir freuen uns über jede ",
+    "desc_phenobs_link": "Phänologiebeobachtung",
+    "desc_user_2": " oder Beacon-Auslesungen (mit der <a class=\"link\" tabindex=\"-1\" href=\"https://play.google.com/apps/internaltest/4699755394511268796\" target=\"_blank\">Android App</a>). Wenn Du währenddessen eingeloggt bist, erhältst du Erfahrungspunkte, die deinen Platz auf der Bestenliste verbessern.",
+    "user_score": {
+      "title": "Dein Punktestand",
+      "error": "Punktestand konnte nicht geladen werden"
+    },
+    "admin_console": {
+      "title": "Administratorkonsole",
+      "desc": "Admins können Bäume, Beacons und Ankündigungen in der Konsole hinzufügen.",
+      "link": "Zur Administratorkonsole"
+    },
+    "project_intro": {
+      "title": "Was wir machen",
+      "desc": "Wir überprüfen viele Bäume mit Bluetooth-Beacons, welche automatisch Temperaturdaten und Luftfeuchtigkeit aufzeichnen. Außerdem beobachten wir die Bäume auf ihre Blattentfaltung, diese Informationen werden von teilnehmenden Schüler_innen hier eingetragen.",
+      "error": "Projektstatistiken konnten nicht geladen werden",
+      "cities": "Städte",
+      "trees": "Bäume",
+      "obs": "Phänologiebeobachtungen",
+      "beacons": "Beacons",
+      "beacon_datasets": "Beacon-Datensätze",
+      "link": "Mehr Statististken anzeigen"
+    },
+    "more_info": {
+      "title": "Mehr Informationen",
+      "desc": "Finde mehr über das <span class=\"font-italic\">Stadtbäume als Klimabotschafter</span>-Projekt auf unserer Info-Website heraus.",
+      "link": "Jetzt besuchen"
+    }
+  },
+  "user_overview": {
+    "xp": "XP",
+    "desc_level_5+": "Wow, Du hast schon {{xp}} XP gesammelt!<br/>Gut gemacht! Danke, dass Du uns hilfst all diese Daten zu sammeln.",
+    "desc_level_1-5": "Du hast {{xp}} XP gesammelt!<br/>Danke, dass Du uns hilfst mehr Daten zu sammeln!",
+    "desc_level_0": "Du hast noch keine XP gesammelt!<br/>Sobald Du eine Phänologiebeobachtung oder eine Beacon-Auslese abschließt, bekommst Du Erfahrungspunkte.",
+    "view_details": "Mehr Details",
+    "details": {
+      "title": "Details",
+      "desc_level": "Du bist Level {{level}}.",
+      "desc_new_level": "Du hast soeben Level {{level}} erreicht!",
+      "desc_xp_needed": "{{nextLevelRemainingXp}} XP werden noch für Level {{nextLevel}} benötigt.",
+      "contributions": "Deine letzten Beiträge:"
+    }
   }
 }

@@ -6,6 +6,7 @@
  * @since 2018/04/23
  */
 import {ApiError} from '../entities/api-error.entity';
+import {Observable, Subject} from 'rxjs';
 
 export abstract class AbstractStatusComponent {
 
@@ -14,14 +15,36 @@ export abstract class AbstractStatusComponent {
    * @type {Map<number, number>} key and value should be from two different enums.
    *                             The key Should be the category and the value the current status of it.
    *                             The value can also be a numeric progress value.
+   * TODO redo doc
    */
-  private statuses: Map<number, number> = new Map<number, number>();
+  private statuses: Map<number, any[]> = new Map<number, any[]>();
+
+  /**
+   * Holds all registered status observers that get notified whenever a status changes.
+   */
+  private statusObservers: Map<number, Subject<number>> = new Map<number, Subject<number>>();
+
+  /**
+   * Holds all registered status error observers that get notified whenever a status error changes.
+   */
+  private statusErrorObservers: Map<number, Subject<ApiError>> = new Map<number, Subject<ApiError>>();
 
   /**
    * Set the status of the given category.
+   * Optionally with an ApiError.
    */
-  protected setStatus(key: number, value: number) {
-    this.statuses.set(key, value);
+  protected setStatus(key: number, value: number, error?: ApiError) {
+    this.statuses.set(key, [value, error]);
+    const sub = this.statusObservers.get(key);
+    if (sub !== undefined) {
+      sub.next(value);
+    }
+    if (error !== undefined) {
+      const subErr = this.statusErrorObservers.get(key);
+      if (subErr !== undefined) {
+        subErr.next(error);
+      }
+    }
   }
 
   /**
@@ -37,7 +60,28 @@ export abstract class AbstractStatusComponent {
    * @returns {boolean} the numeric status value
    */
   public getStatus(key: number): number {
-    return this.statuses.get(key);
+    let status = this.statuses.get(key);
+    if (status === undefined) {
+      return undefined;
+    }
+    return status[0];
+  }
+
+  /**
+   * Get status change observable.
+   * @param {number} key category id
+   * @returns {Observable<number>} observable called upon change
+   */
+  public getStatusObservable(key: number): Observable<number> {
+    let sub;
+    if (this.statusObservers.has(key)) {
+      sub = this.statusObservers.get(key);
+    } else {
+      sub = new Subject<number>();
+      this.statusObservers.set(key, sub);
+    }
+    sub.next(this.getStatus(key));
+    return sub.asObservable();
   }
 
   /**
@@ -47,7 +91,28 @@ export abstract class AbstractStatusComponent {
    * @returns {ApiError} associated error or null
    */
   public getStatusError(key: number): ApiError {
-    return this.statuses.get(key)[1];
+    let status = this.statuses.get(key);
+    if (status === undefined) {
+      return undefined;
+    }
+    return status[1];
+  }
+
+  /**
+   * Get status error change observable.
+   * @param {number} key category id
+   * @returns {Observable<ApiError>} observable called upon change
+   */
+  public getStatusErrorObservable(key: number): Observable<number> {
+    let sub;
+    if (this.statusErrorObservers.has(key)) {
+      sub = this.statusErrorObservers.get(key);
+    } else {
+      sub = new Subject<ApiError>();
+      this.statusErrorObservers.set(key, sub);
+    }
+    sub.next(this.getStatusError(key));
+    return sub.asObservable();
   }
 
   /**
@@ -67,7 +132,10 @@ export abstract class AbstractStatusComponent {
    */
   public hasStatus(key: number, value: number): boolean {
     let status = this.statuses.get(key);
-    if (status !== undefined && status === value) {
+    if (status === undefined) {
+      return false;
+    }
+    if (status[0] === value) {
       return true;
     }
     return false;

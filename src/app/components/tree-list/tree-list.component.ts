@@ -2,11 +2,11 @@ import {ChangeDetectorRef, Component, ElementRef, HostListener, Inject, OnInit, 
 import {AbstractComponent} from '../abstract.component';
 import {Tree} from '../../entities/tree.entity';
 import {TreeFrontend} from '../../entities/tree-frontend.entity';
-import {TreeListStatistics} from '../../entities/tree-list-statistics.entity';
 import {Log} from '../../services/log.service';
 import {TreeService} from '../../services/tree.service';
 import {TranslateService} from '@ngx-translate/core';
 import {City} from '../../entities/city.entity';
+import {MapMarker} from '../../interfaces/map-marker.entity';
 
 @Component({
   selector: 'ut-tree-list',
@@ -18,11 +18,6 @@ export class TreeListComponent extends AbstractComponent implements OnInit {
   private static LOG: Log = Log.newInstance(TreeListComponent);
 
   /**
-   * Statistics regarding the trees overall.
-   */
-  public statistics: TreeListStatistics;
-
-  /**
    * Once loaded, contains all trees available.
    */
   public availableTrees: Array<TreeFrontend>;
@@ -31,6 +26,11 @@ export class TreeListComponent extends AbstractComponent implements OnInit {
    * Trees currently displayed.
    */
   public displayTrees: Array<TreeFrontend>;
+
+  /**
+   * Tree currently selected.
+   */
+  public selectedTree: TreeFrontend;
 
   /**
    * All cities to display.
@@ -60,10 +60,7 @@ export class TreeListComponent extends AbstractComponent implements OnInit {
    * Load all resource neccessary for this page.
    */
   public load(): void {
-
-    this.loadStatistics();
     this.loadTreeList();
-
   }
 
   /**
@@ -98,30 +95,6 @@ export class TreeListComponent extends AbstractComponent implements OnInit {
   }
 
   /**
-   * Load tree stats using TreeListService.
-   * @param {() => void} successCallback when loading was successful.
-   */
-  private loadStatistics(successCallback?: () => void): void {
-
-    this.setStatus(StatusKey.STATISTICS, StatusValue.IN_PROGRESS);
-    if (this.availableTrees) {
-      successCallback();
-      return;
-    }
-
-    this.treeService.loadStatistics((stats: TreeListStatistics) => {
-      this.statistics = stats;
-      this.setStatus(StatusKey.STATISTICS, StatusValue.SUCCESSFUL);
-      if (successCallback) {
-        successCallback();
-      }
-    }, () => {
-      this.setStatus(StatusKey.STATISTICS, StatusValue.FAILED); // TODO change content of error message
-    });
-
-  }
-
-  /**
    * Load all trees using TreeListService.
    * @param {() => void} successCallback when loading was successful.
    */
@@ -134,7 +107,7 @@ export class TreeListComponent extends AbstractComponent implements OnInit {
     }
 
     this.treeService.loadTrees((trees: Array<Tree>) => {
-      this.availableTrees = <Array<TreeFrontend>>trees;
+      this.availableTrees = trees.map(t => TreeFrontend.fromTree(t));
       this.setStatus(StatusKey.TREES, StatusValue.SUCCESSFUL);
       if (successCallback) {
         successCallback();
@@ -151,6 +124,7 @@ export class TreeListComponent extends AbstractComponent implements OnInit {
    */
   public setTreeSearchInput(searchInput: string): void {
 
+    this.selectedTree = null;
     if (!searchInput) {
       this.displayTrees = this.availableTrees;
       this.updateCities();
@@ -174,6 +148,16 @@ export class TreeListComponent extends AbstractComponent implements OnInit {
       });
     this.updateCities();
 
+  }
+
+  /**
+   * Called when a tree is selected in the map.
+   * @param {MapMarker} newSelectedTree tree that was newly selected
+   */
+  public selectTreeOnMap(newSelectedTree: MapMarker) {
+    this.treeSearchInput = (<TreeFrontend> newSelectedTree).getId() + '';
+    this.setTreeSearchInput(this.treeSearchInput);
+    this.selectedTree = <TreeFrontend> newSelectedTree;
   }
 
 }

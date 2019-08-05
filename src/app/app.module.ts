@@ -39,7 +39,6 @@ import {ReportComponent} from './components/report/report.component';
 import {TreeComponent} from './components/tree/tree.component';
 import {TreeListComponent} from './components/tree-list/tree-list.component';
 import {SpyDirective} from './directives/spy.directive';
-import {ProjectHomeComponent} from './components/project-home/project-home.component';
 import {ProjectLoginComponent} from './components/project-login/project-login.component';
 import {AuthInterceptor} from './interceptors/auth.interceptor';
 import {PhenologyObservationStepGuard} from './components/phenology/observation/phenology-observation-step.guard';
@@ -69,6 +68,16 @@ import {CheckDirective} from './directives/check.directive';
 import {ValueaccessorDirective} from './directives/valueaccessor.directive';
 import {AdminGuard} from './components/admin/admin.guard';
 import {CssVariableDirective} from './directives/css-variable.directive';
+import { StatisticsComponent } from './components/statistics/statistics.component';
+import { MeasurementsComponent } from './components/measurements/measurements.component';
+import { SettingsComponent } from './components/settings/settings.component';
+import { ZoomComponent } from './components/zoom/zoom.component';
+import {UIService} from './services/ui.service';
+import {BeaconService} from './services/beacon.service';
+import { LoadingStatusComponent } from './components/loading-status/loading-status.component';
+import { SlideshowComponent } from './components/slideshow/slideshow.component';
+import { MessagesComponent } from './components/messages/messages.component';
+import {MessagesService} from './services/messages.service';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, '/translations/', '.json?cacheBust=' + new Date().getTime());
@@ -91,7 +100,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     ReportComponent,
     TreeComponent,
     TreeListComponent,
-    ProjectHomeComponent,
     ProjectLoginComponent,
     PasswordChangeComponent,
     AudioImgComponent,
@@ -105,6 +113,12 @@ export function HttpLoaderFactory(http: HttpClient) {
     UserOverviewComponent,
     UsernameChangeComponent,
     ProjectLoginKeyComponent,
+    StatisticsComponent,
+    MeasurementsComponent,
+    SettingsComponent,
+    ZoomComponent,
+    LoadingStatusComponent,
+    MessagesComponent,
 
     // Directives
     SpyDirective,
@@ -119,7 +133,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     LowercasePipe,
     DecimalPlacesPipe,
     AnnouncementsComponent,
-    ValueaccessorDirective
+    ValueaccessorDirective,
+    SlideshowComponent
   ],
   imports: [
     // Core
@@ -162,8 +177,11 @@ export function HttpLoaderFactory(http: HttpClient) {
     // Component-Services
     PhenologyObservationService,
     TreeService,
+    BeaconService,
     AdminService,
     UserService,
+    UIService,
+    MessagesService,
 
     // Guards
     PhenologyObservationStepGuard,

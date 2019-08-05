@@ -37,6 +37,11 @@ export class TreeComponent extends AbstractComponent implements OnInit {
    */
   public beaconDeviceIdPreselect: string;
 
+  /**
+   * Whether the tree slideshow should be paused or played.
+   */
+  public pauseTreeSlideshow: boolean = false;
+
   constructor(private route: ActivatedRoute,
               private treeService: TreeService,
               public envService: EnvironmentService) {

@@ -39,7 +39,7 @@ export class SubscriptionManagerService {
   }
 
   /**
-   * Unsuibscribe from all subscriptions registered with specified tag.
+   * Unsubscribe from all subscriptions registered with specified tag.
    * If no tag is given, the default tag is used.
    */
   public unsubscribe(tag?: string) {
@@ -48,7 +48,12 @@ export class SubscriptionManagerService {
       tag = SubscriptionManagerService.UNTAGGED_KEY;
     }
 
-    this.subscriptions.get(tag).forEach((sub: Subscription) =>  {
+    const subs = this.subscriptions.get(tag);
+    if (!subs) {
+      return;
+    }
+
+    subs.forEach((sub: Subscription) =>  {
       sub.unsubscribe();
     });
 

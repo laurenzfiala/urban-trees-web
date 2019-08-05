@@ -20,6 +20,11 @@ export enum BeaconStatus {
    * The beacon has invalid settings which prevent correct
    * read-out of data or logs.
    */
-  INVALID_SETTINGS = 'INVALID_SETTINGS'
+  INVALID_SETTINGS = 'INVALID_SETTINGS',
+
+  /**
+   * The beacon has not yet been read out.
+   */
+  INITIAL = 'INITIAL'
 
 }

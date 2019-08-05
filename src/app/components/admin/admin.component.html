@@ -1,42 +1,58 @@
-<ut-header></ut-header>
-
-<div class="container mt-3">
-
-  <h4 class="text-center">Admin console</h4>
-  <hr />
-
-  <div class="category tree">
-    <div class="indicator"></div>
-
-    <div class="links">
-      <button class="btn btn-default" routerLink="tree">
-        Manage trees &amp; beacons
-      </button>
+<div class="content-cat">
+  <div class="container">
+    <div class="content-cat-heading">Manage trees</div>
+    <div class="content-cat-text">
+      Add new tress and modify existing ones.
     </div>
+
+    <a class="content-cat-link" tabindex="-1" routerLink="tree">
+      Manage trees
+    </a>
+
   </div>
+</div>
 
-  <hr />
-
-  <div class="category user">
-    <div class="indicator"></div>
-
-    <div class="links">
-      <button class="btn btn-default" routerLink="user">
-        Manage users
-      </button>
+<div class="content-cat">
+  <div class="container">
+    <div class="content-cat-heading">Manage beacons</div>
+    <div class="content-cat-text">
+      Add and remove beacons and modify their properties.<br/>
+      <i class="feature-pointer mr-1 offset"></i>
+      Additionally, you can now find diagnostic utilities for beacon readouts.
     </div>
+
+    <a class="content-cat-link" tabindex="-1" routerLink="beacon">
+      Manage  beacons
+    </a>
+
   </div>
+</div>
 
-  <hr />
-
-  <div class="category announcement">
-    <div class="indicator"></div>
-
-    <div class="links">
-      <button class="btn btn-default" routerLink="announcements">
-        Announcements
-      </button>
+<div class="content-cat">
+  <div class="container">
+    <div class="content-cat-heading">Manage users</div>
+    <div class="content-cat-text">
+      Add new users, delete existing ones, create one-time login links, disable accounts or modify user specific
+      access roles.
     </div>
-  </div>
 
+    <a class="content-cat-link" tabindex="-1" routerLink="user">
+      Manage users
+    </a>
+
+  </div>
+</div>
+
+<div class="content-cat">
+  <div class="container">
+    <div class="content-cat-heading">Manage announcements</div>
+    <div class="content-cat-text">
+      Show announcements to all site users if any news are important.
+    </div>
+
+    <a class="content-cat-link" tabindex="-1" routerLink="announcements">
+      Manage announcements
+    </a>
+
+  </div>
 </div>

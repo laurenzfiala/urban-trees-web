@@ -13,10 +13,10 @@ export class AudioImgComponent implements OnInit {
   @Input()
   public audio: string;
 
-  @ViewChild('player')
+  @ViewChild('player', { static: true })
   private player: any;
 
-  @ViewChild('infoPopover')
+  @ViewChild('infoPopover', { static: false })
   private infoPopover: any;
 
   /**

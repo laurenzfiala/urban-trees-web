@@ -1,12 +1,19 @@
 {
 	"app": {
 		"title": "Urban Trees",
-		"subtitle": "as climate messengers"
+		"subtitle": "as climate messengers",
+    "date_format": "YYYY/MM/DD HH:SS",
+    "date_format_short": "MM/DD HH:SS",
+    "date_format_day": "MM/DD",
+    "date_format_time": "HH:SS"
 	},
 	"navigation": {
 		"home": "Home",
 		"phenology": "Phenology",
 		"tree_list": "Trees",
+		"measurements": "Measurements",
+		"statistics": "Statistics",
+		"admin": "Admin console",
 		"footer": {
 			"report": "Report a problem",
 			"imprint": "Imprint",
@@ -26,18 +33,21 @@
       "log_in": "Sign in",
       "log_out": "Sign out",
       "change_password": "Change password",
-      "change_username": "Change username"
+      "change_username": "Change username",
+      "measurements": "Beacon measurements",
+      "statistics": "Statistics"
     }
 	},
   "home": {
     "choose": "Choose what to do",
     "greeting": "Hello, {{username}}!",
     "level_up": "You reached level {{level}}!",
-    "loading_stats_achievements": "Loading achievements and statistics...",
-    "loading_stats_achievements_failed": "Failed to load achievements and statistics.",
     "level": "Level",
     "xp": "XP",
-    "next_level_difference": "more for level"
+    "next_level_difference": "more for level",
+    "score": {
+      "error": "Failed to load your score."
+    }
   },
 	"phenology": {
 		"observation_note": {
@@ -149,7 +159,8 @@
     "min": "low",
     "none_found": "Couldn't find any trees.",
     "tree": {
-      "location": "at {{street}}"
+      "location": "{{street}}",
+      "link": "Check it out"
     },
     "error": {
       "text": "We could not load the tree list, please try again."
@@ -212,8 +223,6 @@
     "go_to_login": "Go to login",
     "learn_more": "Learn more"
   },
-	"en-GB": "English",
-	"de-DE": "Deutsch",
 	"tree": {
 		"species": {
 			"gingko biloba": "Ginkgo",
@@ -288,11 +297,14 @@
         "heading": "Beacon Data",
         "range": "Data time range",
         "maxdataentries": "Maximum datapoints",
-        "none_attached": "This tree has no beacons attached to it."
+        "none_attached": "No beacons are attached to this tree.",
+        "status_locked": "This beacon can currently not be read out, because the connection credentials are unknown.",
+        "status_invalid_settings": "This beacon can currently not be read out, because incorrect configuration prevents read-out.",
+        "status_initial": "This beacon was newly deployed to this location. It has not yet been read out.",
+        "no_beacon_found": "No beacon found"
       },
       "transfer": {
         "success": "Beacon data successfully transferred!",
-        "success_note": "Information below is now up to date.",
         "failed": "Failed to get beacon data for this tree!",
         "message": {
           "title": "Thank you!",
@@ -300,6 +312,7 @@
         }
       },
       "data": {
+        "error": "Could not load this beacons' data",
         "missing": "No data for beacon in given timespan",
         "datapoints": "datasets",
         "mode": {
@@ -320,24 +333,168 @@
     "audioimg": {
       "help": {
         "controls": "Click to show controls"
-      }
+      },
+      "incompatible": "Your browser unfortunately does not support this audio format."
     }
 	},
 	"general": {
 		"retry": "Retry",
 		"error": "Error",
-		"imprint": "Imprint"
-	},
-	"imprint": {
-		"partners": "Partners",
-		"license": "License",
-		"os_projects": "Open Source Projects",
-		"os_projects_text": "Following is a list of open source projects used to create this website.",
-		"license_text": "Not currently defined."
+		"imprint": "Imprint",
+    "input_annotation": "Search results update automatically while typing."
 	},
   "map": {
     "error_default_text": "Could not load map data. Please try again.",
     "activator": "Click to use map",
     "activator_touch": "Tap to use map"
+  },
+  "settings": {
+    "language": {
+      "title": "Language",
+      "desc":  "Choose which language to use for the whole site."
+    },
+    "account": {
+      "title": "Manage Account",
+      "desc":  "Change your username or password here.",
+      "change_username":  "Change username",
+      "change_password":  "Change password"
+    },
+    "support": {
+      "title": "Request Support",
+      "desc":  "Request help from - or report problems to - the project team.",
+      "link":  "Request support"
+    },
+    "delete_account": {
+      "title": "Delete Account",
+      "desc": "If you want to delete your account once and for all, you can do that here.",
+      "warning": "This action can't be undone.",
+      "btn": "Delete Account",
+      "popover_title": "Delete Account?",
+      "popover_desc": "Deletion can't be undone.",
+      "popover_btn": "Delete account now",
+      "popover_btn_progress": "Deleting account",
+      "popover_btn_success": "Deleted successfully",
+      "popover_btn_failed": "Could not delete account"
+    },
+    "langs": {
+      "en-GB": "English",
+      "de-DE": "Deutsch"
+    }
+  },
+  "missing": {
+    "title": "Page not found",
+    "desc": "It seems you have been linked to a non-existent page. Use the links above to navigate."
+  },
+  "measurements": {
+    "temperature": {
+      "title": "Recorded Temperatures",
+      "error": "Could not load temperature data",
+      "max_temp": "Maximum Temperature",
+      "avg_temp": "Average Temperature",
+      "min_temp": "Minimum Temperature"
+    },
+    "humidity": {
+      "title": "Recorded Humidity",
+      "error": "Could not load humidity data",
+      "max_humi": "Maximum Humidity",
+      "avg_humi": "Average Humidity",
+      "min_humi": "Minimum Humidity"
+    },
+    "beacons": {
+      "title": "Beacon Data",
+      "desc": "Find single beacons and their data here.",
+      "error": "Could not load beacons",
+      "help": "Want to help collect data?",
+      "help_link": "Find out how to help",
+      "search_placeholder": "Enter beacon name..."
+    }
+  },
+  "statistics": {
+    "beaconreadouts": {
+      "title": "Beacon Readouts",
+      "desc": "Here you can see how often project participants read out our Bluetooth-Beacons every day. Every one of these read-outs helps us a tremendous amount and is hugely appreciated!",
+      "error": "Could not load system statistics",
+      "help_link": "How can I help?",
+      "readouts_today": "Read-outs today"
+    },
+    "phenologyobs": {
+      "title": "Phenology Observations",
+      "desc": "Here you can see how often project participants conducted a phenology observation. Every one of these observations takes about 10 minutes and helps a lot!",
+      "error": "Could not load system statistics",
+      "help_link": "How can I help?",
+      "obs_today": "Observations today"
+    },
+    "data": {
+      "title": "What data is collected?",
+      "desc": "The following things are currently registered with our system.",
+      "error": "Could not load system statistics",
+      "cities": "Cities with trees",
+      "tree_species": "Tree Species",
+      "trees": "Trees",
+      "beacons": "Deployed beacons",
+      "beacon_readouts": "Beacon-Readouts"
+    },
+    "phenology": {
+      "title": "Phenology",
+      "desc": "We regularly observe trees' buds and check whether they are open, half-open or still closed. This gives us very valuable data to compare trees between different locations.",
+      "error": "Could not load system statistics",
+      "obs_trees": "Observed Trees (x buds, etc.)",
+      "obs_obj": "Observed Objects (buds, etc.)"
+    }
+  },
+  "imprint": {
+    "title": "Imprint",
+    "title_disclaimer": "Some of the information below is only available in german",
+    "partners": "Partners",
+    "license": "License",
+    "os_projects": "Open Source Projects",
+    "os_projects_text": "Following is a list of open source projects used to create this website."
+  },
+  "home": {
+    "title": "Welcome to&nbsp;<b>Urban Trees</b>!",
+    "desc": "You can use this site to enter phenology data for trees, read information and statistics about trees and beacons and gain experience points for helping us collect data!",
+    "title_user": "Welcome back to&nbsp;<b>Urban Trees</b>, {{username}}!",
+    "desc_user_1": "We really appreciate any ",
+    "desc_phenobs_link": "Phenology observations",
+    "desc_user_2": " or beacon readouts (using the <a class=\"link\" tabindex=\"-1\" href=\"https://play.google.com/apps/internaltest/4699755394511268796\" target=\"_blank\">android app</a>). When logged in, you can earn experience points and advance your level by completing one of these activities.",
+    "user_score": {
+      "title": "Your Score",
+      "error": "Could not load your score"
+    },
+    "admin_console": {
+      "title": "Admin Console",
+      "desc": "Admins can add trees, beacons and announcements in the admin console.",
+      "link": "Go to admin console"
+    },
+    "project_intro": {
+      "title": "What we do",
+      "desc": "We monitor lots of trees with Bluetooth-beacons and by hand with what's called <span class=\"font-italic\">&raquo;Phenology observation&laquo;</span>. They are entered by interested students in three counties around europe.",
+      "error": "Could not load project statistics",
+      "cities": "Cities",
+      "trees": "Trees",
+      "obs": "Observations",
+      "beacons": "Beacons",
+      "beacon_datasets": "Beacon-Datasets",
+      "link": "View detailed statistics"
+    },
+    "more_info": {
+      "title": "More information",
+      "desc": "Find out more about the <span class=\"font-italic\">Urban Trees as climate messengers</span>-Project on our info-website with lots of additional project details.",
+      "link": "Visit now"
+    }
+  },
+  "user_overview": {
+    "xp": "XP",
+    "desc_level_5+": "Wow, you've already earned {{xp}} XP!<br/>Great job! Thank you for helping us collect all this information.",
+    "desc_level_1-5": "You've earned {{xp}} XP!<br/>Thank you so much for helping us collect more data!",
+    "desc_level_0": "You have not yet earned any XP!<br/>Consider contributing and earning XP by reading out beacons and submitting phenology observations.",
+    "view_details": "View details",
+    "details": {
+      "title": "Score details",
+      "desc_level": "You are level {{level}}.",
+      "desc_new_level": "You have just reached level {{level}}!",
+      "desc_xp_needed": "{{nextLevelRemainingXp}} XP more needed for level {{nextLevel}}.",
+      "contributions": "Your latest contributions:"
+    }
   }
 }

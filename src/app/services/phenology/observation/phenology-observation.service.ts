@@ -15,6 +15,7 @@ import {Observable} from 'rxjs/Observable';
 import {Subject} from 'rxjs/Subject';
 import {ApiError} from '../../../entities/api-error.entity';
 import {SubscriptionManagerService} from '../../subscription-manager.service';
+import {TranslateService} from '@ngx-translate/core';
 
 @Injectable()
 export class PhenologyObservationService extends AbstractService {
@@ -172,7 +173,7 @@ export class PhenologyObservationService extends AbstractService {
     this.dataset.treeId = this.selectedTree.id;
 
     let path = this.envService.endpoints.getPhenologyDatasetSubmission(this.dataset.treeId);
-    this.http.post(path, this.dataset.apply())
+    this.http.post(path, this.dataset.apply(this.envService.outputDateFormat))
       .timeout(this.envService.defaultTimeout)
       .map(value => PhenologyDataset.fromObject(value))
       .subscribe((result: PhenologyDataset) => {

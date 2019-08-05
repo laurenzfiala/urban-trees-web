@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {CanActivateChild, Router} from '@angular/router';
-import {ActivatedRouteSnapshot, RouterStateSnapshot} from '@angular/router/src/router_state';
+import {ActivatedRouteSnapshot, RouterStateSnapshot} from '@angular/router';
 import {PhenologyObservationService} from '../../../services/phenology/observation/phenology-observation.service';
 import {DFinishComponent} from './d-finish/d-finish.component';
 import {BObservationComponent} from './b-observation/b-observation.component';

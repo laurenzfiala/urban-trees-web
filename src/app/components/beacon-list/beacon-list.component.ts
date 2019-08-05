@@ -1,15 +1,15 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {BeaconData} from '../../entities/beacon-data.entity';
-import {TreeFrontend} from '../../entities/tree-frontend.entity';
 import {AbstractComponent} from '../abstract.component';
 import {TreeService} from '../../services/tree.service';
-import {Beacon} from '../../entities/beacon.entity';
 import {BeaconSettings} from '../../entities/beacon-settings.entity';
 import {BeaconFrontend} from '../../entities/beacon-frontend.entity';
 import {AdminService} from '../../services/admin/admin.service';
 import {BeaconDataMode} from '../../entities/beacon-data-mode.entity';
 import {BeaconLogSeverity} from '../../entities/BeaconLogSeverity';
 import {BeaconLog} from '../../entities/beacon-log.entity';
+import {TranslateService} from '@ngx-translate/core';
+import {BeaconStatus} from '../../entities/beacon-status.entity';
 
 @Component({
   selector: 'ut-beacon-list',
@@ -23,17 +23,26 @@ export class BeaconListComponent extends AbstractComponent implements OnInit {
 
   public StatusKey = StatusKey;
   public StatusValue = StatusValue;
+  public BeaconStatus = BeaconStatus;
 
-  private treeInternal: TreeFrontend;
+  private beaconsInternal: Array<BeaconFrontend>;
+  private selectedBeaconIndex: number = 0;
 
   @Input()
-  set tree(tree: TreeFrontend) {
-    this.treeInternal = tree;
+  set beacons(beacons: Array<BeaconFrontend>) {
+    this.beaconsInternal = beacons;
+    if (!this.selectedBeacon) {
+      this.selectedBeaconIndex = 0;
+    }
     this.loadBeaconData();
   }
 
-  get tree(): TreeFrontend {
-    return this.treeInternal;
+  get beacons(): Array<BeaconFrontend> {
+    return this.beaconsInternal;
+  }
+
+  get selectedBeacon(): BeaconFrontend {
+    return this.beaconsInternal[this.selectedBeaconIndex];
   }
 
   @Input()
@@ -45,7 +54,7 @@ export class BeaconListComponent extends AbstractComponent implements OnInit {
   @Input()
   public preselectDeviceId: string;
 
-  @Output('addBeacon')
+  @Output()
   public addBeacon: EventEmitter<boolean> = new EventEmitter<boolean>();
 
   public BeaconDataMode = BeaconDataMode;
@@ -62,11 +71,13 @@ export class BeaconListComponent extends AbstractComponent implements OnInit {
   public colorScheme: any;
 
   constructor(private treeService: TreeService,
-              private adminService: AdminService) {
+              private adminService: AdminService,
+              private translateService: TranslateService) {
     super();
   }
 
   ngOnInit() {
+    this.preSelectDevice(this.preselectDeviceId);
     this.loadBeaconData();
   }
 
@@ -84,6 +95,26 @@ export class BeaconListComponent extends AbstractComponent implements OnInit {
     ));
   }
 
+  /**
+   * Select given device.
+   */
+  private preSelectDevice(deviceName: string): void {
+
+    if (!deviceName) {
+      return;
+    }
+
+    let i = 0;
+    for (let b of this.beacons) {
+      if (b.deviceId === deviceName) {
+        this.selectedBeaconIndex = i;
+        return;
+      }
+      i++;
+    }
+
+  }
+
   public loadBeaconData(mode?: BeaconDataMode, forceRefresh?: boolean): void {
 
     if (mode !== undefined) {
@@ -91,20 +122,18 @@ export class BeaconListComponent extends AbstractComponent implements OnInit {
     }
     this.updateChartColorScheme();
 
-    if (!this.tree || !this.tree.beacons) {
+    if (!this.beacons) {
       return;
     }
 
-    for (let beacon of this.tree.beacons) {
+    const beacon = this.selectedBeacon;
 
-      this.setStatus(StatusKey.BEACON_DATA, 0);
-      if (this.showData) {
-        this.loadBeaconDataInternal(beacon);
-      }
-      if ((this.modify && !beacon.settings) || forceRefresh) {
-        this.loadBeaconSettings(beacon);
-      }
-
+    this.setStatus(StatusKey.BEACON_DATA, StatusValue.PENDING);
+    if (this.showData) {
+      this.loadBeaconDataInternal(beacon);
+    }
+    if ((this.modify && !beacon.settings) || forceRefresh) {
+      this.loadBeaconSettings(beacon);
     }
 
   }
@@ -121,10 +150,11 @@ export class BeaconListComponent extends AbstractComponent implements OnInit {
    */
   private loadBeaconDataInternal(beacon: BeaconFrontend): void {
 
+    this.setStatus(StatusKey.BEACON_DATA, StatusValue.IN_PROGRESS);
     this.treeService.loadBeaconData(beacon.id, this.maxDatapoints, this.currentBeaconDataMode, (beaconData: Array<BeaconData>) => {
       beacon.datasets = beaconData;
-      beacon.populateChartData(this.currentBeaconDataMode);
-      this.setStatus(StatusKey.BEACON_DATA, this.getStatus(StatusKey.BEACON_DATA) + 1);
+      beacon.populateChartData(this.currentBeaconDataMode, this.translateService);
+      this.setStatus(StatusKey.BEACON_DATA, StatusValue.SUCCESSFUL);
     }, (error, apiError) => {
       this.setStatus(StatusKey.BEACON_DATA, StatusValue.FAILED);
     });
@@ -135,14 +165,14 @@ export class BeaconListComponent extends AbstractComponent implements OnInit {
    * Load the beacon settings for the given beacon.
    * @param beacon
    */
-  private loadBeaconSettings(beacon: Beacon): void {
+  private loadBeaconSettings(beacon: BeaconFrontend): void {
 
-    this.setStatus(StatusKey.BEACON_SETTINGS, StatusValue.IN_PROGRESS);
+    beacon.settingsLoadingStatus = StatusValue.IN_PROGRESS;
     this.treeService.loadBeaconSettings(beacon.id, (beaconSettings: BeaconSettings) => {
       beacon.settings = beaconSettings;
-      this.setStatus(StatusKey.BEACON_SETTINGS, StatusValue.SUCCESSFUL);
+      beacon.settingsLoadingStatus = StatusValue.SUCCESSFUL;
     }, (error, apiError) => {
-      this.setStatus(StatusKey.BEACON_SETTINGS, StatusValue.FAILED);
+      beacon.settingsLoadingStatus = StatusValue.FAILED;
     });
 
   }
@@ -184,7 +214,7 @@ export class BeaconListComponent extends AbstractComponent implements OnInit {
 
   public setBeaconLogSeverity(severity: BeaconLogSeverity): void {
     this.selectedMinLogSeverity = severity;
-    for (let beacon of this.tree.beacons) {
+    for (let beacon of this.beacons) {
       beacon.logs = [];
       if (beacon.isLogsShown) {
         this.loadBeaconLogsInitial(beacon);
@@ -213,23 +243,6 @@ export class BeaconListComponent extends AbstractComponent implements OnInit {
 
   }
 
-  /**
-   * If #preselectDeviceId is set, return true if the given beacon
-   * matches the deviceId set.
-   * If it's unset, preselect the first beacon.
-   * @see preselectDeviceId
-   */
-  public isTabActive(beacon: Beacon): boolean {
-
-    if (this.preselectDeviceId) {
-      return beacon.deviceId === this.preselectDeviceId;
-    } else {
-      this.preselectDeviceId = beacon.deviceId;
-      return true;
-    }
-
-  }
-
   private updateChartColorScheme(): any {
 
     switch (this.currentBeaconDataMode) {
@@ -253,17 +266,15 @@ export class BeaconListComponent extends AbstractComponent implements OnInit {
 
 export enum StatusKey {
 
-  BEACON_DATA,
-  BEACON_SETTINGS,
-  BEACON_LOGS
+  BEACON_DATA
 
 }
 
 export enum StatusValue {
 
-  PENDING,
-  IN_PROGRESS,
-  SUCCESSFUL,
-  FAILED = -1
+  IN_PROGRESS = 0,
+  SUCCESSFUL = 1,
+  FAILED = 2,
+  PENDING = 3
 
 }

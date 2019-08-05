@@ -6,7 +6,7 @@ import {ChartData} from './chart-data.entity';
 import * as moment from 'moment';
 import {BeaconDataMode} from './beacon-data-mode.entity';
 import {BeaconLog} from './beacon-log.entity';
-import {BeaconLogSeverity} from './BeaconLogSeverity';
+import {TranslateService} from '@ngx-translate/core';
 
 /**
  * Used to attach beacon data to the beacon info.
@@ -27,6 +27,8 @@ export class BeaconFrontend extends Beacon {
   public canShowMoreLogs: boolean = true;
   public logs: Array<BeaconLog> = new Array<BeaconLog>();
 
+  public settingsLoadingStatus: number;
+
   constructor(
     id: number,
     deviceId: string,
@@ -40,7 +42,10 @@ export class BeaconFrontend extends Beacon {
   /**
    * TODO
    */
-  public populateChartData(mode: BeaconDataMode): void {
+  public populateChartData(mode: BeaconDataMode, translateService: TranslateService): void {
+
+    let dateFormat = translateService.instant('app.date_format_day');
+    let dateFormatWithTime = translateService.instant('app.date_format_short');
 
     if (mode === BeaconDataMode.TEMP_LAST_MONTH_PER_DAY) {
 
@@ -57,7 +62,7 @@ export class BeaconFrontend extends Beacon {
         nextDataset = this.datasets[i];
         if (i > 0) {
           dataset = this.datasets[i-1];
-          datasetDate = moment(dataset.observationDate).format('MM-DD');
+          datasetDate = moment(dataset.observationDate).format(dateFormat);
         }
 
         dataPerDayCounter++;
@@ -70,7 +75,7 @@ export class BeaconFrontend extends Beacon {
           tempMax = dataset.temperature;
         }
 
-        if (!nextDataset || datasetDate !== moment(nextDataset.observationDate).format('MM-DD')) {
+        if (!nextDataset || datasetDate !== moment(nextDataset.observationDate).format(dateFormat)) {
           this.chartData[0].series.push(new ChartData(datasetDate, tempMin));
           this.chartData[1].series.push(new ChartData(datasetDate, tempSum / dataPerDayCounter));
           this.chartData[2].series.push(new ChartData(datasetDate, tempMax));
@@ -99,7 +104,7 @@ export class BeaconFrontend extends Beacon {
         nextDataset = this.datasets[i];
         if (i > 0) {
           dataset = this.datasets[i-1];
-          datasetDate = moment(dataset.observationDate).format('MM-DD');
+          datasetDate = moment(dataset.observationDate).format(dateFormat);
         }
 
         dataPerDayCounter++;
@@ -112,7 +117,7 @@ export class BeaconFrontend extends Beacon {
           tempMax = dataset.humidity;
         }
 
-        if (!nextDataset || datasetDate !== moment(nextDataset.observationDate).format('MM-DD')) {
+        if (!nextDataset || datasetDate !== moment(nextDataset.observationDate).format(dateFormat)) {
           this.chartData[0].series.push(new ChartData(datasetDate, tempMin));
           this.chartData[1].series.push(new ChartData(datasetDate, tempSum / dataPerDayCounter));
           this.chartData[2].series.push(new ChartData(datasetDate, tempMax));
@@ -135,7 +140,7 @@ export class BeaconFrontend extends Beacon {
 
       let datasetDate;
       this.datasets.forEach(dataset => {
-        datasetDate = moment(dataset.observationDate).format('MM-DD HH:mm');
+        datasetDate = moment(dataset.observationDate).format(dateFormatWithTime);
         this.chartData[0].series.push(new ChartData(datasetDate, dataset.temperature));
         this.chartData[1].series.push(new ChartData(datasetDate, dataset.humidity));
         this.chartData[2].series.push(new ChartData(datasetDate, dataset.dewPoint));

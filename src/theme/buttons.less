@@ -4,78 +4,74 @@
 }
 
 // if hover is unsupported, display text & blurred background always
-.btn-img {
+/*.btn-img {
   &:before {
     .hover-unsupported({ display: none !important; });
   }
-}
+}*/
 
 a.btn-img {
   text-decoration: none;
-  cursor: default;
+  cursor: pointer;
   color: white;
 }
 
 .btn-img {
   position: relative;
 
-  margin: 0 10px;
+  margin: 10px;
 
   flex-grow: 1;
   flex-basis: 0;
 
   width: auto;
-  height: 150px;
+  min-width: 250px;
+  height: 125px;
 
   border-radius: @borderRadiusNew;
   background-size: cover;
-  background-position: center;
+  background-position: top center;
   background-repeat: no-repeat;
 
   color: rgba(255, 255, 255, 0.85);
+  box-shadow: @boxShadowHighlight;
   text-shadow: 0 0 2px black;
-  font-size: 0.8rem;
+  font-size: @fontSizeBase;
   display: inline-flex;
   align-items: flex-end;
-  justify-content: center;
+  justify-content: flex-start;
   padding-bottom: 0.35rem;
 
   user-select: none;
 
-  &:before,
-  &:after {
-    border-radius: @borderRadiusNew;
+  transition: box-shadow 150ms;
 
+  > div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 @gutter;
+    z-index: 2;
+
+    > i {
+      opacity: 0.85;
+    }
+  }
+
+  &:before {
     content: "";
+
     position: absolute;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    display: block;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    opacity: 1;
-  }
 
-  &:before {
-    transition: opacity 0.25s;
-  }
-
-  &:after {
-    background-size: 65px;
-    transition: background-size 0.25s, opacity 0.25s;
+    background: linear-gradient(to bottom, transparent 75%, rgba(0, 0, 0, 0.35) 100%);
   }
 
   &:hover {
-    &:before {
-      opacity: 0;
-    }
-    &:after {
-      opacity: 0.35;
-      background-size: 80px;
-    }
+    box-shadow: @boxShadowHighlightHover;
   }
 
   &.lg {
@@ -83,109 +79,103 @@ a.btn-img {
   }
 
   &.trees {
-    &:before {
-      background-image: url("/assets/img/btn-img-bg/tree_list_blur.png");
-    }
-    &:after {
-      background-image: url("/assets/img/icon/light/tree.svg");
-    }
     background-image: url("/assets/img/btn-img-bg/tree_list.png");
-    .hover-unsupported({
-      background-image: url("/assets/img/btn-img-bg/tree_list_blur.png") !important;
-    });
   }
   &.phenology {
-    &:before {
-      background-image: url("/assets/img/btn-img-bg/phenology_blur.png");
-    }
-    &:after {
-      background-image: url("/assets/img/icon/light/leaf.svg");
-    }
     background-image: url("/assets/img/btn-img-bg/phenology.png");
-    .hover-unsupported({
-      background-image: url("/assets/img/btn-img-bg/phenology_blur.png") !important;
-    });
   }
-  &.account {
-    &:before {
-      background-image: url("/assets/img/btn-img-bg/account_blur.png");
-    }
-    &:after {
-      background-image: url("/assets/img/icon/light/user.svg");
-    }
-    background-image: url("/assets/img/btn-img-bg/account.svg");
-    .hover-unsupported({
-      background-image: url("/assets/img/btn-img-bg/account_blur.png") !important;
-    });
+  &.measurements {
+    background-image: url("/assets/img/btn-img-bg/measurements.png");
+  }
+  &.statistics {
+    background-image: url("/assets/img/btn-img-bg/statistics.png");
   }
   &.infopage {
-    &:before {
-      background-image: url("/assets/img/btn-img-bg/infopage_blur.png");
-    }
-    &:after {
-      background-image: url("/assets/img/icon/light/infopage.svg");
-    }
     background-image: url("/assets/img/btn-img-bg/infopage.png");
-    .hover-unsupported({
-      background-image: url("/assets/img/btn-img-bg/infopage_blur.png") !important;
-    });
   }
   &.login {
-    &:before {
-      background-image: url("/assets/img/btn-img-bg/login_blur.png");
-    }
-    &:after {
-      background-image: url("/assets/img/icon/light/login.svg");
-    }
     background-image: url("/assets/img/btn-img-bg/login.svg");
-    .hover-unsupported({
-      background-image: url("/assets/img/btn-img-bg/login_blur.png") !important;
-    });
   }
   &.logout {
-    &:before {
-      background-image: url("/assets/img/btn-img-bg/login_blur.png");
-    }
-    &:after {
-      background-image: url("/assets/img/icon/light/logout.svg");
-    }
     background-image: url("/assets/img/btn-img-bg/login.svg");
-    .hover-unsupported({
-      background-image: url("/assets/img/btn-img-bg/login_blur.png") !important;
-    });
   }
   &.change-password {
-    &:before {
-      background-image: url("/assets/img/btn-img-bg/change_password_blur.png");
-    }
-    &:after {
-      background-image: url("/assets/img/icon/light/key.svg");
-    }
     background-image: url("/assets/img/btn-img-bg/change_password.svg");
-    .hover-unsupported({
-      background-image: url("/assets/img/btn-img-bg/change_password_blur.png") !important;
-    });
   }
   &.change-username {
-    &:before {
-      background-image: url("/assets/img/btn-img-bg/change_username_blur.png");
-    }
-    &:after {
-      background-image: url("/assets/img/icon/light/user.svg");
-    }
     background-image: url("/assets/img/btn-img-bg/change_username.svg");
-    .hover-unsupported({
-      background-image: url("/assets/img/btn-img-bg/change_username_blur.png") !important;
-    });
   }
   &.admin-console {
-    &:before {
-      background-image: url("/assets/img/btn-img-bg/admin.png");
-    }
-    &:after {
-      background-image: url("/assets/img/icon/light/admin.svg");
-    }
     background-image: url("/assets/img/btn-img-bg/admin.png");
   }
 }
 
+// custom link button theme
+.link-btn {
+  display: inline-block;
+  padding: (@gutter/2);
+  font-size: 1em;
+  font-weight: normal;
+  line-height: 1;
+  color: @linkColor;
+  border: @linkBorder;
+  background-color: transparent;
+  transition: none;
+  cursor: pointer;
+
+  &:hover,
+  &:active,
+  &.active {
+    text-decoration: none;
+    color: @linkHoverColor !important;
+    border-color: @linkHoverColor !important;
+  }
+
+  &.badge-sm {
+    font-size: @fontSizeSmall;
+  }
+
+  &.badge-xs {
+    font-size: @fontSizeExtraSmall;
+  }
+
+  &.danger {
+    color: lighten(@dangerColor, 15%);
+    border-color: lighten(@dangerColor, 15%);
+
+    &:hover {
+      color: @dangerColor;
+      border-color: @dangerColor;
+    }
+  }
+
+  &.primary {
+    color: lighten(@primaryColor, 15%);
+    border-color: lighten(@primaryColor, 15%);
+
+    &:hover {
+      color: @primaryColor;
+      border-color: @primaryColor;
+    }
+  }
+
+  &.success {
+    color: lighten(@successColor, 15%);
+    border-color: lighten(@successColor, 15%);
+
+    &:hover {
+      color: @successColor;
+      border-color: @successColor;
+    }
+  }
+
+  &.warning {
+    color: lighten(@warningColor, 15%);
+    border-color: lighten(@warningColor, 15%);
+
+    &:hover {
+      color: @warningColor;
+      border-color: @warningColor;
+    }
+  }
+}

@@ -1,14 +1,14 @@
-<ut-header></ut-header>
-
-<div class="steps round-children">
-  <a class="step"
-     *ngFor="let step of stepItems; let i = index"
-     [routerLink]="step.routerLink"
-     [ngClass]="{'step-highlight': i === currentStepIndex,
-                'step-disabled': i > finishedStepIndex + 1 || i === currentStepIndex}">
-    <div class="step-number">{{i + 1}}</div>
-    <div class="step-title d-none d-sm-block">{{step.label}}</div>
-  </a>
+<div class="steps-wrapper round-children">
+  <div class="container steps">
+    <a class="step"
+       *ngFor="let step of stepItems; let i = index"
+       [routerLink]="step.routerLink"
+       [ngClass]="{'step-highlight': i === currentStepIndex,
+                  'step-disabled': i > finishedStepIndex + 1 || i === currentStepIndex}">
+      <div class="step-number">{{i + 1}}</div>
+      <div class="step-title d-none d-sm-block">{{step.label}}</div>
+    </a>
+  </div>
 </div>
 
 <div class="pt-3">
@@ -32,5 +32,3 @@
     </div>
   </div>
 </div>
-
-<ut-footer></ut-footer>

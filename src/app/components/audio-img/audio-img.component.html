@@ -21,8 +21,7 @@
   </div>
 
   <audio #player [src]="audio" (timeupdate)="onAudioTimeUpdate();" (ended)="stop(); closeOverlay();">
-    <!-- TODO translate -->
-    Your browser unfortunately does not support this audio format.
+    {{'tree.audioimg.incompatible' | translate}}
   </audio>
 
 </div>

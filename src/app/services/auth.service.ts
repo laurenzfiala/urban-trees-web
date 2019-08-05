@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {ApplicationRef, ChangeDetectorRef, Injectable} from '@angular/core';
 import {Log} from './log.service';
 import {EnvironmentService} from './environment.service';
 import {HttpClient, HttpErrorResponse, HttpResponse} from '@angular/common/http';
@@ -11,6 +11,7 @@ import {LoginAccessReason} from '../components/project-login/logout-reason.enum'
 import {LoginStatus} from '../components/project-login/login-status.enum';
 import {JWTToken} from '../entities/jwt-token.entity';
 import {PasswordReset} from '../entities/password-reset.entity';
+import {Observable, Subject} from 'rxjs';
 
 /**
  * Service for user authentication functionality.
@@ -35,6 +36,9 @@ export class AuthService extends AbstractService {
   public static HEADER_AUTH_KEY: string = 'Authorization';
 
   private jwtHelper: JwtHelperService = new JwtHelperService();
+
+  // TODO
+  public stateChangedSubject: Subject<boolean> = new Subject<boolean>();
 
   constructor(private http: HttpClient,
               private router: Router,
@@ -85,6 +89,19 @@ export class AuthService extends AbstractService {
   }
 
   /**
+   * Returns the logged in users' unique ID.
+   * If the user is not logged in or login is anonymous (=> not JWT),
+   * return undefined.
+   */
+  public getUserId(): number {
+    let token = this.getJWTToken();
+    if (!token) {
+      return undefined;
+    }
+    return token.uid;
+  }
+
+  /**
    * Whether or not the current user is allowed
    * for the given grantRoles.
    * - If at least one role in grantRoles can also be
@@ -128,6 +145,7 @@ export class AuthService extends AbstractService {
       .subscribe((response: HttpResponse<any>) => {
         this.setJWTToken(response.headers.get(AuthService.HEADER_AUTH_KEY));
         AuthService.LOG.debug('Saved retrieved auth token to local storage.');
+        this.stateChanged();
         successCallback();
       }, (e: any) => {
         AuthService.LOG.error('Could not log in: ' + e.message, e);
@@ -191,6 +209,7 @@ export class AuthService extends AbstractService {
    */
   public logout(): void {
     this.deleteJWTToken();
+    this.stateChanged();
   }
 
   /**
@@ -322,6 +341,14 @@ export class AuthService extends AbstractService {
       return undefined;
     }
     return token;
+  }
+
+  private stateChanged(): void {
+    this.stateChangedSubject.next();
+  }
+
+  public onStateChanged(): Observable<boolean> {
+    return this.stateChangedSubject.asObservable();
   }
 
   /**

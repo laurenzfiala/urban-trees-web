@@ -1,14 +1,10 @@
-<ut-header></ut-header>
-
-<div class="container mt-3">
-
-  <h2>Page not found</h2>
-
-  It seems you have been linked to a non-existent page. This is not a problem if an URL was mistyped.
-  <hr/>
-  If an embedded link on this site linked you here, please report it
-  <a routerLink="/report" [queryParams]="{'subject': 'Link is invalid.'}">here</a>.
-
+<div class="content-cat">
+  <div class="container">
+    <div class="content-cat-heading">
+      {{'missing.title' | translate}}
+    </div>
+    <div class="content-cat-text">
+      {{'missing.desc' | translate}}
+    </div>
+  </div>
 </div>
-
-<ut-footer></ut-footer>

@@ -9,6 +9,7 @@ import {EnvironmentService} from '../../../../services/environment.service';
 import {PhenologyDatasetFrontend} from '../../../../entities/phenology-dataset-frontend.entity';
 import {TranslateService} from '@ngx-translate/core';
 import {TreeService} from '../../../../services/tree.service';
+import {MapMarker} from '../../../../interfaces/map-marker.entity';
 
 /**
  * First step of a phenology observation.
@@ -99,11 +100,11 @@ export class AInfoComponent extends AbstractComponent implements OnInit, OnDestr
 
   /**
    * Select a single tree to continue observation.
-   * @param {TreeFrontend} newSelectedTree tree that was newly selected
+   * @param {MapMarker} newSelectedTree tree that was newly selected
    */
-  public selectTree(newSelectedTree: TreeFrontend) {
+  public selectTree(newSelectedTree: MapMarker) {
 
-    this.selectedTree = newSelectedTree;
+    this.selectedTree = <TreeFrontend> newSelectedTree;
 
     if (this.observationsService.selectedTree && this.selectedTree.species.id !== this.observationsService.selectedTree.species.id) {
       this.observationsService.setDone(0, true, true);

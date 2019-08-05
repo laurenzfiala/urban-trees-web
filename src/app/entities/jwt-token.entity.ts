@@ -19,6 +19,12 @@ export class JWTToken {
   public sub: string;
 
   /**
+   * Custom.
+   * Unique user identifier that (other than sub) does not ever change.
+   */
+  public uid: number;
+
+  /**
    * JWT standard.
    * Expiry date in seconds since Unix epoch of the
    * token after which the backend requires renewed
@@ -32,8 +38,9 @@ export class JWTToken {
    */
   public rol: string;
 
-  constructor(sub: string, exp: number, rol: string) {
+  constructor(sub: string, uid: number, exp: number, rol: string) {
     this.sub = sub;
+    this.uid = uid;
     this.exp = exp;
     this.rol = rol;
   }
@@ -59,8 +66,9 @@ export class JWTToken {
 
     return new JWTToken(
       o.sub,
+      o.uid,
       o.exp,
-      o.rol,
+      o.rol
     );
 
   }

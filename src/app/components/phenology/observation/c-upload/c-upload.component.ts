@@ -18,7 +18,7 @@ export class CUploadComponent extends AbstractComponent implements OnInit {
 
   public UserImageError = UserImageError;
 
-  @ViewChild('observersInput')
+  @ViewChild('observersInput', { static: true })
   public observersInput: any;
 
   /**
