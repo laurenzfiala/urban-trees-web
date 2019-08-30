@@ -10,6 +10,7 @@
           Report {{r.id}}
           <span *ngIf="!r.autoCreate" class="badge badge-sm warning align-text-bottom ml-1">USER</span>
           <span *ngIf="r.autoCreate" class="badge badge-sm primary align-text-bottom ml-1">AUTO</span>
+          <span class="badge badge-sm align-text-bottom ml-1">{{r.reportDate | date:('app.date_format_angular' | translate)}}</span>
         </div>
         <div *ngIf="!isEditingReport(r)"
              class="ml-2 d-flex align-items-center report-resolve"
@@ -40,7 +41,7 @@
         Remark: <span class="text-subtle">{{r.remark}}</span>
         <div class="d-inline-flex align-items-center text-sm ml-1"
              (click)="editRemark(r)">
-          <i class="i i-dark i-edit i-3xs mr-1"></i>
+          <i class="i i-dark i-edit-sm i-3xs mr-1"></i>
           <a class="link">Edit</a>
         </div>
       </div>

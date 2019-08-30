@@ -1,8 +1,8 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
-import {AbstractComponent} from "../abstract.component";
-import {Log} from "../../services/log.service";
-import {TreeFrontend} from "../../entities/tree-frontend.entity";
-import {TranslateService} from "@ngx-translate/core";
+import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {AbstractComponent} from '../abstract.component';
+import {Log} from '../../services/log.service';
+import {TreeFrontend} from '../../entities/tree-frontend.entity';
+import {TranslateService} from '@ngx-translate/core';
 
 /**
  * Component for selecting a tree of the given ones.
@@ -12,16 +12,17 @@ import {TranslateService} from "@ngx-translate/core";
 @Component({
   selector: 'ut-tree-select',
   templateUrl: './tree-select.component.html',
-  styleUrls: ['./tree-select.component.less']
+  styleUrls: ['../tree-list/tree-list.component.less', './tree-select.component.less']
 })
 export class TreeSelectComponent extends AbstractComponent {
 
   private static LOG: Log = Log.newInstance(TreeSelectComponent);
 
   /**
-   * Event emitter triggered upon selecting a new/different tree.
+   * Event emitter triggered upon (de-)selecting a new/different tree.
+   * Deselecting emits null.
    */
-  @Output('selectedTreeChange')
+  @Output()
   public selectedTreeChange: EventEmitter<TreeFrontend> = new EventEmitter<TreeFrontend>();
 
   /**
@@ -31,6 +32,13 @@ export class TreeSelectComponent extends AbstractComponent {
   public selectedTree: TreeFrontend;
 
   /**
+   * Wheter or not to preselect the first tree in the list.
+   * Input "selectedTree" overrides this if it has an id != 0 and is non-falsy.
+   */
+  @Input()
+  public preselectFirstTree: boolean = false;
+
+  /**
    * Once loaded, contains all trees available for observation.
    */
   private availableTreesInternal: Array<TreeFrontend>;
@@ -38,17 +46,18 @@ export class TreeSelectComponent extends AbstractComponent {
   @Input() set availableTrees(value: Array<TreeFrontend>) {
     this.availableTreesInternal = value;
     this.setDisplayTreesPaginated(value);
-    if (this.selectedTree) {
-      this.selectTree(this.selectedTree.id);
+    if ((!this.selectedTree || this.selectedTree.id === 0) && this.preselectFirstTree && this.availableTreesInternal.length >= 1) {
+      this.toggleTree(this.availableTreesInternal[0].id);
+    } else if (this.selectedTree) {
+      this.toggleTree(this.selectedTree.id);
     }
   }
 
   /**
-   * Whether to show new tree selection.
-   * If "new Tree" is selected by the user, selectedTreeChange emits null.
+   * Whether to allow deselecting selected trees.
    */
   @Input()
-  public selectNewTree: boolean = false;
+  public allowDeselect: boolean = false;
 
   /**
    * Trees currently displayed.
@@ -84,7 +93,7 @@ export class TreeSelectComponent extends AbstractComponent {
       return;
     }
 
-    const minPageSize = 10;
+    const minPageSize = 6;
     const pages = 5;
     let pageSize = Math.ceil(this.availableTreesInternal.length / pages);
 
@@ -157,16 +166,22 @@ export class TreeSelectComponent extends AbstractComponent {
   }
 
   /**
-   * Select a single tree to continue observation.
+   * Select or deselect a single tree to continue observation.
    * @param {number} treeId id of that tree
    */
-  public selectTree(treeId: number) {
+  public toggleTree(treeId: number) {
 
-    if (this.availableTreesInternal === undefined){
+    if (this.availableTreesInternal === undefined) {
       return;
     }
 
-    this.selectedTree = this.availableTreesInternal.find(value => value.id === treeId);
+    const newSelection = this.availableTreesInternal.find(value => value.id === treeId);
+    if (this.allowDeselect && newSelection === this.selectedTree) {
+      this.selectedTree = null;
+    } else {
+      this.selectedTree = newSelection;
+    }
+
     this.selectedTreeChange.emit(this.selectedTree);
 
   }

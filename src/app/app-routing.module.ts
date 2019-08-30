@@ -1,16 +1,9 @@
 import {NgModule} from '@angular/core';
 import {Routes, RouterModule} from '@angular/router';
 import {HomeComponent} from './components/home/home.component';
-import {AInfoComponent} from './components/phenology/observation/a-info/a-info.component';
-import {BObservationComponent} from './components/phenology/observation/b-observation/b-observation.component';
-import {CUploadComponent} from './components/phenology/observation/c-upload/c-upload.component';
-import {DFinishComponent} from './components/phenology/observation/d-finish/d-finish.component';
 import {ObservationComponent} from './components/phenology/observation/observation.component';
 import {MissingComponent} from './components/missing/missing.component';
 import {ImprintComponent} from './components/imprint/imprint.component';
-import {
-  PhenologyObservationStepGuard
-} from './components/phenology/observation/phenology-observation-step.guard';
 import {TreeComponent} from './components/tree/tree.component';
 import {TreeListComponent} from './components/tree-list/tree-list.component';
 import {ProjectLoginComponent} from './components/project-login/project-login.component';
@@ -29,6 +22,8 @@ import {MeasurementsComponent} from './components/measurements/measurements.comp
 import {StatisticsComponent} from './components/statistics/statistics.component';
 import {SettingsComponent} from './components/settings/settings.component';
 import {MessagesComponent} from './components/messages/messages.component';
+import {ReportComponent} from './components/report/report.component';
+import {AdminBeaconManageComponent} from './components/admin/beacon/manage/manage.component';
 
 const routes: Routes = [
   {
@@ -107,6 +102,12 @@ const routes: Routes = [
     data: {roles: environment.security.roles.admin}
   },
   {
+    path: 'admin/beacon/manage',
+    component: AdminBeaconManageComponent,
+    canActivate: [ProjectLoginGuard, AdminGuard],
+    data: {roles: environment.security.roles.admin}
+  },
+  {
     path: 'admin/user',
     component: AdminUserComponent,
     canActivate: [ProjectLoginGuard, AdminGuard],
@@ -125,35 +126,24 @@ const routes: Routes = [
     data: {roles: environment.security.roles.admin}
   },
   {
+    path: 'report',
+    component: ReportComponent,
+    canActivate: [ProjectLoginGuard],
+    data: {roles: environment.security.roles.user}
+  },
+  {
     path: 'phenology',
     redirectTo: 'project/phenology'
   },
   {
-    path: 'project/phenology/observation/step',
+    path: 'project/phenology',
     component: ObservationComponent,
     canActivate: [ProjectLoginGuard],
-    canActivateChild: [ProjectLoginGuard, PhenologyObservationStepGuard],
+    canActivateChild: [ProjectLoginGuard],
     children: [
-      {
-        path: '',
-        redirectTo: '1',
-        pathMatch: 'full'
-      },
-      {
-        path: '1',
-        component: AInfoComponent
-      },
-      {
-        path: '2',
-        component: BObservationComponent
-      },
-      {
-        path: '3',
-        component: CUploadComponent
-      },
-      {
-        path: '4',
-        component: DFinishComponent
+      { // Note: redirect old URLs ../observation[[/step]/x]
+        path: '**',
+        redirectTo: ''
       }
     ]
   },

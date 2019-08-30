@@ -14,4 +14,12 @@ export class PhenologyObservation {
   public object: PhenologyObservationObject;
   public result: PhenologyObservationResult;
 
+  constructor(object?: PhenologyObservationObject,
+              result?: PhenologyObservationResult) {
+
+    this.object = object;
+    this.result = result;
+
+  }
+
 }

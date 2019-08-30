@@ -1,3 +1,5 @@
+@import (reference) "variables";
+
 .card {
   border-color: @lightBorderColor;
 }
@@ -216,6 +218,7 @@ hr {
 
 .custom-file-label {
   color: @darkGrey; // change
+  overflow: hidden;
 
   &.is-invalid {
     border: solid @lightBorderColor 1px;
@@ -236,6 +239,11 @@ hr {
 }
 
 .input-group {
+  .form-control {
+    box-shadow: none;
+    overflow: hidden;
+  }
+
   > .form-control:first-child {
     border-right: 0 !important;
   }
@@ -244,14 +252,15 @@ hr {
     border: solid @borderColor 1px;
     border-bottom-right-radius: @borderRadiusNew;
     border-top-right-radius: @borderRadiusNew;
+    background-color: @white;
 
     > .input-group-text {
       border: 0;
       margin: 0.3rem;
-      background-color: @lightBgColor;
       box-shadow: 0 1px 1px @darkBgColor;
       font-size: 0.8rem;
       border-radius: @borderRadius;
+      line-height: 1;
 
       &.is-invalid {
         color: white;
@@ -319,6 +328,10 @@ tabset .nav:not(.nav-pills) {
 
 .form-control::placeholder {
   color: @medGrey;
+}
+
+.form-group {
+  margin-bottom: @gutter;
 }
 
 /**

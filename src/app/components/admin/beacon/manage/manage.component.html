@@ -1,0 +1,365 @@
+<div class="nav-path">
+  <div class="container py-2">
+    <a class="link" routerLink="/admin">{{'navigation.admin' | translate}}</a>
+    /
+    <a class="link" routerLink="..">Beacons</a>
+    /
+    Manage
+  </div>
+</div>
+
+<div>
+  <div class="content-cat">
+    <div class="container">
+      <div class="content-cat-heading">
+        Manage beacons
+      </div>
+      <div class="content-cat-text">
+        Create or modify a beacon below.
+      </div>
+    </div>
+  </div>
+
+  <div class="content-cat">
+    <div class="container">
+      <div class="content-cat-heading">
+        Which Beacon?
+      </div>
+      <div class="content-cat-text">
+
+        <div *ngIf="!showBeaconSelect"
+             class="d-flex flex-row align-items-center flex-wrap m--1">
+          <div class="text-link m-1">
+            Creating a new beacon
+          </div>
+          <div class="m-1">
+            <div class="link-btn d-flex flex-row align-items-center"
+                 (click)="showBeaconSelect = true">
+              <i class="i i-xs i-dark i-edit mr-1"></i>
+              Modify an existing beacon
+            </div>
+          </div>
+        </div>
+
+        <ng-container *ngIf="showBeaconSelect">
+          <div class="d-flex flex-row align-items-center flex-wrap m--1">
+
+            <div *ngIf="beacon?.id === 0" class="text-link m-1">
+              Modifying an existing beacon
+            </div>
+            <div *ngIf="beacon?.id !== 0" class="text-link m-1">
+              Modifying existing beacon {{beacon.deviceId}} (#{{beacon.id}})
+            </div>
+
+            <div class="m-1">
+              <div class="link-btn d-flex flex-row align-items-center"
+                   (click)="showBeaconSelect = false; onSelectedBeaconChange(null)">
+                <i class="i i-xs i-dark i-cross mr-1"></i>
+                Create a new beacon
+              </div>
+            </div>
+
+          </div>
+
+          <hr/>
+
+          <div class="mt-2">
+            <ut-beacon-select
+              [availableBeacons]="availableBeacons"
+              [selectedBeacon]="beacon"
+              [preselectFirstBeacon]="true"
+              (selectedBeaconChange)="onSelectedBeaconChange($event)">
+            </ut-beacon-select>
+          </div>
+        </ng-container>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="content-cat">
+    <div class="container">
+      <div class="content-cat-heading">
+        Associate a tree
+      </div>
+      <div class="content-cat-text">
+
+        <div *ngIf="!showTreeSelect"
+             class="d-flex flex-row align-items-center flex-wrap m--1">
+          <div class="text-link m-1">
+            Beacon is independent
+          </div>
+          <div class="m-1">
+            <div class="link-btn d-flex flex-row align-items-center"
+                 (click)="showTreeSelect = true">
+              <i class="i i-xs i-dark i-link mr-1"></i>
+              Associate beacon with tree
+            </div>
+          </div>
+        </div>
+
+        <ng-container *ngIf="showTreeSelect">
+          <div class="d-flex flex-row align-items-center flex-wrap m--1">
+
+            <div *ngIf="!assocTree" class="text-link m-1">
+              Associating a tree with beacon
+            </div>
+            <div *ngIf="assocTree" class="text-link m-1">
+              Associating tree #{{assocTree.id}}
+            </div>
+
+            <div class="m-1">
+              <div class="link-btn d-flex flex-row align-items-center"
+                   (click)="showTreeSelect = false; onSelectedTreeChange(null)">
+                <i class="i i-xs i-dark i-cross mr-1"></i>
+                Disassociate tree
+              </div>
+            </div>
+
+          </div>
+
+          <hr/>
+
+          <div class="mt-2">
+            <ut-tree-select
+              [availableTrees]="availableTrees"
+              [preselectFirstTree]="true"
+              [selectedTree]="assocTree"
+              (selectedTreeChange)="onSelectedTreeChange($event)"
+            ></ut-tree-select>
+          </div>
+        </ng-container>
+
+      </div>
+    </div>
+  </div>
+
+  <div class="content-cat">
+    <div class="container">
+      <div class="content-cat-heading">
+        Properties
+      </div>
+      <form>
+
+        <div class="row">
+
+          <!-- DEVICE ID -->
+          <div class="col-sm-12 col-md-6 form-group">
+
+            <label for="location">Device ID</label>
+
+            <div class="form-row mb-2">
+              <div class="col">
+                <input id="beaconDeviceId" class="form-control" type="text" name="beaconDeviceId" [(ngModel)]="beacon.deviceId" />
+              </div>
+            </div>
+
+          </div>
+
+          <!-- BLUETOOTH ADDRESS -->
+          <div class="col-sm-12 col-md-6 form-group">
+
+            <label for="location">Address</label>
+
+            <div class="form-row mb-2">
+              <div class="col">
+                <input id="beaconBluetoothAddress" class="form-control" type="text" name="beaconBluetoothAddress" [(ngModel)]="beacon.bluetoothAddress" />
+              </div>
+            </div>
+
+          </div>
+
+          <!-- PIN -->
+          <div class="col-sm-12 col-md-6 form-group">
+
+            <div *ngIf="beacon.settingsLoadingStatus === StatusValue.FAILED"
+                 class="d-flex flex-row align-items-center text-danger">
+              <i class="i i-sm i-warning-danger mr-1"></i>
+              Beacon settings are invalid - can't set PIN
+            </div>
+
+            <div *ngIf="beacon.settingsLoadingStatus === StatusValue.IN_PROGRESS"
+                 class="d-flex flex-row align-items-center">
+              <i class="i i-sm i-load i-spin mr-1"></i>
+              Loading beacon settings...
+            </div>
+
+            <ng-container *ngIf="beacon?.settings?.pin && beacon?.settingsLoadingStatus === StatusValue.SUCCESSFUL">
+              <label for="location">PIN</label>
+
+              <div class="form-row mb-2">
+                <div class="col">
+                  <input id="beaconPin" class="form-control" type="text" name="beaconPin" [(ngModel)]="beacon.settings.pin" />
+                </div>
+              </div>
+            </ng-container>
+
+          </div>
+
+        </div>
+
+      </form>
+    </div>
+  </div>
+
+  <div class="content-cat">
+    <div class="container">
+      <div class="content-cat-heading">
+        Location
+      </div>
+
+      <ng-container *ngIf="assocTree">
+
+        <div *ngIf="!showLocation"
+             class="d-flex flex-row align-items-center flex-wrap m--1">
+          <div class="text-link m-1">
+            Location is locked to tree
+          </div>
+          <div class="m-1">
+            <div class="link-btn d-flex flex-row align-items-center"
+                 (click)="showLocation = true; onBeaconLocationTreeLink(false)">
+              <i class="i i-xs i-dark i-lock-open mr-1"></i>
+              Unlock location
+            </div>
+          </div>
+        </div>
+
+        <div *ngIf="showLocation"
+             class="d-flex flex-row align-items-center flex-wrap m--1">
+
+          <div class="text-link m-1">
+            Beacon location is unlocked
+          </div>
+
+          <div class="m-1">
+            <div class="link-btn d-flex flex-row align-items-center"
+                 (click)="showLocation = false; onBeaconLocationTreeLink(true)">
+              <i class="i i-xs i-dark i-lock-closed mr-1"></i>
+              Lock location
+            </div>
+          </div>
+
+        </div>
+
+      </ng-container>
+
+      <ng-container *ngIf="showLocation || !assocTree">
+
+        <hr *ngIf="showLocation" />
+
+        <div *ngIf="isNewBeacon()" class="content-cat-text mb-2">
+          Select on map
+        </div>
+        <div class="map-wrapper">
+          <ut-map
+            [userSetPin]="(!showBeaconSelect || beacon) && beacon?.location?.id !== beacon?.tree?.location?.id"
+            [markers]="marker ? [marker] : null"
+            [selectedMarker]="marker"
+            (selectedMarkerChange)="onBeaconSelectedMarkerChange($event)">
+          </ut-map>
+        </div>
+        <div *ngIf="beacon && marker"
+             class="adm-tree-map-annotation d-flex align-items-center flex-row flex-wrap text-subtle p-1">
+          <i class="i i-sm i-black i-location m-1"></i>
+          <span class="m-1">X</span>
+          <span class="badge coords m-1">{{beacon.getCoordsX()}}</span>
+          <span class="m-1">Y</span>
+          <span class="badge coords m-1">{{beacon.getCoordsY()}}</span>
+          <span class="m-1">{{beacon.getProjection()}}</span>
+        </div>
+
+        <form class="mt-2">
+
+          <div class="row">
+
+            <!-- LOCATION - CITY -->
+            <div class="col-sm-12 col-md-6 form-group">
+
+              <label for="city">City</label>
+
+              <div *ngIf="cities" class="form-row mb-2">
+                <div class="col">
+                  <select id="city" name="citySelect" [(ngModel)]="beacon.location.city" [compareWith]="compareCities" class="form-control">
+                    <option *ngFor="let c of cities" [ngValue]="c">{{c.name}}</option>
+                  </select>
+                </div>
+                <div class="col-auto">
+                  <div class="add-btn" (click)="showNewCityModal(newCityModal)"></div>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- LOCATION - STREET -->
+            <div class="col-sm-12 col-md-6 form-group" *ngIf="beacon.location">
+
+              <label for="location">Street &amp; house number</label>
+
+              <div class="form-row mb-2">
+                <div class="col">
+                  <input id="location" class="form-control" type="text" name="street" [(ngModel)]="beacon.location.street" />
+                </div>
+              </div>
+
+            </div>
+
+          </div>
+
+        </form>
+
+      </ng-container>
+    </div>
+  </div>
+
+  <div class="content-cat">
+    <div class="container">
+      <div class="d-flex flex-row flex-wrap align-items-center justify-content-end justify-content-md-start m--2">
+        <div class="link-container d-flex flex-row align-items-center m-2"
+             (click)="onDiscard()">
+          <i class="i i-sm i-dark i-cross-circle mr-1"></i>
+          <a class="link">Discard</a>
+        </div>
+        <div (click)="saveBeacon()"
+             class="link-container d-flex flex-row align-items-center m-2">
+          <i class="i i-sm i-send-primary mr-1"></i>
+          <a *ngIf="isNewBeacon()" class="link primary">Create Beacon</a>
+          <a *ngIf="!isNewBeacon()" class="link primary">Modify Beacon</a>
+        </div>
+        <div *ngIf="hasStatus(StatusKey.SAVE_BEACON, StatusValue.IN_PROGRESS)"
+             class="d-flex flex-row align-items-center justify-content-center m-2">
+          <i class="i i-sm i-black i-save mr-1"></i>
+          Saving beacon...
+        </div>
+        <div *ngIf="hasStatus(StatusKey.SAVE_BEACON, StatusValue.FAILED)"
+             class="d-flex flex-row align-items-center justify-content-center text-danger m-2">
+          <i class="i i-sm i-warning-danger mr-2"></i>
+          Beacon could not be saved.
+        </div>
+        <div *ngIf="hasStatus(StatusKey.SAVE_BEACON, StatusValue.SUCCESSFUL)"
+             class="d-flex flex-row align-items-center justify-content-center text-success m-2">
+          <i class="i i-sm i-check-success mr-2"></i>
+          Beacon {{savedBeacon.deviceId}} (#{{savedBeacon.id}}) successfully saved.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- NEW CITY MODAL -->
+  <ng-template #newCityModal>
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Add new city</h4>
+    </div>
+    <div class="modal-body">
+      Name of new city:
+      <input [(ngModel)]="newCity.name" type="text" class="form-control" />
+    </div>
+    <div class="modal-footer">
+      <div class="float-left mx-4">
+        <span *ngIf="hasStatus(StatusKey.NEW_CITY, StatusValue.IN_PROGRESS)">Adding city...</span>
+        <span *ngIf="hasStatus(StatusKey.NEW_CITY, StatusValue.FAILED)">City could not be added.</span>
+      </div>
+      <button type="button" class="btn btn-secondary" (click)="hideNewCityModal()">Close</button>
+      <button type="button" class="btn btn-primary" (click)="addCity()">Add city &amp; select</button>
+    </div>
+  </ng-template>
+</div>

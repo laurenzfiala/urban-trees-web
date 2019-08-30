@@ -1,4 +1,4 @@
-import {Component, Input, OnDestroy, OnInit, TemplateRef} from '@angular/core';
+import {Component, ElementRef, EmbeddedViewRef, Input, OnDestroy, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {interval, Observable, Subscription} from 'rxjs';
 import 'rxjs-compat/add/operator/takeWhile';
 
@@ -9,8 +9,14 @@ import 'rxjs-compat/add/operator/takeWhile';
 })
 export class SlideshowComponent implements OnInit, OnDestroy {
 
+  @ViewChild('predefImgSlide', {static: true})
+  public predefImgSlide: TemplateRef<any>;
+
   @Input()
-  public slides: Array<TemplateRef<any>>;
+  public slides: Array<TemplateRef<any> | any>;
+
+  @Input()
+  public slideTemplate: TemplateRef<any>;
 
   @Input()
   public intervalMs: number = 3000;
@@ -35,7 +41,7 @@ export class SlideshowComponent implements OnInit, OnDestroy {
     }
   }
 
-  public slideIndex: number = 0;
+  private slideIndex: number = 0;
 
   constructor() { }
 
@@ -68,21 +74,41 @@ export class SlideshowComponent implements OnInit, OnDestroy {
     if (this.slides === undefined) {
       return null;
     }
-    return this.slides[this.slideIndex];
+    const currentSlide = this.slides[this.slideIndex];
+    if (currentSlide instanceof TemplateRef) {
+      return <TemplateRef<any>>currentSlide;
+    } else {
+      return this.slideTemplate;
+    }
   }
 
-  public getNextSlide(): TemplateRef<any> {
+  public getCurrentSlideContext(): any {
+    if (this.slides === undefined) {
+      return null;
+    }
+    let currentSlide = this.slides[this.slideIndex];
+    if (currentSlide instanceof TemplateRef) {
+      return null;
+    }
+    return Object.assign({}, currentSlide);
+    /*
+      why do we need this copy?
+      if not used, element 0 is changed to current slide. i could not find the reason 2019/08/29
+     */
+  }
+
+  /*public getNextSlide(): TemplateRef<any> {
     if (this.slides === undefined) {
       return null;
     }
     return this.slides[this.getNextSlideIndex()];
-  }
+  } TODO */
 
-  private nextSlide(): void {
+  public nextSlide(): void {
     this.slideIndex = this.getNextSlideIndex();
   }
 
-  private previousSlide(): void {
+  public previousSlide(): void {
     this.slideIndex = this.getPreviousSlideIndex();
   }
 

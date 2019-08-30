@@ -18,6 +18,15 @@ export class LoadingStatusComponent extends AbstractComponent implements OnInit,
 
   public internalError: ApiError;
 
+  @Input()
+  public showStatusOutside: boolean = false;
+
+  /**
+   * Translation id for text to be displayed while loading.
+   */
+  @Input()
+  public loadingDescription: string;
+
   /**
    * Translation id for text to be displayed inside the error tooltip.
    */

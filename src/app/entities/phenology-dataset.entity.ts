@@ -5,7 +5,6 @@
  * @since 2018/02/04
  */
 import {PhenologyObservation} from './phenology-observation.entity';
-import {Announcement} from './announcement.entity';
 
 export class PhenologyDataset {
 
@@ -13,16 +12,26 @@ export class PhenologyDataset {
 
   public treeId: number;
   public observationDate: string;
+  public observersUserIds: Array<number>;
   public observers: string;
+  public observersRef: number;
   public remark: string;
 
   public observations: Array<PhenologyObservation>;
 
-  constructor(id?: number, treeId?: number, observationDate?: string, observers?: string, remark?: string) {
+  constructor(id?: number,
+              treeId?: number,
+              observationDate?: string,
+              observersUserIds?: Array<number>,
+              observersRef?: number,
+              observers?: string,
+              remark?: string) {
     this.id = id;
     this.treeId = treeId;
     this.observationDate = observationDate;
     this.observers = observers;
+    this.observersUserIds = observersUserIds;
+    this.observersRef = observersRef;
     this.remark = remark;
   }
 
@@ -32,6 +41,8 @@ export class PhenologyDataset {
       o.id,
       o.treeId,
       o.observationDate,
+      o.observersUserIds,
+      o.observersRef,
       o.observers,
       o.remark
     );

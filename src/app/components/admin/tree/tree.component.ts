@@ -1,6 +1,5 @@
-import {Component, OnInit, TemplateRef, ViewChild} from '@angular/core';
-import {BsModalRef} from 'ngx-bootstrap/modal';
-import {BsModalService} from 'ngx-bootstrap/modal';
+import {Component, OnInit, TemplateRef} from '@angular/core';
+import {BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
 import {TreeService} from '../../../services/tree.service';
 import {AdminService} from '../../../services/admin/admin.service';
 import {City} from '../../../entities/city.entity';
@@ -9,7 +8,6 @@ import {HttpErrorResponse} from '@angular/common/http';
 import {ApiError} from '../../../entities/api-error.entity';
 import {MapMarker} from '../../../interfaces/map-marker.entity';
 import {Tree} from '../../../entities/tree.entity';
-import {TreeLocation} from '../../../entities/tree-location.entity';
 import {Coordinates} from '../../../entities/coordinates.entity';
 import {TreeFrontend} from '../../../entities/tree-frontend.entity';
 import {TreeSpecies} from '../../../entities/tree-species.entity';
@@ -17,6 +15,9 @@ import {TreeGenus} from '../../../entities/tree-genus.entity';
 import {Beacon} from '../../../entities/beacon.entity';
 import {BeaconSettings} from '../../../entities/beacon-settings.entity';
 import {PhenologyObservationService} from '../../../services/phenology/observation/phenology-observation.service';
+import {Location} from '../../../entities/location.entity';
+import {TreeLight} from '../../../entities/tree-light.entity';
+import {ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'ut-admin-tree',
@@ -24,6 +25,11 @@ import {PhenologyObservationService} from '../../../services/phenology/observati
   styleUrls: ['./tree.component.less']
 })
 export class AdminTreeComponent extends AbstractComponent implements OnInit {
+
+  /**
+   * Query param to preselect a tree.
+   */
+  private static QUERY_PARAMS_SELECTED_TREE = 'tree';
 
   public StatusKey = StatusKey;
   public StatusValue = StatusValue;
@@ -43,24 +49,32 @@ export class AdminTreeComponent extends AbstractComponent implements OnInit {
   public species: Array<TreeSpecies>;
   public marker: MapMarker;
 
-  public isTreeSaved: boolean = false;
+  public showTreeSelect: boolean = false;
 
   constructor(private treeService: TreeService,
               private phenobsService: PhenologyObservationService,
               private adminService: AdminService,
-              private modalService: BsModalService) {
+              private modalService: BsModalService,
+              private route: ActivatedRoute) {
     super();
   }
 
   ngOnInit() {
-    this.load();
+
+    this.route.queryParams.subscribe((params: any) => {
+
+      const selectTreeIdVal = Number(params[AdminTreeComponent.QUERY_PARAMS_SELECTED_TREE]);
+      this.load(selectTreeIdVal);
+
+    });
+
   }
 
   /**
    * Load all needed data.
    */
-  public load(): void {
-    this.loadTrees();
+  public load(preselectTreeId?: number): void {
+    this.loadTrees(preselectTreeId);
     this.loadCities();
     this.loadSpecies();
 
@@ -85,11 +99,12 @@ export class AdminTreeComponent extends AbstractComponent implements OnInit {
     if (selectedTree) {
       this.tree = selectedTree;
       this.marker = selectedTree;
+      this.showTreeSelect = true;
     } else {
       this.tree = new TreeFrontend(
         new Tree(
           0,
-          new TreeLocation(
+          new Location(
             0,
             new Coordinates(
               0,
@@ -113,8 +128,16 @@ export class AdminTreeComponent extends AbstractComponent implements OnInit {
         )
       );
       this.marker = null;
+      this.showTreeSelect = false;
     }
 
+  }
+
+  public onDiscard(): void {
+    this.showTreeSelect = false;
+    this.onSelectedTreeChange(null);
+    this.deleteStatus(StatusKey.NEW_CITY);
+    this.deleteStatus(StatusKey.SAVE_TREE);
   }
 
   public saveTree(): void {
@@ -173,7 +196,7 @@ export class AdminTreeComponent extends AbstractComponent implements OnInit {
       this.availableTrees = trees.map(t => t && TreeFrontend.fromTree(t));
       this.setStatus(StatusKey.LOAD_TREES, StatusValue.SUCCESSFUL);
       if (selectTree) {
-        this.tree = this.availableTrees.find((t: TreeFrontend) => t.id === selectTree);
+        this.onSelectedTreeChange(this.availableTrees.find((t: TreeFrontend) => t.id === selectTree));
       }
     }, (error, apiError) => {
       this.setStatus(StatusKey.LOAD_TREES, StatusValue.FAILED);
@@ -213,8 +236,9 @@ export class AdminTreeComponent extends AbstractComponent implements OnInit {
 
   public showNewBeaconModal(modalTemplateRef: TemplateRef<any>): void {
     this.newBeacon = new Beacon();
-    this.newBeacon.treeId = this.tree.id;
+    this.newBeacon.tree = new TreeLight(this.tree.id);
     this.newBeacon.settings = new BeaconSettings();
+    this.newBeacon.location = this.tree.location;
 
     this.newBeaconModalRef = this.modalService.show(modalTemplateRef);
   }

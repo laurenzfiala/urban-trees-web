@@ -1,34 +1,514 @@
-<div class="steps-wrapper round-children">
-  <div class="container steps">
-    <a class="step"
-       *ngFor="let step of stepItems; let i = index"
-       [routerLink]="step.routerLink"
-       [ngClass]="{'step-highlight': i === currentStepIndex,
-                  'step-disabled': i > finishedStepIndex + 1 || i === currentStepIndex}">
-      <div class="step-number">{{i + 1}}</div>
-      <div class="step-title d-none d-sm-block">{{step.label}}</div>
-    </a>
+<div class="content-cat">
+  <div class="container">
+    <div class="content-cat-heading">{{'phen_obs.title' | translate}}</div>
+    <div class="content-cat-text" [innerHTML]="'phen_obs.desc' | translate"></div>
   </div>
 </div>
 
-<div class="pt-3">
-  <router-outlet></router-outlet>
+<div class="content-cat"
+     [ngClass]="{'disabled': hasStatus(StatusKey.STEP_TREE, StatusValue.HIDE)}">
+  <div class="container">
+    <div class="content-cat-heading">
+      <span class="badge primary mr-1">{{'phen_obs.step' | translate}} 1</span>
+      {{'phen_obs.step_1.title' | translate}}
+    </div>
+
+    <div *ngIf="hasStatus(StatusKey.TREES, StatusValue.IN_PROGRESS)"
+         class="d-flex flex-row align-items-center mt-2">
+        <i class="i i-sm i-black i-load i-spin mr-1"></i>
+      {{'phen_obs.step_1.loading' | translate}}
+    </div>
+
+    <div *ngIf="hasStatus(StatusKey.TREES, StatusValue.FAILED)"
+         class="d-flex flex-row align-items-center text-danger mt-2">
+        <i class="i i-sm i-warning-danger mr-1"></i>
+      {{'phen_obs.step_1.error' | translate}}
+    </div>
+
+    <ng-container *ngIf="hasStatus(StatusKey.TREES, StatusValue.SUCCESSFUL)">
+
+      <div class="content-cat-separator">
+        <div class="separator"></div>
+        <div class="separator-content">{{'phen_obs.step_1.select_map' | translate}}</div>
+        <div class="separator"></div>
+      </div>
+
+      <div class="map-wrapper">
+        <ut-map
+          [markers]="availableTrees"
+          [selectedMarker]="selectedTree"
+          (selectedMarkerChange)="selectTree($event)"
+          errorText="phen_obs.tree.map.error"></ut-map>
+      </div>
+
+      <div class="content-cat-separator">
+        <div class="separator"></div>
+        <div class="separator-content">{{'phen_obs.step_1.select_list' | translate}}</div>
+        <div class="separator"></div>
+      </div>
+
+      <ut-tree-select [selectedTree]="selectedTree"
+                      (selectedTreeChange)="selectTree($event)"
+                      [availableTrees]="availableTrees">
+      </ut-tree-select>
+
+    </ng-container>
+
+  </div>
 </div>
 
-<div class="container my-2" *ngIf="currentStepIndex < 3">
-  <div class="row">
-    <div *ngIf="isPreviousStepAllowed()" class="col">
-      <button [routerLink]="[previousStep?.routerLink]" class="btn btn-light btn-block d-flex justify-content-center" type="button">
-        <i class="i i-sm i-arrow-left i-dark pr-2" aria-hidden="true"></i>
-        <span class="d-none d-sm-inline">{{'phenology.observation.navigation.previous' | translate}}</span>
-      </button>
+<div class="content-cat"
+     [ngClass]="{'disabled': hasStatus(StatusKey.STEP_TIME, StatusValue.HIDE)}">
+  <div class="container">
+    <div class="content-cat-heading">
+      <span class="badge primary mr-1">{{'phen_obs.step' | translate}} 2</span>
+      When?
     </div>
-    <div *ngIf="isNextStepAllowed()" class="col ml-auto">
-      <button [routerLink]="[nextStep.routerLink]" class="btn btn-dark btn-block d-flex justify-content-center" type="button">
-        {{'phenology.observation.navigation.continue' | translate}}
-        <span class="d-none d-sm-none d-md-inline">&nbsp;{{'phenology.observation.navigation.to' | translate}} {{'phenology.observation.navigation.step' + nextStep.routerLink | translate}}</span>
-        <i class="i i-sm i-arrow-right pl-2" aria-hidden="true"></i>
-      </button>
+
+    <div class="content-cat-text">
+      <div *ngIf="isObserveNow"
+           class="d-flex flex-row align-items-center flex-wrap m--1">
+
+        <div class="text-link m-1">
+          {{'phen_obs.step_2.obs_now' | translate}}
+        </div>
+
+        <div class="m-1">
+          <div *ngIf="isObserveNow"
+             class="link-btn d-flex flex-row align-items-center"
+             (click)="observationInPast()">
+            <i class="i i-xs i-dark i-calendar mr-1"></i>
+            {{'phen_obs.step_2.obs_past' | translate}}
+        </div>
+        </div>
+
+      </div>
+
+      <div *ngIf="!isObserveNow"
+           class="d-flex flex-row align-items-center m--2">
+
+        <div class="input-group m-2">
+          <input type="text"
+                 id="observationDate"
+                 class="form-control"
+                 name="observationDate"
+                 #dp="bsDatepicker"
+                 bsDatepicker
+                 [bsConfig]="{ dateInputFormat: 'app.date_format_day_full' | translate }"
+                 [(ngModel)]="dataset.uiObservationDate"
+                 [maxDate]="dataset.uiMaxObservationDate">
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary d-flex" type="button" (click)="dp.toggle()">
+              <i class="i i-xs i-calendar i-dark" aria-hidden="true"></i>
+            </button>
+          </div>
+        </div>
+
+        <div class="m-2">
+          <div class="input-group timepicker-container">
+            <timepicker
+              id="observationTime"
+              name="observationTime"
+              [(ngModel)]="dataset.uiObservationDate"
+              [showMeridian]="false"
+              [max]="dataset.uiMaxObservationDate"
+              [minuteStep]="5">
+            </timepicker>
+          </div>
+        </div>
+
+      </div>
+
+     </div>
+
+  </div>
+</div>
+
+<div class="content-cat"
+     [ngClass]="{'disabled': hasStatus(StatusKey.STEP_OBS, StatusValue.HIDE)}">
+  <div class="container">
+    <div class="content-cat-heading">
+      <span class="badge mr-1"
+            [ngClass]="{'primary': isObservationsDone(), 'danger': !isObservationsDone()}">{{'phen_obs.step' | translate}} 3</span>
+      {{'phen_obs.step_3.title' | translate}}
+    </div>
+
+    <div *ngIf="hasStatus(StatusKey.STEP_OBS, StatusValue.HIDE)"
+         class="obs-insufficient-progress">
+      {{'phen_obs.finish_prev_steps_first' | translate}}
+    </div>
+
+    <ng-container *ngIf="hasStatus(StatusKey.STEP_OBS, StatusValue.SHOW) && observationSpec"
+                  class="mt-2">
+
+      <div class="my-3 py-2 text-danger text-center" *ngIf="observationSpec.length === 0">
+        {{'phen_obs.step_3.no_obs_assoc' | translate}}
+      </div>
+
+      <div *ngIf="observationSpec.length > 0">
+
+        <div *ngFor="let type of observationSpec; let i = index"
+             [ngClass]="{'mt-3': i > 0}">
+
+          <div class="content-cat-text text-subtle mb-2">
+            {{
+              'phen_obs.step_3.obs_type_desc' | translate:
+              {
+                'type': type,
+                'type_name': 'phenology.observation.type.' + type.name + '.name' | translate,
+                'type_name_plural': 'phenology.observation.type.' + type.name + '.name_plural' | translate,
+                'type_name_lc': 'phenology.observation.type.' + type.name + '.name' | translate | lowercase,
+                'type_name_plural_lc': 'phenology.observation.type.' + type.name + '.name_plural' | translate | lowercase
+              }
+            }}
+          </div>
+
+          <div class="obs-container"
+               [ngClass]="{'done': type.done}">
+            <div class="obs-header"
+                 (click)="collapse.toggle()">
+              <div class="flex-shrink-0 flex-grow-1">{{'phen_obs.step_3.type.' + type.name + '.name_plural' | translate | capitalize}}</div>
+              <div class="flex-shrink-0">{{type.userObservations.length}} / {{type.objects.length}}</div>
+            </div>
+            <div #collapse="bs-collapse"
+                 [collapse]="type.containerCollapsed"
+                 class="obs-content">
+
+              <div class="d-flex flex-row flex-wrap justify-content-sm-end justify-content-md-start">
+
+                <div *ngFor="let result of type.results"
+                     class="obs-res-btn-container p-1"
+                     [cssvar]="{name: '--result-amount', value: type.results.length}">
+
+                  <button class="btn btn-count btn-outline-secondary p-0" type="button" name="btn"
+                          (click)="addObservationResult(collapse, type, result)">
+                    <img [src]="images[result.id]?.encodedImage" class="w-100" /><!-- TODO loading spinner -->
+                    <div class="overlay">{{getObservationAmount(type, result)}}</div>
+                  </button>
+
+                  <div class="obs-res-annotation p-1">
+                    {{'phen_obs.step_3.type.' + type.name + '.result.' + result.description | translate}}
+                  </div>
+
+                </div>
+
+              </div>
+
+              <div *ngIf="type.userObservations.length > 0"
+                   class="d-flex flex-row flex-wrap justify-content-end justify-content-md-start justm--2">
+
+                <div class="d-flex align-items-center m-2"
+                      (click)="undoObservationResult(type, true)">
+                  <i class="i i-dark i-undo-dashed i-sm mr-1"></i>
+                  <a class="link">{{'phen_obs.step_3.reset' | translate}}</a>
+                </div>
+
+                <div class="d-flex align-items-center m-2"
+                      (click)="undoObservationResult(type)">
+                  <i class="i i-dark i-undo i-sm mr-1"></i>
+                  <a class="link">{{'phen_obs.step_3.undo' | translate}}</a>
+                </div>
+
+              </div>
+
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </ng-container>
+
+  </div>
+</div>
+
+<div class="content-cat"
+     [ngClass]="{'disabled': hasStatus(StatusKey.STEP_IMG, StatusValue.HIDE)}">
+  <div class="container">
+    <div class="content-cat-heading">
+      <span class="badge mr-1"
+            [ngClass]="{'primary': isImgOk(), 'danger': !isImgOk()}">
+        {{'phen_obs.step' | translate}} 4
+      </span>
+      {{'phen_obs.step_4.title' | translate}}
+    </div>
+
+    <div *ngIf="hasStatus(StatusKey.STEP_IMG, StatusValue.HIDE)"
+         class="obs-insufficient-progress">
+      {{'phen_obs.finish_prev_steps_first' | translate}}
+    </div>
+
+    <ng-container *ngIf="hasStatus(StatusKey.STEP_IMG, StatusValue.SHOW)">
+
+      <div class="content-cat-text mb-1">
+        You may optionally upload an image of the observed tree.
+      </div>
+
+      <div class="custom-file">
+        <input
+          type="file"
+          class="custom-file-input"
+          id="userImage"
+          name="userImage"
+          (change)="setUserImage($event);"
+          [ngClass]="{'is-invalid': !isUserImageValid()}"
+        >
+        <label *ngIf="userImageName" class="custom-file-label" for="userImage">{{userImageName}}</label>
+        <label *ngIf="!userImageName" class="custom-file-label" for="userImage">{{'phenology.observation.step3.upload_photo_placeholder' | translate}}</label>
+        <div class="invalid-feedback" *ngIf="getUserImageErrors().indexOf(UserImageError.INVALID_SIZE) !== -1">
+          {{'phenology.observation.step3.photo_size_invalid' | translate}}
+        </div>
+        <div class="invalid-feedback" *ngIf="getUserImageErrors().indexOf(UserImageError.INVALID_TYPE) !== -1">
+          {{'phenology.observation.step3.photo_type_invalid' | translate}}
+        </div>
+      </div>
+
+    </ng-container>
+
+  </div>
+</div>
+
+<div class="content-cat"
+     [ngClass]="{'disabled': hasStatus(StatusKey.STEP_USERS, StatusValue.HIDE)}">
+  <div class="container">
+    <div class="content-cat-heading">
+      <span class="badge primary mr-1"
+            [ngClass]="{'primary': isUsersOk(), 'danger': !isUsersOk()}">
+        {{'phen_obs.step' | translate}} 5
+      </span>
+      {{'phen_obs.step_5.title' | translate}}
+    </div>
+
+    <div *ngIf="hasStatus(StatusKey.STEP_USERS, StatusValue.HIDE)"
+         class="obs-insufficient-progress">
+      {{'phen_obs.finish_prev_steps_first' | translate}}
+    </div>
+
+    <div *ngIf="hasStatus(StatusKey.STEP_USERS, StatusValue.SHOW) && !authService.isUserAnonymous()"
+         class="d-flex flex-row align-items-center flex-wrap m--1">
+
+      <div *ngIf="dataset.observersUserIdentities.size === 0" class="m-1">
+        {{'phen_obs.step_5.alone' | translate}}
+      </div>
+
+      <div *ngIf="dataset.observersUserIdentities.size > 0" class="m-1">
+        {{'phen_obs.step_5.together' | translate}}
+        <span *ngFor="let observer of dataset.observersUserIdentities; let i = index">
+          <ng-container *ngIf="observer.id !== authService.getUserId()"><span *ngIf="i > 0">, </span>{{observer.username}}</ng-container>
+        </span>
+      </div>
+
+      <div *ngIf="!addMoreObservers"
+            class="m-1">
+        <div class="link-btn d-flex flex-row align-items-center"
+             (click)="addMoreObservers = true">
+          <i class="i i-xs i-dark i-user-add mr-1"></i>
+          {{'phen_obs.step_5.add_more' | translate}}
+        </div>
+      </div>
+
+    </div>
+
+    <div *ngIf="addMoreObservers"
+         class="user-permission-container mt-2">
+      <ut-user-permission [permission]="'PHENOLOGY_OBSERVATION'"
+                          (selectedUser)="dataset.observersUserIdentities.add($event)"
+                          (deselectedUsers)="dataset.observersUserIdentities.delete($event)"
+                          (newlyGrantedUsers)="dataset.observersUserIdentities.add($event)">
+      </ut-user-permission>
+    </div>
+
+    <ng-container *ngIf="authService.isUserAnonymous()">
+
+      <div class="content-cat-text mb-1">
+        {{'phen_obs.step_5.manual' | translate}}
+      </div>
+
+      <div class="d-flex flex-row align-items-center">
+
+        <div class="input-group">
+          <input
+            [(ngModel)]="dataset.observers"
+            #observersInput="ngModel"
+            name="observersInput"
+            (keyup)="checkProgress()"
+            minlength="5"
+            maxlength="200"
+            required
+            class="form-control"
+            [placeholder]="'phen_obs.step_5.manual_placeholder' | translate" />
+          <div class="input-group-append">
+            <span class="input-group-text" [ngClass]="{'is-invalid': !observersInput.valid}">
+              {{dataset.observers ? dataset.observers.length : 0}} / 5-200
+            </span>
+          </div>
+        </div>
+
+      </div>
+
+    </ng-container>
+
+  </div>
+</div>
+
+<div class="content-cat">
+  <div class="container">
+
+    <div class="content-cat-heading">
+      {{'phen_obs.send.title' | translate}}
+    </div>
+
+    <div class="content-cat-text">
+      {{'phen_obs.send.desc' | translate}}
+    </div>
+    <div *ngIf="!authService.isUserAnonymous() && dataset.observersUserIdentities?.size === 0" class="mt-1">
+      <span class="badge warning mr-1">{{'phen_obs.send.reward' | translate}}</span> <span [innerHTML]="'phen_obs.send.reward_text' | translate:{'xp': calcObsXp()}"></span>
+    </div>
+    <div *ngIf="!authService.isUserAnonymous() && dataset.observersUserIdentities?.size > 0" class="mt-1">
+      <span class="badge warning mr-1">{{'phen_obs.send.reward' | translate}}</span> <span [innerHTML]="'phen_obs.send.reward_text_multiple_users' | translate:{'xp': calcObsXp()}"></span>
+    </div>
+
+    <div class="d-flex flex-row flex-wrap justify-content-end justify-content-md-start mx--2">
+
+      <div class="d-flex flex-row align-items-center justify-content-center mx-2"
+           (click)="onDiscard()">
+        <i class="i i-sm i-dark i-cross-circle mr-1"></i>
+        <div class="link">
+          {{'phen_obs.send.discard' | translate}}
+        </div>
+      </div>
+      <div class="d-flex flex-row align-items-center justify-content-center m-2"
+           [ngClass]="{'send-disabled': !canSend || hasStatus(StatusKey.SEND_DATA, StatusValue.IN_PROGRESS) || hasStatus(StatusKey.SEND_IMAGE, StatusValue.IN_PROGRESS)}"
+           (click)="onSubmit()">
+        <i class="i i-sm i-dark i-send-primary mr-1"></i>
+        <div class="link primary">
+          {{'phen_obs.send.send' | translate}}
+        </div>
+      </div>
+      <div *ngIf="hasStatus(StatusKey.SEND_DATA, StatusValue.IN_PROGRESS)"
+           class="d-flex flex-row align-items-center justify-content-center m-2">
+        <i class="i i-sm i-black i-load i-spin mr-1"></i>
+        {{'phen_obs.send.in_progress' | translate}}
+      </div>
+      <div *ngIf="hasStatus(StatusKey.SEND_IMAGE, StatusValue.IN_PROGRESS)"
+           class="d-flex flex-row align-items-center justify-content-center m-2">
+        <i class="i i-sm i-black i-upload mr-1"></i>
+        {{'phen_obs.send.in_progress_img' | translate}}
+      </div>
+      <div *ngIf="!hasStatusKey(StatusKey.SEND_DATA_ERROR) && hasStatus(StatusKey.SEND_DATA, StatusValue.FAILED)"
+           class="d-flex flex-row align-items-center justify-content-center text-danger m-2">
+        <i class="i i-sm i-cross-danger mr-1"></i>
+        {{'phen_obs.send.error' | translate}}
+      </div>
+      <div *ngIf="hasStatus(StatusKey.SEND_DATA_ERROR, StatusValue.DUPLICATE)"
+           class="d-flex flex-row align-items-center justify-content-center text-danger m-2">
+        <i class="i i-sm i-clock-danger mr-1"></i>
+        {{'phen_obs.send.error_duplicate' | translate}}
+      </div>
+      <div *ngIf="hasStatus(StatusKey.SEND_IMAGE, StatusValue.FAILED)"
+           class="d-flex flex-row align-items-center justify-content-center text-danger m-2">
+        <i class="i i-sm i-upload-error-danger mr-1"></i>
+        {{'phen_obs.send.error_img' | translate}}
+        <div class="link-btn ml-1"
+             (click)="sendUserImage()">{{'general.retry' | translate}}</div>
+      </div>
+      <div *ngIf="hasStatus(StatusKey.SEND_DATA, StatusValue.SUCCESSFUL) && hasStatus(StatusKey.SEND_IMAGE, StatusValue.SUCCESSFUL)"
+           class="d-flex flex-row align-items-center justify-content-center text-success m-2">
+        <i class="i i-sm i-check-success mr-1"></i>
+        {{'phen_obs.send.success_img' | translate}}
+      </div>
+      <div *ngIf="hasStatus(StatusKey.SEND_DATA, StatusValue.SUCCESSFUL) && !hasStatusKey(StatusKey.SEND_IMAGE)"
+           class="d-flex flex-row align-items-center justify-content-center text-success m-2">
+        <i class="i i-sm i-check-success mr-1"></i>
+        {{'phen_obs.send.success' | translate}}
+      </div>
+
+    </div>
+
+    <div *ngIf="!canSend && !hasStatus(StatusKey.SEND_DATA, StatusValue.SUCCESSFUL)" class="d-flex flex-row flex-wrap align-items-center mx--1">
+
+      <!-- STEP 1 -->
+      <div *ngIf="selectedTree" class="d-flex flex-row align-items-center badge success m-1">
+        <i class="i i-xs i-check-success mr-1"></i>
+        {{'phen_obs.step' | translate}} 1
+      </div>
+      <div *ngIf="!selectedTree" class="d-flex flex-row align-items-center badge danger m-1">
+        <i class="i i-xs i-cross-danger mr-1"></i>
+        {{'phen_obs.step' | translate}} 1
+      </div>
+
+      <!-- STEP 2 -->
+      <div class="d-flex flex-row align-items-center badge success m-1">
+        <i class="i i-xs i-check-success mr-1"></i>
+        {{'phen_obs.step' | translate}} 2
+      </div>
+
+      <!-- STEP 3 -->
+      <div *ngIf="hasStatus(StatusKey.STEP_OBS, StatusValue.HIDE); else statusStepObs"
+           class="d-flex flex-row align-items-center badge m-1">
+        <i class="i i-xs i-dark i-arrow-right mr-1"></i>
+        {{'phen_obs.step' | translate}} 3
+      </div>
+      <ng-template #statusStepObs>
+        <div *ngIf="isObservationsDone()" class="d-flex flex-row align-items-center badge success m-1">
+          <i class="i i-xs i-check-success mr-1"></i>
+          {{'phen_obs.step' | translate}} 3
+        </div>
+        <div *ngIf="!isObservationsDone()" class="d-flex flex-row align-items-center badge danger m-1">
+          <i class="i i-xs i-cross-danger mr-1"></i>
+          {{'phen_obs.step' | translate}} 3
+        </div>
+      </ng-template>
+
+      <!-- STEP 4 -->
+      <div *ngIf="hasStatus(StatusKey.STEP_IMG, StatusValue.HIDE); else statusStepImg"
+           class="d-flex flex-row align-items-center badge m-1">
+        <i class="i i-xs i-dark i-arrow-right mr-1"></i>
+        {{'phen_obs.step' | translate}} 4
+      </div>
+      <ng-template #statusStepImg>
+        <div *ngIf="isImgOk()" class="d-flex flex-row align-items-center badge success m-1">
+          <i class="i i-xs i-check-success mr-1"></i>
+          {{'phen_obs.step' | translate}} 4
+        </div>
+        <div *ngIf="!isImgOk()" class="d-flex flex-row align-items-center badge danger m-1">
+          <i class="i i-xs i-cross-danger mr-1"></i>
+          {{'phen_obs.step' | translate}} 4
+        </div>
+      </ng-template>
+
+      <!-- STEP 5 -->
+      <div *ngIf="hasStatus(StatusKey.STEP_USERS, StatusValue.HIDE); else statusStepUsers"
+           class="d-flex flex-row align-items-center badge m-1">
+        <i class="i i-xs i-dark i-arrow-right mr-1"></i>
+        {{'phen_obs.step' | translate}} 5
+      </div>
+      <ng-template #statusStepUsers>
+        <div *ngIf="isUsersOk()" class="d-flex flex-row align-items-center badge success m-1">
+          <i class="i i-xs i-check-success mr-1"></i>
+          {{'phen_obs.step' | translate}} 5
+        </div>
+        <div *ngIf="!isUsersOk()" class="d-flex flex-row align-items-center badge danger m-1">
+          <i class="i i-xs i-cross-danger mr-1"></i>
+          {{'phen_obs.step' | translate}} 5
+        </div>
+      </ng-template>
+
+    </div>
+
+  </div>
+</div>
+
+<div *ngIf="hasStatus(StatusKey.TREES, StatusValue.FAILED)" class="status-overlay overlay-fixed">
+  <div class="status-content">
+    <div class="status-heading heading-danger">
+      {{'general.error' | translate}}
+    </div>
+    <div class="status-text">
+      {{'phen_obs.error' | translate}}
+    </div>
+    <div class="status-controls">
+      <button class="btn btn-light float-right" (click)="load()" (keydown)="load()">{{'general.retry' | translate}}</button>
     </div>
   </div>
 </div>

@@ -9,6 +9,7 @@ import {UserData} from '../entities/user-data.entity';
 import {interval} from 'rxjs';
 import {SubscriptionManagerService} from './subscription-manager.service';
 import {AuthService} from './auth.service';
+import {Report} from '../entities/report.entity';
 
 /**
  * Service for user functionality.
@@ -46,6 +47,7 @@ export class UserService extends AbstractService implements OnDestroy {
               errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void): void {
 
     this.http.get(this.envService.endpoints.userAchievements)
+      .timeout(this.envService.defaultTimeout)
       .map(a => a && UserAchievements.fromObject(a))
       .subscribe((response: UserAchievements) => {
         UserService.LOG.debug('Received user achievements.');
@@ -68,6 +70,7 @@ export class UserService extends AbstractService implements OnDestroy {
               errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void): void {
 
     this.http.get(this.envService.endpoints.userData)
+      .timeout(this.envService.defaultTimeout)
       .map(a => a && UserData.fromObject(a))
       .subscribe((response: UserData) => {
         UserService.LOG.debug('Received user data.');
@@ -133,11 +136,56 @@ export class UserService extends AbstractService implements OnDestroy {
               errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void): void {
 
     this.http.delete(this.envService.endpoints.userDeleteAccount)
+      .timeout(this.envService.defaultTimeout)
       .subscribe(() => {
         UserService.LOG.info('Successfully deleted user account.');
         successCallback();
       }, (e: any) => {
         UserService.LOG.error('Could not delete user account: ' + e.message, e);
+        if (errorCallback) {
+          errorCallback(e, this.safeApiError(e));
+        }
+      });
+
+  }
+
+  /**
+   * Load all reports of the current user.
+   * Only returns reports that are ither unresolved or (resolved and modified in the past 3 months).
+   */
+  public loadReports(successCallback: (results: Array<Report>) => void,
+                     errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void): void {
+
+    this.http.get<Array<Report>>(this.envService.endpoints.userReport)
+      .timeout(this.envService.defaultTimeout)
+      .map(list => list && list.map(r => Report.fromObject(r, this.envService)))
+      .subscribe((results: Array<Report>) => {
+        UserService.LOG.debug('Successfully loaded user reports.');
+        successCallback(results);
+      }, (e: any) => {
+        UserService.LOG.error('Could not load user reports: ' + e.message, e);
+        if (errorCallback) {
+          errorCallback(e, this.safeApiError(e));
+        }
+      });
+
+  }
+
+  /**
+   * Send a single user-report.
+   * @param report report to send
+   */
+  public sendReport(report: Report,
+                    successCallback: () => void,
+                    errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void): void {
+
+    this.http.put(this.envService.endpoints.userReport, report)
+      .timeout(this.envService.defaultTimeout)
+      .subscribe(() => {
+        UserService.LOG.info('Successfully sent report.');
+        successCallback();
+      }, (e: any) => {
+        UserService.LOG.error('Could not send user report: ' + e.message, e);
         if (errorCallback) {
           errorCallback(e, this.safeApiError(e));
         }

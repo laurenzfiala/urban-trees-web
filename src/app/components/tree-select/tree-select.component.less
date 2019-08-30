@@ -8,6 +8,18 @@
   background-size: 1.5rem;
 }
 
+.tree-container {
+  user-select: none;
+
+  &.active > .inner {
+    background-color: lighten(@successBg, 15%);
+
+    > .title {
+      background-color: @successBg;
+    }
+  }
+}
+
 ul {
 
   > li.list-group-item-action:not(.active) {

@@ -1,3 +1,48 @@
-<p>
-  beacon works!
-</p>
+<div class="nav-path">
+  <div class="container py-2">
+    <a class="link" routerLink="/admin">{{'navigation.admin' | translate}}</a>
+    /
+    Beacons
+  </div>
+</div>
+
+<div>
+  <div class="content-cat">
+    <div class="container">
+      <div class="content-cat-heading">
+        Beacons
+      </div>
+      <div class="content-cat-text">
+        Check out beacon settings here.
+
+        <div class="mt-2">
+          <div routerLink="manage"
+               class="d-inline-flex flex-row align-items-center link-container">
+            <i class="i i-sm i-beacon-info mr-1"></i>
+            <a class="link primary">Create / edit beacons</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="content-cat">
+    <div class="container">
+      <div class="content-cat-heading">
+        Beacon-Information
+      </div>
+      <div class="content-cat-text">
+
+        <div class="mt-2">
+          <ut-beacon-list
+            [beacons]="availableBeacons"
+            [showData]="false"
+            [showAssociations]="true"
+            [modify]="true">
+          </ut-beacon-list>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>

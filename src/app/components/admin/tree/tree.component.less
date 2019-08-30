@@ -4,6 +4,21 @@
   height: 350px;
 }
 
+.adm-tree-map-annotation {
+  background-color: @lightBgColor;
+
+  .coords {
+    color: @black;
+  }
+}
+
+::ng-deep .content-cat:nth-child(even) {
+  .adm-tree-map-annotation {
+    background-color: @white;
+  }
+}
+
+
 .add-btn {
   width: 1.5rem;
   height: 100%;

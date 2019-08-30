@@ -1,0 +1,77 @@
+<div class="form-group mb-0">
+  <input
+    [ngModel]="searchInput"
+    (ngModelChange)="setSearchInput($event)"
+    name="treeSearchInput"
+    class="form-control search-input"
+    [placeholder]="'phenology.observation.step1.tree_search_placeholder' | translate" />
+</div>
+
+<div *ngIf="displayBeacons"
+     class="m--1 pt-2">
+
+  <div *ngFor="let beacon of displayBeacons[currentDisplayPage]"
+       class="beacon-container link-container"
+       [ngClass]="{'active': selectedBeacon?.id === beacon.id}">
+    <div class="inner d-flex flex-column pointer m-1"
+         (click)="toggleSelect(beacon.id);"
+         (keydown)="toggleSelect(beacon.id);">
+
+      <div class="title p-2">
+        <i class="i i-md i-dark i-beacon mr-2"></i>
+        <div class="flex-grow-1">{{beacon.deviceId}}</div>
+        <div class="badge badge-sm">#{{beacon.id}}</div>
+      </div>
+      <div class="info p-2">
+        <div class="d-flex flex-row align-items-center mt-1">
+          <i class="i i-xs i-black i-id mr-2"></i>
+          Test
+        </div>
+        <div class="d-flex flex-row align-items-center mt-1">
+          <i class="i i-xs i-black i-location mr-2"></i>
+          test
+        </div>
+        <div *ngIf="selectedBeacon?.id === beacon.id" class="d-flex flex-row align-items-center justify-content-end mt-1">
+          <i class="i i-sm i-dark i-check-success mr-1"></i>
+          <div [ngClass]="{'text-success': !allowDeselect, 'link success': allowDeselect}">
+            Selected
+          </div>
+        </div>
+        <div *ngIf="selectedBeacon?.id !== beacon.id" class="d-flex flex-row align-items-center justify-content-end mt-1">
+          <div class="link">
+            Select
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+<nav *ngIf="displayPagination">
+  <ul class="pagination mt-2 mb-0">
+    <li class="page-item">
+      <a class="page-link"
+         (click)="displayPage(currentDisplayPage-1)"
+         (keydown)="displayPage(currentDisplayPage-1)">
+        <i class="i i-arrow-left i-dark" aria-hidden="true"></i>
+      </a>
+    </li>
+    <li *ngFor="let page of displayBeacons; let i = index" class="page-item">
+      <a class="page-link"
+         [ngClass]="{'active': currentDisplayPage === i}"
+         (click)="currentDisplayPage = i"
+         (keydown)="currentDisplayPage = i">
+        {{i+1}}
+      </a>
+    </li>
+    <li class="page-item">
+      <a class="page-link"
+         (click)="displayPage(currentDisplayPage+1)"
+         (keydown)="displayPage(currentDisplayPage+1)">
+        <i class="i i-arrow-right i-dark" aria-hidden="true"></i>
+      </a>
+    </li>
+  </ul>
+</nav>

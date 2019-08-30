@@ -11,6 +11,7 @@ export class MapMarkerDefault implements MapMarker {
   public id: number;
   public coordsX: number;
   public coordsY: number;
+  public projection: string;
   public selected: boolean = true;
 
   constructor(coordsX: number, coordsY: number, id?: number) {
@@ -33,6 +34,10 @@ export class MapMarkerDefault implements MapMarker {
 
   public getId(): number {
     return this.id;
+  }
+
+  public getProjection(): string {
+    return this.projection;
   }
 
   public isSelected(): boolean {

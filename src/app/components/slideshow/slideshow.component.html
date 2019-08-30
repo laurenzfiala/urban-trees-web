@@ -2,7 +2,10 @@
      (mouseover)="pause = true"
      (mouseout)="pause = false">
   <div class="position-relative">
-    <ng-container [ngTemplateOutlet]="getCurrentSlide()"></ng-container>
+    <div (mouseover)="$event.stopPropagation()"
+         (mouseout)="$event.stopPropagation()">
+      <ng-container [ngTemplateOutlet]="getCurrentSlide()" [ngTemplateOutletContext]="getCurrentSlideContext()"></ng-container>
+    </div>
     <div class="slide-progress">
       <div class="inner" [ngStyle]="{'width.%': getProgress()}"></div>
     </div>
@@ -14,4 +17,3 @@
     {{getCurrentSubtitle()}}
   </div>
 </div>
-

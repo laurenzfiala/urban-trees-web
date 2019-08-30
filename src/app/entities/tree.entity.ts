@@ -1,6 +1,7 @@
-import {TreeLocation} from './tree-location.entity';
 import {BeaconFrontend} from './beacon-frontend.entity';
 import {TreeSpecies} from './tree-species.entity';
+import {Location} from './location.entity';
+import {TreeLight} from './tree-light.entity';
 
 /**
  * Single tree.
@@ -8,29 +9,19 @@ import {TreeSpecies} from './tree-species.entity';
  * @author Laurenz Fiala
  * @since 2018/02/14
  */
-export class Tree {
+export class Tree extends TreeLight {
 
-  public id: number;
-
-  public location: TreeLocation;
-  public species: TreeSpecies;
-  public plantationYear: number;
-  public isPlantationYearEstimate: boolean;
   public beacons: Array<BeaconFrontend>;
 
   constructor(
     id: number,
-    location: TreeLocation,
+    location: Location,
     species: TreeSpecies,
     plantationYear: number,
     isPlantationYearEstimate: boolean,
     beacons: Array<BeaconFrontend>
   ) {
-    this.id = id;
-    this.location = location;
-    this.species = species;
-    this.plantationYear = plantationYear;
-    this.isPlantationYearEstimate = isPlantationYearEstimate;
+    super(id, location, species, plantationYear, isPlantationYearEstimate);
     this.beacons = beacons;
   }
 
@@ -38,7 +29,7 @@ export class Tree {
 
     return new Tree(
       o.id,
-      TreeLocation.fromObject(o.location),
+      Location.fromObject(o.location),
       TreeSpecies.fromObject(o.species),
       o.plantationYear,
       o.isPlantationYearEstimate,

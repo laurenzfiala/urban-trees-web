@@ -9,5 +9,6 @@ export interface MapMarker {
   getId(): number;
   getCoordsX(): number;
   getCoordsY(): number;
+  getProjection(): string;
 
 }

@@ -2,10 +2,12 @@
 	"app": {
 		"title": "Stadtbäume",
 		"subtitle": "als Klimabotschafter",
-    "date_format": "DD.MM.YYYY HH:SS",
-    "date_format_short": "DD.MM. HH:SS",
+    "date_format": "DD.MM.YYYY HH:mm",
+    "date_format_angular": "dd.MM.yyyy HH:mm",
+    "date_format_short": "DD.MM. HH:mm",
+    "date_format_day_full": "DD.MM.YYYY",
     "date_format_day": "DD.MM",
-    "date_format_time": "HH:SS"
+    "date_format_time": "HH:mm"
 	},
 	"navigation": {
 		"home": "Start",
@@ -160,7 +162,9 @@
     "tree": {
       "location": "{{street}}",
       "link": "Baum ansehen"
-    }
+    },
+    "error": "Baumliste konnte nicht geladen werden.",
+    "loading": "Lade Baumliste..."
   },
   "tree_view": {
     "error": {
@@ -174,7 +178,8 @@
       "BEACON_READOUT": "Beacon ausgelesen",
       "PHENOLOGY_IMAGE_UPLOAD": "Bild für Phänologie hochgeladen",
       "PHENOLOGY_OBSERVATION": "Phänologiebeobachtung",
-      "UPGRADE_ACCOUNT": "Veralteter Account erneuert"
+      "UPGRADE_ACCOUNT": "Veralteter Account erneuert",
+      "ADMIN_THANKYOU": "Belohnung fürs Helfen (Danke!)"
     }
   },
   "login": {
@@ -220,6 +225,17 @@
     "learn_more": "Mehr erfahren"
   },
 	"tree": {
+    "loading": "Lade Baum...",
+    "through_year": {
+      "title": "Bäume zwischen den Jahreszeiten",
+      "text": "Die Bilderreihe zeigt die Blattentwicklung der Bäume im Frühling und veranschaulicht ein zentrales Forschungsziel im Projekt: Wir erforschen die Länge der Vegetationsperiode verschiedener Stadtbaumarten und den Einfluss der städtischen Wärmeinselintensität. <b>Stadtbäume kühlen die Stadt und machen sie lebenswert!</b>",
+      "update_month": "Information zuletzt im August 2019 aktualisiert."
+    },
+    "cooling_power": {
+      "title": "Abkühlungsleistung unserer Untersuchungsbäume",
+      "text": "Die <b>maximale</b> von uns gemessene <b>Abkühlungsleistung</b> der Untersuchungsbäume lag bei <b>5,3 °C</b>.<div class=\"my-2\">Dazu werden an jeder Schule die Lufttemperaturen der Referenzstation in der Sonne, mit den Lufttemperaturen in den Baumkronen verglichen und die Abweichungen ermittelt.</div>",
+      "update_month": "Information zuletzt im März 2019 aktualisiert."
+    },
 		"species": {
 			"gingko biloba": "Ginkgo",
 			"quercus robur": "Stieleiche",
@@ -309,7 +325,7 @@
       },
       "data": {
         "error": "Die Aufzeichnungsdaten für diesen Beacon konnten nicht geladen werden",
-        "missing": "Keine Daten für Beacon aufgezeichnet",
+        "missing": "Wähle eine andere Zeitspanne, um Daten anzuzeigen",
         "datapoints": "Datensätze",
         "mode": {
           "24h": "Letzte 24 Stunden",
@@ -331,6 +347,11 @@
         "controls": "Für Steuerung klicken"
       },
       "incompatible": "Dein Browser unterstützt unglücklicherweise dieses Audio-Format nicht."
+    },
+    "admin": {
+      "title": "Administratorfunktionen",
+      "desc": "Abkürzungen zur Adminkonsole",
+      "edit_link": "Baum konfigurieren"
     }
 	},
 	"general": {
@@ -342,7 +363,8 @@
   "map": {
     "error_default_text": "Kartendaten konnten nicht geladen werden. Bitte versuche es erneut.",
     "activator": "Klicken, um die Karte zu nutzen",
-    "activator_touch": "Berühren, um die Karte zu nutzen"
+    "activator_touch": "Berühren, um die Karte zu nutzen",
+    "tree_assoc": "verknüpft mit Baum"
   },
   "settings": {
     "language": {
@@ -351,7 +373,8 @@
     },
     "account": {
       "title": "Konto verwalten",
-      "desc":  "Ändere Deinen Nutznamen oder Passwort hier.",
+      "desc":  "Du bist als {{username}} angemeldet.",
+      "desc_2":  "Ändere Deinen Nutznamen oder Passwort hier.",
       "change_username":  "Nutzername ändern",
       "change_password":  "Passwort ändern"
     },
@@ -382,6 +405,7 @@
     "desc": "Es scheint Du wurdest zu einer nicht existierenden Seite verlinkt. Nutze die Navigationsleiste oben."
   },
   "measurements": {
+    "no_beacon_found": "Kein Beacon gefunden.",
     "temperature": {
       "title": "Aufgezeichnete Temperaturen",
       "error": "Daten zur Temperatur konnten nicht geladen werden",
@@ -492,5 +516,122 @@
       "desc_xp_needed": "{{nextLevelRemainingXp}} XP werden noch für Level {{nextLevel}} benötigt.",
       "contributions": "Deine letzten Beiträge:"
     }
+  },
+  "phen_obs": {
+    "title": "Phänologiebeobachtung",
+    "desc": "Tage hier eine neue Phänologiebeobachtung ein. Die fünf Schritte weiter unten können in unter fünf Minuten abgeschlossen werden.",
+    "finish_prev_steps_first": "Schließe vorhergehende Schritte zuerst ab.",
+    "error": "Phänologiebeobachtung konnte nicht geladen werden.",
+    "step": "Schritt",
+    "step_1": {
+      "title": "Welcher Baum wird beobachtet?",
+      "loading": "Lade Bäume...",
+      "error": "Bäume konnten nicht geladen werden.",
+      "select_map": "Auf der Karte auswählen",
+      "select_list": "oder in der Liste auswählen"
+    },
+    "step_2": {
+      "title": "Wann?",
+      "obs_now": "Beobachte jetzt gerade",
+      "obs_past": "Beobachtung wurde in der Vergangenheit gemacht"
+    },
+    "step_3": {
+      "title": "Beobachte den ausgewählten Baum",
+      "no_obs_assoc": "Keine Beobachtungen sind bei dem gewählen Baum vorgesehen",
+      "obs_type_desc": "Wähle {{type.objects.length}} zufällige {{type_name_plural}} deines Baums und klicke jeweils einmal auf das Bild, welches der {{type_name}} am ähnlichsten ist.",
+      "reset": "Zurücksetzen",
+      "undo": "Rückgängig",
+      "type": {
+        "Bud": {
+          "name": "Knospe",
+          "name_plural": "Knospen",
+          "result": {
+            "Closed bud": "Geschlossene Knospe",
+            "Half-open bud": "Halboffene Knospe",
+            "Open bud": "Offene Knospe"
+          }
+        }
+      }
+    },
+    "step_4": {
+      "title": "Bild hochladen"
+    },
+    "step_5": {
+      "title": "Wer hat beobachtet?",
+      "alone": "Du beobachtest alleine",
+      "together": "Du beobachtest zusammen mit",
+      "add_more": "Mehr Nutzer_innen hinzufügen",
+      "manual": "Gib alle Nutzer_innen ein, die bei der Beobachtung geholfen haben.",
+      "manual_placeholder": "Alle Namen"
+    },
+    "send": {
+      "title": "Absenden",
+      "desc": "Once the above information has been sent, it can't be changed anymore. Please make sure it's correct before you send it. If you press discard, the form will be reset and you may start over.",
+      "reward": "Belohnung",
+      "reward_text": "Once you send this observation, you will receive <b>{{xp}} XP</b>.",
+      "reward_text_multiple_users": "Once you send this observation, every user will receive <b>{{xp}} XP</b>.",
+      "discard": "Verwerfen",
+      "send": "Beobachtung senden",
+      "in_progress": "Sende Beobachtung...",
+      "in_progress_img": "Lade Beobachtungsfoto hoch...",
+      "error": "Fehler beim Senden der Beobachtung",
+      "error_duplicate": "Für den gegebenen Zeitpunkt gibt es bereits eine Beobachtung",
+      "error_img": "Foto konnte nicht hochgeladen werden",
+      "success_img": "Beobachtung und Foto erfolgreich gesendet",
+      "success": "Beobachtung erfolgreich gesendet"
+    }
+  },
+  "user_permissions": {
+    "title": "Gib {{username}} Erlaubnis, um",
+    "desc": "Let the other person enter their information below to",
+    "loading": "Loading",
+    "error": "Could not load users granting permission",
+    "request": "Give permission",
+    "requesting": "Validating",
+    "permissions": {
+      "PHENOLOGY_OBSERVATION": {
+        "title": "Phänologiebeobachtungen zu teilen",
+        "summary_access": "<ul><li>Deine Nutzer-ID</li><li>Deinen Nutzernamen</li></ul>",
+        "summary_permissions": "<ul><li>Dich zu ihrer Phänologiebeobachtung hinzuzufügen</li><li>Mit Dir ihre Punkte für Phänologiebeobachtungen zu teilen</li></ul>"
+      }
+    }
+  },
+  "beacon_select": {
+    "none_found": "Keine Beacons gespeichert."
+  },
+  "report": {
+    "title": "Bei welchem Problem brauchst Du Hilfe?",
+    "technical_problem": {
+      "link": "Technisches Problem",
+      "desc": "Das beinhaltet Probleme mit Beacon-Auslesungen, der Android App und der Website."
+    },
+    "other_problem": {
+      "link": "Anderes Problem",
+      "desc": "Das beinhaltet Probleme bezüglich der Durchführung von Phänologiebeobachtungen, wie Beacon-Auslesung erledigt wird, etc."
+    },
+    "report": {
+      "title": "Technisches Problem melden",
+      "desc": "Trage Deine Frage hier ein.",
+      "discard_link": "Verwerfen",
+      "send_link": "Meldung absenden",
+      "sending": "Sende Meldung...",
+      "error": "Meldung konnte nicht gesandt werden",
+      "success": "Erfolgreich gesandt"
+    },
+    "user_reports": {
+      "title": "Deine Meldungen",
+      "error": "Deine Meldungen konnten nicht geladen werden",
+      "desc": "Hier siehst Du alle Meldungen bezüglich technischer Probleme, inklusive Kommentare des Teams und deren Lösung.",
+      "desc_annotation": "Gelöste Probleme werden nach drei Monaten Inaktivität nicht mehr angezeigt.",
+      "empty": "Du hast noch nichts gemeldet.",
+      "report": {
+        "title": "Report",
+        "resolved": "Resolved",
+        "inprogress": "In progress"
+      }
+    }
+  },
+  "beacon_list": {
+    "empty": "Keine Beacons gefunden"
   }
 }

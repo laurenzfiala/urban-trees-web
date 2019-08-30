@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {AuthService} from '../../services/auth.service';
 import {Login} from '../../entities/login.entity';
 import {AbstractComponent} from '../abstract.component';
@@ -118,9 +118,7 @@ export class ProjectLoginComponent extends AbstractComponent implements OnInit {
    * Whether the client is on a secure connection or not.
    */
   public isSslConnection(): boolean {
-    return window.location.protocol === 'https:' ||
-      window.location.hostname === 'localhost' ||
-      window.location.hostname.indexOf('192.168.') === 0;
+    return this.authService.isSslConnection();
   }
 
   public hasManyFailedAttempts(): boolean {

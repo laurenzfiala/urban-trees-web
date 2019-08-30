@@ -5,14 +5,17 @@
  */
 import {BeaconStatus} from './beacon-status.entity';
 import {BeaconSettings} from './beacon-settings.entity';
+import {Location} from './location.entity';
+import {TreeLight} from './tree-light.entity';
 
 export class Beacon {
 
   public id: number;
   public deviceId: string;
-  public treeId: number;
+  public tree: TreeLight;
   public bluetoothAddress: string;
   public status: BeaconStatus;
+  public location: Location;
 
   /**
    * Additional settings of beacon
@@ -22,34 +25,32 @@ export class Beacon {
   constructor(
     id?: number,
     deviceId?: string,
-    treeId?: number,
+    tree?: TreeLight,
     bluetoothAddress?: string,
     status?: BeaconStatus,
+    location?: Location,
     settings?: BeaconSettings
   ) {
     this.id = id;
     this.deviceId = deviceId;
-    this.treeId = treeId;
+    this.tree = tree;
     this.bluetoothAddress = bluetoothAddress;
     this.status = status;
+    this.location = location;
     this.settings = settings;
   }
 
   public static fromObject(o: any): Beacon {
 
-    let b = new Beacon(
+    return new Beacon(
       o.id,
       o.deviceId,
-      o.treeId,
+      o.tree && TreeLight.fromObject(o.tree),
       o.bluetoothAddress,
-      o.status
+      o.status,
+      o.location && Location.fromObject(o.location),
+      o.settings && BeaconSettings.fromObject(o.settings)
     );
-
-    if (o.settings) {
-      b.settings = o.settings;
-    }
-
-    return b;
 
   }
 

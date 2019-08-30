@@ -1,6 +1,7 @@
 import {PhenologyObservationType} from './phenology-observation-type.entity';
 import {PhenologyObservationResult} from './phenology-observation-result.entity';
 import {PhenologyObservationObject} from './phenology-observation-object.entity';
+import {PhenologyObservation} from './phenology-observation.entity';
 
 /**
  * Class with state members for frontend.
@@ -18,8 +19,14 @@ export class PhenologyObservationTypeFrontend extends PhenologyObservationType {
   /**
    * Map of selected results for each object.
    * @type {Map<PhenologyObservationObject, PhenologyObservationResult>}
+   * TODO remove
    */
   public resultMap: any = {};
+
+  /**
+   * Frontend observations (need to be committed to PhenologyObservationType#results)
+   */
+  public userObservations: Array<PhenologyObservation> = [];
 
   /**
    * Used only for the UI.

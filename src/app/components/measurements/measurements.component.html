@@ -81,8 +81,8 @@
       {{'measurements.beacons.title' | translate}}
       <ut-loading-status
         errorDescription="measurements.beacons.error"
-        [status]="getStatusObservable(StatusKey.STATISTICS)"
-        [error]="getStatusErrorObservable(StatusKey.STATISTICS)"></ut-loading-status>
+        [status]="getStatusObservable(StatusKey.BEACONS)"
+        [error]="getStatusErrorObservable(StatusKey.BEACONS)"></ut-loading-status>
     </div>
     <div class="content-cat-text">
       {{'measurements.beacons.desc' | translate}}<br/>
@@ -99,13 +99,20 @@
       {{'general.input_annotation' | translate}}
     </div>
 
-    <div class="mt-2">
+    <div *ngIf="displayBeacons?.length > 0"
+         class="mt-2">
 
       <div class="pt-3">
         <ut-beacon-list *ngIf="hasStatus(StatusKey.BEACONS, StatusValue.SUCCESSFUL)"
                         [beacons]="displayBeacons"
                         [showData]="true"></ut-beacon-list>
       </div>
+    </div>
+
+    <div *ngIf="displayBeacons?.length === 0"
+         class="status-img my-4">
+      <img src="/assets/img/icon/no_results.svg" />
+      {{'measurements.no_beacon_found' | translate}}
     </div>
 
   </div>

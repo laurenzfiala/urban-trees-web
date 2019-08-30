@@ -8,20 +8,12 @@
   background-size: 1.75rem;
 }
 
-.tree-container {
+.tree-container,
+.beacon-container {
   display: inline-block;
 
   > .inner {
     background-color: @lightBgColor;
-
-    &:hover {
-
-      .link {
-        text-decoration: none;
-        color: @linkHoverColor !important;
-        border-bottom-color: @linkHoverColor !important;
-      }
-    }
 
     > .title {
       display: flex;
@@ -33,52 +25,53 @@
       color: @darkerGrey;
       font-size: @fontSizeMedium;
     }
-
-    > .info {
-    }
   }
 }
 
 ::ng-deep .content-cat:nth-child(even) {
-  .tree-container > .inner {
-    background-color: @white;
+  .tree-container,
+  .beacon-container {
+    > .inner {
+      background-color: @white;
+    }
   }
 }
 
 @media @xs {
-  .tree-container {
+  .tree-container,
+  .beacon-container {
     width: 100%;
   }
 }
 
 @media @sm {
-  .tree-container {
+  .tree-container,
+  .beacon-container {
     width: 100%;
   }
 }
 
 @media @md {
-  .tree-container {
+  .tree-container,
+  .beacon-container {
     width: 50%;
   }
 }
 
 @media @lg {
-  .tree-container {
+  .tree-container,
+  .beacon-container {
     width: 33.333%;
   }
 }
 
 @media @xl {
-  .tree-container {
+  .tree-container,
+  .beacon-container {
     width: 33.333%;
   }
 }
 
 li.list-group-item-action {
   cursor: pointer;
-}
-
-.map-wrapper {
-  height: 350px;
 }

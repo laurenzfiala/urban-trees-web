@@ -7,22 +7,25 @@
 import {User} from './user.entity';
 import {Event} from './event.entity';
 import {Report} from './report.entity';
+import {EnvironmentService} from '../services/environment.service';
+import * as moment from 'moment';
 
 export class ReportFrontend extends Report {
 
   public wasResolved: boolean = false;
 
-  constructor(id: number,
-              message: string,
-              assocEvent: Event,
-              assocUser: User,
-              autoCreate: boolean,
-              resolved: boolean,
-              remark: string) {
-    super(id, message, assocEvent, assocUser, autoCreate, resolved, remark);
+  constructor(id?: number,
+              message?: string,
+              assocEvent?: Event,
+              assocUser?: User,
+              autoCreate?: boolean,
+              resolved?: boolean,
+              remark?: string,
+              reportDate?: Date) {
+    super(id, message, assocEvent, assocUser, autoCreate, resolved, remark, reportDate);
   }
 
-  public static fromObject(o: any): Report {
+  public static fromObject(o: any, envService: EnvironmentService): Report {
 
     return new ReportFrontend(
       o.id,
@@ -31,7 +34,8 @@ export class ReportFrontend extends Report {
       o.assocUser,
       o.autoCreate,
       o.resolved,
-      o.remark
+      o.remark,
+      o.reportDate && moment.utc(o.reportDate, envService.outputDateFormat).toDate()
     );
 
   }

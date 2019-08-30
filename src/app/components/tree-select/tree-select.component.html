@@ -7,34 +7,47 @@
     [placeholder]="'phenology.observation.step1.tree_search_placeholder' | translate" />
 </div>
 
-<ul *ngIf="displayTrees" class="list-group mt-2">
-  <li *ngIf="selectNewTree"
-      class="list-group-item list-group-item-action new-tree"
-      [ngClass]="{'active': selectedTree.id === 0}"
-      (click)="selectTree(null);"
-      (keydown)="selectTree(null);">
-    Create new tree
-  </li>
-  <li *ngFor="let tree of displayTrees[currentDisplayTreePage]"
-      class="list-group-item list-group-item-action"
-      [ngClass]="{'active': tree.id === selectedTree?.id}"
-      (click)="selectTree(tree.id);"
-      (keydown)="selectTree(tree.id);">
-    <span class="badge badge-light float-right">#{{tree.id}}</span>
-    <b>
-      {{'tree.species.' + tree.species.name | lowercase | translate}}
-    </b>
-    <small [ngClass]="(tree.id === selectedTree?.id) ? 'text-light' : 'text-subtle'">
-      {{'tree.species.latin.' + tree.species.name | lowercase | translate}}
-    </small>
-    <br/>
-    {{'phenology.observation.step1.tree_location' | translate:tree.location}}
-  </li>
-  <li *ngIf="displayTrees?.length === 0"
-      class="list-group-item disabled">
-    {{'phenology.observation.step1.tree_not_found' | translate}}
-  </li>
-</ul>
+<div *ngIf="displayTrees"
+     class="m--1 pt-2">
+
+  <div *ngFor="let tree of displayTrees[currentDisplayTreePage]"
+       class="tree-container link-container"
+       [ngClass]="{'active': selectedTree?.id === tree.id}">
+    <div class="inner d-flex flex-column pointer m-1"
+         (click)="toggleTree(tree.id);"
+         (keydown)="toggleTree(tree.id);">
+
+      <div class="title p-2">
+        <i class="i i-md i-dark i-tree mr-2"></i>
+        <div class="flex-grow-1">{{'tree.species.' + tree.species.name | lowercase | translate}}</div>
+        <div class="badge badge-sm">#{{tree.id}}</div>
+      </div>
+      <div class="info p-2">
+        <div class="d-flex flex-row align-items-center mt-1">
+          <i class="i i-xs i-black i-id mr-2"></i>
+          {{'tree.species.latin.' + tree.species.name | lowercase | translate}}
+        </div>
+        <div class="d-flex flex-row align-items-center mt-1">
+          <i class="i i-xs i-black i-location mr-2"></i>
+          {{'tree_list.tree.location' | translate:tree.location}}
+        </div>
+        <div *ngIf="selectedTree?.id === tree.id" class="d-flex flex-row align-items-center justify-content-end mt-1">
+          <i class="i i-sm i-dark i-check-success mr-1"></i>
+          <div [ngClass]="{'text-success': !allowDeselect, 'link success': allowDeselect}">
+            Selected
+          </div>
+        </div>
+        <div *ngIf="selectedTree?.id !== tree.id" class="d-flex flex-row align-items-center justify-content-end mt-1">
+          <div class="link">
+            Select
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
 
 <nav *ngIf="displayTreePagination">
   <ul class="pagination mt-2 mb-0">

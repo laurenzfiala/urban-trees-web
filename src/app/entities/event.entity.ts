@@ -12,7 +12,6 @@ export class Event {
   public message: string;
   public details: string;
   public severity: EventSeverity;
-  public assocReport: Report;
   public remark: string;
   public eventDate: Date;
 
@@ -20,14 +19,12 @@ export class Event {
               message: string,
               details: string,
               severity: EventSeverity,
-              assocReport: Report,
               remark: string,
               eventDate: Date) {
     this.id = id;
     this.message = message;
     this.details = details;
     this.severity = severity;
-    this.assocReport = assocReport;
     this.remark = remark;
     this.eventDate = eventDate;
   }
@@ -39,9 +36,8 @@ export class Event {
       o.message,
       o.details,
       o.severity,
-      o.assocReport && Report.fromObject(o.assocReport),
-      o.id,
-      o.id
+      o.remark,
+      o.eventDate
     );
 
   }

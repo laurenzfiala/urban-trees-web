@@ -7,6 +7,11 @@ import * as moment from 'moment';
 import {BeaconDataMode} from './beacon-data-mode.entity';
 import {BeaconLog} from './beacon-log.entity';
 import {TranslateService} from '@ngx-translate/core';
+import {Tree} from './tree.entity';
+import {MapMarker} from '../interfaces/map-marker.entity';
+import {TreeLight} from './tree-light.entity';
+import {BeaconSettings} from './beacon-settings.entity';
+import {Location} from './location.entity';
 
 /**
  * Used to attach beacon data to the beacon info.
@@ -14,7 +19,7 @@ import {TranslateService} from '@ngx-translate/core';
  * @author Laurenz Fiala
  * @since 2018/06/16
  */
-export class BeaconFrontend extends Beacon {
+export class BeaconFrontend extends Beacon implements MapMarker {
 
   public datasets: Array<BeaconData>;
 
@@ -30,13 +35,15 @@ export class BeaconFrontend extends Beacon {
   public settingsLoadingStatus: number;
 
   constructor(
-    id: number,
-    deviceId: string,
-    treeId: number,
-    bluetoothAddress: string,
-    status: BeaconStatus
+    id?: number,
+    deviceId?: string,
+    tree?: TreeLight,
+    bluetoothAddress?: string,
+    status?: BeaconStatus,
+    location?: Location,
+    settings?: BeaconSettings
   ) {
-    super(id, deviceId, treeId, bluetoothAddress, status);
+    super(id, deviceId, tree, bluetoothAddress, status, location, settings);
   }
 
   /**
@@ -150,14 +157,56 @@ export class BeaconFrontend extends Beacon {
 
   }
 
-  public static fromObject(o: any): Beacon {
+  // MapMarker interface methods
+  public getCoordsX(): number {
+    if (!this.location || !this.location.coordinates) {
+      return undefined;
+    }
+    return this.location.coordinates.x;
+  }
+
+  public getCoordsY(): number {
+    if (!this.location || !this.location.coordinates) {
+      return undefined;
+    }
+    return this.location.coordinates.y;
+  }
+
+  public getId(): number {
+    return this.id;
+  }
+
+  public getProjection(): string {
+    if (!this.location || !this.location.coordinates) {
+      return undefined;
+    }
+    return this.location.coordinates.projection;
+  }
+
+  public static fromObject(o: any): BeaconFrontend {
 
     return new BeaconFrontend(
       o.id,
       o.deviceId,
-      o.treeId,
+      o.tree && TreeLight.fromObject(o.tree),
       o.bluetoothAddress,
-      o.status
+      o.status,
+      o.location && Location.fromObject(o.location),
+      o.settings && BeaconSettings.fromObject(o.settings)
+    );
+
+  }
+
+  public static fromBeacon(o: Beacon): BeaconFrontend {
+
+    return new BeaconFrontend(
+      o.id,
+      o.deviceId,
+      o.tree && TreeLight.fromObject(o.tree),
+      o.bluetoothAddress,
+      o.status,
+      o.location && Location.fromObject(o.location),
+      o.settings && BeaconSettings.fromObject(o.settings)
     );
 
   }

@@ -1,19 +1,30 @@
 @import (reference) "../../../theme/variables";
 
-.btn {
-  border-radius: 5rem;
-  padding: @btnPadding;
-
-  &.btn-primary {
-    background-color: @secondaryColorHighlight;
-  }
-
-  &.btn-secondary {
-    background-color: darken(@bgColor, 20%);
-    border-color: darken(@bgColor, 20%);
-  }
+.disabled {
+  opacity: 0.5;
+  pointer-events: none;
 }
 
-.spotlight-container {
-  background-color: @lightBgColor;
+.reports-container {
+  margin: -@gutter;
+}
+
+.report {
+  background-color: @medLightBgColor;
+  padding: @gutter;
+  margin: @gutter;
+
+  .heading {
+    font-size: @fontSizeMedium;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: -@gutter -@gutter -(@gutter/2) -@gutter;
+    padding: @gutter;
+  }
+  .message {
+    font-style: italic;
+    color: @subtleTextColor;
+    margin-bottom: (@gutter/2);
+  }
 }

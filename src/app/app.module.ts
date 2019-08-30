@@ -4,14 +4,10 @@ import {NgModule} from '@angular/core';
 import {AppRoutingModule} from './app-routing.module';
 
 import {AppComponent} from './app.component';
-import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
+import {TranslateCompiler, TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {HeaderComponent} from './components/header/header.component';
 import {HomeComponent} from './components/home/home.component';
-import {AInfoComponent} from './components/phenology/observation/a-info/a-info.component';
-import {BObservationComponent} from './components/phenology/observation/b-observation/b-observation.component';
-import {CUploadComponent} from './components/phenology/observation/c-upload/c-upload.component';
-import {DFinishComponent} from './components/phenology/observation/d-finish/d-finish.component';
 import {ObservationComponent} from './components/phenology/observation/observation.component';
 import {FormsModule} from '@angular/forms';
 import {StringModificationPipe} from './pipes/strmod.pipe';
@@ -41,7 +37,6 @@ import {TreeListComponent} from './components/tree-list/tree-list.component';
 import {SpyDirective} from './directives/spy.directive';
 import {ProjectLoginComponent} from './components/project-login/project-login.component';
 import {AuthInterceptor} from './interceptors/auth.interceptor';
-import {PhenologyObservationStepGuard} from './components/phenology/observation/phenology-observation-step.guard';
 import {AuthService} from './services/auth.service';
 import {ProjectLoginGuard} from './components/project-login/project-login.guard';
 import {NgxChartsModule} from '@swimlane/ngx-charts';
@@ -78,6 +73,9 @@ import { LoadingStatusComponent } from './components/loading-status/loading-stat
 import { SlideshowComponent } from './components/slideshow/slideshow.component';
 import { MessagesComponent } from './components/messages/messages.component';
 import {MessagesService} from './services/messages.service';
+import { UserPermissionComponent } from './components/user-permission/user-permission.component';
+import {BeaconSelectComponent} from './components/beacon-select/beacon-select.component';
+import {AdminBeaconManageComponent} from './components/admin/beacon/manage/manage.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, '/translations/', '.json?cacheBust=' + new Date().getTime());
@@ -89,10 +87,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     AppComponent,
     HeaderComponent,
     HomeComponent,
-    AInfoComponent,
-    BObservationComponent,
-    CUploadComponent,
-    DFinishComponent,
     ObservationComponent,
     MissingComponent,
     ImprintComponent,
@@ -106,9 +100,11 @@ export function HttpLoaderFactory(http: HttpClient) {
     AdminComponent,
     AdminTreeComponent,
     AdminBeaconComponent,
+    AdminBeaconManageComponent,
     AdminUserComponent,
     MapComponent,
     BeaconListComponent,
+    BeaconSelectComponent,
     TreeSelectComponent,
     UserOverviewComponent,
     UsernameChangeComponent,
@@ -134,7 +130,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     DecimalPlacesPipe,
     AnnouncementsComponent,
     ValueaccessorDirective,
-    SlideshowComponent
+    SlideshowComponent,
+    UserPermissionComponent
   ],
   imports: [
     // Core
@@ -184,7 +181,6 @@ export function HttpLoaderFactory(http: HttpClient) {
     MessagesService,
 
     // Guards
-    PhenologyObservationStepGuard,
     ProjectLoginGuard,
     AdminGuard,
 

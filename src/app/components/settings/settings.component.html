@@ -22,7 +22,8 @@
   <div class="container">
     <div class="content-cat-heading">{{'settings.account.title' | translate}}</div>
     <div class="content-cat-text">
-      {{'settings.account.desc' | translate}}
+      {{'settings.account.desc' | translate:{'username': user?.username} }}<br/>
+      {{'settings.account.desc_2' | translate}}
 
       <div class="d-flex flex-row align-items-center mt-2">
         <i class="i i-user i-dark mr-1"></i>
@@ -44,7 +45,7 @@
     <div class="content-cat-text">
       {{'settings.support.desc' | translate}}
     </div>
-    <a class="content-cat-link" routerLink="/account/support">{{'settings.support.link' | translate}}</a>
+    <a class="content-cat-link" routerLink="/report">{{'settings.support.link' | translate}}</a>
   </div>
 </div>
 

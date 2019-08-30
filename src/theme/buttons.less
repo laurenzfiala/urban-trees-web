@@ -111,17 +111,23 @@ a.btn-img {
 }
 
 // custom link button theme
-.link-btn {
-  display: inline-block;
+.link-btn,
+a.link-btn,
+a.link-btn:not([href]):not([tabindex]) {
+  display: inline-flex;
+  align-items: center;
   padding: (@gutter/2);
   font-size: 1em;
   font-weight: normal;
   line-height: 1;
+  text-align: center;
   color: @linkColor;
   border: @linkBorder;
   background-color: transparent;
   transition: none;
   cursor: pointer;
+
+  user-select: none;
 
   &:hover,
   &:active,
@@ -131,51 +137,83 @@ a.btn-img {
     border-color: @linkHoverColor !important;
   }
 
-  &.badge-sm {
+  &.link-btn-xl {
+    font-size: @fontSizeExtraLarge;
+  }
+
+  &.link-btn-lg {
+    font-size: @fontSizeLarge;
+  }
+
+  &.link-btn-md {
+    font-size: @fontSizeMedium;
+  }
+
+  &.link-btn-sm {
     font-size: @fontSizeSmall;
   }
 
-  &.badge-xs {
+  &.link-btn-xs {
     font-size: @fontSizeExtraSmall;
   }
 
   &.danger {
-    color: lighten(@dangerColor, 15%);
-    border-color: lighten(@dangerColor, 15%);
+    color: lighten(@dangerColor, 15%) !important;
+    border-color: lighten(@dangerColor, 15%) !important;
 
     &:hover {
-      color: @dangerColor;
-      border-color: @dangerColor;
+      color: @dangerColor !important;
+      border-color: @dangerColor !important;
     }
   }
 
   &.primary {
-    color: lighten(@primaryColor, 15%);
-    border-color: lighten(@primaryColor, 15%);
+    color: lighten(@primaryColor, 15%) !important;
+    border-color: lighten(@primaryColor, 15%) !important;
 
     &:hover {
-      color: @primaryColor;
-      border-color: @primaryColor;
+      color: @primaryColor !important;
+      border-color: @primaryColor !important;
     }
   }
 
   &.success {
-    color: lighten(@successColor, 15%);
-    border-color: lighten(@successColor, 15%);
+    color: lighten(@successColor, 15%) !important;
+    border-color: lighten(@successColor, 15%) !important;
+
+    &.highlight {
+      animation: -anim-btn-success @btnAnimDuration infinite ease-in;
+
+      &.once {
+        animation-iteration-count: 1;
+      }
+    }
 
     &:hover {
-      color: @successColor;
-      border-color: @successColor;
+      color: @successColor !important;
+      border-color: @successColor !important;
     }
   }
 
   &.warning {
-    color: lighten(@warningColor, 15%);
-    border-color: lighten(@warningColor, 15%);
+    color: lighten(@warningColor, 15%) !important;
+    border-color: lighten(@warningColor, 15%) !important;
 
     &:hover {
-      color: @warningColor;
-      border-color: @warningColor;
+      color: @warningColor !important;
+      border-color: @warningColor !important;
     }
+  }
+}
+
+@keyframes -anim-btn-success {
+  0% {
+    box-shadow: 0 0 0 0px fade(lighten(@successColor, 5%), 60%);
+  }
+  75% {
+    box-shadow: 0 0 0 3px fade(lighten(@successColor, 5%), 25%);
+  }
+  100% {
+    box-shadow: 0 0 0 6px fade(lighten(@successColor, 5%), 0%);
   }
 }

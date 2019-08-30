@@ -1,5 +1,8 @@
 @import (reference) "../../../theme/variables";
 
+@controlsBgColor: rgba(100, 100, 100, 0.5);
+@controlsHeight: 45px;
+
 .wrapper {
   position: relative;
 
@@ -53,6 +56,13 @@
     animation: i-close 300ms;
   }
 
+  &:hover {
+    .slide-next,
+    .slide-previous {
+      opacity: 1;
+    }
+  }
+
   .fullscreen-content-wrapper {
     max-height: calc(100vh - (@gutter2x*2));
     max-width: calc(100vw - (@gutter2x*2) - 5rem);
@@ -74,6 +84,36 @@
     background-size: contain;
 
     cursor: pointer;
+  }
+
+  .slide-next,
+  .slide-previous {
+    position: absolute;
+    top: calc(50% - (@controlsHeight/2));
+
+    width: 60px;
+    height: @controlsHeight;
+
+    opacity: 0;
+
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    background-color: @controlsBgColor;
+
+    cursor: pointer;
+
+    transition: opacity 250ms;
+  }
+
+  .slide-previous {
+    left: 0;
+    background-image: url("/assets/img/icon/light/arrow-left.svg");
+  }
+
+  .slide-next {
+    right: 0;
+    background-image: url("/assets/img/icon/light/arrow-right.svg");
   }
 }
 

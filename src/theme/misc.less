@@ -158,6 +158,24 @@ textarea.form-control:focus,
   margin-bottom: @gutter;
 }
 
+.content-cat-separator {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  padding: @gutter 0;
+
+  .separator {
+    flex-grow: 1;
+    height: 0;
+    border-bottom: solid @medGrey 1px;
+  }
+  .separator-content {
+    padding: 0 @gutter;
+    color: @subtleTextColor;
+  }
+}
+
 .badge {
   display: inline-block;
   padding: (@gutter/2);
@@ -165,8 +183,19 @@ textarea.form-control:focus,
   font-weight: normal;
   line-height: 1;
   color: @linkColor;
-  border: @linkBorder;
-  background-color: transparent;
+  background-color: lighten(@linkColor, 40%);
+
+  &.badge-xl {
+    font-size: @fontSizeExtraLarge;
+  }
+
+  &.badge-lg {
+    font-size: @fontSizeLarge;
+  }
+
+  &.badge-md {
+    font-size: @fontSizeBase;
+  }
 
   &.badge-sm {
     font-size: @fontSizeSmall;
@@ -178,22 +207,22 @@ textarea.form-control:focus,
 
   &.danger {
     color: lighten(@dangerColor, 15%);
-    border-color: lighten(@dangerColor, 15%);
+    background-color: lighten(@dangerColor, 40%);
   }
 
   &.primary {
     color: lighten(@primaryColor, 15%);
-    border-color: lighten(@primaryColor, 15%);
+    background-color: lighten(@primaryColor, 45%);
   }
 
   &.success {
     color: lighten(@successColor, 15%);
-    border-color: lighten(@successColor, 15%);
+    background-color: lighten(@successColor, 55%);
   }
 
   &.warning {
     color: lighten(@warningColor, 15%);
-    border-color: lighten(@warningColor, 15%);
+    background-color: lighten(@warningColor, 55%);
   }
 }
 
@@ -206,10 +235,13 @@ textarea.form-control:focus,
   text-decoration: none;
   color: @linkColor;
 
+  .link-container[target="_blank"] &:after,
   &[target="_blank"]:after {
     content: " >";
   }
 
+  .link-container:hover &,
+  .link-container:active &,
   &:hover,
   &:active,
   &.active {
@@ -235,6 +267,8 @@ textarea.form-control:focus,
     color: lighten(@primaryColor, 15%) !important;
     border-bottom-color: lighten(@primaryColor, 15%) !important;
 
+    .link-container:hover &,
+    .link-container:active &,
     &:hover,
     &:active,
     &.active {
@@ -248,6 +282,8 @@ textarea.form-control:focus,
     color: lighten(@successColor, 15%) !important;
     border-bottom-color: lighten(@successColor, 15%) !important;
 
+    .link-container:hover &,
+    .link-container:active &,
     &:hover,
     &:active,
     &.active {
@@ -262,11 +298,22 @@ textarea.form-control:focus,
   }
 }
 
+.link-container {
+  cursor: pointer;
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+.text-link {
+  color: @linkColor;
+}
+
 // remove bootstrap default style
 .content-cat-link,
 .link,
-a.link,
-.link-btn {
+a.link {
   &:not([href]):not([tabindex]) {
     color: @linkColor;
   }
@@ -418,5 +465,38 @@ a.link,
   }
   100% {
     box-shadow: 0 0 0 7px rgba(255, 191, 43, 0);
+  }
+}
+
+// map
+.map-wrapper {
+  height: @mapHeightDefault;
+}
+
+// nav path
+.nav-path {
+  background-color: @medLightBgColor;
+  border-top: solid @lightBorderColor 1px;
+  font-size: @fontSizeSmall;
+}
+
+// status gb
+.status-img {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  color: #C6C6C6;
+  font-weight: bold;
+  font-size: @fontSizeExtraSmall;
+
+  > img {
+    height: 125px;
+  }
+
+  &.middle {
+    height: 100%;
+    max-height: 100vh;
   }
 }

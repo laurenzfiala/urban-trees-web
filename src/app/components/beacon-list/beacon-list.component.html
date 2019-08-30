@@ -1,18 +1,21 @@
 <div *ngIf="!selectedBeacon"
-     class="d-flex flex-row align-items-center text-subtle">
-  <i class="i i-sm i-dark i-info mr-2"></i>
-  {{'tree.beacon.details.no_beacon_found' | translate}}
+     class="d-flex flex-row align-items-center flex-wrap text-subtle m--2">
+  <div class="d-flex flex-row align-items-center m-2">
+    <i class="i i-sm i-dark i-info mr-2"></i>
+    {{'tree.beacon.details.no_beacon_found' | translate}}
+  </div>
 </div>
 <div *ngIf="selectedBeacon"
      class="outer-container d-flex flex-row flex-wrap flex-lg-nowrap m--2">
-  <div class="list-container d-flex d-lg-block flex-row">
+  <div *ngIf="beacons?.length > 1"
+       class="list-container d-flex d-lg-block flex-row">
 
     <!-- Content of beacon selection dropdown -->
     <ng-template #beaconSelectionContent>
       <div *ngFor="let beacon of beacons; let i = index"
            (click)="selectedBeaconIndex = i; loadBeaconData()"
            [ngClass]="{'mr-0 selected': selectedBeaconIndex === i, 'mr-2': selectedBeaconIndex !== i}"
-           class="list-entry text-nowrap p-2">
+           class="list-entry link-container text-nowrap p-2">
         <i class="i i-beacon i-dark p-2 mr-1"></i>
         <i *ngIf="beacon.status === BeaconStatus.LOCKED || beacon.status === BeaconStatus.INVALID_SETTINGS"
            class="i i-dark i-xs mr-1"
@@ -34,21 +37,21 @@
       </div>
     </div>
 
-    <div *ngIf="modify"
-         (click)="onAddBeaconClick()"
-         class="list-entry text-nowrap p-2 mr-2">
-      <i class="i i-beacon-add-info mr-1"></i>
-      <a class="link primary">
-        Add beacon
-      </a>
-    </div>
-
   </div>
   <div class="p-2 flex-grow-1 beacon-info-wrapper d-flex flex-column">
 
     <div class="d-flex flex-row justify-content-between">
       <div class="content-cat-heading">
         Beacon {{selectedBeacon.deviceId}}
+
+        <div *ngIf="showAssociations && selectedBeacon.tree"
+             [routerLink]="['/tree', selectedBeacon.tree.id]"
+             class="badge badge-xs d-flex flex-row align-items-center ml-1 link-container">
+          <i class="i i-xxs i-dark i-link mr-1"></i>
+          {{'map.tree_assoc' | translate}}&nbsp;
+          <a class="link">#{{selectedBeacon.tree.id}}</a>
+        </div>
+
         <i *ngIf="selectedBeacon.status === BeaconStatus.LOCKED || selectedBeacon.status === BeaconStatus.INVALID_SETTINGS"
            class="i i-dark i-xs ml-1"
            [ngClass]="{'i-lock-closed-sm': selectedBeacon.status === BeaconStatus.LOCKED, 'i-signal-issue-sm': selectedBeacon.status === BeaconStatus.INVALID_SETTINGS}"></i>
@@ -84,9 +87,9 @@
     </div>
 
     <div *ngIf="!modify && selectedBeacon.status === BeaconStatus.INITIAL"
-         class="alert alert-dark my-2">
-      <i class="i i-black i-beacon flex-shrink-0 mr-2"></i>
-      {{'tree.beacon.details.status_initial' | translate}}
+         class="status-img my-4 middle">
+      <img src="/assets/img/icon/beacon_new.svg" />
+      <div>{{'tree.beacon.details.status_initial' | translate}}</div>
     </div>
 
     <div *ngIf="showData && selectedBeacon.chartData && selectedBeacon.datasets?.length > 0" class="chart-wrapper my-2">
@@ -111,9 +114,10 @@
       </div>
     </div>
 
-    <div *ngIf="showData && hasStatus(StatusKey.BEACON_DATA, StatusValue.SUCCESSFUL) && !(selectedBeacon.chartData && selectedBeacon.datasets?.length > 0)" class="beacon-warning">
-      <div class="i mr-2"></div>
-      {{'tree.beacon.data.missing' | translate}}
+    <div *ngIf="showData && selectedBeacon.status !== BeaconStatus.INITIAL && hasStatus(StatusKey.BEACON_DATA, StatusValue.SUCCESSFUL) && !(selectedBeacon.chartData && selectedBeacon.datasets?.length > 0)"
+         class="status-img my-4 middle">
+      <img src="/assets/img/icon/stats_missing.svg" />
+      <div>{{'tree.beacon.data.missing' | translate}}</div>
     </div>
 
     <div *ngIf="modify" class="beacon-settings mt-3">
@@ -200,21 +204,25 @@
             </a>
           </div>
         </div>
+        <button class="btn btn-sm btn-outline-dark d-flex text-center mr-2"
+                [routerLink]="['/admin/beacon/manage']"
+                [queryParams]="{'beacon': selectedBeacon.deviceId}">
+          <i class="i i-xs i-dark i-edit mr-1"></i>
+          Edit beacon
+        </button>
         <button class="btn btn-sm btn-outline-danger d-flex text-center"
                 [ngClass]="{'remove-disabled': selectedBeacon.deleteStatus === StatusValue.SUCCESSFUL}"
                 [popover]="removeBeaconConfirm"
                 outsideClick=true>
           <i class="i i-xs i-trash-danger mr-1"></i>
-          Remove beacon
+          Delete beacon
         </button>
 
       </div>
 
       <div *ngIf="selectedBeacon.isLogsShown && selectedBeacon.logs.length > 0">
 
-        <hr/>
-
-        <table class="table table-sm table-striped logs mb-0" *ngIf="selectedBeacon.logs?.length > 0">
+        <table class="table table-sm table-striped logs mb-0 mt-2" *ngIf="selectedBeacon.logs?.length > 0">
           <tr *ngFor="let log of selectedBeacon.logs">
             <td>
               <div class="log-severity" [ngClass]="'level-' + log.severity | lowercase">{{log.severity}}</div>
@@ -230,20 +238,23 @@
 
         <div *ngIf="selectedBeacon.logLoadingStatus === StatusValue.SUCCESSFUL && selectedBeacon.canShowMoreLogs"
              (click)="loadBeaconLogs(selectedBeacon)"
-             class="btn btn-sm btn-block btn-link">
-          Load more
+             class="text-center">
+          <div class="link-btn link-btn-sm">
+            <i class="i i-xxs i-dark i-chevron-down mr-1"></i>
+            Load more
+          </div>
         </div>
         <div *ngIf="selectedBeacon.logLoadingStatus === StatusValue.SUCCESSFUL && !selectedBeacon.canShowMoreLogs"
              class="text-subtle text-sm text-center my-2">
           All logs loaded
         </div>
-        <div *ngIf="selectedBeacon.logLoadingStatus === StatusValue.IN_PROGRESS" class="beacon-message text-sm my-2">
+        <div *ngIf="selectedBeacon.logLoadingStatus === StatusValue.IN_PROGRESS" class="text-center text-subtle text-sm my-2">
           <i class="i i-sm i-spin i-dark i-load mr-2"></i>
           Loading beacon logs...
         </div>
         <div *ngIf="selectedBeacon.logLoadingStatus === StatusValue.FAILED"
-             class="beacon-warning text-sm my-2">
-          <i class="i i-sm mr-2"></i>
+             class="text-warning text-center text-sm">
+          <i class="i i-sm i-warning-warning mr-2"></i>
           Could not load more logs
         </div>
 
@@ -251,13 +262,11 @@
 
       <div *ngIf="selectedBeacon.logs.length === 0 && !selectedBeacon.canShowMoreLogs && selectedBeacon.isLogsShown">
         <hr/>
-        <div class="beacon-warning my-2">
+        <div class="beacon-warning my-1">
           <i class="i mr-2"></i>
           No logs found for given log levels
         </div>
       </div>
-
-      <hr/>
 
       <div *ngIf="selectedBeacon.settingsLoadingStatus === StatusValue.IN_PROGRESS" class="beacon-message my-4">
         <i class="i i-spin i-dark i-load mr-2"></i>
@@ -269,7 +278,8 @@
         Could not load beacon settings
       </div>
 
-      <div *ngIf="selectedBeacon.settings">
+      <div *ngIf="selectedBeacon.settings"
+           class="mt-2">
 
         <table class="table table-striped">
           <tr>
@@ -336,7 +346,10 @@
 
 </div>
 
-<div *ngIf="beacons?.length === 0" class="beacon-warning">
-  <div class="i mr-2"></div>
-  {{'tree.beacon.details.none_attached' | translate}}
+<div *ngIf="beacons?.length === 0"
+     class="status-img my-4">
+  <img src="/assets/img/icon/beacon_none_grey.svg" />
+  <div>
+    {{'beacon_list.empty' | translate}}
+  </div>
 </div>

@@ -5,7 +5,7 @@
 </div>
 
 <div class="fullscreen-wrapper"
-     [ngClass]="{'show': isShown, 'closing': isClosing}"
+     [ngClass]="{'show': isShown, 'closing': isClosing, 'controls': showControls}"
      (click)="close()">
   <div class="fullscreen-close close"
        (click)="close()"></div>
@@ -13,4 +13,8 @@
        (click)="$event.stopPropagation()">
     <ng-container *ngTemplateOutlet="fullscreenContent"></ng-container>
   </div>
+  <div class="slide-previous"
+       (click)="onPrevious(); $event.stopPropagation()"></div>
+  <div class="slide-next"
+       (click)="onNext(); $event.stopPropagation()"></div>
 </div>

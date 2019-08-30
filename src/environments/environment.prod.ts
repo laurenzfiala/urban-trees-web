@@ -39,6 +39,7 @@ export const environment = {
     userAchievements:                 '/user/achievements',
     userData:                         '/user/data',
     userDelete:                       '/user/delete',
+    userReport:                       '/user/report',
 
     // Admin
     addCity:                          '/admin/city',
@@ -47,6 +48,7 @@ export const environment = {
     modifyTree:                       '/admin/tree/{treeId}',
     phenologyObservationTypes:        '/admin/phenology/types',
     addBeacon:                        '/admin/beacon',
+    modifyBeacon:                     '/admin/beacon/{beaconId}',
     deleteBeacon:                     '/admin/beacon/{beaconId}',
     loadBeaconLogs:                   '/admin/beacon/logs',
     loadUsers:                        '/admin/users',
@@ -70,7 +72,9 @@ export const environment = {
     // Authentication
     login:                            '/login',
     changePassword:                   '/account/changepassword',
-    changeUsername:                   '/account/changeusername'
+    changeUsername:                   '/account/changeusername',
+    addUserPermission:                '/account/permission/request',
+    usersGrantingPermission:          '/account/permission/granted/{permission}'
   },
 
   defaultTimeout:                     30000,

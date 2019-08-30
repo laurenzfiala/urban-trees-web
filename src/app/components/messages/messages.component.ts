@@ -6,6 +6,8 @@ import {AbstractComponent} from '../abstract.component';
 import {ReportFrontend} from '../../entities/report-frontend.entity';
 import {UserService} from '../../services/user.service';
 import {EventSeverity} from '../../entities/event.entity';
+import {EnvironmentService} from '../../services/environment.service';
+import * as moment from 'moment';
 
 @Component({
   selector: 'ut-messages',
@@ -23,7 +25,8 @@ export class MessagesComponent extends AbstractComponent implements OnInit {
 
   constructor(private messagesService: MessagesService,
               private userService: UserService,
-              private authService: AuthService) {
+              private authService: AuthService,
+              public envService: EnvironmentService) {
     super();
   }
 

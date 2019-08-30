@@ -7,6 +7,8 @@ import {TreeService} from '../../services/tree.service';
 import {TranslateService} from '@ngx-translate/core';
 import {City} from '../../entities/city.entity';
 import {MapMarker} from '../../interfaces/map-marker.entity';
+import {AppTransferStatusParam} from '../tree/tree.component';
+import {ActivatedRoute, ActivatedRouteSnapshot, Router} from '@angular/router';
 
 @Component({
   selector: 'ut-tree-list',
@@ -16,6 +18,8 @@ import {MapMarker} from '../../interfaces/map-marker.entity';
 export class TreeListComponent extends AbstractComponent implements OnInit {
 
   private static LOG: Log = Log.newInstance(TreeListComponent);
+
+  private static QUERY_PARAMS_SEARCH_INPUT: string = 'query';
 
   /**
    * Once loaded, contains all trees available.
@@ -40,17 +44,22 @@ export class TreeListComponent extends AbstractComponent implements OnInit {
   /**
    * Current tree search input.
    */
-  public treeSearchInput: string;
+  private treeSearchInput: string;
 
   public StatusKey = StatusKey;
   public StatusValue = StatusValue;
 
   constructor(private treeService: TreeService,
-              private translateService: TranslateService) {
+              private translateService: TranslateService,
+              private route: ActivatedRoute,
+              private router: Router) {
     super();
   }
 
   public ngOnInit() {
+
+    const searchInputVal = this.route.snapshot.queryParamMap.get(TreeListComponent.QUERY_PARAMS_SEARCH_INPUT);
+    this.setTreeSearchInput(searchInputVal);
 
     this.load();
 
@@ -70,6 +79,7 @@ export class TreeListComponent extends AbstractComponent implements OnInit {
     this.loadTrees(() => {
       this.displayTrees = this.availableTrees;
       this.updateCities();
+      this.setTreeSearchInput(undefined, false);
     });
   }
 
@@ -122,7 +132,23 @@ export class TreeListComponent extends AbstractComponent implements OnInit {
    * Set tree search and filter displayed trees by input.
    * @param {string} searchInput user's tree search input
    */
-  public setTreeSearchInput(searchInput: string): void {
+  public setTreeSearchInput(searchInput?: string, updateMember: boolean = true): void {
+
+    if (updateMember) {
+      this.treeSearchInput = searchInput;
+    } else {
+      searchInput = this.treeSearchInput;
+    }
+    if (!this.availableTrees) {
+      return;
+    }
+    this.router.navigate(
+      [],
+      {
+        relativeTo: this.route,
+        queryParams: { 'query': searchInput },
+        replaceUrl: true
+    });
 
     this.selectedTree = null;
     if (!searchInput) {
@@ -156,7 +182,7 @@ export class TreeListComponent extends AbstractComponent implements OnInit {
    */
   public selectTreeOnMap(newSelectedTree: MapMarker) {
     this.treeSearchInput = (<TreeFrontend> newSelectedTree).getId() + '';
-    this.setTreeSearchInput(this.treeSearchInput);
+    this.setTreeSearchInput(undefined, false);
     this.selectedTree = <TreeFrontend> newSelectedTree;
   }
 

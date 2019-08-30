@@ -4,7 +4,6 @@ import {Image} from '../../../entities/image.entity';
 import {HttpClient, HttpErrorResponse, HttpEventType} from '@angular/common/http';
 import {AbstractService} from '../../abstract.service';
 import {EnvironmentService} from '../../environment.service';
-import {Tree} from '../../../entities/tree.entity';
 import {Log} from '../../log.service';
 import {PhenologyObservationTypeFrontend} from '../../../entities/phenology-observation-type-frontend.entity';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -15,23 +14,12 @@ import {Observable} from 'rxjs/Observable';
 import {Subject} from 'rxjs/Subject';
 import {ApiError} from '../../../entities/api-error.entity';
 import {SubscriptionManagerService} from '../../subscription-manager.service';
-import {TranslateService} from '@ngx-translate/core';
+import {TreeFrontend} from '../../../entities/tree-frontend.entity';
 
 @Injectable()
 export class PhenologyObservationService extends AbstractService {
 
   private static LOG: Log = Log.newInstance(PhenologyObservationService);
-
-  /**
-   * Whether the observation data should be reset or not.
-   * Called upon init of first observation stap.
-   */
-  private markedForReset: boolean = false;
-
-  /**
-   * Index of the current step displayed.
-   */
-  public currentStepIndex: number = 0;
 
   /**
    * Step thats currently finished. Used to determine which steps
@@ -47,7 +35,7 @@ export class PhenologyObservationService extends AbstractService {
   /**
    * The tree to observe.
    */
-  public selectedTree: Tree;
+  public selectedTree: TreeFrontend;
 
   /**
    * New observation data populated by the user.
@@ -75,7 +63,6 @@ export class PhenologyObservationService extends AbstractService {
               private sub: SubscriptionManagerService,
               private envService: EnvironmentService) {
     super();
-    this.initDataset();
   }
 
   /**
@@ -234,37 +221,30 @@ export class PhenologyObservationService extends AbstractService {
   }
 
   /**
-   * Initialize observation data for use.
+   * Observation was in the past, so set max obs date & date to now.
    */
-  public initDataset(): void {
+  public observationInPast(): void {
     this.dataset.uiObservationDate = new Date();
     this.dataset.uiMaxObservationDate = new Date();
-  }
-
-  public markToBeReset() {
-    this.markedForReset = true;
   }
 
   /**
    * Reset observation data.
    */
-  public resetIfMarked(): void {
-    if (!this.markedForReset) {
-      return;
-    }
-    this.markedForReset = false;
+  public reset(): void {
+
     this.dataset = new PhenologyDatasetFrontend();
     this.observationSpec = undefined;
     this.selectedTree = undefined;
     this.userImage = undefined;
-    this.initDataset();
+
   }
 
   /**
    * Select the tree to be loaded and reset the spec
    * so it will be reloaded.
    */
-  public selectTree(tree: Tree): void {
+  public selectTree(tree: TreeFrontend): void {
     // force refresh of changed species spec
     if (this.selectedTree && tree.species.id !== this.selectedTree.species.id) {
       this.observationSpec = null;

@@ -1,22 +1,124 @@
-<div class="spotlight-container">
-
-  <div class="container py-3">
-
-    <div class="text-center text-dark pl-4 mb-1">
-      I have a ...
+<div class="content-cat">
+  <div class="container">
+    <div class="content-cat-heading">
+      {{'report.title' | translate}}
     </div>
-
-    <div class="btn-group w-100" role="group" aria-label="Basic example">
-      <button type="button" class="btn btn-primary w-50">technical problem</button>
-      <button type="button" class="btn btn-secondary w-50">other problem</button>
+    <div class="content-cat-text mb-2">
+      <div class="d-inline-flex flex-row align-items-center link-container"
+           tabindex="-1"
+           (click)="showReportForm = true"
+           (keydown)="showReportForm = true">
+        <i class="i i-sm i-question-technical-primary mr-1"></i>
+        <a class="link primary">
+          {{'report.technical_problem.link' | translate}}
+        </a>
+      </div>
+      <div class="text-sm text-subtle">
+        {{'report.technical_problem.desc' | translate}}
+      </div>
     </div>
-
+    <div class="content-cat-text">
+      <a class="d-inline-flex flex-row align-items-center link-container"
+         href="http://stadt-baum-klima.sbg.ac.at/about/contact/"
+         target="_blank">
+        <i class="i i-sm i-question-primary mr-1"></i>
+        <div class="link primary">
+          {{'report.other_problem.link' | translate}}
+        </div>
+      </a>
+      <div class="text-sm text-subtle">
+        {{'report.other_problem.desc' | translate}}
+      </div>
+    </div>
   </div>
-
 </div>
 
-<div class="container my-3">
+<div *ngIf="showReportForm" class="content-cat">
+  <div class="container">
+    <div class="content-cat-heading">
+      {{'report.report.title' | translate}}
+    </div>
+    <div class="content-cat-text">
+      <div class="mb-2">
+        {{'report.report.desc' | translate}}
+      </div>
+      <textarea id="reportTextInput"
+                class="form-control"
+                name="reportText"
+                [(ngModel)]="reportText">
+      </textarea>
+    </div>
+    <div class="d-flex flex-row align-items-center justify-content-end justify-content-md-start mx--2 mb--2">
+      <div class="d-flex flex-row align-items-center m-2 link-container"
+           (click)="discardReport()">
+        <i class="i i-sm i-dark i-cross-circle mr-1"></i>
+        <a class="link">{{'report.report.discard_link' | translate}}</a>
+      </div>
+      <div class="d-flex flex-row align-items-center m-2 link-container"
+           [ngClass]="{'disabled': hasAnyStatus(StatusKey.SEND_REPORT, StatusValue.IN_PROGRESS, StatusValue.SUCCESSFUL) || !reportText}"
+           (click)="sendReport()">
+        <i class="i i-sm i-send-primary mr-1"></i>
+        <a class="link primary">{{'report.report.send_link' | translate}}</a>
+      </div>
+      <div *ngIf="hasStatus(StatusKey.SEND_REPORT, StatusValue.IN_PROGRESS)"
+           class="d-flex flex-row align-items-center m-2 link-container">
+        <i class="i i-sm i-black i-spin i-load mr-1"></i>
+        {{'report.report.sending' | translate}}
+      </div>
+      <div *ngIf="hasStatus(StatusKey.SEND_REPORT, StatusValue.FAILED)"
+           class="d-flex flex-row align-items-center m-2 link-container text-danger">
+        <i class="i i-sm i-warning-danger mr-1"></i>
+        {{'report.report.error' | translate}}
+      </div>
+      <div *ngIf="hasStatus(StatusKey.SEND_REPORT, StatusValue.SUCCESSFUL)"
+           class="d-flex flex-row align-items-center m-2 link-container text-success">
+        <i class="i i-sm i-check-success mr-1"></i>
+        {{'report.report.success' | translate}}
+      </div>
+    </div>
+  </div>
+</div>
 
-  Some formular
-
+<div class="content-cat">
+  <div class="container">
+    <div class="content-cat-heading">
+      {{'report.user_reports.title' | translate}}
+      <ut-loading-status
+        errorDescription="report.user_reports.error"
+        [status]="getStatusObservable(StatusKey.LOAD_REPORTS)"
+        [error]="getStatusErrorObservable(StatusKey.LOAD_REPORTS)"></ut-loading-status>
+    </div>
+    <div class="content-cat-text mb-2">
+      {{'report.user_reports.desc' | translate}}
+      <div class="font-italic">{{'report.user_reports.desc_annotation' | translate}}</div>
+    </div>
+    <div *ngIf="reports?.length === 0" class="d-flex flex-row align-items-center text-subtle">
+      <i class="i i-sm i-dark i-info mr-1"></i>
+      {{'report.user_reports.empty' | translate}}
+    </div>
+    <div *ngIf="reports?.length > 0"
+         class="reports-container mt-2">
+      <div *ngFor="let r of reports"
+           class="report">
+        <div class="heading">
+          <div class="flex-grow-1">{{'report.user_reports.report.title' | translate}} #{{r.id}}</div>
+          <span *ngIf="r.resolved"
+                class="ml-1 badge success badge-sm d-inline-flex flex-row align-items-center">
+            <i class="i i-xs i-check-success mr-1"></i>
+            {{'report.user_reports.report.resolved' | translate}}
+          </span>
+          <span *ngIf="!r.resolved"
+                class="ml-1 badge warning badge-sm d-inline-flex flex-row align-items-center">
+            <i class="i i-xs i-inprogress-warning mr-1"></i>
+            {{'report.user_reports.report.inprogress' | translate}}
+          </span>
+        </div>
+        <div class="message">
+          <span class="mr-1 badge badge-sm">{{r.reportDate | date:('app.date_format_angular' | translate)}}</span>
+          {{r.message}}
+        </div>
+        <div class="remark">{{r.remark}}</div>
+      </div>
+    </div>
+  </div>
 </div>

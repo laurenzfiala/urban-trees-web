@@ -1,9 +1,10 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {PasswordReset} from '../../entities/password-reset.entity';
 import {AbstractComponent} from '../abstract.component';
 import {AuthService} from '../../services/auth.service';
 import {Log} from '../../services/log.service';
 import {EnvironmentService} from '../../services/environment.service';
+import {LoginStatus} from '../project-login/login-status.enum';
 
 @Component({
   selector: 'ut-project-password-change',
@@ -28,14 +29,15 @@ export class PasswordChangeComponent extends AbstractComponent implements OnInit
   public username: string;
 
   constructor(private authService: AuthService,
-              public envService: EnvironmentService) {
+              public envService: EnvironmentService,
+              private cdRef: ChangeDetectorRef) {
     super();
   }
 
   public ngOnInit(): void {
 
     if (this.authService.isTempChangePasswordAuth()) {
-      this.setStatus(StatusKey.FORCE_LOGOUT, StatusValue.YES)
+      this.setStatus(StatusKey.FORCE_LOGOUT, StatusValue.YES);
     }
 
     this.username = this.authService.getUsername();
@@ -53,6 +55,7 @@ export class PasswordChangeComponent extends AbstractComponent implements OnInit
       if (this.hasStatus(StatusKey.FORCE_LOGOUT, StatusValue.YES)) {
         PasswordChangeComponent.LOG.info('Logging out user because logout after password change was forced');
         this.authService.logout();
+        this.cdRef.detectChanges();
       }
     }, error => {
       PasswordChangeComponent.LOG.error('Failed to change password', error);
@@ -85,16 +88,17 @@ export class PasswordChangeComponent extends AbstractComponent implements OnInit
 
     return passwordValid;
 
-  };
+  }
 
   public isNewPasswordsMatching: (newVal: any) => boolean = (newPasswordConfirm: string): boolean => {
 
     return this.passwordReset.newPassword === newPasswordConfirm;
 
-  };
+  }
 
   public showOldPasswordInput(): boolean {
-    return !this.authService.isTempChangePasswordAuth() && this.authService.isLoggedIn();
+    return !this.authService.isTempChangePasswordAuth() &&
+           this.authService.getLogInStatus() === LoginStatus.LOGGED_IN_JWT;
   }
 
 }

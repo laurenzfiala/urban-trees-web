@@ -31,7 +31,7 @@ export class MessagesService extends AbstractService {
                      errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void): void {
 
     this.http.get<Array<Report>>(this.envService.endpoints.allReports)
-      .map(list => list && list.map(r => ReportFrontend.fromObject(r)))
+      .map(list => list && list.map(r => ReportFrontend.fromObject(r, this.envService)))
       .subscribe((reports: Array<ReportFrontend>) => {
         MessagesService.LOG.trace('Successfully loaded all reports.');
         successCallback(reports);

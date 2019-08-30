@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
-import {BObservationComponent} from './components/phenology/observation/b-observation/b-observation.component';
 import {Log} from './services/log.service';
 import {NavigationEnd, Router} from '@angular/router';
 

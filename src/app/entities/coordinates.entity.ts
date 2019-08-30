@@ -14,7 +14,7 @@ export class Coordinates {
 
   constructor(x: number,
               y: number,
-              projection: string) {
+              projection?: string) {
     this.x = x;
     this.y = y;
     this.projection = projection;

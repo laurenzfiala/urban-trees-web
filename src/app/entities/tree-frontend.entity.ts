@@ -1,8 +1,5 @@
-import {PhenologyObservation} from './phenology-observation.entity';
-import {TreeLocation} from './tree-location.entity';
 import {Tree} from './tree.entity';
 import {MapMarker} from '../interfaces/map-marker.entity';
-import {BeaconFrontend} from './beacon-frontend.entity';
 import {PhenologyObservationTypeFrontend} from './phenology-observation-type-frontend.entity';
 
 /**
@@ -37,6 +34,10 @@ export class TreeFrontend extends Tree implements MapMarker {
 
   public getId(): number {
     return this.id;
+  }
+
+  public getProjection(): string {
+    return this.location.coordinates.projection;
   }
 
   /**

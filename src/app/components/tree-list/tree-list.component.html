@@ -1,7 +1,3 @@
-<div *ngIf="hasStatus(StatusKey.TREES, StatusValue.IN_PROGRESS) || hasStatus(StatusKey.CITIES, StatusValue.IN_PROGRESS)"
-     class="container load load-md">
-</div>
-
 <div class="content-cat">
   <div class="container map-wrapper">
     <ut-map
@@ -25,7 +21,15 @@
   </div>
 </div>
 
-<div *ngIf="cities?.length === 0" class="pt-3 pb-1 text-center text-subtle">
+<div *ngIf="hasAnyStatusKey([StatusKey.TREES, StatusKey.CITIES], StatusValue.IN_PROGRESS)"
+     class="pt-3 d-flex flex-row align-items-center justify-content-center">
+  <i class="i i-sm i-black i-spin i-load mr-1"></i>
+  {{'tree_list.loading' | translate}}
+</div>
+
+<div *ngIf="hasStatus(StatusKey.TREES, StatusValue.SUCCESSFUL) && hasStatus(StatusKey.CITIES, StatusValue.SUCCESSFUL) && cities?.length === 0"
+     class="pt-3 d-flex flex-row align-items-center justify-content-center text-warning">
+  <i class="i i-sm i-warning-warning mr-1"></i>
   {{'tree_list.none_found' | translate}}
 </div>
 
@@ -42,7 +46,7 @@
       <ng-container *ngFor="let tree of displayTrees">
 
         <div *ngIf="tree.location.city.id === city.id"
-             class="tree-container">
+             class="tree-container link-container">
           <div class="inner d-flex flex-column pointer m-2"
                [routerLink]="['/tree', tree.id]">
 
@@ -76,13 +80,19 @@
   </div>
 </div>
 
+<div *ngIf="displayTrees?.length === 0"
+     class="status-img my-4">
+  <img src="/assets/img/icon/no_results.svg" />
+  {{'tree_list.none_found' | translate}}
+</div>
+
 <div *ngIf="hasAnyStatusKey([StatusKey.STATISTICS, StatusKey.TREES], StatusValue.FAILED)" class="status-overlay overlay-fixed">
   <div class="status-content">
     <div class="status-heading heading-danger">
       {{'general.error' | translate}}
     </div>
     <div class="status-text">
-      {{'tree_list.error.text' | translate}}
+      {{'tree_list.error' | translate}}
     </div>
     <div class="status-controls">
       <button class="btn btn-light float-right" (click)="load()" (keydown)="load()">{{'general.retry' | translate}}</button>

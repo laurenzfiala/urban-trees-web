@@ -10,6 +10,12 @@
   </div>
 </div>
 
+<div *ngIf="hasStatus(StatusKey.TREE_LOADING, StatusValue.IN_PROGRESS)"
+     class="d-flex flex-row justify-content-center my-4">
+  <i class="i i-sm i-black i-spin i-load mr-1"></i>
+  {{'tree.loading' | translate}}
+</div>
+
 <ng-container *ngIf="tree">
 
 <div class="content-cat">
@@ -43,57 +49,45 @@
 
 <div class="content-cat">
   <div class="container tree-image">
-    <div class="content-cat-heading">Bäume zwischen den Jahreszeiten</div>
+    <div class="content-cat-heading">{{'tree.through_year.title' | translate}}</div>
     <div class="content-cat-flex flex-md-nowrap">
       <div class="content-cat-text flex-grow-1">
-        Sieh dir hier ein Beispiel eines Baums im Jahresverlauf an.<br/>
-        Die Bilder wurden von den Projektteilnehmer_innen während der Phänologiebeobachtungen aufgenommen.
+        <div [innerHTML]="'tree.through_year.text' | translate"></div>
         <div class="text-subtle text-xs mt-2">
-          Information zuletzt im August 2019 aktualisiert.
+          {{'tree.through_year.update_month' | translate}}
         </div>
       </div>
-      <ut-slideshow [slides]="[treeSlide1, treeSlide2, treeSlide3]"
-                    [slideSubtitles]="['Frühling', 'Sommer', 'Herbst']"
-                    [intervalMs]="5000"
-                    [pause]="pauseTreeSlideshow">
+      <ut-slideshow #throughYearSlideshow [slides]="[
+                              {'url': '../../../assets/content/img/phenology_seasons/1.JPG'},
+                              {'url': '../../../assets/content/img/phenology_seasons/2.JPG'},
+                              {'url': '../../../assets/content/img/phenology_seasons/3.JPG'},
+                              {'url': '../../../assets/content/img/phenology_seasons/4.JPG'},
+                              {'url': '../../../assets/content/img/phenology_seasons/5.JPG'},
+                              {'url': '../../../assets/content/img/phenology_seasons/6.JPG'},
+                              {'url': '../../../assets/content/img/phenology_seasons/7.JPG'},
+                              {'url': '../../../assets/content/img/phenology_seasons/8.JPG'},
+                              {'url': '../../../assets/content/img/phenology_seasons/9.JPG'},
+                              {'url': '../../../assets/content/img/phenology_seasons/10.JPG'},
+                              {'url': '../../../assets/content/img/phenology_seasons/11.JPG'},
+                              {'url': '../../../assets/content/img/phenology_seasons/12.JPG'}
+                              ]"
+                    [slideTemplate]="treeSlide"
+                    [intervalMs]="2500">
       </ut-slideshow>
-      <ng-template #treeSlide1>
+      <ng-template #treeSlide let-url="url">
         <ut-zoom [content]="img"
                  [fullscreenContent]="imgFull"
-                 (opening)="pauseTreeSlideshow = true"
-                 (closed)="pauseTreeSlideshow = false">
+                 [showControls]="true"
+                 (previous)="throughYearSlideshow.previousSlide()"
+                 (next)="throughYearSlideshow.nextSlide()"
+                 (opening)="throughYearSlideshow.pause = true"
+                 (closed)="throughYearSlideshow.pause = false">
         </ut-zoom>
         <ng-template #img>
-          <img class="content-cat-img" src="../../../assets/content/img/tree_1.jpg"/>
+          <img class="content-cat-img" [src]="url"/>
         </ng-template>
         <ng-template #imgFull>
-          <img class="fullscreen-content" src="../../../assets/content/img/tree_1.jpg"/>
-        </ng-template>
-      </ng-template>
-      <ng-template #treeSlide2>
-        <ut-zoom [content]="img"
-                 [fullscreenContent]="imgFull"
-                 (opening)="pauseTreeSlideshow = true"
-                 (closed)="pauseTreeSlideshow = false">
-        </ut-zoom>
-        <ng-template #img>
-          <img class="content-cat-img" src="../../../assets/content/img/blattentfaltung_2018_10.jpeg"/>
-        </ng-template>
-        <ng-template #imgFull>
-          <img class="fullscreen-content" src="../../../assets/content/img/blattentfaltung_2018_10.jpeg"/>
-        </ng-template>
-      </ng-template>
-      <ng-template #treeSlide3>
-        <ut-zoom [content]="img"
-                 [fullscreenContent]="imgFull"
-                 (opening)="pauseTreeSlideshow = true"
-                 (closed)="pauseTreeSlideshow = false">
-        </ut-zoom>
-        <ng-template #img>
-          <img class="content-cat-img" src="../../../assets/content/img/abkuehlunsleistung_2019_03.PNG"/>
-        </ng-template>
-        <ng-template #imgFull>
-          <img class="fullscreen-content" src="../../../assets/content/img/abkuehlunsleistung_2019_03.PNG"/>
+          <img class="fullscreen-content" [src]="url"/>
         </ng-template>
       </ng-template>
     </div>
@@ -102,16 +96,12 @@
 
 <div class="content-cat">
   <div class="container tree-image">
-    <div class="content-cat-heading">Abkühlungsleistung unserer Untersuchungsbäume</div>
+    <div class="content-cat-heading">{{'tree.cooling_power.title' | translate}}</div>
     <div class="content-cat-flex flex-md-nowrap">
       <div class="content-cat-text flex-grow-1">
-        Die <b>maximale</b> von uns gemessene <b>Abkühlungsleistung</b> der Untersuchungsbäume lag bei <b>5,3 °C</b>.
-        <div class="my-2">
-          Dazu werden an jeder Schule die Lufttemperaturen der Referenzstation in der Sonne, mit den Lufttemperaturen in
-          den Baumkronen verglichen und die Abweichungen ermittelt.
-        </div>
+        <div [innerHTML]="'tree.cooling_power.text' | translate"></div>
         <div class="text-subtle text-xs">
-          Information zuletzt im März 2019 aktualisiert.
+          {{'tree.cooling_power.update_month' | translate}}
         </div>
       </div>
       <img class="content-cat-img" src="../../../assets/content/img/tree-temp.svg"/>
@@ -145,11 +135,13 @@
       <i *ngIf="appTransferAmount" class="feature-pointer mr-1"></i>
       {{'tree.beacon.details.heading' | translate}}
     </div>
-    <div *ngIf="appTransferAmount" class="transfer-message">
-      {{'tree.beacon.transfer.message.title' | translate}}
-      <span>
-          &mdash; {{'tree.beacon.transfer.message.text' | translate:{'amount': appTransferAmount} }}
-        </span>
+    <div *ngIf="appTransferAmount" class="text-center">
+      <div class="transfer-message">
+        {{'tree.beacon.transfer.message.title' | translate}}
+          <span>
+            &mdash; {{'tree.beacon.transfer.message.text' | translate:{'amount': appTransferAmount} }}
+          </span>
+      </div>
     </div>
     <div *ngIf="tree.beacons && tree.beacons.length > 0"
          class="mt-3">
@@ -159,14 +151,33 @@
       ></ut-beacon-list>
     </div>
     <div *ngIf="!tree.beacons || tree.beacons.length === 0"
-         class="d-flex flex-row align-items-center mt-2 text-warning">
-      <i class="i i-warning-warning mr-1"></i>
-      {{'tree.beacon.details.none_attached' | translate}}
+         class="status-img my-4">
+      <img src="/assets/img/icon/beacon_none_grey.svg" />
+      <div>
+        {{'tree.beacon.details.none_attached' | translate}}
+      </div>
     </div>
   </div>
 </div>
 
-<div *ngIf="hasAnyStatusKey([StatusKey.TREE_VALIDATION, StatusKey.TREE_LOADING], StatusValue.IN_PROGRESS)" class="load load-center load-md status-overlay overlay-fixed"></div>
+<div *auth="envService.security.rolesAdmin" class="content-cat">
+  <div class="container tree-image">
+    <div class="content-cat-heading">
+      {{'tree.admin.title' | translate}}
+    </div>
+    <div class="content-cat-text">
+      {{'tree.admin.desc' | translate}}
+    </div>
+    <a class="content-cat-link"
+       [routerLink]="['/admin/tree']"
+       [queryParams]="{'tree': tree.id}">
+      {{'tree.admin.edit_link' | translate}}
+    </a>
+  </div>
+</div>
+
+</ng-container>
+
 <div *ngIf="hasAnyStatusKey([StatusKey.TREE_VALIDATION, StatusKey.TREE_LOADING], StatusValue.FAILED)"
      class="status-overlay overlay-fixed">
   <div class="status-content">
@@ -181,5 +192,3 @@
     </div>
   </div>
 </div>
-
-</ng-container>

@@ -42,6 +42,9 @@ export class BeaconListComponent extends AbstractComponent implements OnInit {
   }
 
   get selectedBeacon(): BeaconFrontend {
+    if (!this.beaconsInternal) {
+      return null;
+    }
     return this.beaconsInternal[this.selectedBeaconIndex];
   }
 
@@ -52,10 +55,10 @@ export class BeaconListComponent extends AbstractComponent implements OnInit {
   public modify: boolean = false;
 
   @Input()
-  public preselectDeviceId: string;
+  public showAssociations: boolean = false;
 
-  @Output()
-  public addBeacon: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Input()
+  public preselectDeviceId: string;
 
   public BeaconDataMode = BeaconDataMode;
   public BEACON_DATA_MODE_KEYS: string[] = Object.keys(BeaconDataMode);
@@ -127,6 +130,9 @@ export class BeaconListComponent extends AbstractComponent implements OnInit {
     }
 
     const beacon = this.selectedBeacon;
+    if (!beacon) {
+      return;
+    }
 
     this.setStatus(StatusKey.BEACON_DATA, StatusValue.PENDING);
     if (this.showData) {
@@ -167,6 +173,11 @@ export class BeaconListComponent extends AbstractComponent implements OnInit {
    */
   private loadBeaconSettings(beacon: BeaconFrontend): void {
 
+    if (beacon.settingsLoadingStatus === StatusValue.SUCCESSFUL ||
+        beacon.settingsLoadingStatus === StatusValue.IN_PROGRESS) {
+      return;
+    }
+
     beacon.settingsLoadingStatus = StatusValue.IN_PROGRESS;
     this.treeService.loadBeaconSettings(beacon.id, (beaconSettings: BeaconSettings) => {
       beacon.settings = beaconSettings;
@@ -199,15 +210,15 @@ export class BeaconListComponent extends AbstractComponent implements OnInit {
       beacon.logs.length,
       BeaconListComponent.BEACON_LOGS_PAGE_SIZE,
       (logs: Array<BeaconLog>) => {
-      beacon.canShowMoreLogs = logs.length >= BeaconListComponent.BEACON_LOGS_PAGE_SIZE;
-      beacon.logs.push(...logs);
-      beacon.logLoadingStatus = StatusValue.SUCCESSFUL;
-      beacon.isLogsShown = true;
-    }, (error, apiError) => {
-      beacon.logLoadingStatus = StatusValue.FAILED;
-      if (beacon.logs.length === 0) {
-        beacon.isLogsShown = false;
-      }
+        beacon.canShowMoreLogs = logs.length >= BeaconListComponent.BEACON_LOGS_PAGE_SIZE;
+        beacon.logs.push(...logs);
+        beacon.logLoadingStatus = StatusValue.SUCCESSFUL;
+        beacon.isLogsShown = true;
+      }, (error, apiError) => {
+        beacon.logLoadingStatus = StatusValue.FAILED;
+        if (beacon.logs.length === 0) {
+          beacon.isLogsShown = false;
+        }
     });
 
   }
@@ -220,13 +231,6 @@ export class BeaconListComponent extends AbstractComponent implements OnInit {
         this.loadBeaconLogsInitial(beacon);
       }
     }
-  }
-
-  /**
-   * Emit add beacon signal for the containing component.
-   */
-  public onAddBeaconClick(): void {
-    this.addBeacon.emit(true);
   }
 
   /**

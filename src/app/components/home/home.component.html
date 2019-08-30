@@ -1,12 +1,12 @@
 <div class="content-cat">
   <div class="container">
 
-    <div *noauth class="mb-2">
+    <div *noauth="true" class="mb-2">
       <div class="content-cat-heading d-block" [innerHTML]="'home.title' | translate"></div>
       {{'home.desc' | translate}}
     </div>
 
-    <div *auth class="mb-2">
+    <div *auth="envService.security.rolesUser" class="mb-2">
       <div class="content-cat-heading d-block" [innerHTML]="'home.title_user' | translate:{'username': getUsername()}"></div>
       <span [innerHTML]="'home.desc_user_1' | translate"></span>
       <a class="link" tabindex="-1" routerLink="/phenology/observation/step">{{'home.desc_phenobs_link' | translate}}</a>

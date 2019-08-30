@@ -1,4 +1,4 @@
-import {ApplicationRef, ChangeDetectorRef, Injectable} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {Log} from './log.service';
 import {EnvironmentService} from './environment.service';
 import {HttpClient, HttpErrorResponse, HttpResponse} from '@angular/common/http';
@@ -12,6 +12,8 @@ import {LoginStatus} from '../components/project-login/login-status.enum';
 import {JWTToken} from '../entities/jwt-token.entity';
 import {PasswordReset} from '../entities/password-reset.entity';
 import {Observable, Subject} from 'rxjs';
+import {UserIdentity} from '../entities/user-identity.entity';
+import {UserPermissionRequest} from '../entities/user-permission-request.entity';
 
 /**
  * Service for user authentication functionality.
@@ -204,6 +206,65 @@ export class AuthService extends AbstractService {
   }
 
   /**
+   * Load all users that have granted the current user the given permission.
+   * @param permission permission to check
+   * @param successCallback called with results when successful
+   * @param errorCallback called with error if failed
+   */
+  public loadUsersGrantingPermission(permission: string,
+                                     successCallback: (grantingUsers: Set<UserIdentity>) => void,
+                                     errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void): void {
+
+    AuthService.LOG.debug('Loading granting users for permission ' + permission + '...');
+    this.http.get<Array<UserIdentity>>(this.envService.endpoints.usersGrantingPermission(permission))
+      .map(list => list && list.map(u => UserIdentity.fromObject(u)))
+      .subscribe((grantingUsers: Array<UserIdentity>) => {
+        AuthService.LOG.debug('Loaded granting users successfully.');
+        successCallback(new Set<UserIdentity>(grantingUsers));
+      }, (e: any) => {
+        AuthService.LOG.error('Could not load granting users: ' + e.message, e);
+        if (errorCallback) {
+          errorCallback(e, this.safeApiError(e));
+        }
+      });
+
+  }
+
+  /**
+   * Load all users that have granted the current user the given permission. TODO
+   * @param permission permission to check
+   * @param successCallback called with results when successful
+   * @param errorCallback called with error if failed
+   */
+  public addUserPermission(permission: string,
+                           username: string,
+                           password: string,
+                           successCallback: (result: UserIdentity) => void,
+                           errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void): void {
+
+    AuthService.LOG.debug('Requesting permission ' + permission + ' from ' + username + '...');
+
+    const payload = new UserPermissionRequest(
+      username,
+      password,
+      permission
+    );
+
+    this.http.post<UserIdentity>(this.envService.endpoints.addUserPermission, payload)
+      .map(u => u && UserIdentity.fromObject(u))
+      .subscribe((result: UserIdentity) => {
+        AuthService.LOG.debug('Requested permission ' + permission + ' successfully.');
+        successCallback(result);
+      }, (e: any) => {
+        AuthService.LOG.error('Could not request permission: ' + e.message, e);
+        if (errorCallback) {
+          errorCallback(e, this.safeApiError(e));
+        }
+      });
+
+  }
+
+  /**
    * Delete JWT token from local storage.
    * @see AuthService#deleteJWTToken
    */
@@ -373,6 +434,15 @@ export class AuthService extends AbstractService {
       return undefined;
     }
     return storedToken;
+  }
+
+  /**
+   * Whether the client is on a secure connection or not.
+   */
+  public isSslConnection(): boolean {
+    return window.location.protocol === 'https:' ||
+      window.location.hostname === 'localhost' ||
+      window.location.hostname.indexOf('192.168.') === 0;
   }
 
 }

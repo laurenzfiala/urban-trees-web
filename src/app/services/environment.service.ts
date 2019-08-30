@@ -256,6 +256,25 @@ class EnvironmentEndpoints {
     return this.prependCommonPath(this.context.changeUsername);
   }
 
+  get addUserPermission() {
+    return this.prependCommonPath(this.context.addUserPermission);
+  }
+
+  public usersGrantingPermission(permission: string): string {
+
+    let replacements: any[] = [
+      { placeholder: 'permission', replacement: permission }
+    ];
+
+    return this.prependCommonPath(
+      this.replaceParams(
+        this.context.usersGrantingPermission,
+        replacements
+      )
+    );
+
+  }
+
   get addCity() {
     return this.prependCommonPath(this.context.addCity);
   }
@@ -289,6 +308,21 @@ class EnvironmentEndpoints {
 
   get addBeacon() {
     return this.prependCommonPath(this.context.addBeacon);
+  }
+
+  public modifyBeacon(beaconId: number): string {
+
+    let replacements: any[] = [
+      { placeholder: 'beaconId', replacement: beaconId }
+    ];
+
+    return this.prependCommonPath(
+      this.replaceParams(
+        this.context.modifyBeacon,
+        replacements
+      )
+    );
+
   }
 
   public deleteBeacon(beaconId: number): string {
@@ -362,6 +396,10 @@ class EnvironmentEndpoints {
         replacements
       )
     );
+  }
+
+  get userReport() {
+    return this.prependCommonPath(this.context.userReport);
   }
 
   public expireCredentials(userId: number): string {

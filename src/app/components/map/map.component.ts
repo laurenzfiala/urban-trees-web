@@ -1,5 +1,4 @@
-import {Component, EventEmitter, Input, OnChanges, OnDestroy, OnInit, Output, SimpleChanges} from '@angular/core';
-import {TreeFrontend} from '../../entities/tree-frontend.entity';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {Log} from '../../services/log.service';
 import OlMap from 'ol/map';
 import OlView from 'ol/view';
@@ -17,12 +16,11 @@ import {AbstractComponent} from '../abstract.component';
 import OlProj from 'ol/proj';
 import OlXYZ from 'ol/source/xyz';
 import OlTileLayer from 'ol/layer/tile';
+import {MapMarker} from '../../interfaces/map-marker.entity';
+import {MapMarkerDefault} from '../../entities/map-marker-default.entity';
 import VectorTileOptions = olx.source.VectorTileOptions;
 import TileEvent = ol.source.TileEvent;
 import Coordinate = ol.Coordinate;
-import {MapMarker} from '../../interfaces/map-marker.entity';
-import {MapMarkerDefault} from '../../entities/map-marker-default.entity';
-import {mark} from '@angular/compiler-cli/src/ngtsc/perf/src/clock';
 
 @Component({
   selector: 'ut-map',
@@ -52,8 +50,22 @@ export class MapComponent extends AbstractComponent implements OnInit {
   /**
    * Whether the use may set a new pin on the map.
    */
+  public userSetPinInternal: boolean = false;
+
   @Input()
-  public userSetPin: boolean = false;
+  set userSetPin(value: boolean) {
+    if (value !== this.userSetPinInternal) {
+      this.userSetPinInternal = value;
+      if (!value) {
+        this.markers = [];
+      }
+    }
+  }
+
+
+  get userSetPin(): boolean {
+    return this.userSetPinInternal;
+  }
 
   /**
    * Whether to use the activator or not.
@@ -122,22 +134,24 @@ export class MapComponent extends AbstractComponent implements OnInit {
 
   @Input()
   set selectedMarker(marker: MapMarker) {
-    if (marker) {
-      if (marker !== this.selectedMarkerInternal) {
-        if (this.userSetPin) {
-          this.markers = [marker];
-        }
-        this.centerMarker(marker);
-      }
-    } else {
-      if (this.userSetPin) {
-        this.markers = [];
-      }
-      this.selectedMarkerInternal = marker;
+
+    if (marker === this.selectedMarkerInternal) {
+      return;
     }
 
+    if (this.userSetPin) {
+      if (marker) {
+        this.markers = [marker];
+      } else {
+        this.markers = [];
+      }
+    }
+    if (marker) {
+      this.centerMarker(marker);
+    }
     this.selectedMarkerInternal = marker;
     this.updateMapMarkers();
+
   }
 
   get selectedMarker(): MapMarker {
@@ -238,9 +252,11 @@ export class MapComponent extends AbstractComponent implements OnInit {
 
     if (this.markers) {
 
-      Array.from(this.markers).sort((a, b) => {
-        if (this.mapMarkerEquals(a, b)) {
+      Array.from(this.markers).sort((a, b) => { // bring selection to front
+        if (this.mapMarkerEquals(a, this.selectedMarkerInternal)) {
           return 1;
+        } else if (this.mapMarkerEquals(b, this.selectedMarkerInternal)) {
+          return -1;
         } else {
           return 0;
         }
@@ -394,6 +410,10 @@ export class MapComponent extends AbstractComponent implements OnInit {
    * @param {MapMarker} marker The tree to be centered.
    */
   public centerMarker(marker: MapMarker) {
+
+    if (!this.mapView) {
+      return;
+    }
 
     MapComponent.LOG.trace('Centering marker with id ' + marker.getId() + '.');
     this.mapView.centerOn(

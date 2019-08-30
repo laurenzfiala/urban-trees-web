@@ -6,6 +6,8 @@
  */
 import {User} from './user.entity';
 import {Event} from './event.entity';
+import {EnvironmentService} from '../services/environment.service';
+import * as moment from 'moment';
 
 export class Report {
 
@@ -16,14 +18,16 @@ export class Report {
   public autoCreate: boolean;
   public resolved: boolean;
   public remark: string;
+  public reportDate: Date;
 
-  constructor(id: number,
-              message: string,
-              assocEvent: Event,
-              assocUser: User,
-              autoCreate: boolean,
-              resolved: boolean,
-              remark: string) {
+  constructor(id?: number,
+              message?: string,
+              assocEvent?: Event,
+              assocUser?: User,
+              autoCreate?: boolean,
+              resolved?: boolean,
+              remark?: string,
+              reportDate?: Date) {
     this.id = id;
     this.message = message;
     this.assocEvent = assocEvent;
@@ -31,9 +35,10 @@ export class Report {
     this.autoCreate = autoCreate;
     this.resolved = resolved;
     this.remark = remark;
+    this.reportDate = reportDate;
   }
 
-  public static fromObject(o: any): Report {
+  public static fromObject(o: any, envService: EnvironmentService): Report {
 
     return new Report(
       o.id,
@@ -42,7 +47,8 @@ export class Report {
       o.assocUser && User.fromObject(o.assocUser),
       o.autoCreate,
       o.resolved,
-      o.remark
+      o.remark,
+      o.reportDate && moment.utc(o.reportDate, envService.outputDateFormat).toDate()
     );
 
   }

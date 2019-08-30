@@ -13,6 +13,7 @@ import {Announcement} from '../../entities/announcement.entity';
 import * as moment from 'moment';
 import {BeaconLog} from '../../entities/beacon-log.entity';
 import {BeaconLogSeverity} from '../../entities/BeaconLogSeverity';
+import {BeaconFrontend} from '../../entities/beacon-frontend.entity';
 
 /**
  * Service for backend calls on the admin pages.
@@ -143,17 +144,43 @@ export class AdminService extends AbstractService {
    * @param errorCallback called upon error
    */
   public addBeacon(beacon: Beacon,
-                   successCallback: () => void,
+                   successCallback: (result: BeaconFrontend) => void,
                    errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void) {
 
     AdminService.LOG.debug('Saving beacon to ' + this.envService.endpoints.addBeacon + ' ...');
 
     this.http.post(this.envService.endpoints.addBeacon, beacon)
       .timeout(this.envService.defaultTimeout)
-      .subscribe(() => {
-        successCallback();
+      .map(b => b && BeaconFrontend.fromObject(b))
+      .subscribe((result: BeaconFrontend) => {
+        successCallback(result);
       }, (e: any) => {
         AdminService.LOG.error('Could not save beacon: ' + e.message, e);
+        errorCallback(e, this.safeApiError(e));
+      });
+
+  }
+
+  /**
+   * Submit new beacon to the backend.
+   * @param beacon The beacon to insert.
+   * @param successCallback called upon successful execution
+   * @param errorCallback called upon error
+   */
+  public modifyBeacon(beacon: Beacon,
+                      successCallback: (result: BeaconFrontend) => void,
+                      errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void) {
+
+    const url = this.envService.endpoints.modifyBeacon(beacon.id);
+    AdminService.LOG.debug('Saving beacon (modified) to ' + url + ' ...');
+
+    this.http.post(url, beacon)
+      .timeout(this.envService.defaultTimeout)
+      .map(b => BeaconFrontend.fromObject(b))
+      .subscribe((result: BeaconFrontend) => {
+        successCallback(result);
+      }, (e: any) => {
+        AdminService.LOG.error('Could not save beacon (modified): ' + e.message, e);
         errorCallback(e, this.safeApiError(e));
       });
 

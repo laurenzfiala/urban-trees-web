@@ -1,9 +1,24 @@
-<div class="d-flex align-items-center">
+<div class="d-flex flex-row align-items-center">
+
+  <ng-container *ngIf="showStatusOutside">
+
+    <div *ngIf="hasStatus(StatusKey.EXTERNAL_STATUS, StatusValue.IN_PROGRESS)"
+         class="text-sm text-subtle">
+      {{loadingDescription | translate}}
+    </div>
+
+    <div *ngIf="hasStatus(StatusKey.EXTERNAL_STATUS, StatusValue.FAILED)"
+         class="d-flex flex-row align-items-center text-sm text-danger">
+      <i class="i i-xs i-warning-danger mr-1"></i>
+      {{errorDescription | translate}}
+    </div>
+
+  </ng-container>
 
   <i *ngIf="hasStatus(StatusKey.EXTERNAL_STATUS, StatusValue.IN_PROGRESS)"
      class="i i-dark i-xs i-load i-spin ml-1"></i>
 
-  <i *ngIf="hasStatus(StatusKey.EXTERNAL_STATUS, StatusValue.FAILED)"
+  <i *ngIf="!showStatusOutside && hasStatus(StatusKey.EXTERNAL_STATUS, StatusValue.FAILED)"
      class="i i-dark i-xs i-warning ml-1 pointer"
      [popover]="reportPopover"
      placement="auto"
