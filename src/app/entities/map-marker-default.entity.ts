@@ -4,7 +4,7 @@
  * @author Laurenz Fiala
  * @since 2018/12/04
  */
-import {MapMarker} from '../interfaces/map-marker.entity';
+import {MapMarker} from '../interfaces/map-marker.interface';
 
 export class MapMarkerDefault implements MapMarker {
 

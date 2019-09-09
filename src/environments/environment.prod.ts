@@ -77,6 +77,8 @@ export const environment = {
     usersGrantingPermission:          '/account/permission/granted/{permission}'
   },
 
+  searchDebounceMs:                   200,
+
   defaultTimeout:                     30000,
   imageUploadTimeout:                 60000,
 

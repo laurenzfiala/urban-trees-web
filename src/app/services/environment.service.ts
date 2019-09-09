@@ -17,6 +17,10 @@ export class EnvironmentService {
   public endpoints: EnvironmentEndpoints = new EnvironmentEndpoints();
   public security: Security = new Security();
 
+  get searchDebounceMs() {
+    return this.context.searchDebounceMs;
+  }
+
   get defaultTimeout() {
     return this.context.defaultTimeout;
   }

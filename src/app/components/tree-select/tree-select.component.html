@@ -3,7 +3,7 @@
     [ngModel]="treeSearchInput"
     (ngModelChange)="setTreeSearchInput($event)"
     name="treeSearchInput"
-    class="form-control search-input"
+    class="form-control form-control-lg search-input"
     [placeholder]="'phenology.observation.step1.tree_search_placeholder' | translate" />
 </div>
 
@@ -53,24 +53,35 @@
   <ul class="pagination mt-2 mb-0">
     <li class="page-item">
       <a class="page-link"
+         (click)="displayTreePage(0)"
+         (keydown)="displayTreePage(0)">
+        <i class="i i-arrow-left-double i-dark"></i>
+      </a>
+    </li>
+    <li class="page-item">
+      <a class="page-link"
          (click)="displayTreePage(currentDisplayTreePage-1)"
          (keydown)="displayTreePage(currentDisplayTreePage-1)">
         <i class="i i-arrow-left i-dark" aria-hidden="true"></i>
       </a>
     </li>
-    <li *ngFor="let page of displayTrees; let i = index" class="page-item">
-      <a class="page-link"
-         [ngClass]="{'active': currentDisplayTreePage === i}"
-         (click)="currentDisplayTreePage = i"
-         (keydown)="currentDisplayTreePage = i">
-        {{i+1}}
+    <li class="page-item">
+      <a class="page-link disabled">
+        {{currentDisplayTreePage + 1}}
       </a>
     </li>
     <li class="page-item">
       <a class="page-link"
          (click)="displayTreePage(currentDisplayTreePage+1)"
          (keydown)="displayTreePage(currentDisplayTreePage+1)">
-        <i class="i i-arrow-right i-dark" aria-hidden="true"></i>
+        <i class="i i-arrow-right i-dark"></i>
+      </a>
+    </li>
+    <li class="page-item">
+      <a class="page-link"
+         (click)="displayTreePage(currentDisplayTreePages-1)"
+         (keydown)="displayTreePage(currentDisplayTreePages-1)">
+        <i class="i i-arrow-right-double i-dark"></i>
       </a>
     </li>
   </ul>

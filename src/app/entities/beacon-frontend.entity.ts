@@ -8,7 +8,7 @@ import {BeaconDataMode} from './beacon-data-mode.entity';
 import {BeaconLog} from './beacon-log.entity';
 import {TranslateService} from '@ngx-translate/core';
 import {Tree} from './tree.entity';
-import {MapMarker} from '../interfaces/map-marker.entity';
+import {MapMarker} from '../interfaces/map-marker.interface';
 import {TreeLight} from './tree-light.entity';
 import {BeaconSettings} from './beacon-settings.entity';
 import {Location} from './location.entity';

@@ -169,7 +169,7 @@
   "tree_view": {
     "error": {
       "title": "Fehler",
-      "text": "Wir konnten den Baum nicht laden, bitte gehe zurück und versuche es erneut."
+      "text": "Wir konnten den Baum nicht laden, bitte versuche es erneut."
     }
   },
   "user": {
@@ -538,9 +538,13 @@
     "step_3": {
       "title": "Beobachte den ausgewählten Baum",
       "no_obs_assoc": "Keine Beobachtungen sind bei dem gewählen Baum vorgesehen",
+      "loading": "Lade Beobachtungen...",
       "obs_type_desc": "Wähle {{type.objects.length}} zufällige {{type_name_plural}} deines Baums und klicke jeweils einmal auf das Bild, welches der {{type_name}} am ähnlichsten ist.",
       "reset": "Zurücksetzen",
       "undo": "Rückgängig",
+      "undo_info_cursor": "Rechtsklick zum Rückgängig machen.",
+      "undo_info_touch": "Lange drücken zum Rückgängig machen.",
+      "no_result_img": "Kein Bild verfügbar.",
       "type": {
         "Bud": {
           "name": "Knospe",
@@ -566,10 +570,10 @@
     },
     "send": {
       "title": "Absenden",
-      "desc": "Once the above information has been sent, it can't be changed anymore. Please make sure it's correct before you send it. If you press discard, the form will be reset and you may start over.",
+      "desc": "Sobald diese Beobachtung abgesendet wird, kann sie nicht mehr verändert werden. Bitte stelle sicher, dass alles korrekt eingetragen wurde. Wenn Du Verwerfen drückst, wird das Formular zurückgesetzt und Du kannst von Neuem beginnen.",
       "reward": "Belohnung",
-      "reward_text": "Once you send this observation, you will receive <b>{{xp}} XP</b>.",
-      "reward_text_multiple_users": "Once you send this observation, every user will receive <b>{{xp}} XP</b>.",
+      "reward_text": "Sobald Du diese Beobachtung abschickst, erhältst Du <b>{{xp}} XP</b>.",
+      "reward_text_multiple_users": "Sobald Du diese Beobachtung abschickst, erhält jede(r) Nutzer_in <b>{{xp}} XP</b>.",
       "discard": "Verwerfen",
       "send": "Beobachtung senden",
       "in_progress": "Sende Beobachtung...",
@@ -582,12 +586,21 @@
     }
   },
   "user_permissions": {
-    "title": "Gib {{username}} Erlaubnis, um",
-    "desc": "Let the other person enter their information below to",
-    "loading": "Loading",
-    "error": "Could not load users granting permission",
-    "request": "Give permission",
-    "requesting": "Validating",
+    "list_title": "Nutzer_innen die bereits Erlaubnis erteilt haben",
+    "list_desc": "Diese Nutzer_innen haben Dir bereits ihre Erlaubnis erteilt, {{permission}}. Wähle eine Person oder frage jemanden Neuen.",
+    "title": "Gib {{username}} Erlaubnis, ",
+    "desc": "Lass die andere Person ihre Logindaten hier eingeben, um",
+    "loading": "Lade",
+    "error": "Nutzer_innen konnten nicht geldaen werden",
+    "request": "Gib Erlaubnis",
+    "requesting": "Überprüfe",
+    "request_error": "Nutzername oder Passwort ist falsch",
+    "request_link": "Jemanden Neuen fragen",
+    "list_link": "Zurück zur Liste",
+    "summary": {
+      "access": "{{username}} bekommt Zugang zu",
+      "permissions": "{{username}} wird berechtigt"
+    },
     "permissions": {
       "PHENOLOGY_OBSERVATION": {
         "title": "Phänologiebeobachtungen zu teilen",

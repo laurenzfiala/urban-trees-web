@@ -12,12 +12,11 @@
     <ng-container *ngIf="!addNew">
 
       <div class="heading mb-1">
-        Users that already granted permission
+        {{'user_permissions.list_title' | translate}}
       </div>
 
       <div class="text-subtle mb-2">
-        These users have already given you permission to share phenology observations with them.
-        Select one or ask someone new to give you permission.
+        {{'user_permissions.list_desc' | translate:{permission: 'user_permissions.permissions.' + permission + '.title' | translate} }}
       </div>
 
       <div class="d-flex flex-row flex-wrap m--1">
@@ -33,7 +32,7 @@
         <div class="d-inline-flex flex-row align-items-center m-1"
              (click)="addNew = true">
           <i class="i i-xs i-dark i-user-add mr-1"></i>
-          <a class="link">Ask someone new</a>
+          <a class="link">{{'user_permissions.request_link' | translate}}</a>
         </div>
 
       </div>
@@ -67,14 +66,21 @@
             </div>
             <div class="flex-grow-1">
               <div class="mb-1">
-                {{getUsername()}} gets access to
+                {{'user_permissions.access' | translate:{username: getUsername()} }}
                 <div [innerHTML]="'user_permissions.permissions.' + permission + '.summary_access' | translate"></div>
               </div>
               <hr class="my-1"/>
               <div class="mb-1">
-                {{getUsername()}} gets permission to
+                {{'user_permissions.permissions' | translate:{username: getUsername()} }}
                 <div [innerHTML]="'user_permissions.permissions.' + permission + '.summary_permissions' | translate"></div>
               </div>
+            </div>
+          </div>
+
+          <div *ngIf="hasStatus(StatusKey.REQUEST, StatusValue.FAILED)" class="permissions-alert mb-2">
+            <i class="i i-xs i-warning-danger mr-2 flex-shrink-0"></i>
+            <div class="flex-grow-1">
+              {{'user_permissions.request_error' | translate}}
             </div>
           </div>
 
@@ -94,7 +100,7 @@
         <div class="d-flex flex-row align-items-center"
              (click)="addNew = false">
           <i class="i i-xs i-dark i-chevron-left mr-1"></i>
-          <a class="link">Back to list</a>
+          <a class="link">{{'user_permissions.list_link' | translate}}</a>
         </div>
       </div>
 

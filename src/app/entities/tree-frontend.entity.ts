@@ -1,5 +1,5 @@
 import {Tree} from './tree.entity';
-import {MapMarker} from '../interfaces/map-marker.entity';
+import {MapMarker} from '../interfaces/map-marker.interface';
 import {PhenologyObservationTypeFrontend} from './phenology-observation-type-frontend.entity';
 
 /**

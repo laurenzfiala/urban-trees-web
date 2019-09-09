@@ -7,14 +7,25 @@ import {BeaconStatus} from './beacon-status.entity';
 import {BeaconSettings} from './beacon-settings.entity';
 import {Location} from './location.entity';
 import {TreeLight} from './tree-light.entity';
+import {search} from '../decorators/search.decorator';
 
 export class Beacon {
 
+  @search()
   public id: number;
+
+  @search()
   public deviceId: string;
+
+  @search()
   public tree: TreeLight;
+
+  @search(undefined, undefined, 'address')
   public bluetoothAddress: string;
+
   public status: BeaconStatus;
+
+  @search()
   public location: Location;
 
   /**

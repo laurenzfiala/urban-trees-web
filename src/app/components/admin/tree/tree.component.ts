@@ -6,7 +6,7 @@ import {City} from '../../../entities/city.entity';
 import {AbstractComponent} from '../../abstract.component';
 import {HttpErrorResponse} from '@angular/common/http';
 import {ApiError} from '../../../entities/api-error.entity';
-import {MapMarker} from '../../../interfaces/map-marker.entity';
+import {MapMarker} from '../../../interfaces/map-marker.interface';
 import {Tree} from '../../../entities/tree.entity';
 import {Coordinates} from '../../../entities/coordinates.entity';
 import {TreeFrontend} from '../../../entities/tree-frontend.entity';

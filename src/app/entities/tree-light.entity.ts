@@ -1,6 +1,6 @@
-import {BeaconFrontend} from './beacon-frontend.entity';
 import {TreeSpecies} from './tree-species.entity';
 import {Location} from './location.entity';
+import {search} from '../decorators/search.decorator';
 
 /**
  * Core tree proerties.
@@ -10,9 +10,17 @@ import {Location} from './location.entity';
  */
 export class TreeLight {
 
+  @search('tree-list')
+  @search('msmts-beacon-list', undefined, 'treeid')
   public id: number;
 
+
+  @search('tree-list', undefined, false)
+  @search('msmts-beacon-list', undefined, 'treelocation')
   public location: Location;
+
+  @search('tree-list', undefined, false)
+  @search('msmts-beacon-list', undefined, 'treespecies')
   public species: TreeSpecies;
   public plantationYear: number;
   public isPlantationYearEstimate: boolean;

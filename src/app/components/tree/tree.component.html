@@ -179,7 +179,7 @@
 </ng-container>
 
 <div *ngIf="hasAnyStatusKey([StatusKey.TREE_VALIDATION, StatusKey.TREE_LOADING], StatusValue.FAILED)"
-     class="status-overlay overlay-fixed">
+     class="status-overlay position-relative d-block h-auto my-4">
   <div class="status-content">
     <div class="status-heading heading-danger">
       {{'tree_view.error.title' | translate}}
@@ -188,7 +188,8 @@
       {{'tree_view.error.text' | translate}}
     </div>
     <div class="status-controls">
-      <button class="btn btn-light float-right" routerLink="/trees">{{'navigation.back' | translate}}</button>
+      <button class="btn btn-light"
+              (click)="ngOnInit()">{{'general.retry' | translate}}</button>
     </div>
   </div>
 </div>

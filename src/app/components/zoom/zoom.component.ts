@@ -53,15 +53,24 @@ export class ZoomComponent implements OnInit {
 
   @HostListener('window:keyup', ['$event'])
   private keyEvent(event: KeyboardEvent) {
+    if (!this.showControls) {
+      return;
+    }
     if (event.keyCode === 37 || event.code === 'ArrowLeft') { // left arrow
       this.onPrevious();
     }
     if (event.keyCode === 39 || event.code === 'ArrowRight') { // right arrow
       this.onNext();
     }
+    if (event.keyCode === 27 || event.code === 'Escape') { // escape
+      this.close();
+    }
   }
 
   public open(): void {
+    if (this.isShown) {
+      return;
+    }
     this.isShown = true;
     this.opening.emit();
     this.delay(300).then(value => {
@@ -70,6 +79,9 @@ export class ZoomComponent implements OnInit {
   }
 
   public close(): void {
+    if (!this.isShown) {
+      return;
+    }
     this.isShown = false;
     this.isClosing = true;
     this.closing.emit();

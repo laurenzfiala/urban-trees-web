@@ -13,21 +13,21 @@
       <div class="item-h">
         <div class="icon"><i class="i i-lg i-max-temp"></i></div>
         <div class="item-v">
-          <div class="big">{{statistics.beaconTempMaximum.toFixed(2)}} °C</div>
+          <div class="big">{{statistics.beaconTempMaximum | number:'1.1-2'}} °C</div>
           <div class="desc">{{'measurements.temperature.max_temp' | translate}}</div>
         </div>
       </div>
       <div class="item-h">
         <div class="icon"><i class="i i-lg i-avg-temp"></i></div>
         <div class="item-v">
-          <div class="big">{{statistics.beaconTempAverage.toFixed(2)}} °C</div>
+          <div class="big">{{statistics.beaconTempAverage | number:'1.1-2'}} °C</div>
           <div class="desc">{{'measurements.temperature.avg_temp' | translate}}</div>
         </div>
       </div>
       <div class="item-h">
         <div class="icon"><i class="i i-lg i-min-temp"></i></div>
         <div class="item-v">
-          <div class="big">{{statistics.beaconTempMinimum.toFixed(2)}} °C</div>
+          <div class="big">{{statistics.beaconTempMinimum | number:'1.1-2'}} °C</div>
           <div class="desc">{{'measurements.temperature.min_temp' | translate}}</div>
         </div>
       </div>
@@ -52,21 +52,21 @@
       <div class="item-h">
         <div class="icon"><i class="i i-lg i-max-humi"></i></div>
         <div class="item-v">
-          <div class="big">{{statistics.beaconHumidityMaximum.toFixed(2)}} %</div>
+          <div class="big">{{statistics.beaconHumidityMaximum | number:'1.1-2'}} %</div>
           <div class="desc">{{'measurements.humidity.max_humi' | translate}}</div>
         </div>
       </div>
       <div class="item-h">
         <div class="icon"><i class="i i-lg i-avg-humi"></i></div>
         <div class="item-v">
-          <div class="big">{{statistics.beaconHumidityAverage.toFixed(2)}} %</div>
+          <div class="big">{{statistics.beaconHumidityAverage | number:'1.1-2'}} %</div>
           <div class="desc">{{'measurements.humidity.avg_humi' | translate}}</div>
         </div>
       </div>
       <div class="item-h">
         <div class="icon"><i class="i i-lg i-min-humi"></i></div>
         <div class="item-v">
-          <div class="big">{{statistics.beaconHumidityMinimum.toFixed(2)}} %</div>
+          <div class="big">{{statistics.beaconHumidityMinimum | number:'1.1-2'}} %</div>
           <div class="desc">{{'measurements.humidity.min_humi' | translate}}</div>
         </div>
       </div>

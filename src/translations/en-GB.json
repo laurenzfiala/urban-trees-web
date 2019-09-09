@@ -170,7 +170,7 @@
   "tree_view": {
     "error": {
       "title": "Error",
-      "text": "We could not load the given tree, please go back and try again."
+      "text": "We could not load the given tree, please try again."
     }
   },
   "user": {
@@ -539,9 +539,13 @@
     "step_3": {
       "title": "Observe the selected tree",
       "no_obs_assoc": "No observations are associated with the selected tree",
+      "loading": "Loading observations...",
       "obs_type_desc": "Select {{type.objects.length}} random {{type_name_plural_lc}} from your tree. For each {{type_name_lc}}, click the image that most closely resembles it once.",
       "reset": "Reset",
       "undo": "Undo last",
+      "undo_info_cursor": "You can also undo by right-clicking.",
+      "undo_info_touch": "You can also undo by long-pressing.",
+      "no_result_img": "No image available.",
       "type": {
         "Bud": {
           "name": "bud",
@@ -583,12 +587,21 @@
     }
   },
   "user_permissions": {
+    "list_title": "Users that already granted permission",
+    "list_desc": "These users have already given you permission to {{permission}} with them. Select one or ask someone new to give you permission.",
     "title": "Give user {{username}} permission to",
     "desc": "Let the other person enter their information below to",
     "loading": "Loading",
     "error": "Could not load users granting permission",
     "request": "Give permission",
     "requesting": "Validating",
+    "request_error": "Username or password is wrong",
+    "request_link": "Ask someone new",
+    "list_link": "Back to list",
+    "summary": {
+      "access": "{{username}} gets access to",
+      "permissions": "{{username}} gets permission to"
+    },
     "permissions": {
       "PHENOLOGY_OBSERVATION": {
         "title": "share phenology observations",

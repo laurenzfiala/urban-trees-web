@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, ElementRef, HostListener, Inject, OnInit, QueryList} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {AbstractComponent} from '../abstract.component';
 import {Tree} from '../../entities/tree.entity';
 import {TreeFrontend} from '../../entities/tree-frontend.entity';
@@ -6,9 +6,12 @@ import {Log} from '../../services/log.service';
 import {TreeService} from '../../services/tree.service';
 import {TranslateService} from '@ngx-translate/core';
 import {City} from '../../entities/city.entity';
-import {MapMarker} from '../../interfaces/map-marker.entity';
-import {AppTransferStatusParam} from '../tree/tree.component';
-import {ActivatedRoute, ActivatedRouteSnapshot, Router} from '@angular/router';
+import {MapMarker} from '../../interfaces/map-marker.interface';
+import {ActivatedRoute, Router} from '@angular/router';
+import {query} from '@angular/animations';
+import {SearchService} from '../../services/search.service';
+import {delay} from 'rxjs-compat/operator/delay';
+import {EnvironmentService} from '../../services/environment.service';
 
 @Component({
   selector: 'ut-tree-list',
@@ -51,6 +54,8 @@ export class TreeListComponent extends AbstractComponent implements OnInit {
 
   constructor(private treeService: TreeService,
               private translateService: TranslateService,
+              private searchService: SearchService,
+              private envService: EnvironmentService,
               private route: ActivatedRoute,
               private router: Router) {
     super();
@@ -142,37 +147,35 @@ export class TreeListComponent extends AbstractComponent implements OnInit {
     if (!this.availableTrees) {
       return;
     }
+
+    // change page query parameters
+    let queryParams = {};
+    if (searchInput) {
+      queryParams = { 'query': searchInput };
+    }
+
     this.router.navigate(
       [],
       {
         relativeTo: this.route,
-        queryParams: { 'query': searchInput },
-        replaceUrl: true
+        queryParams: queryParams,
+        replaceUrl: true,
+        state: {'scrollTop': false}
     });
+    // ----------------------------
 
     this.selectedTree = null;
-    if (!searchInput) {
-      this.displayTrees = this.availableTrees;
-      this.updateCities();
-      return;
-    }
 
-    const idInput = Number(searchInput);
-    if (!Number.isNaN(idInput)) {
-      this.displayTrees = this.availableTrees.filter((tree: TreeFrontend) => {
-        return tree.id === idInput;
+    // debounce search input (for improved performance)
+    setTimeout(() => {
+      if (this.treeSearchInput !== searchInput) {
+        return;
+      }
+      this.searchService.search(this.availableTrees, searchInput, 'tree-list', undefined, 2).then(results => {
+        this.displayTrees = results;
+        this.updateCities();
       });
-      this.updateCities();
-      return;
-    }
-
-    this.displayTrees = this.availableTrees.filter((tree: TreeFrontend) => {
-        const translationKey = ('tree.species.' + tree.species).toLowerCase();
-        return this.translateService.instant(translationKey).toLowerCase().indexOf(searchInput.toLowerCase()) !== -1 ||
-          tree.location.street.toLowerCase().indexOf(searchInput.toLowerCase()) !== -1 ||
-          tree.location.city.name.toLowerCase().indexOf(searchInput.toLowerCase()) !== -1;
-      });
-    this.updateCities();
+    }, this.envService.searchDebounceMs);
 
   }
 
@@ -181,11 +184,17 @@ export class TreeListComponent extends AbstractComponent implements OnInit {
    * @param {MapMarker} newSelectedTree tree that was newly selected
    */
   public selectTreeOnMap(newSelectedTree: MapMarker) {
-    this.treeSearchInput = (<TreeFrontend> newSelectedTree).getId() + '';
+    this.treeSearchInput = 'id:' + (<TreeFrontend> newSelectedTree).getId();
     this.setTreeSearchInput(undefined, false);
     this.selectedTree = <TreeFrontend> newSelectedTree;
   }
 
+}
+
+export enum ComparatorResult {
+  TRUE,
+  FALSE,
+  ABSTAIN
 }
 
 export enum StatusKey {

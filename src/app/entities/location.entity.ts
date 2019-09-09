@@ -1,5 +1,6 @@
 import {Coordinates} from './coordinates.entity';
 import {City} from './city.entity';
+import {search} from '../decorators/search.decorator';
 
 /**
  * Describes the location of a tree, beacon etc.
@@ -9,10 +10,16 @@ import {City} from './city.entity';
  */
 export class Location {
 
+  @search(undefined, undefined, 'locationid')
   public id: number;
 
+  @search()
   public coordinates: Coordinates;
+
+  @search()
   public street: string;
+
+  @search()
   public city: City;
 
   constructor(id?: number,

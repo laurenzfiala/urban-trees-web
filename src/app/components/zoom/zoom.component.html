@@ -13,8 +13,10 @@
        (click)="$event.stopPropagation()">
     <ng-container *ngTemplateOutlet="fullscreenContent"></ng-container>
   </div>
-  <div class="slide-previous"
+  <div *ngIf="showControls"
+       class="slide-previous"
        (click)="onPrevious(); $event.stopPropagation()"></div>
-  <div class="slide-next"
+  <div *ngIf="showControls"
+       class="slide-next"
        (click)="onNext(); $event.stopPropagation()"></div>
 </div>

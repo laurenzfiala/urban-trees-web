@@ -1,16 +1,22 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {AbstractComponent} from '../abstract.component';
 import {TreeFrontend} from '../../entities/tree-frontend.entity';
 import {Log} from '../../services/log.service';
-import {TranslateService} from '@ngx-translate/core';
 import {BeaconFrontend} from '../../entities/beacon-frontend.entity';
+import {EnvironmentService} from '../../services/environment.service';
+import {SearchService} from '../../services/search.service';
+import {SubscriptionManagerService} from '../../services/subscription-manager.service';
+import {BreakpointObserver, BreakpointState} from '@angular/cdk/layout';
+import {LayoutConfig} from '../../config/layout.config';
 
 @Component({
   selector: 'ut-beacon-select',
   templateUrl: './beacon-select.component.html',
   styleUrls: ['../tree-list/tree-list.component.less', './beacon-select.component.less']
 })
-export class BeaconSelectComponent extends AbstractComponent {
+export class BeaconSelectComponent extends AbstractComponent implements OnInit, OnDestroy {
+
+  private static SUBSCRIPTION_TAG = 'beacon-select';
 
   private static LOG: Log = Log.newInstance(BeaconSelectComponent);
 
@@ -71,12 +77,44 @@ export class BeaconSelectComponent extends AbstractComponent {
   public currentDisplayPage: number = 0;
 
   /**
+   * Amount of pages to display.
+   */
+  public currentDisplayPages: number = 0;
+
+  /**
    * Current tree search input.
    */
   public searchInput: string;
 
-  constructor(public translateService: TranslateService) {
+  /**
+   * Current pagination page size.
+   */
+  private pageSize: number;
+
+  constructor(private envService: EnvironmentService,
+              private searchService: SearchService,
+              private subs: SubscriptionManagerService,
+              private bpObserver: BreakpointObserver) {
     super();
+  }
+
+  public ngOnInit(): void {
+
+    this.subs.register(this.bpObserver.observe(LayoutConfig.LAYOUT_MEDIA_STEPS).subscribe((state: BreakpointState) => {
+      let pageSize = 2;
+      if (state.breakpoints[LayoutConfig.LAYOUT_MEDIA_MD]) {
+        pageSize = 4;
+      } else if (state.breakpoints[LayoutConfig.LAYOUT_MEDIA_LG] || state.breakpoints[LayoutConfig.LAYOUT_MEDIA_XL]) {
+        pageSize = 6;
+      }
+      this.pageSize = pageSize;
+      this.setSearchInput(this.searchInput, false);
+    }), BeaconSelectComponent.SUBSCRIPTION_TAG);
+
+  }
+
+  public ngOnDestroy(): void {
+    this.subs.unsubscribe(BeaconSelectComponent.SUBSCRIPTION_TAG);
   }
 
   /**
@@ -89,15 +127,9 @@ export class BeaconSelectComponent extends AbstractComponent {
       return;
     }
 
-    const minPageSize = 6;
-    const pages = 5;
-    let pageSize = Math.ceil(this.availableBeaconsInternal.length / pages);
+    this.currentDisplayPages = Math.ceil(beacons.length / this.pageSize);
 
-    if (pageSize < minPageSize) {
-      pageSize = minPageSize;
-    }
-
-    if (beacons.length <= pageSize) {
+    if (beacons.length <= this.pageSize) {
       this.displayPagination = false;
     } else {
       this.displayPagination = true;
@@ -106,9 +138,8 @@ export class BeaconSelectComponent extends AbstractComponent {
     let paginatedArray = new Array<Array<BeaconFrontend>>();
 
     let page = 0;
-    for (let i = 0; i < beacons.length; i += pageSize) {
-      pageSize = i >= beacons.length ? i - beacons.length : pageSize;
-      paginatedArray[page] = beacons.slice(i, i + pageSize);
+    for (let i = 0; i < beacons.length; i += this.pageSize) {
+      paginatedArray[page] = beacons.slice(i, i + this.pageSize);
       page++;
     }
 
@@ -121,30 +152,32 @@ export class BeaconSelectComponent extends AbstractComponent {
   /**
    * Set tree search and filter displayed trees by input.
    * @param {string} searchInput user's tree search input
+   * @param {boolean} debounce (optional) whether to wait a few ms if a new input is given
    */
-  public setSearchInput(searchInput: string): void {
+  public setSearchInput(searchInput: string, debounce: boolean = true): void {
+
+    this.searchInput = searchInput;
 
     if (!searchInput) {
       this.setDisplayBeaconsPaginated(this.availableBeaconsInternal);
       return;
     }
 
-    const idInput = Number(searchInput);
-    if (!Number.isNaN(idInput)) {
-      this.setDisplayBeaconsPaginated(this.availableBeaconsInternal.filter((beacon: BeaconFrontend) => {
-        return beacon.id === idInput;
-      }));
-      return;
-    }
+    let fn = () => {
+      if (this.searchInput !== searchInput) {
+        return;
+      }
+      this.searchService.search(this.availableBeaconsInternal, searchInput, 'beacon-select', undefined, 2).then(results => {
+        this.setDisplayBeaconsPaginated(results);
+      });
+    };
 
-    this.setDisplayBeaconsPaginated(
-      this.availableBeaconsInternal.filter((beacon: BeaconFrontend) => {
-        if (!searchInput) {
-          return false;
-        }
-        return searchInput.indexOf(beacon.deviceId) !== -1;
-      })
-    );
+    if (debounce) {
+      // debounce search input (for improved performance)
+      setTimeout(fn, this.envService.searchDebounceMs);
+    } else {
+      fn();
+    }
 
   }
 

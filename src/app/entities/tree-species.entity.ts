@@ -5,10 +5,14 @@
  * @since 2018/12/04
  */
 import {TreeGenus} from './tree-genus.entity';
+import {search} from '../decorators/search.decorator';
 
 export class TreeSpecies {
 
   public id: number;
+
+  @search('tree-list', 'tree.species.{{name | lowercase}}')
+  @search('tree-list', 'tree.species.latin.{{name | lowercase}}')
   public name: string;
   public genus: TreeGenus;
 

@@ -10,4 +10,24 @@ export class Image {
   public encodedImage: string;
   public alternativeText: string;
 
+  constructor(
+    id?: number,
+    encodedImage?: string,
+    alternativeText?: string
+  ) {
+    this.id = id;
+    this.encodedImage = encodedImage;
+    this.alternativeText = alternativeText;
+  }
+
+  public static fromObject(o: any): Image {
+
+    return new Image(
+      o.id,
+      o.encodedImage,
+      o.alternativeText
+    );
+
+  }
+
 }

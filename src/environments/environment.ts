@@ -7,9 +7,9 @@ export const environment = {
 
   production:                       false,
 
-  webHost:                          'http://localhost:4200',
-  host:                             'http://localhost:80',
-  mapHost:                          'http://localhost:8081',
+  webHost:                          'http://192.168.43.130:4200',
+  host:                             'http://192.168.43.130:80',
+  mapHost:                          'http://192.168.43.130:8081',
 
   endpoints: {
     // Tree
@@ -76,6 +76,8 @@ export const environment = {
     addUserPermission:                '/account/permission/request',
     usersGrantingPermission:          '/account/permission/granted/{permission}'
   },
+
+  searchDebounceMs:                   200,
 
   defaultTimeout:                     10000,
   imageUploadTimeout:                 60000,

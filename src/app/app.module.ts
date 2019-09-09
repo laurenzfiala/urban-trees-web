@@ -4,7 +4,7 @@ import {NgModule} from '@angular/core';
 import {AppRoutingModule} from './app-routing.module';
 
 import {AppComponent} from './app.component';
-import {TranslateCompiler, TranslateLoader, TranslateModule} from '@ngx-translate/core';
+import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {HeaderComponent} from './components/header/header.component';
 import {HomeComponent} from './components/home/home.component';
@@ -63,19 +63,24 @@ import {CheckDirective} from './directives/check.directive';
 import {ValueaccessorDirective} from './directives/valueaccessor.directive';
 import {AdminGuard} from './components/admin/admin.guard';
 import {CssVariableDirective} from './directives/css-variable.directive';
-import { StatisticsComponent } from './components/statistics/statistics.component';
-import { MeasurementsComponent } from './components/measurements/measurements.component';
-import { SettingsComponent } from './components/settings/settings.component';
-import { ZoomComponent } from './components/zoom/zoom.component';
+import {StatisticsComponent} from './components/statistics/statistics.component';
+import {MeasurementsComponent} from './components/measurements/measurements.component';
+import {SettingsComponent} from './components/settings/settings.component';
+import {ZoomComponent} from './components/zoom/zoom.component';
 import {UIService} from './services/ui.service';
 import {BeaconService} from './services/beacon.service';
-import { LoadingStatusComponent } from './components/loading-status/loading-status.component';
-import { SlideshowComponent } from './components/slideshow/slideshow.component';
-import { MessagesComponent } from './components/messages/messages.component';
+import {LoadingStatusComponent} from './components/loading-status/loading-status.component';
+import {SlideshowComponent} from './components/slideshow/slideshow.component';
+import {MessagesComponent} from './components/messages/messages.component';
 import {MessagesService} from './services/messages.service';
-import { UserPermissionComponent } from './components/user-permission/user-permission.component';
+import {UserPermissionComponent} from './components/user-permission/user-permission.component';
 import {BeaconSelectComponent} from './components/beacon-select/beacon-select.component';
 import {AdminBeaconManageComponent} from './components/admin/beacon/manage/manage.component';
+import {SearchService} from './services/search.service';
+import {HelpComponent} from './components/help/help.component';
+import {ReplacePipe} from './pipes/replace.pipe';
+import {LayoutModule} from '@angular/cdk/layout';
+import {LayoutConfig} from './config/layout.config';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, '/translations/', '.json?cacheBust=' + new Date().getTime());
@@ -115,6 +120,10 @@ export function HttpLoaderFactory(http: HttpClient) {
     ZoomComponent,
     LoadingStatusComponent,
     MessagesComponent,
+    HelpComponent,
+    SlideshowComponent,
+    UserPermissionComponent,
+    AnnouncementsComponent,
 
     // Directives
     SpyDirective,
@@ -122,16 +131,14 @@ export function HttpLoaderFactory(http: HttpClient) {
     NoAuthDirective,
     CheckDirective,
     CssVariableDirective,
+    ValueaccessorDirective,
 
     // Pipes
     StringModificationPipe,
     CapitalizationPipe,
     LowercasePipe,
-    DecimalPlacesPipe,
-    AnnouncementsComponent,
-    ValueaccessorDirective,
-    SlideshowComponent,
-    UserPermissionComponent
+    ReplacePipe,
+    DecimalPlacesPipe
   ],
   imports: [
     // Core
@@ -140,6 +147,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     FormsModule,
     AppRoutingModule,
     HttpClientModule,
+    LayoutModule,
 
     // Ngx-Bootstrap
     BsDatepickerModule.forRoot(),
@@ -168,10 +176,10 @@ export function HttpLoaderFactory(http: HttpClient) {
     // Core services
     EnvironmentService,
     SubscriptionManagerService,
-    AnnouncementService,
     AuthService,
 
     // Component-Services
+    AnnouncementService,
     PhenologyObservationService,
     TreeService,
     BeaconService,
@@ -179,10 +187,14 @@ export function HttpLoaderFactory(http: HttpClient) {
     UserService,
     UIService,
     MessagesService,
+    SearchService,
 
     // Guards
     ProjectLoginGuard,
     AdminGuard,
+
+    // Config classes
+    LayoutConfig,
 
     // Interceptors
     {

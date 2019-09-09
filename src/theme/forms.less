@@ -54,17 +54,18 @@ form.validate-on-submit.submitted.ng-invalid [type="submit"] {
 
   .fp {
     position: absolute;
-    top: -0.65rem;
+    top: -0.45rem;
     left: max(@borderRadiusNew, @gutter);
     z-index: 1;
     padding: 0 (@gutter / 2);
     color: @darkGrey;
     font-size: @fontSizeExtraSmall;
+    line-height: 1;
 
     &:before {
       content: "";
       position: absolute;
-      top: 0.65rem;
+      top: 0.45rem;
       left: 0;
       right: 0;
       height: 1px;
@@ -75,7 +76,7 @@ form.validate-on-submit.submitted.ng-invalid [type="submit"] {
       content: "";
       position: absolute;
       top: 0;
-      bottom: 0.425rem;
+      bottom: 0.225rem;
       left: 0;
       right: 0;
       z-index: -2;

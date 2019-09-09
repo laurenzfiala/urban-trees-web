@@ -17,10 +17,6 @@
            [ngClass]="{'mr-0 selected': selectedBeaconIndex === i, 'mr-2': selectedBeaconIndex !== i}"
            class="list-entry link-container text-nowrap p-2">
         <i class="i i-beacon i-dark p-2 mr-1"></i>
-        <i *ngIf="beacon.status === BeaconStatus.LOCKED || beacon.status === BeaconStatus.INVALID_SETTINGS"
-           class="i i-dark i-xs mr-1"
-           [ngClass]="{'i-lock-closed-sm': beacon.status === BeaconStatus.LOCKED, 'i-signal-issue-sm': beacon.status === BeaconStatus.INVALID_SETTINGS}"></i>
-        <i *ngIf="beacon.status === BeaconStatus.INITIAL" class="feature-pointer mr-1"></i>
         <a class="link" [ngClass]="{'active': beacon === selectedBeacon}">
           Beacon {{beacon.deviceId}}
         </a>
@@ -52,9 +48,13 @@
           <a class="link">#{{selectedBeacon.tree.id}}</a>
         </div>
 
-        <i *ngIf="selectedBeacon.status === BeaconStatus.LOCKED || selectedBeacon.status === BeaconStatus.INVALID_SETTINGS"
-           class="i i-dark i-xs ml-1"
-           [ngClass]="{'i-lock-closed-sm': selectedBeacon.status === BeaconStatus.LOCKED, 'i-signal-issue-sm': selectedBeacon.status === BeaconStatus.INVALID_SETTINGS}"></i>
+        <i *ngIf="selectedBeacon.status === BeaconStatus.LOCKED"
+           class="i i-dark i-xs i-lock-closed-sm ml-1 flex-shrink-0"
+           [tooltip]="'tree.beacon.details.status_locked' | translate"></i>
+
+        <i *ngIf="selectedBeacon.status === BeaconStatus.INVALID_SETTINGS"
+           class="i i-dark i-xs i-signal-issue-sm ml-1 flex-shrink-0"
+           [tooltip]="'tree.beacon.details.status_invalid_settings' | translate"></i>
 
         <ut-loading-status
           errorDescription="tree.beacon.data.error"
@@ -72,18 +72,6 @@
           </div>
         </div>
       </div>
-    </div>
-
-    <div *ngIf="!modify && selectedBeacon.status === BeaconStatus.LOCKED"
-         class="alert alert-dark my-2">
-      <i class="i i-black i-lock-closed flex-shrink-0 mr-3"></i>
-      {{'tree.beacon.details.status_locked' | translate}}
-    </div>
-
-    <div *ngIf="!modify && selectedBeacon.status === BeaconStatus.INVALID_SETTINGS"
-         class="alert alert-dark my-2">
-      <i class="i i-black i-signal-issue flex-shrink-0 mr-2"></i>
-      {{'tree.beacon.details.status_invalid_settings' | translate}}
     </div>
 
     <div *ngIf="!modify && selectedBeacon.status === BeaconStatus.INITIAL"
@@ -284,7 +272,7 @@
         <table class="table table-striped">
           <tr>
             <td>PIN</td>
-            <td class="pin">{{selectedBeacon.settings.pin}}</td>
+            <td class="pin">{{selectedBeacon.settings.pin | number:'4.0-0' | replace:',':''}}</td>
           </tr>
           <tr>
             <td>Reference Date</td>

@@ -3,7 +3,7 @@ import {Beacon} from '../../../../entities/beacon.entity';
 import {BsModalRef, BsModalService} from 'ngx-bootstrap';
 import {AbstractComponent} from '../../../abstract.component';
 import {AdminService} from '../../../../services/admin/admin.service';
-import {MapMarker} from '../../../../interfaces/map-marker.entity';
+import {MapMarker} from '../../../../interfaces/map-marker.interface';
 import {City} from '../../../../entities/city.entity';
 import {TreeFrontend} from '../../../../entities/tree-frontend.entity';
 import {TreeSpecies} from '../../../../entities/tree-species.entity';
@@ -115,8 +115,14 @@ export class AdminBeaconManageComponent extends AbstractComponent implements OnI
       this.showBeaconSelect = true;
       if (this.beacon.tree) {
         this.showTreeSelect = true;
+        if (this.beacon.location.id === this.beacon.tree.location.id) {
+          this.showLocation = false;
+        } else {
+          this.showLocation = true;
+        }
       } else {
         this.showTreeSelect = false;
+        this.showLocation = true;
       }
       this.loadBeaconSettings();
     } else {
@@ -138,7 +144,14 @@ export class AdminBeaconManageComponent extends AbstractComponent implements OnI
   }
 
   public onSelectedTreeChange(selectedTree: TreeFrontend): void {
-    this.assocTree = selectedTree && TreeLight.fromObject(selectedTree);
+
+    if (selectedTree) {
+      this.assocTree = TreeLight.fromObject(selectedTree);
+      this.onBeaconLocationTreeLink(true);
+    } else {
+      this.assocTree = null;
+    }
+
   }
 
   public onBeaconSelectedMarkerChange(selectedMarker: MapMarker): void {
@@ -155,6 +168,7 @@ export class AdminBeaconManageComponent extends AbstractComponent implements OnI
     if (linkTreeLocation) {
       this.beacon.location = this.assocTree.location;
     } else {
+      this.beacon.location = Location.fromObject(this.assocTree.location); // copy location
       this.beacon.location.id = 0;
     }
 
@@ -167,11 +181,6 @@ export class AdminBeaconManageComponent extends AbstractComponent implements OnI
   }
 
   public saveBeacon(): void {
-
-    if (!this.marker) {
-      this.setStatus(StatusKey.SAVE_BEACON, StatusValue.BEACON_MARKER_NOT_SET);
-      return;
-    }
 
     if (this.assocTree) {
       this.beacon.tree = this.assocTree;

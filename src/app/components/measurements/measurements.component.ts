@@ -5,6 +5,8 @@ import {UIService} from '../../services/ui.service';
 import {BeaconFrontend} from '../../entities/beacon-frontend.entity';
 import {BeaconStatus} from '../../entities/beacon-status.entity';
 import {BeaconService} from '../../services/beacon.service';
+import {EnvironmentService} from '../../services/environment.service';
+import {SearchService} from '../../services/search.service';
 
 @Component({
   selector: 'ut-measurements',
@@ -27,7 +29,9 @@ export class MeasurementsComponent extends AbstractComponent implements OnInit {
   public beaconSearchInput: string;
 
   constructor(private uiService: UIService,
-              private beaconService: BeaconService) {
+              private beaconService: BeaconService,
+              private envService: EnvironmentService,
+              private searchService: SearchService) {
     super();
   }
 
@@ -93,9 +97,16 @@ export class MeasurementsComponent extends AbstractComponent implements OnInit {
       this.displayBeacons = this.availableBeacons;
       return;
     }
-    this.displayBeacons = this.availableBeacons.filter(b => {
-      return b.deviceId.toLowerCase().indexOf(value.toLowerCase()) !== -1 || String(b.id) === value;
-    });
+
+    // debounce search input (for improved performance)
+    setTimeout(() => {
+      if (this.beaconSearchInput !== value) {
+        return;
+      }
+      this.searchService.search(this.availableBeacons, value, 'msmts-beacon-list', undefined, 3).then(results => {
+        this.displayBeacons = results;
+      });
+    }, this.envService.searchDebounceMs);
 
   }
 

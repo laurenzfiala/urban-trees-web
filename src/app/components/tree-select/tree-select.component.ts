@@ -1,8 +1,12 @@
-import {Component, EventEmitter, Input, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {AbstractComponent} from '../abstract.component';
 import {Log} from '../../services/log.service';
 import {TreeFrontend} from '../../entities/tree-frontend.entity';
-import {TranslateService} from '@ngx-translate/core';
+import {EnvironmentService} from '../../services/environment.service';
+import {SearchService} from '../../services/search.service';
+import {BreakpointObserver, BreakpointState} from '@angular/cdk/layout';
+import {SubscriptionManagerService} from '../../services/subscription-manager.service';
+import {LayoutConfig} from '../../config/layout.config';
 
 /**
  * Component for selecting a tree of the given ones.
@@ -14,7 +18,9 @@ import {TranslateService} from '@ngx-translate/core';
   templateUrl: './tree-select.component.html',
   styleUrls: ['../tree-list/tree-list.component.less', './tree-select.component.less']
 })
-export class TreeSelectComponent extends AbstractComponent {
+export class TreeSelectComponent extends AbstractComponent implements OnInit, OnDestroy {
+
+  private static SUBSCRIPTION_TAG = 'tree-select';
 
   private static LOG: Log = Log.newInstance(TreeSelectComponent);
 
@@ -75,12 +81,44 @@ export class TreeSelectComponent extends AbstractComponent {
   public currentDisplayTreePage: number = 0;
 
   /**
+   * Amount of pages to display.
+   */
+  public currentDisplayTreePages: number = 0;
+
+  /**
    * Current tree search input.
    */
   public treeSearchInput: string;
 
-  constructor(public translateService: TranslateService) {
+  /**
+   * Current pagination page size.
+   */
+  private pageSize: number;
+
+  constructor(private envService: EnvironmentService,
+              private searchService: SearchService,
+              private subs: SubscriptionManagerService,
+              private bpObserver: BreakpointObserver) {
     super();
+  }
+
+  public ngOnInit(): void {
+
+    this.subs.register(this.bpObserver.observe(LayoutConfig.LAYOUT_MEDIA_STEPS).subscribe((state: BreakpointState) => {
+      let pageSize = 2;
+      if (state.breakpoints[LayoutConfig.LAYOUT_MEDIA_MD]) {
+        pageSize = 4;
+      } else if (state.breakpoints[LayoutConfig.LAYOUT_MEDIA_LG] || state.breakpoints[LayoutConfig.LAYOUT_MEDIA_XL]) {
+        pageSize = 6;
+      }
+      this.pageSize = pageSize;
+      this.setTreeSearchInput(this.treeSearchInput, false);
+    }), TreeSelectComponent.SUBSCRIPTION_TAG);
+
+  }
+
+  public ngOnDestroy(): void {
+    this.subs.unsubscribe(TreeSelectComponent.SUBSCRIPTION_TAG);
   }
 
   /**
@@ -93,15 +131,9 @@ export class TreeSelectComponent extends AbstractComponent {
       return;
     }
 
-    const minPageSize = 6;
-    const pages = 5;
-    let pageSize = Math.ceil(this.availableTreesInternal.length / pages);
+    this.currentDisplayTreePages = Math.ceil(trees.length / this.pageSize);
 
-    if (pageSize < minPageSize) {
-      pageSize = minPageSize;
-    }
-
-    if (trees.length <= pageSize) {
+    if (trees.length <= this.pageSize) {
       this.displayTreePagination = false;
     } else {
       this.displayTreePagination = true;
@@ -110,9 +142,8 @@ export class TreeSelectComponent extends AbstractComponent {
     let paginatedArray = new Array<Array<TreeFrontend>>();
 
     let page = 0;
-    for (let i = 0; i < trees.length; i += pageSize) {
-      pageSize = i >= trees.length ? i - trees.length : pageSize;
-      paginatedArray[page] = trees.slice(i, i + pageSize);
+    for (let i = 0; i < trees.length; i += this.pageSize) {
+      paginatedArray[page] = trees.slice(i, i + this.pageSize);
       page++;
     }
 
@@ -125,30 +156,32 @@ export class TreeSelectComponent extends AbstractComponent {
   /**
    * Set tree search and filter displayed trees by input.
    * @param {string} searchInput user's tree search input
+   * @param {boolean} debounce (optional) whether to wait a few ms if a new input is given
    */
-  public setTreeSearchInput(searchInput: string): void {
+  public setTreeSearchInput(searchInput: string, debounce: boolean = true): void {
+
+    this.treeSearchInput = searchInput;
 
     if (!searchInput) {
       this.setDisplayTreesPaginated(this.availableTreesInternal);
       return;
     }
 
-    const idInput = Number(searchInput);
-    if (!Number.isNaN(idInput)) {
-      this.setDisplayTreesPaginated(this.availableTreesInternal.filter((tree: TreeFrontend) => {
-        return tree.id === idInput;
-      }));
-      return;
-    }
+    let fn = () => {
+      if (this.treeSearchInput !== searchInput) {
+        return;
+      }
+      this.searchService.search(this.availableTreesInternal, searchInput, 'tree-list', undefined, 2).then(results => {
+        this.setDisplayTreesPaginated(results);
+      });
+    };
 
-    this.setDisplayTreesPaginated(
-      this.availableTreesInternal.filter((tree: TreeFrontend) => {
-        const translationKey = ('tree.species.' + tree.species).toLowerCase();
-        return this.translateService.instant(translationKey).toLowerCase().indexOf(searchInput.toLowerCase()) !== -1 ||
-          tree.location.street.toLowerCase().indexOf(searchInput.toLowerCase()) !== -1 ||
-          tree.location.city.name.toLowerCase().indexOf(searchInput.toLowerCase()) !== -1;
-      })
-    );
+    if (debounce) {
+      // debounce search input (for improved performance)
+      setTimeout(fn, this.envService.searchDebounceMs);
+    } else {
+      fn();
+    }
 
   }
 

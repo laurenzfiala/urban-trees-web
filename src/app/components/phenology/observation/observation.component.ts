@@ -6,7 +6,7 @@ import {AbstractComponent} from '../../abstract.component';
 import {TreeFrontend} from '../../../entities/tree-frontend.entity';
 import {TreeService} from '../../../services/tree.service';
 import {Tree} from '../../../entities/tree.entity';
-import {MapMarker} from '../../../interfaces/map-marker.entity';
+import {MapMarker} from '../../../interfaces/map-marker.interface';
 import {PhenologyDatasetFrontend} from '../../../entities/phenology-dataset-frontend.entity';
 import {PhenologyObservationTypeFrontend} from '../../../entities/phenology-observation-type-frontend.entity';
 import {PhenologyObservationResult} from '../../../entities/phenology-observation-result.entity';
@@ -169,8 +169,6 @@ export class ObservationComponent extends AbstractComponent implements OnInit, O
 
   private loadResultImage(resultId: number) {
     this.observationService.loadResultImg(resultId, () => {
-    }, (error, apiError) => {
-      this.setStatus(StatusKey.SPEC, StatusValue.FAILED);
     });
   }
 
@@ -306,25 +304,42 @@ export class ObservationComponent extends AbstractComponent implements OnInit, O
     }
 
     for (let t of this.observationSpec) {
-      this.undoObservationResult(t, true);
+      this.undoObservationResult(t, undefined, true);
     }
 
   }
 
   /**
    * Undo one or all observation results for a obs type.
+   * If result is given, only remove observations of that result.
    */
   public undoObservationResult(type: PhenologyObservationTypeFrontend,
+                               result?: PhenologyObservationResult,
                                all: boolean = false): void {
     if (type.userObservations.length === 0) {
       return;
     }
     if (all) {
       type.userObservations = [];
+      type.done = false;
     } else {
-      type.userObservations = type.userObservations.slice(0, type.userObservations.length - 1);
+      if (result) {
+        let i = 0, r;
+        for (let obs of type.userObservations) {
+          if (obs.result.id === result.id) {
+            r = i;
+          }
+          i++;
+        }
+        if (r !== undefined) {
+          type.userObservations.splice(r, 1);
+          type.done = false;
+        }
+      } else {
+        type.userObservations = type.userObservations.slice(0, type.userObservations.length - 1);
+        type.done = false;
+      }
     }
-    type.done = false;
     this.checkProgress();
   }
 

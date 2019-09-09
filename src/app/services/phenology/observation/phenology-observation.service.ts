@@ -33,6 +33,12 @@ export class PhenologyObservationService extends AbstractService {
   public observationSpec: Array<PhenologyObservationTypeFrontend>;
 
   /**
+   * If an obs spec is loaded, this contains that specs' species id.
+   * Used to use previous obs spec if another tree with same species is selected.
+   */
+  private observationSpecSpeciesId: number;
+
+  /**
    * The tree to observe.
    */
   public selectedTree: TreeFrontend;
@@ -74,13 +80,14 @@ export class PhenologyObservationService extends AbstractService {
                              errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void): void {
 
     // return cached spec
-    if (this.observationSpec) {
+    if (this.observationSpec && this.observationSpecSpeciesId && this.observationSpecSpeciesId === this.selectedTree.species.id) {
       successCallback(this.observationSpec);
       return;
     }
 
     let selectedSpeciesId = this.selectedTree.species.id;
     this.observationSpec = new Array<PhenologyObservationTypeFrontend>();
+    this.observationSpecSpeciesId = selectedSpeciesId;
 
     this.http.get<Array<PhenologyObservationTypeFrontend>>(this.envService.endpoints.getPhenologySpec(selectedSpeciesId))
       .timeout(this.envService.defaultTimeout)
@@ -132,9 +139,11 @@ export class PhenologyObservationService extends AbstractService {
 
     let selectedTreeSpeciesId = this.selectedTree.species.id;
 
-    let t = this.envService.endpoints.getPhenologyObservationResultImg(selectedTreeSpeciesId, resultId);
-    this.http.get<Image>(t)
+    this.images[resultId] = new Image(0);
+    let url = this.envService.endpoints.getPhenologyObservationResultImg(selectedTreeSpeciesId, resultId);
+    this.http.get<Image>(url)
       .timeout(this.envService.defaultTimeout)
+      .map(r => r && Image.fromObject(r))
       .subscribe((image: Image) => {
       image.encodedImage = 'data:image/jpeg;base64,' + image.encodedImage;
       this.images[resultId] = image;
@@ -144,6 +153,7 @@ export class PhenologyObservationService extends AbstractService {
       if (errorCallback) {
         errorCallback(e, this.safeApiError(e));
       }
+      delete this.images[resultId];
     });
 
   }

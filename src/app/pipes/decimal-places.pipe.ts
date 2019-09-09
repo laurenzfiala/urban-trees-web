@@ -2,6 +2,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 
 /**
  * Pipe to transform numbers to n-decimal-places string.
+ * @deprecated 2019/09/09 use angular number pipe instead
  * @author Laurenz Fiala
  * @since 2018/06/17
  */

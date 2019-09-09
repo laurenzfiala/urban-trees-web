@@ -16,7 +16,7 @@ import {AbstractComponent} from '../abstract.component';
 import OlProj from 'ol/proj';
 import OlXYZ from 'ol/source/xyz';
 import OlTileLayer from 'ol/layer/tile';
-import {MapMarker} from '../../interfaces/map-marker.entity';
+import {MapMarker} from '../../interfaces/map-marker.interface';
 import {MapMarkerDefault} from '../../entities/map-marker-default.entity';
 import VectorTileOptions = olx.source.VectorTileOptions;
 import TileEvent = ol.source.TileEvent;

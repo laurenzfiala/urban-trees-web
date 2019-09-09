@@ -24,6 +24,7 @@ import {SettingsComponent} from './components/settings/settings.component';
 import {MessagesComponent} from './components/messages/messages.component';
 import {ReportComponent} from './components/report/report.component';
 import {AdminBeaconManageComponent} from './components/admin/beacon/manage/manage.component';
+import {HelpComponent} from './components/help/help.component';
 
 const routes: Routes = [
   {
@@ -142,6 +143,16 @@ const routes: Routes = [
     canActivateChild: [ProjectLoginGuard],
     children: [
       { // Note: redirect old URLs ../observation[[/step]/x]
+        path: '**',
+        redirectTo: ''
+      }
+    ]
+  },
+  {
+    path: 'help',
+    component: HelpComponent,
+    children: [
+      {
         path: '**',
         redirectTo: ''
       }

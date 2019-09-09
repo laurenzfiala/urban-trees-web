@@ -1,3 +1,5 @@
+import {search} from '../decorators/search.decorator';
+
 /**
  * City.
  *
@@ -9,11 +11,13 @@ export class City {
   /**
    * Note: ID need not be populated when POST-ing a new city to the backend:
    */
+  @search(undefined, undefined, 'cityid')
   public id: number;
 
   /**
    * Name of the city.
    */
+  @search(undefined, undefined, 'city')
   public name: string;
 
   constructor(

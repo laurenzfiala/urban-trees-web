@@ -1,5 +1,4 @@
 import {AbstractStatusComponent} from './abstract-status.component';
-import {OnInit} from '@angular/core';
 
 /**
  * This abstract component class provides helpful functionality

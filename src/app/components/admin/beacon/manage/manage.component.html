@@ -184,7 +184,7 @@
               Loading beacon settings...
             </div>
 
-            <ng-container *ngIf="beacon?.settings?.pin && beacon?.settingsLoadingStatus === StatusValue.SUCCESSFUL">
+            <ng-container *ngIf="beacon?.settingsLoadingStatus === StatusValue.SUCCESSFUL">
               <label for="location">PIN</label>
 
               <div class="form-row mb-2">

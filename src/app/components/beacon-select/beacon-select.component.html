@@ -3,7 +3,7 @@
     [ngModel]="searchInput"
     (ngModelChange)="setSearchInput($event)"
     name="treeSearchInput"
-    class="form-control search-input"
+    class="form-control form-control-lg search-input"
     [placeholder]="'phenology.observation.step1.tree_search_placeholder' | translate" />
 </div>
 
@@ -53,24 +53,35 @@
   <ul class="pagination mt-2 mb-0">
     <li class="page-item">
       <a class="page-link"
+         (click)="displayPage(0)"
+         (keydown)="displayPage(0)">
+        <i class="i i-arrow-left-double i-dark"></i>
+      </a>
+    </li>
+    <li class="page-item">
+      <a class="page-link"
          (click)="displayPage(currentDisplayPage-1)"
          (keydown)="displayPage(currentDisplayPage-1)">
         <i class="i i-arrow-left i-dark" aria-hidden="true"></i>
       </a>
     </li>
-    <li *ngFor="let page of displayBeacons; let i = index" class="page-item">
-      <a class="page-link"
-         [ngClass]="{'active': currentDisplayPage === i}"
-         (click)="currentDisplayPage = i"
-         (keydown)="currentDisplayPage = i">
-        {{i+1}}
+    <li class="page-item">
+      <a class="page-link disabled">
+        {{currentDisplayPage + 1}}
       </a>
     </li>
     <li class="page-item">
       <a class="page-link"
          (click)="displayPage(currentDisplayPage+1)"
          (keydown)="displayPage(currentDisplayPage+1)">
-        <i class="i i-arrow-right i-dark" aria-hidden="true"></i>
+        <i class="i i-arrow-right i-dark"></i>
+      </a>
+    </li>
+    <li class="page-item">
+      <a class="page-link"
+         (click)="displayPage(currentDisplayPages-1)"
+         (keydown)="displayPage(currentDisplayPages-1)">
+        <i class="i i-arrow-right-double i-dark"></i>
       </a>
     </li>
   </ul>

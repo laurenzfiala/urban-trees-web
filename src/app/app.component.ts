@@ -57,14 +57,14 @@ export class AppComponent implements OnInit {
 
   /**
    * Scroll to top after route changes
+   * (only if route data allows it or does not exist)
    */
   public ngOnInit(): void {
 
     this.router.events.subscribe((evt) => {
-      if (!(evt instanceof NavigationEnd)) {
-        return;
+      if (evt instanceof NavigationEnd && (!this.router.getCurrentNavigation().extras.state || this.router.getCurrentNavigation().extras.state.scrollTop !== false)) {
+        window.scrollTo(0, 0);
       }
-      window.scrollTo(0, 0);
     });
 
   }

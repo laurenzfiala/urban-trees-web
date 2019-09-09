@@ -141,8 +141,14 @@
     <ng-container *ngIf="hasStatus(StatusKey.STEP_OBS, StatusValue.SHOW) && observationSpec"
                   class="mt-2">
 
-      <div class="my-3 py-2 text-danger text-center" *ngIf="observationSpec.length === 0">
+      <div class="my-3 py-2 text-danger text-center" *ngIf="hasStatus(StatusKey.SPEC, StatusValue.SUCCESSFUL) && observationSpec.length === 0">
         {{'phen_obs.step_3.no_obs_assoc' | translate}}
+      </div>
+
+      <div *ngIf="hasStatus(StatusKey.SPEC, StatusValue.IN_PROGRESS)"
+           class="d-flex flex-row align-items-center mt-2">
+        <i class="i i-sm i-black i-load i-spin mr-1"></i>
+        {{'phen_obs.step_3.loading' | translate}}
       </div>
 
       <div *ngIf="observationSpec.length > 0">
@@ -174,20 +180,32 @@
                  [collapse]="type.containerCollapsed"
                  class="obs-content">
 
-              <div class="d-flex flex-row flex-wrap justify-content-sm-end justify-content-md-start">
+              <div class="d-flex flex-row flex-wrap justify-content-sm-end justify-content-md-start pl-1 pb-1">
 
                 <div *ngFor="let result of type.results"
-                     class="obs-res-btn-container p-1"
+                     class="obs-res-container pt-1 pr-1"
                      [cssvar]="{name: '--result-amount', value: type.results.length}">
 
-                  <button class="btn btn-count btn-outline-secondary p-0" type="button" name="btn"
-                          (click)="addObservationResult(collapse, type, result)">
-                    <img [src]="images[result.id]?.encodedImage" class="w-100" /><!-- TODO loading spinner -->
-                    <div class="overlay">{{getObservationAmount(type, result)}}</div>
-                  </button>
-
-                  <div class="obs-res-annotation p-1">
-                    {{'phen_obs.step_3.type.' + type.name + '.result.' + result.description | translate}}
+                  <div class="obs-res"
+                       (click)="addObservationResult(collapse, type, result)"
+                       (contextmenu)="undoObservationResult(type, result); $event.preventDefault()">
+                    <div class="obs-res-counter mx--1">
+                      <div class="mx-1">{{getObservationAmount(type, result)}}</div>
+                      <div class="text mx-1">
+                        {{'phen_obs.step_3.type.' + type.name + '.result.' + result.description | translate}}
+                      </div>
+                    </div>
+                    <img *ngIf="images[result.id]?.encodedImage"
+                         [src]="images[result.id]?.encodedImage"
+                         class="obs-res-img w-100" />
+                    <div *ngIf="images[result.id] && !images[result.id].encodedImage"
+                         class="d-flex flex-row align-items-center justify-content-center my-2">
+                      <i class="i i-lg i-dark i-load i-spin"></i>
+                    </div>
+                    <div *ngIf="!images[result.id]"
+                         class="obs-res-img obs-res-img-placeholder w-100">
+                      {{'phen_obs.step_3.no_result_img' | translate}}
+                    </div>
                   </div>
 
                 </div>
@@ -198,7 +216,7 @@
                    class="d-flex flex-row flex-wrap justify-content-end justify-content-md-start justm--2">
 
                 <div class="d-flex align-items-center m-2"
-                      (click)="undoObservationResult(type, true)">
+                      (click)="undoObservationResult(type, undefined, true)">
                   <i class="i i-dark i-undo-dashed i-sm mr-1"></i>
                   <a class="link">{{'phen_obs.step_3.reset' | translate}}</a>
                 </div>
@@ -207,6 +225,12 @@
                       (click)="undoObservationResult(type)">
                   <i class="i i-dark i-undo i-sm mr-1"></i>
                   <a class="link">{{'phen_obs.step_3.undo' | translate}}</a>
+                </div>
+
+                <div class="d-flex align-items-center text-sm text-subtle m-2">
+                  <i class="i i-xs i-dark i-info mr-1"></i>
+                  <span class="d-has-cursor">{{'phen_obs.step_3.undo_info_cursor' | translate}}</span>
+                  <span class="d-has-touch">{{'phen_obs.step_3.undo_info_touch' | translate}}</span>
                 </div>
 
               </div>
@@ -499,7 +523,7 @@
   </div>
 </div>
 
-<div *ngIf="hasStatus(StatusKey.TREES, StatusValue.FAILED)" class="status-overlay overlay-fixed">
+<div *ngIf="hasAnyStatusKey([StatusKey.TREES, StatusKey.SPEC], StatusValue.FAILED)" class="status-overlay overlay-fixed">
   <div class="status-content">
     <div class="status-heading heading-danger">
       {{'general.error' | translate}}

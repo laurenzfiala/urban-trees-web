@@ -121,9 +121,40 @@
     }
   }
 
-  .obs-res-btn-container .obs-res-annotation {
+  .obs-res-container .obs-res {
     background-color: @medLightBgColor;
-    word-break: break-all;
+    padding: (@gutter/2);
+
+    user-select: none;
+    cursor: pointer;
+
+    &:hover {
+      background-color: darken(@medLightBgColor, 3%);
+    }
+
+    .obs-res-counter {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: center;
+
+      font-size: @fontSizeExtraLarge;
+      padding-bottom: (@gutter/2);
+
+      > .text {
+        font-size: @fontSizeBase;
+        color: @subtleTextColor;
+        word-break: break-all;
+        text-align: center;
+      }
+    }
+    .obs-res-img {
+    }
+    .obs-res-img-placeholder {
+      padding: @gutter2x @gutter;
+      background-color: @white;
+    }
   }
 
  .btn.btn-check {
@@ -186,27 +217,27 @@
 }
 
 @media @xs {
-  .obs-container .obs-res-btn-container {
+  .obs-container .obs-res-container {
     min-width: 50%;
     max-width: calc(100% / var(--result-amount)) !important;
   }
 }
 
 @media @sm {
-  .obs-container .obs-res-btn-container {
+  .obs-container .obs-res-container {
     min-width: 33.333%;
     max-width: calc(100% / var(--result-amount)) !important;
   }
 }
 
 @media @md {
-  .obs-container .obs-res-btn-container {
+  .obs-container .obs-res-container {
     min-width: 25%;
     max-width: calc(100% / var(--result-amount)) !important;
   }
 }
 
-.obs-container .obs-res-btn-container {
+.obs-container .obs-res-container {
   flex-grow: 1;
   flex-basis: 0;
 
@@ -227,6 +258,10 @@
 ::ng-deep .content-cat:nth-child(odd) {
   .obs-container .obs-content .obs-obj-container {
     background-color: @white;
+
+    .obs-res-img-placeholder {
+      background-color: @lightBgColor;
+    }
   }
 }
 
