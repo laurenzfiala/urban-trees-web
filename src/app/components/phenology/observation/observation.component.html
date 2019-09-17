@@ -62,7 +62,7 @@
   <div class="container">
     <div class="content-cat-heading">
       <span class="badge primary mr-1">{{'phen_obs.step' | translate}} 2</span>
-      When?
+      {{'phen_obs.step_2.title' | translate}}
     </div>
 
     <div class="content-cat-text">
@@ -402,7 +402,7 @@
         </div>
       </div>
       <div class="d-flex flex-row align-items-center justify-content-center m-2"
-           [ngClass]="{'send-disabled': !canSend || hasStatus(StatusKey.SEND_DATA, StatusValue.IN_PROGRESS) || hasStatus(StatusKey.SEND_IMAGE, StatusValue.IN_PROGRESS)}"
+           [ngClass]="{'send-disabled': !canSend || hasStatus(StatusKey.SEND_DATA, StatusValue.IN_PROGRESS) || hasAnyStatus(StatusKey.SEND_IMAGE, StatusValue.IN_PROGRESS, StatusValue.FAILED)}"
            (click)="onSubmit()">
         <i class="i i-sm i-dark i-send-primary mr-1"></i>
         <div class="link primary">
@@ -433,7 +433,7 @@
            class="d-flex flex-row align-items-center justify-content-center text-danger m-2">
         <i class="i i-sm i-upload-error-danger mr-1"></i>
         {{'phen_obs.send.error_img' | translate}}
-        <div class="link-btn ml-1"
+        <div class="link-btn link-btn-sm danger ml-1"
              (click)="sendUserImage()">{{'general.retry' | translate}}</div>
       </div>
       <div *ngIf="hasStatus(StatusKey.SEND_DATA, StatusValue.SUCCESSFUL) && hasStatus(StatusKey.SEND_IMAGE, StatusValue.SUCCESSFUL)"

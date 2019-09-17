@@ -3,18 +3,17 @@
   <div class="container">
 
     <div class="footer-link">
-      <a routerLink="/report">{{ 'navigation.footer.report' | translate}}</a>
+      <a class="link" routerLink="/report">{{ 'navigation.footer.report' | translate}}</a>
     </div>
     <div class="footer-link">
-      <a routerLink="/imprint">{{ 'navigation.footer.imprint' | translate}}</a>
+      <a class="link" routerLink="/imprint">{{ 'navigation.footer.imprint' | translate}}</a>
     </div>
     <div class="footer-text-subtle">
-      <span [innerHtml]="'navigation.footer.madeby' | translate"></span>
-      <a href="http://stadt-baum-klima.sbg.ac.at/about/project-team/" target="_blank">
+      <span [innerHtml]="'navigation.footer.madeby' | translate"></span>&nbsp;<a class="link" href="http://stadt-baum-klima.sbg.ac.at/about/project-team/" target="_blank">
         {{'navigation.footer.madeby_team' | translate}}
       </a>
       &amp;
-      <a href="https://github.com/laurenzfiala" target="_blank">Laurenz Fiala</a>
+      <a class="link" href="https://github.com/laurenzfiala" target="_blank">Laurenz Fiala</a>
     </div>
 
   </div>

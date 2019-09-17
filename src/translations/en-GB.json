@@ -233,8 +233,8 @@
       "update_month": "Information last updated in August 2019."
     },
     "cooling_power": {
-      "title": "Cooling capability of our examined trees",
-      "text": "The <b>highest</b> measured <b>cooling capability</b> of our observed trees was <b>5,3 °C</b>.<div class=\"my-2\">To do that, we compared the temperatures of the reference-beacons in the sun to the beacons in the tree-crowns at each school, and looked at the differences between them.</div>",
+      "title": "Cooling capacity of our examined trees",
+      "text": "The <b>highest</b> measured <b>cooling capacity</b> of our observed trees was <b>5,3 °C</b>.<div class=\"my-2\">To do that, we compared the temperatures of the reference-beacons in the sun to the beacons in the tree-crowns at each school, and looked at the differences between them.</div>",
       "update_month": "Information last updated in March 2019."
     },
 		"species": {

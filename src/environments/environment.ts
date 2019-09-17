@@ -7,9 +7,9 @@ export const environment = {
 
   production:                       false,
 
-  webHost:                          'http://192.168.43.130:4200',
-  host:                             'http://192.168.43.130:80',
-  mapHost:                          'http://192.168.43.130:8081',
+  webHost:                          'http://localhost:4200',
+  host:                             'http://localhost:80',
+  mapHost:                          'http://localhost:8081',
 
   endpoints: {
     // Tree
@@ -79,7 +79,7 @@ export const environment = {
 
   searchDebounceMs:                   200,
 
-  defaultTimeout:                     10000,
+  defaultTimeout:                     30000,
   imageUploadTimeout:                 60000,
 
   userDataRefreshIntervalMs:          30000,

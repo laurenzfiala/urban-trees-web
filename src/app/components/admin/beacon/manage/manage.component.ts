@@ -147,7 +147,11 @@ export class AdminBeaconManageComponent extends AbstractComponent implements OnI
 
     if (selectedTree) {
       this.assocTree = TreeLight.fromObject(selectedTree);
-      this.onBeaconLocationTreeLink(true);
+      if (this.beacon) {
+        this.onBeaconLocationTreeLink(false);
+      } else {
+        this.onBeaconLocationTreeLink(true);
+      }
     } else {
       this.assocTree = null;
     }
@@ -167,9 +171,13 @@ export class AdminBeaconManageComponent extends AbstractComponent implements OnI
 
     if (linkTreeLocation) {
       this.beacon.location = this.assocTree.location;
+      this.showLocation = false;
     } else {
-      this.beacon.location = Location.fromObject(this.assocTree.location); // copy location
-      this.beacon.location.id = 0;
+      if (this.beacon.location.id === this.assocTree.location.id) {
+        this.beacon.location = Location.fromObject(this.assocTree.location); // copy location
+        this.beacon.location.id = 0;
+      }
+      this.showLocation = true;
     }
 
   }
@@ -189,8 +197,9 @@ export class AdminBeaconManageComponent extends AbstractComponent implements OnI
     if (this.beacon.id) { // modify beacon
 
       this.setStatus(StatusKey.SAVE_BEACON, StatusValue.IN_PROGRESS);
-      this.adminService.modifyBeacon(this.beacon, (result: BeaconFrontend) => { // TODO
+      this.adminService.modifyBeacon(this.beacon, (result: BeaconFrontend) => {
         this.savedBeacon = BeaconFrontend.fromBeacon(result);
+        this.availableBeacons.find(beacon => beacon.id === result.id).location = result.location;
         this.setStatus(StatusKey.SAVE_BEACON, StatusValue.SUCCESSFUL);
       }, (error, apiError) => {
         this.setStatus(StatusKey.SAVE_BEACON, StatusValue.FAILED);
@@ -201,6 +210,7 @@ export class AdminBeaconManageComponent extends AbstractComponent implements OnI
       this.setStatus(StatusKey.SAVE_BEACON, StatusValue.IN_PROGRESS);
       this.adminService.addBeacon(this.beacon, (result: Beacon) => {
         this.savedBeacon = BeaconFrontend.fromBeacon(result);
+        this.availableBeacons.push(this.savedBeacon);
         this.setStatus(StatusKey.SAVE_BEACON, StatusValue.SUCCESSFUL);
       }, (error, apiError) => {
         this.setStatus(StatusKey.SAVE_BEACON, StatusValue.FAILED);
@@ -234,7 +244,7 @@ export class AdminBeaconManageComponent extends AbstractComponent implements OnI
       this.availableBeacons = beacons;
       this.setStatus(StatusKey.LOAD_BEACONS, StatusValue.SUCCESSFUL);
       if (selectBeaconByDeviceId) {
-        this.onSelectedBeaconChange(this.availableBeacons.find((b: BeaconFrontend) => b.deviceId === selectBeaconByDeviceId));
+        this.onSelectedBeaconChange(beacons.find((b: BeaconFrontend) => b.deviceId === selectBeaconByDeviceId));
       }
     }, (error, apiError) => {
       this.setStatus(StatusKey.LOAD_BEACONS, StatusValue.FAILED);
