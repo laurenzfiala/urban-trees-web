@@ -47,7 +47,7 @@ export class TreeListComponent extends AbstractComponent implements OnInit {
   /**
    * Current tree search input.
    */
-  private treeSearchInput: string;
+  public treeSearchInput: string;
 
   public StatusKey = StatusKey;
   public StatusValue = StatusValue;

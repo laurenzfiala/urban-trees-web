@@ -17,16 +17,16 @@ import {
 export class ZoomComponent implements OnInit {
 
   @Input()
-  private content: TemplateRef<any>;
+  public content: TemplateRef<any>;
 
   @Input()
-  private fullscreenContent: TemplateRef<any>;
+  public fullscreenContent: TemplateRef<any>;
 
   /**
    * Whether to show previous/next controls or not.
    */
   @Input()
-  private showControls: boolean = false;
+  public showControls: boolean = false;
 
   @Output()
   private opening: EventEmitter<boolean> = new EventEmitter<boolean>();

@@ -79,7 +79,7 @@ export class ObservationComponent extends AbstractComponent implements OnInit, O
   constructor(private observationService: PhenologyObservationService,
               private subs: SubscriptionManagerService,
               private treeService: TreeService,
-              private authService: AuthService,
+              public authService: AuthService,
               public envService: EnvironmentService) {
     super();
   }

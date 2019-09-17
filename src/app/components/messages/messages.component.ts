@@ -18,9 +18,8 @@ export class MessagesComponent extends AbstractComponent implements OnInit {
 
   public StatusKey = StatusKey;
   public StatusValue = StatusValue;
-  public EventSeverity = EventSeverity;
 
-  private availableReports: Array<ReportFrontend>;
+  public availableReports: Array<ReportFrontend>;
   private editingReport: ReportFrontend;
 
   constructor(private messagesService: MessagesService,

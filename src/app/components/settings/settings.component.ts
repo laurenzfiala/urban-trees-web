@@ -23,7 +23,7 @@ export class SettingsComponent extends AbstractComponent implements OnInit {
    */
   public user: User;
 
-  constructor(private envService: EnvironmentService,
+  constructor(public envService: EnvironmentService,
               private translateService: TranslateService,
               private userService: UserService,
               private authService: AuthService) {

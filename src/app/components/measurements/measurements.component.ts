@@ -46,7 +46,7 @@ export class MeasurementsComponent extends AbstractComponent implements OnInit {
    * Load measurement stats using UIService.
    * @param {() => void} successCallback when loading was successful.
    */
-  private loadStatistics(successCallback?: () => void): void {
+  public loadStatistics(successCallback?: () => void): void {
 
     this.setStatus(StatusKey.STATISTICS, StatusValue.IN_PROGRESS);
     if (successCallback && this.statistics) {
