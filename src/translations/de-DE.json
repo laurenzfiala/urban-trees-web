@@ -226,6 +226,10 @@
   },
 	"tree": {
     "loading": "Lade Baum...",
+    "summary": {
+      "title": "Information",
+      "text": "„Stadtbäume als Klimabotschafter“: in diesem Projekt forschen Wissenschaftlerinnen und Wissenschaftler, Expertinnen und Experten, Lehrpersonen sowie Schülerinnen und Schüler aus Österreich, Deutschland und Ungarn gemeinsam. Durch Beobachtungen, Messungen und Modellierung phänologischer Phasen und mikroklimatischer Daten werden folgende Forschungsfragen bearbeitet: Wie beeinflussen Stadtbäume das Stadtklima? Wie beeinflusst das Stadtklima die Stadtbäume? Was bedeutet das für uns und die Bäume in Zukunft?<br/><br/>Die folgenden Visualisierungen zeigen ausgewählte Aspekte dieser Forschungsarbeiten."
+    },
     "through_year": {
       "title": "Bäume in den Jahreszeiten",
       "text": "Die Bilderreihe zeigt die Blattentwicklung der Bäume im Frühling und veranschaulicht ein zentrales Forschungsziel im Projekt: Wir erforschen die Länge der Vegetationsperiode verschiedener Stadtbaumarten und den Einfluss der städtischen Wärmeinselintensität. <b>Stadtbäume kühlen die Stadt und machen sie lebenswert!</b>",
@@ -604,8 +608,8 @@
     "permissions": {
       "PHENOLOGY_OBSERVATION": {
         "title": "Phänologiebeobachtungen zu teilen",
-        "summary_access": "<ul><li>Deine Nutzer-ID</li><li>Deinen Nutzernamen</li></ul>",
-        "summary_permissions": "<ul><li>Dich zu ihrer Phänologiebeobachtung hinzuzufügen</li><li>Mit Dir ihre Punkte für Phänologiebeobachtungen zu teilen</li></ul>"
+        "summary_access": "<ul><li>Deiner Nutzer-ID</li><li>Deinem Nutzernamen</li></ul>",
+        "summary_permissions": "<ul><li>Dich zu Phänologiebeobachtungen hinzuzufügen</li><li>Mit Dir Phänologiebeobachtungen zu teilen</li></ul>"
       }
     }
   },

@@ -227,6 +227,10 @@
   },
 	"tree": {
     "loading": "Loading tree...",
+    "summary": {
+      "title": "Information",
+      "text": "„Urban Trees as climate messengers“: in this project researchers and students, experts and teachers from Austria, Germany and Hungary collaborate. By montoring, measuring and modelling of phenological phases and microclimate data, serve to answer the following research questions: How do urban trees affect urban climate? How does urban climate influence the trees? How can these trees affect our future?<br/><br/>The following visualisations show selected aspects of this research."
+    },
     "through_year": {
       "title": "Trees through the seasons",
       "text": "This image set shows the leaf development of the trees in spring and illustrates a central research objective in the project:  We investigate the length of the vegetation period of different types of urban trees and the influence of urban heat island intensity. <b>City trees cool the city and make it liveable!</b>",

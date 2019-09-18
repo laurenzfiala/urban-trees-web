@@ -30,10 +30,9 @@
 
 <div *ngIf="tree.id === 1" class="content-cat">
   <div class="container tree-image">
-    <div class="content-cat-heading">Information</div>
-    <div class="content-cat-flex">
-      <div class="content-cat-text flex-grow-1">
-        Test
+    <div class="content-cat-heading">{{'tree.summary.title' | translate}}</div>
+    <div class="content-cat-flex flex-md-nowrap">
+      <div class="content-cat-text flex-grow-1" [innerHTML]="'tree.summary.text' | translate">
       </div>
       <ut-zoom [content]="treeImg" [fullscreenContent]="treeImgFull">
       </ut-zoom>
