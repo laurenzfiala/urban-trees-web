@@ -90,7 +90,9 @@ export class AdminBeaconManageComponent extends AbstractComponent implements OnI
     this.loadTrees(selectAssocTreeId);
     this.loadCities();
 
-    this.onSelectedBeaconChange(null);
+    if (preselectBeaconDeviceId === undefined) {
+      this.onSelectedBeaconChange(null);
+    }
   }
 
   public addCity(): void {
@@ -139,18 +141,23 @@ export class AdminBeaconManageComponent extends AbstractComponent implements OnI
       this.assocTree = null;
       this.marker = null;
       this.showTreeSelect = false;
+      this.showLocation = true;
     }
 
   }
 
-  public onSelectedTreeChange(selectedTree: TreeFrontend): void {
+  public onSelectedTreeChange(selectedTree: TreeFrontend, linkTreeLocation: boolean = true): void {
 
     if (selectedTree) {
       this.assocTree = TreeLight.fromObject(selectedTree);
-      if (this.beacon) {
-        this.onBeaconLocationTreeLink(false);
-      } else {
+      if (linkTreeLocation) {
         this.onBeaconLocationTreeLink(true);
+      } else {
+        if (this.isLocationLocked()) {
+          this.showLocation = false;
+        } else {
+          this.showLocation = true;
+        }
       }
     } else {
       this.assocTree = null;
@@ -173,7 +180,7 @@ export class AdminBeaconManageComponent extends AbstractComponent implements OnI
       this.beacon.location = this.assocTree.location;
       this.showLocation = false;
     } else {
-      if (this.beacon.location.id === this.assocTree.location.id) {
+      if (this.isLocationLocked()) {
         this.beacon.location = Location.fromObject(this.assocTree.location); // copy location
         this.beacon.location.id = 0;
       }
@@ -228,7 +235,7 @@ export class AdminBeaconManageComponent extends AbstractComponent implements OnI
       this.availableTrees = trees.map(t => t && TreeFrontend.fromTree(t));
       this.setStatus(StatusKey.LOAD_TREES, StatusValue.SUCCESSFUL);
       if (selectTreeById) {
-        this.onSelectedTreeChange(this.availableTrees.find((t: TreeFrontend) => t.id === selectTreeById));
+        this.onSelectedTreeChange(this.availableTrees.find((t: TreeFrontend) => t.id === selectTreeById), false);
         this.showTreeSelect = true;
       }
     }, (error, apiError) => {
@@ -268,7 +275,9 @@ export class AdminBeaconManageComponent extends AbstractComponent implements OnI
 
     this.setStatus(StatusKey.LOAD_CITIES, StatusValue.IN_PROGRESS);
     this.treeService.loadCities((cities: Array<City>) => {
-      this.beacon.location.city = selectCity;
+      if (this.beacon && selectCity !== undefined) {
+        this.beacon.location.city = selectCity;
+      }
       this.cities = cities;
       this.setStatus(StatusKey.LOAD_CITIES, StatusValue.SUCCESSFUL);
     }, (error, apiError) => {
@@ -296,6 +305,13 @@ export class AdminBeaconManageComponent extends AbstractComponent implements OnI
 
   public compareTreeSpecies(a: TreeSpecies, b: TreeSpecies) {
     return TreeSpecies.equals(a, b);
+  }
+
+  public isLocationLocked() {
+    if (!this.assocTree || !this.beacon) {
+      return false;
+    }
+    return this.assocTree.location.id === this.beacon.location.id;
   }
 
 }

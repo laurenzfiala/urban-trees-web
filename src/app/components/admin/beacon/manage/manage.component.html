@@ -210,7 +210,7 @@
 
       <ng-container *ngIf="assocTree">
 
-        <div *ngIf="!showLocation"
+        <div *ngIf="isLocationLocked()"
              class="d-flex flex-row align-items-center flex-wrap m--1">
           <div class="text-link m-1">
             Location is locked to tree
@@ -224,7 +224,7 @@
           </div>
         </div>
 
-        <div *ngIf="showLocation"
+        <div *ngIf="!isLocationLocked()"
              class="d-flex flex-row align-items-center flex-wrap m--1">
 
           <div class="text-link m-1">
@@ -245,7 +245,7 @@
 
       <ng-container *ngIf="showLocation || !assocTree">
 
-        <hr *ngIf="showLocation" />
+        <hr *ngIf="assocTree" />
 
         <div *ngIf="isNewBeacon()" class="content-cat-text mb-2">
           Select on map
