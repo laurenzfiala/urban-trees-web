@@ -71,16 +71,16 @@ export class NotificationsComponent implements OnInit, OnDestroy {
         iconurl = '/assets/img/level/level-notification.svg';
         break;
       case NotificationType.success:
-        iconurl = '/assets/img/special/check-success.svg';
+        iconurl = '/assets/img/icon/special/check-success.svg';
         break;
       case NotificationType.info:
-        iconurl = '/assets/img/special/info-info.svg';
+        iconurl = '/assets/img/icon/special/info-info.svg';
         break;
       case NotificationType.warning:
-        iconurl = '/assets/img/special/warning-warning.svg';
+        iconurl = '/assets/img/icon/special/warning-warning.svg';
         break;
       case NotificationType.danger:
-        iconurl = '/assets/img/special/cross-danger.svg';
+        iconurl = '/assets/img/icon/special/cross-danger.svg';
         break;
     }
     notification.iconurl = this.domSanitizer.bypassSecurityTrustResourceUrl(iconurl);
