@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {AuthService} from '../../services/auth.service';
 import {Login} from '../../entities/login.entity';
 import {AbstractComponent} from '../abstract.component';
@@ -20,6 +20,30 @@ export class ProjectLoginComponent extends AbstractComponent implements OnInit {
   public LoginAccessReason = LoginAccessReason;
   public StatusKey = StatusKey;
   public StatusValue = StatusValue;
+
+  /**
+   * Component is embedded outside of the login page.
+   */
+  @Input()
+  public embed: boolean = false;
+
+  /**
+   * Don't inform of login, but provide the login inputs anyways.
+   */
+  @Input()
+  public relog: boolean = false;
+
+  /**
+   * Show disclaimer or not.
+   */
+  @Input()
+  public disclaimer: boolean = true;
+
+  /**
+   * Emit event when logged in.
+   */
+  @Output()
+  public loggedin: EventEmitter<any> = new EventEmitter<any>();
 
   public accessReason: LoginAccessReason;
 
@@ -55,7 +79,7 @@ export class ProjectLoginComponent extends AbstractComponent implements OnInit {
       }
       if (redirectVal) {
         this.redirectTo = redirectVal;
-      } else {
+      } else if (!this.relog) {
         this.redirectTo = '/home';
       }
 
@@ -87,6 +111,7 @@ export class ProjectLoginComponent extends AbstractComponent implements OnInit {
       if (this.redirectTo) {
         this.router.navigate([this.redirectTo]);
       }
+      this.loggedin.emit();
     }, (error, apiError) => {
       this.consecutiveFailedLoginAttempts++;
       if (apiError.statusCode === 403) {

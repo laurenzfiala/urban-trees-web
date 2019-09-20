@@ -1,8 +1,9 @@
-<div class="container-fluid mt-2 mt-lg-5 mb-5">
+<div [ngClass]="{'container-fluid mt-2 mt-lg-5 mb-5': !embed}">
 
   <div
-    *ngIf="isAlreadyLoggedIn()"
-    class="col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto login-container">
+    *ngIf="isAlreadyLoggedIn() && !relog"
+    class="login-container"
+    [ngClass]="{'col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto': !embed}">
 
     <h4 class="mb-3">
       {{'login.heading' | translate}}
@@ -22,8 +23,9 @@
   </div>
 
   <div
-    *ngIf="!isAlreadyLoggedIn()"
-    class="col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto login-container fp-bg-medlight">
+    *ngIf="!isAlreadyLoggedIn() || relog"
+    class="login-container fp-bg-medlight"
+    [ngClass]="{'col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto': !embed}">
 
     <h4 class="mb-3">
       {{'login.heading' | translate}}
@@ -53,7 +55,9 @@
 
   </div>
 
-  <div *ngIf="!isSslConnection()" class="col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto login-annotation-container login-annotation-danger">
+  <div *ngIf="!isSslConnection()"
+       class="login-annotation-container login-annotation-danger"
+       [ngClass]="{'col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto': !embed}">
 
     {{'login.status_connection_insecure' | translate}}
 
@@ -61,15 +65,26 @@
 
   <div
     *ngIf="hasStatus(StatusKey.LOGIN, StatusValue.BAD_CREDENTIALS)"
-    class="col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto login-annotation-container login-annotation-danger">
+    class="login-annotation-container login-annotation-danger"
+    [ngClass]="{'col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto': !embed}">
 
     {{'login.status_bad_credentials' | translate}}
 
   </div>
 
+  <!--<div
+    *ngIf="hasStatus(StatusKey.LOGIN, StatusValue.SUCCESSFUL)"
+    class="login-annotation-container login-annotation-success"
+    [ngClass]="{'col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto': !embed}">
+
+    {{'login.status_successful' | translate}}
+
+  </div>-->
+
   <div
     *ngIf="hasStatus(StatusKey.LOGIN, StatusValue.FAILED)"
-    class="col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto login-annotation-container login-annotation-danger">
+    class="login-annotation-container login-annotation-danger"
+    [ngClass]="{'col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto': !embed}">
 
     {{'login.status_failed' | translate}}
 
@@ -77,7 +92,8 @@
 
   <div
     *ngIf="hasManyFailedAttempts()"
-    class="col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto login-annotation-container login-annotation-info">
+    class="login-annotation-container login-annotation-info"
+    [ngClass]="{'col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto': !embed}">
 
     <div>
       {{'login.failed_attempts_info' | translate}}
@@ -90,7 +106,8 @@
 
   <div
     *ngIf="accessReason === LoginAccessReason.FORCE_CREDENTIALS_CONFIRM && hasStatus(StatusKey.LOGIN, StatusValue.PENDING)"
-    class="col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto login-annotation-container login-annotation-warning">
+    class="login-annotation-container login-annotation-warning"
+    [ngClass]="{'col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto': !embed}">
 
     {{'login.status_force_credentials_confirm' | translate}}
 
@@ -98,7 +115,8 @@
 
   <div
     *ngIf="accessReason === LoginAccessReason.FORCE_LOGOUT_EXPIRED && hasStatus(StatusKey.LOGIN, StatusValue.PENDING)"
-    class="col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto login-annotation-container login-annotation-warning">
+    class="login-annotation-container login-annotation-warning"
+    [ngClass]="{'col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto': !embed}">
 
     {{'login.status_expired' | translate}}
 
@@ -106,7 +124,8 @@
 
   <div
     *ngIf="accessReason === LoginAccessReason.FORCE_LOGOUT && hasStatus(StatusKey.LOGIN, StatusValue.PENDING)"
-    class="col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto login-annotation-container login-annotation-info">
+    class="login-annotation-container login-annotation-info"
+    [ngClass]="{'col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto': !embed}">
 
     {{'login.status_force_logout' | translate}}
 
@@ -114,7 +133,8 @@
 
   <div
     *ngIf="accessReason === LoginAccessReason.INSUFFICIENT_PERMISSIONS && hasStatus(StatusKey.LOGIN, StatusValue.PENDING)"
-    class="col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto login-annotation-container login-annotation-warning">
+    class="login-annotation-container login-annotation-warning"
+    [ngClass]="{'col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto': !embed}">
 
     {{'login.status_insufficient_permissions' | translate}}
 
@@ -122,7 +142,8 @@
 
   <div
     *ngIf="accessReason === LoginAccessReason.USER_LOGOUT && hasStatus(StatusKey.LOGIN, StatusValue.PENDING)"
-    class="col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto login-annotation-container login-annotation-success">
+    class="login-annotation-container login-annotation-success"
+    [ngClass]="{'col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto': !embed}">
 
     {{'login.status_user_logout' | translate}}
 
@@ -130,13 +151,16 @@
 
   <div
     *ngIf="accessReason === LoginAccessReason.NOT_AUTHENTICATED"
-    class="col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto login-annotation-container login-annotation-info">
+    class="login-annotation-container login-annotation-info"
+    [ngClass]="{'col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto': !embed}">
 
     {{'login.status_not_authenticated' | translate}}
 
   </div>
 
-  <div class="col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto login-annotation-container">
+  <div *ngIf="disclaimer"
+       class="login-annotation-container"
+       [ngClass]="{'col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto': !embed}">
 
     <p>
       {{'login.description' | translate}}

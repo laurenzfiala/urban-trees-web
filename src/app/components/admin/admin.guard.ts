@@ -26,7 +26,7 @@ export class AdminGuard implements CanActivate, CanActivateChild {
    */
   public canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
 
-    return this.canActivateInternal(route, state);
+    return this.canActivateRoute(route);
 
   }
 
@@ -35,7 +35,7 @@ export class AdminGuard implements CanActivate, CanActivateChild {
    */
   public canActivateChild(childRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
 
-    return this.canActivateInternal(childRoute, state);
+    return this.canActivateRoute(childRoute);
 
   }
 
@@ -43,10 +43,9 @@ export class AdminGuard implements CanActivate, CanActivateChild {
    * Whether the client may access the requested page or
    * be redirected to the login page.
    * @param {ActivatedRouteSnapshot} route
-   * @param {RouterStateSnapshot} state
    * @returns {boolean} true if the route may be accessed; false otherwise
    */
-  private canActivateInternal(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
+  public canActivateRoute(route: ActivatedRouteSnapshot, redirect: boolean = true): boolean {
 
     const isLoggedIn = this.authService.isLoggedIn();
     const isAccessGranted = this.authService.getJWTToken().exp * 1000 - this.envService.security.jwtTokenExpireMs + this.envService.security.adminTimeoutMs >= new Date().getTime();
@@ -54,8 +53,10 @@ export class AdminGuard implements CanActivate, CanActivateChild {
       return true;
     }
 
-    let redirectLocation = route.pathFromRoot.map(value => value.url.map(value1 => value1.path).join('/')).join('/');
-    this.authService.redirectToLogin(this.authService.getLogOutReason(true), redirectLocation);
+    if (redirect) {
+      let redirectLocation = route.pathFromRoot.map(value => value.url.map(value1 => value1.path).join('/')).join('/');
+      this.authService.redirectToLogin(this.authService.getLogOutReason(true), redirectLocation);
+    }
 
     return false;
 

@@ -196,6 +196,7 @@
     "changing_password": "Changing password...",
     "status_connection_insecure": "You may not log in using an insecure connection",
     "status_bad_credentials": "Username and password were not recognized",
+    "status_successful": "Logged in successfully",
     "status_failed": "Login failed, please retry",
     "status_expired": "Your login expired, please log in again",
     "status_force_logout": "You have been logged out",
@@ -563,7 +564,9 @@
       }
     },
     "step_4": {
-      "title": "Upload a picture"
+      "title": "Upload a picture",
+      "desc": "You may optionally upload an image of the observed tree.",
+      "remove_image": "Remove image"
     },
     "step_5": {
       "title": "Who observed?",
@@ -651,5 +654,16 @@
   },
   "beacon_list": {
     "empty": "No beacons found"
+  },
+  "notifications": {
+    "auth_timeout": {
+      "title": "Your access for this site has expired!",
+      "subtitle": "Log in here again before taking any other actions to avoid losing your progress.",
+      "success_title": "Login renewed!"
+    },
+    "level_up": {
+      "title": "Levelled up!",
+      "subtitle": "You are now level {{level}}"
+    }
   }
 }

@@ -15,6 +15,7 @@ import {EnvironmentService} from '../../../services/environment.service';
 import {AuthService} from '../../../services/auth.service';
 import {PhenologyObservationObject} from '../../../entities/phenology-observation-object.entity';
 import {UserIdentity} from '../../../entities/user-identity.entity';
+import {UserRewardService} from '../../../services/user-reward.service';
 
 @Component({
   selector: 'ut-observation',
@@ -79,6 +80,7 @@ export class ObservationComponent extends AbstractComponent implements OnInit, O
   constructor(private observationService: PhenologyObservationService,
               private subs: SubscriptionManagerService,
               private treeService: TreeService,
+              public rewardService: UserRewardService,
               public authService: AuthService,
               public envService: EnvironmentService) {
     super();
@@ -435,6 +437,7 @@ export class ObservationComponent extends AbstractComponent implements OnInit, O
     }
     if (!phenologyId || !this.userImage) {
       this.onDiscard(3);
+      this.rewardService.changes();
       return;
     }
 
@@ -444,6 +447,7 @@ export class ObservationComponent extends AbstractComponent implements OnInit, O
       this.setStatus(StatusKey.SEND_IMAGE, StatusValue.SUCCESSFUL);
       this.onDiscard(3);
       this.checkProgress();
+      this.rewardService.changes();
     }, (error, apiError) => {
       ObservationComponent.LOG.info('Failed to send phenology observation image.');
       this.setStatus(StatusKey.SEND_IMAGE, StatusValue.FAILED);

@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
-import {CanActivate, CanActivateChild} from '@angular/router';
-import {ActivatedRouteSnapshot, RouterStateSnapshot} from '@angular/router';
+import {ActivatedRouteSnapshot, CanActivate, CanActivateChild, RouterStateSnapshot} from '@angular/router';
 import {Log} from '../../services/log.service';
 import {AuthService} from '../../services/auth.service';
 import {Observable} from 'rxjs/observable';
@@ -25,7 +24,7 @@ export class ProjectLoginGuard implements CanActivate, CanActivateChild {
    */
   public canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
 
-    return this.canActivateInternal(route, state);
+    return this.canActivateRoute(route);
 
   }
 
@@ -34,7 +33,7 @@ export class ProjectLoginGuard implements CanActivate, CanActivateChild {
    */
   public canActivateChild(childRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
 
-    return this.canActivateInternal(childRoute, state);
+    return this.canActivateRoute(childRoute);
 
   }
 
@@ -42,10 +41,9 @@ export class ProjectLoginGuard implements CanActivate, CanActivateChild {
    * Whether the client may access the requested page or
    * be redirected to the login page.
    * @param {ActivatedRouteSnapshot} route
-   * @param {RouterStateSnapshot} state
    * @returns {boolean} true if the route may be accessed; false otherwise
    */
-  private canActivateInternal(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
+  public canActivateRoute(route: ActivatedRouteSnapshot, redirect: boolean = true): boolean {
 
     const isLoggedIn = this.authService.isLoggedIn();
     const isAccessGranted = this.isRoleAccessGranted(route);
@@ -57,10 +55,10 @@ export class ProjectLoginGuard implements CanActivate, CanActivateChild {
       unauthorized = LoginAccessReason.INSUFFICIENT_PERMISSIONS;
     }
 
-    // TODO refactor with e.g. flatMap
-    let redirectLocation = route.pathFromRoot.map(value => value.url.map(value1 => value1.path).join('/')).join('/');
-
-    this.authService.redirectToLogin(unauthorized || this.authService.getLogOutReason(), redirectLocation);
+    if (redirect) {
+      let redirectLocation = route.pathFromRoot.map(value => value.url.map(value1 => value1.path).join('/')).join('/');
+      this.authService.redirectToLogin(unauthorized || this.authService.getLogOutReason(), redirectLocation);
+    }
 
     return false;
 

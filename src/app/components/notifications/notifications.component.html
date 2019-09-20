@@ -1,0 +1,31 @@
+<div class="notifications-container">
+  <div *ngFor="let n of displayNotifications"
+       class="notification"
+       [ngClass]="[n.hide ? 'hide' : '', NotificationType[n.type]]">
+    <div class="title-bar">
+      <div *ngIf="n.iconurl" class="notification-icon">
+        <object type="image/svg+xml" [data]="n.iconurl"></object>
+        <div class="not-icon-text">{{n.icontext}}</div>
+      </div>
+      <div class="d-flex flex-column flex-grow-1">
+        <div class="title">{{n.title}}</div>
+        <div *ngIf="n.subtitle" class="subtitle">{{n.subtitle}}</div>
+      </div>
+      <div class="dismiss flex-shrink-0"
+           (click)="n.dismiss.emit(); hideNotification(n)"></div>
+    </div>
+    <div *ngIf="n.content"
+         class="content">
+      <ng-template [ngTemplateOutlet]="n.content" [ngTemplateOutletContext]="{notification: n}"></ng-template>
+    </div>
+  </div>
+</div>
+
+<ng-template #authTimeoutTemplate let-n="notification">
+  <ut-project-login
+    [embed]="true"
+    [relog]="true"
+    [disclaimer]="false"
+    (loggedin)="n.action.emit()">
+  </ut-project-login>
+</ng-template>

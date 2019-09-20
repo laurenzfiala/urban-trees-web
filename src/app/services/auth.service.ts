@@ -413,6 +413,15 @@ export class AuthService extends AbstractService {
   }
 
   /**
+   * Whether the client is on a secure connection or not.
+   */
+  public isSslConnection(): boolean {
+    return window.location.protocol === 'https:' ||
+      window.location.hostname === 'localhost' ||
+      window.location.hostname.indexOf('192.168.') === 0;
+  }
+
+  /**
    * Returns the JWT token like stored in localStorage.
    * If not set, returns undefined.
    */
@@ -434,15 +443,6 @@ export class AuthService extends AbstractService {
       return undefined;
     }
     return storedToken;
-  }
-
-  /**
-   * Whether the client is on a secure connection or not.
-   */
-  public isSslConnection(): boolean {
-    return window.location.protocol === 'https:' ||
-      window.location.hostname === 'localhost' ||
-      window.location.hostname.indexOf('192.168.') === 0;
   }
 
 }

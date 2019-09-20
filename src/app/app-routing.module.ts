@@ -76,13 +76,19 @@ const routes: Routes = [
     path: 'account/changepassword',
     component: PasswordChangeComponent,
     canActivate: [ProjectLoginGuard],
-    data: {roles: [...environment.security.roles.user, environment.security.roles.tempChangePassword]}
+    data: {
+      roles: [...environment.security.roles.user, environment.security.roles.tempChangePassword],
+      showAuthTimeout: true
+    }
   },
   {
     path: 'account/changeusername',
     component: UsernameChangeComponent,
     canActivate: [ProjectLoginGuard],
-    data: {roles: environment.security.roles.user}
+    data: {
+      roles: environment.security.roles.user,
+      showAuthTimeout: true
+    }
   },
   {
     path: 'admin',
@@ -94,43 +100,64 @@ const routes: Routes = [
     path: 'admin/tree',
     component: AdminTreeComponent,
     canActivate: [ProjectLoginGuard, AdminGuard],
-    data: {roles: environment.security.roles.admin}
+    data: {
+      roles: environment.security.roles.admin,
+      showAuthTimeout: true
+    }
   },
   {
     path: 'admin/beacon',
     component: AdminBeaconComponent,
     canActivate: [ProjectLoginGuard, AdminGuard],
-    data: {roles: environment.security.roles.admin}
+    data: {
+      roles: environment.security.roles.admin,
+      showAuthTimeout: true
+    }
   },
   {
     path: 'admin/beacon/manage',
     component: AdminBeaconManageComponent,
     canActivate: [ProjectLoginGuard, AdminGuard],
-    data: {roles: environment.security.roles.admin}
+    data: {
+      roles: environment.security.roles.admin,
+      showAuthTimeout: true
+    }
   },
   {
     path: 'admin/user',
     component: AdminUserComponent,
     canActivate: [ProjectLoginGuard, AdminGuard],
-    data: {roles: environment.security.roles.admin}
+    data: {
+      roles: environment.security.roles.admin,
+      showAuthTimeout: true
+    }
   },
   {
     path: 'admin/announcements',
     component: AnnouncementsComponent,
     canActivate: [ProjectLoginGuard, AdminGuard],
-    data: {roles: environment.security.roles.admin}
+    data: {
+      roles: environment.security.roles.admin,
+      showAuthTimeout: true
+    }
   },
   {// Note: if messages are implemented in the future, redirect from /admin/report to e.g. /messages and use same comp
     path: 'admin/report',
     component: MessagesComponent,
     canActivate: [ProjectLoginGuard, AdminGuard],
-    data: {roles: environment.security.roles.admin}
+    data: {
+      roles: environment.security.roles.admin,
+      showAuthTimeout: true
+    }
   },
   {
     path: 'report',
     component: ReportComponent,
     canActivate: [ProjectLoginGuard],
-    data: {roles: environment.security.roles.user}
+    data: {
+      roles: environment.security.roles.user,
+      showAuthTimeout: true
+    }
   },
   {
     path: 'phenology',
@@ -141,6 +168,7 @@ const routes: Routes = [
     component: ObservationComponent,
     canActivate: [ProjectLoginGuard],
     canActivateChild: [ProjectLoginGuard],
+    data: {showAuthTimeout: true},
     children: [
       { // Note: redirect old URLs ../observation[[/step]/x]
         path: '**',

@@ -195,6 +195,7 @@
     "changing_password": "Passwort wird geändert...",
     "status_connection_insecure": "Anmelden über eine unsichere Verbindung ist nicht erlaubt",
     "status_bad_credentials": "Nutzername und Passwort wurden nicht erkannt",
+    "status_successful": "Erfolgreich eingeloggt",
     "status_failed": "Anmeldung fehlgeschlagen, bitte versuche es erneut",
     "status_expired": "Anmeldedaten abgelaufen, bitte melde dich erneut an",
     "status_force_logout": "Du wurdest abgemeldet",
@@ -562,7 +563,9 @@
       }
     },
     "step_4": {
-      "title": "Bild hochladen"
+      "title": "Bild hochladen",
+      "desc": "Du kannst optional auch ein Bild des Baumes hochladen.",
+      "remove_image": "Bild entfernen"
     },
     "step_5": {
       "title": "Wer hat beobachtet?",
@@ -650,5 +653,16 @@
   },
   "beacon_list": {
     "empty": "Keine Beacons gefunden"
+  },
+  "notifications": {
+    "auth_timeout": {
+      "title": "Dein Zugang zu dieser Seite ist abgelaufen!",
+      "subtitle": "Logge Dich erneut ein, um keine Daten zu verlieren.",
+      "success_title": "Login erneuert!"
+    },
+    "level_up": {
+      "title": "Aufgestiegen!",
+      "subtitle": "Du hast Level {{level}} erreicht"
+    }
   }
 }
