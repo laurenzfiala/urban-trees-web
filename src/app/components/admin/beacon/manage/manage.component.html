@@ -189,7 +189,7 @@
 
               <div class="form-row mb-2">
                 <div class="col">
-                  <input id="beaconPin" class="form-control" type="text" name="beaconPin" [(ngModel)]="beacon.settings.pin" />
+                  <input *ngIf="beacon?.settings" id="beaconPin" class="form-control" type="text" name="beaconPin" [(ngModel)]="beacon.settings.pin" />
                 </div>
               </div>
             </ng-container>
