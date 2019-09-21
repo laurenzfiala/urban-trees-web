@@ -545,6 +545,7 @@
       "title": "Observe the selected tree",
       "no_obs_assoc": "No observations are associated with the selected tree",
       "loading": "Loading observations...",
+      "obs_type_optional": "Optional",
       "obs_type_desc": "Select {{type.objects.length}} random {{type_name_plural_lc}} from your tree. For each {{type_name_lc}}, click the image that most closely resembles it once.",
       "reset": "Reset",
       "undo": "Undo last",

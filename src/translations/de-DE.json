@@ -544,6 +544,7 @@
       "title": "Beobachte den ausgewählten Baum",
       "no_obs_assoc": "Keine Beobachtungen sind bei dem gewählen Baum vorgesehen",
       "loading": "Lade Beobachtungen...",
+      "obs_type_optional": "Optional",
       "obs_type_desc": "Wähle {{type.objects.length}} zufällige {{type_name_plural}} deines Baums und klicke jeweils einmal auf das Bild, welches der {{type_name}} am ähnlichsten ist.",
       "reset": "Zurücksetzen",
       "undo": "Rückgängig",

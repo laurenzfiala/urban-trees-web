@@ -10,11 +10,9 @@ import {PhenologyObservationResult} from './phenology-observation-result.entity'
 export class PhenologyObservationType {
 
   public id: number;
-
   public name: string;
-
+  public optional: boolean;
   public objects: Array<PhenologyObservationObject>;
-
   public results: Array<PhenologyObservationResult>;
 
 }

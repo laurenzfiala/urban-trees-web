@@ -226,7 +226,7 @@ export class ObservationComponent extends AbstractComponent implements OnInit, O
     }
 
     for (let type of this.observationSpec) {
-      if (type.objects.length > type.userObservations.length) {
+      if (!type.optional && type.objects.length > type.userObservations.length) {
         return false;
       }
     }
@@ -272,8 +272,7 @@ export class ObservationComponent extends AbstractComponent implements OnInit, O
     if (object) {
       insertObj = object;
     } else {
-      insertObj = type.objects[this.nextObservationObjectIndex];
-      this.nextObservationObjectIndex++;
+      insertObj = type.objects[type.userObservations.length];
     }
 
     type.userObservations.push(

@@ -157,6 +157,7 @@
              [ngClass]="{'mt-3': i > 0}">
 
           <div class="content-cat-text text-subtle mb-2">
+            <span *ngIf="type.optional" class="badge badge-dark mr-1">{{'phen_obs.step_3.obs_type_optional' | translate}}</span>
             {{
               'phen_obs.step_3.obs_type_desc' | translate:
               {

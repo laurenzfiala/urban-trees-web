@@ -40,19 +40,21 @@ export class PhenologyObservationTypeFrontend extends PhenologyObservationType {
    */
   public wasAutoCollapsed: boolean = false;
 
-  constructor(id: number, name: string, objects: Array<PhenologyObservationObject>, results: Array<PhenologyObservationResult>) {
+  constructor(id: number, name: string, optional: boolean, objects: Array<PhenologyObservationObject>, results: Array<PhenologyObservationResult>) {
     super();
     this.id = id;
     this.name = name;
+    this.optional = optional;
     this.objects = objects;
     this.results = results;
   }
 
-  static fromObject(o: any): PhenologyObservationTypeFrontend {
+  public static fromObject(o: any): PhenologyObservationTypeFrontend {
 
     return new PhenologyObservationTypeFrontend(
       o.id,
       o.name,
+      o.optional,
       o.objects,
       o.results
     );
