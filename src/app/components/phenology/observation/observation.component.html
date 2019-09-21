@@ -183,33 +183,73 @@
 
               <div class="d-flex flex-row flex-wrap justify-content-sm-end justify-content-md-start pl-1 pb-1">
 
-                <div *ngFor="let result of type.results"
-                     class="obs-res-container pt-1 pr-1"
-                     [cssvar]="{name: '--result-amount', value: type.results.length}">
+                <!-- for observations with multiple objects -->
+                <ng-container *ngIf="type.objects.length > 1">
 
-                  <div class="obs-res"
-                       (click)="addObservationResult(collapse, type, result)"
-                       (contextmenu)="undoObservationResult(type, result); $event.preventDefault()">
-                    <div class="obs-res-counter mx--1">
-                      <div class="mx-1">{{getObservationAmount(type, result)}}</div>
-                      <div class="text mx-1">
-                        {{'phen_obs.step_3.type.' + type.name + '.result.' + result.description | translate}}
+                  <div *ngFor="let result of type.results"
+                       class="obs-res-container pt-1 pr-1"
+                       [cssvar]="{name: '--result-amount', value: type.results.length}">
+
+                    <div class="obs-res"
+                         (click)="addObservationResult(collapse, type, result)"
+                         (contextmenu)="undoObservationResult(type, result); $event.preventDefault()">
+                      <div class="obs-res-counter mx--1">
+                        <div class="mx-1">{{getObservationAmount(type, result)}}</div>
+                        <div class="text mx-1">
+                          {{'phen_obs.step_3.type.' + type.name + '.result.' + result.description | translate}}
+                        </div>
+                      </div>
+                      <img *ngIf="images[result.id]?.encodedImage"
+                           [src]="images[result.id]?.encodedImage"
+                           class="obs-res-img w-100" />
+                      <div *ngIf="images[result.id] && !images[result.id].encodedImage"
+                           class="d-flex flex-row align-items-center justify-content-center my-2">
+                        <i class="i i-lg i-dark i-load i-spin"></i>
+                      </div>
+                      <div *ngIf="!images[result.id]"
+                           class="obs-res-img obs-res-img-placeholder w-100">
+                        {{'phen_obs.step_3.no_result_img' | translate}}
                       </div>
                     </div>
-                    <img *ngIf="images[result.id]?.encodedImage"
-                         [src]="images[result.id]?.encodedImage"
-                         class="obs-res-img w-100" />
-                    <div *ngIf="images[result.id] && !images[result.id].encodedImage"
-                         class="d-flex flex-row align-items-center justify-content-center my-2">
-                      <i class="i i-lg i-dark i-load i-spin"></i>
-                    </div>
-                    <div *ngIf="!images[result.id]"
-                         class="obs-res-img obs-res-img-placeholder w-100">
-                      {{'phen_obs.step_3.no_result_img' | translate}}
-                    </div>
+
                   </div>
 
-                </div>
+                </ng-container>
+
+                <!-- for observations with only one object -->
+                <ng-container *ngIf="type.objects.length === 1">
+
+                  <div *ngFor="let result of type.results"
+                       class="obs-res-container pt-1 pr-1"
+                       [cssvar]="{name: '--result-amount', value: type.results.length}">
+
+                    <div class="obs-res"
+                         (click)="type.userObservations = []; addObservationResult(collapse, type, result)">
+                      <div class="obs-res-counter mx--1">
+                        <div class="mx-1">
+                          <i class="i i-dark i-check"
+                             [ngClass]="{'invisible': getObservationAmount(type, result) === 0}"></i>
+                        </div>
+                        <div class="text mx-1">
+                          {{'phen_obs.step_3.type.' + type.name + '.result.' + result.description | translate}}
+                        </div>
+                      </div>
+                      <img *ngIf="images[result.id]?.encodedImage"
+                           [src]="images[result.id]?.encodedImage"
+                           class="obs-res-img w-100" />
+                      <div *ngIf="images[result.id] && !images[result.id].encodedImage"
+                           class="d-flex flex-row align-items-center justify-content-center my-2">
+                        <i class="i i-lg i-dark i-load i-spin"></i>
+                      </div>
+                      <div *ngIf="!images[result.id]"
+                           class="obs-res-img obs-res-img-placeholder w-100">
+                        {{'phen_obs.step_3.no_result_img' | translate}}
+                      </div>
+                    </div>
+
+                  </div>
+
+                </ng-container>
 
               </div>
 

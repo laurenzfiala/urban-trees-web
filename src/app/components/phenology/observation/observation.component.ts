@@ -264,10 +264,6 @@ export class ObservationComponent extends AbstractComponent implements OnInit, O
       return;
     }
 
-    if (!this.observations) {
-      this.observations = new Array<PhenologyObservation>();
-    }
-
     let insertObj;
     if (object) {
       insertObj = object;
