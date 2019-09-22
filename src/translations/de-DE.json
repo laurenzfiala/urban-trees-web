@@ -560,6 +560,17 @@
             "Half-open bud": "Halboffene Knospe",
             "Open bud": "Offene Knospe"
           }
+        },
+        "Leaf": {
+          "desc": "Überprüfe ob die Blätter Deines beobachteten Baumes <ol class=\"my-1\"><li>komplett grün sind</li><li>grün und nur teilweise verfärbt sind (oder erste Blätter verliert)</li><li>mindestens zur Hälfte verfärbt sind und/oder zur Häfte abgefallen sind</li><li>komplett verfärbt oder abgefallen sind</li></ol>Klicke auf das Bild, welches zur Blattverfärbung des Baumes passt.",
+          "name": "Blatt",
+          "name_plural": "Blätter",
+          "result": {
+            "All green": "Komplett grün",
+            "Green and partly coloured": "Grün und teilweise verfärbt",
+            "At least half coloured or lost": "Mindestens zur Hälfte verfärbt oder abgefallen",
+            "All coloured or lost": "Komplett verfärbt oder abgefallen"
+          }
         }
       }
     },

@@ -546,7 +546,6 @@
       "no_obs_assoc": "No observations are associated with the selected tree",
       "loading": "Loading observations...",
       "obs_type_optional": "Optional",
-      "obs_type_desc": "Select {{type.objects.length}} random {{type_name_plural_lc}} from your tree. For each {{type_name_lc}}, click the image that most closely resembles it once.",
       "reset": "Reset",
       "undo": "Undo last",
       "undo_info_cursor": "You can also undo by right-clicking.",
@@ -554,12 +553,24 @@
       "no_result_img": "No image available.",
       "type": {
         "Bud": {
+          "desc": "Select {{type.objects.length}} random {{type_name_plural_lc}} from your tree. For each {{type_name_lc}}, click the image that most closely resembles it once.",
           "name": "bud",
           "name_plural": "buds",
           "result": {
             "Closed bud": "Closed Bud",
             "Half-open bud": "Half-open bud",
             "Open bud": "Open bud"
+          }
+        },
+        "Leaf": {
+          "desc": "Check whether your observed tree is <ol class=\"my-1\"><li>completely green</li><li>or started colouring and/or is losing the first leaves</li><li>or is 50% coloured ad/or has 50% lost leaves</li><li>or is completely coloured or has no leaves</li></ol>Click the image that fits the coloring of the tree.",
+          "name": "leaf",
+          "name_plural": "leaves",
+          "result": {
+            "All green": "All green",
+            "Green and partly coloured": "Green and partly coloured",
+            "At least half coloured or lost": "At least half coloured or lost",
+            "All coloured or lost": "All coloured or lost"
           }
         }
       }

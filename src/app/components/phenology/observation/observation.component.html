@@ -158,8 +158,8 @@
 
           <div class="content-cat-text text-subtle mb-2">
             <span *ngIf="type.optional" class="badge badge-dark mr-1">{{'phen_obs.step_3.obs_type_optional' | translate}}</span>
-            {{
-              'phen_obs.step_3.obs_type_desc' | translate:
+            <span [innerHTML]="
+              'phen_obs.step_3.type.' + type.name + '.desc' | translate:
               {
                 'type': type,
                 'type_name': 'phenology.observation.type.' + type.name + '.name' | translate,
@@ -167,7 +167,7 @@
                 'type_name_lc': 'phenology.observation.type.' + type.name + '.name' | translate | lowercase,
                 'type_name_plural_lc': 'phenology.observation.type.' + type.name + '.name_plural' | translate | lowercase
               }
-            }}
+            "></span>
           </div>
 
           <div class="obs-container"
@@ -226,7 +226,7 @@
                     <div class="obs-res"
                          (click)="type.userObservations = []; addObservationResult(collapse, type, result)">
                       <div class="obs-res-counter mx--1">
-                        <div class="mx-1">
+                        <div class="mx-1 d-flex flex-row align-items-center">
                           <i class="i i-dark i-check"
                              [ngClass]="{'invisible': getObservationAmount(type, result) === 0}"></i>
                         </div>
@@ -253,7 +253,7 @@
 
               </div>
 
-              <div *ngIf="type.userObservations.length > 0"
+              <div *ngIf="type.userObservations.length > 0 && type.objects.length > 1"
                    class="d-flex flex-row flex-wrap justify-content-end justify-content-md-start justm--2">
 
                 <div class="d-flex align-items-center m-2"
