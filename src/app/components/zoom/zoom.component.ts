@@ -53,18 +53,22 @@ export class ZoomComponent implements OnInit {
 
   @HostListener('window:keyup', ['$event'])
   private keyEvent(event: KeyboardEvent) {
-    if (!this.showControls) {
+
+    if (!this.isShown) {
       return;
-    }
-    if (event.keyCode === 37 || event.code === 'ArrowLeft') { // left arrow
-      this.onPrevious();
-    }
-    if (event.keyCode === 39 || event.code === 'ArrowRight') { // right arrow
-      this.onNext();
     }
     if (event.keyCode === 27 || event.code === 'Escape') { // escape
       this.close();
     }
+    if (this.showControls) {
+      if (event.keyCode === 37 || event.code === 'ArrowLeft') { // left arrow
+        this.onPrevious();
+      }
+      if (event.keyCode === 39 || event.code === 'ArrowRight') { // right arrow
+        this.onNext();
+      }
+    }
+
   }
 
   public open(): void {

@@ -34,8 +34,8 @@ export class AuthHelperService extends AbstractService {
 
     const roles = routeSnapshot.data.roles;
 
-    if (!this.loginGuard.canActivateRoute(routeSnapshot, false) ||
-       (this.hasAnyRole(roles, this.envService.security.rolesAdmin) && !this.adminGuard.canActivateRoute(routeSnapshot, false))) {
+    if (!this.loginGuard.isAllowedToActivateRoute(routeSnapshot) ||
+       (this.hasAnyRole(roles, this.envService.security.rolesAdmin) && !this.adminGuard.isAllowedToActivateRoute())) {
       return true;
     }
 

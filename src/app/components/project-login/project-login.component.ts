@@ -2,7 +2,7 @@ import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {AuthService} from '../../services/auth.service';
 import {Login} from '../../entities/login.entity';
 import {AbstractComponent} from '../abstract.component';
-import {ActivatedRoute, Router} from '@angular/router';
+import {ActivatedRoute, Router, UrlTree} from '@angular/router';
 import {LoginAccessReason} from './logout-reason.enum';
 import {LoginStatus} from './login-status.enum';
 
@@ -109,7 +109,7 @@ export class ProjectLoginComponent extends AbstractComponent implements OnInit {
         this.redirectTo = '/account/changepassword';
       }
       if (this.redirectTo) {
-        this.router.navigate([this.redirectTo]);
+        this.router.navigateByUrl(this.redirectTo);
       }
       this.loggedin.emit();
     }, (error, apiError) => {

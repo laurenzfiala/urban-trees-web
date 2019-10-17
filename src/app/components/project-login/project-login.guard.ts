@@ -1,5 +1,12 @@
 import {Injectable} from '@angular/core';
-import {ActivatedRouteSnapshot, CanActivate, CanActivateChild, RouterStateSnapshot} from '@angular/router';
+import {
+  ActivatedRouteSnapshot,
+  CanActivate,
+  CanActivateChild,
+  Router,
+  RouterStateSnapshot,
+  UrlTree
+} from '@angular/router';
 import {Log} from '../../services/log.service';
 import {AuthService} from '../../services/auth.service';
 import {Observable} from 'rxjs/observable';
@@ -17,23 +24,24 @@ export class ProjectLoginGuard implements CanActivate, CanActivateChild {
 
   private static LOG: Log = Log.newInstance(ProjectLoginGuard);
 
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService,
+              private router: Router) {}
 
   /**
    * @see canActivateInternal
    */
-  public canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+  public canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
-    return this.canActivateRoute(route);
+    return this.canActivateRoute(route, state);
 
   }
 
   /**
    * @see canActivateInternal
    */
-  public canActivateChild(childRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean> | Promise<boolean> | boolean {
+  public canActivateChild(childRoute: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> | Promise<boolean | UrlTree> | boolean | UrlTree {
 
-    return this.canActivateRoute(childRoute);
+    return this.canActivateRoute(childRoute, state);
 
   }
 
@@ -41,26 +49,45 @@ export class ProjectLoginGuard implements CanActivate, CanActivateChild {
    * Whether the client may access the requested page or
    * be redirected to the login page.
    * @param {ActivatedRouteSnapshot} route
+   * @param {RouterStateSnapshot} state
    * @returns {boolean} true if the route may be accessed; false otherwise
    */
-  public canActivateRoute(route: ActivatedRouteSnapshot, redirect: boolean = true): boolean {
+  private canActivateRoute(route: ActivatedRouteSnapshot, state: RouterStateSnapshot, redirect: boolean = true): UrlTree | boolean {
+
+    if (this.isAllowedToActivateRoute(route)) {
+      return true;
+    }
+    let loginAccessReason;
+    if (this.authService.isLoggedIn()) {
+      loginAccessReason = LoginAccessReason.INSUFFICIENT_PERMISSIONS;
+    }
+
+    let queryParamsVal = {'reason': loginAccessReason || this.authService.getLogOutReason()};
+    if (redirect) {
+      queryParamsVal['redirect'] = state.url;
+    }
+
+    return this.router.createUrlTree(
+      ['/login'],
+      {
+        queryParams: queryParamsVal,
+        queryParamsHandling: 'merge'
+      }
+    );
+
+  }
+
+  /**
+   * Check whether the user is logged in and has access to the given route.
+   * @param route target route to check
+   * @returns true if the user may access the route; false otherwise
+   */
+  public isAllowedToActivateRoute(route: ActivatedRouteSnapshot): boolean {
 
     const isLoggedIn = this.authService.isLoggedIn();
     const isAccessGranted = this.isRoleAccessGranted(route);
-    let unauthorized: LoginAccessReason;
-    if (isLoggedIn) {
-      if (isAccessGranted) {
-        return true;
-      }
-      unauthorized = LoginAccessReason.INSUFFICIENT_PERMISSIONS;
-    }
 
-    if (redirect) {
-      let redirectLocation = route.pathFromRoot.map(value => value.url.map(value1 => value1.path).join('/')).join('/');
-      this.authService.redirectToLogin(unauthorized || this.authService.getLogOutReason(), redirectLocation);
-    }
-
-    return false;
+    return isLoggedIn && isAccessGranted;
 
   }
 
