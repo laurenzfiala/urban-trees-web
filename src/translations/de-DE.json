@@ -238,8 +238,13 @@
     },
     "cooling_power": {
       "title": "Abkühlungsleistung unserer Untersuchungsbäume",
-      "text": "Die <b>maximale</b> von uns gemessene <b>Abkühlungsleistung</b> der Untersuchungsbäume lag bei <b>5,3 °C</b>.<div class=\"my-2\">Dazu werden an jeder Schule die Lufttemperaturen der Referenzstation in der Sonne, mit den Lufttemperaturen in den Baumkronen verglichen und die Abweichungen ermittelt.</div>",
+      "text": "Die <b>maximale</b>, von uns gemessene, <b>Abkühlungsleistung</b> der Untersuchungsbäume lag bei <b>5,3 °C</b>.<div class=\"my-2\">Dazu werden an jeder Schule die Lufttemperaturen der Referenzstation in der Sonne, mit den Lufttemperaturen in den Baumkronen verglichen und die Abweichungen ermittelt.</div>",
       "update_month": "Information zuletzt im März 2019 aktualisiert."
+    },
+    "leaf_development": {
+      "title": "Blattentfaltung",
+      "text": "Wir haben zur Veranschaulichung der Ergebnisse unseres ersten Aufzeichnungsjahres diese Grafik mit Audiokommentar erstellt. Klicke auf den Abspielen-Button, um den Kommentar anzuhören.",
+      "update_month": "Information zuletzt im Oktober 2018 aktualisiert."
     },
 		"species": {
 			"gingko biloba": "Ginkgo",
@@ -436,15 +441,15 @@
   },
   "statistics": {
     "beaconreadouts": {
-      "title": "Augelesene Beacons",
-      "desc": "Hier kannst du sehen wie oft Projektteilnehmer_innen unsere Bluetooth-Beacons jeden Tag ausgelesen haben. Jede dieser Auslesungen hilft uns enorm und wir danken jeder Person, die uns dabei hilft!",
+      "title": "Ausgelesene Beacons",
+      "desc": "Hier kannst du sehen, wie oft Projektteilnehmer_innen unsere Bluetooth-Beacons an den einzelnen Tagen ausgelesen haben. Jede dieser Auslesungen hilft uns enorm und wir danken jeder Person, die uns dabei hilft!",
       "error": "Systemstatistiken konnten nicht geladen werden",
       "help_link": "Wie kann ich helfen?",
       "readouts_today": "Auslesungen heute"
     },
     "phenologyobs": {
       "title": "Phänologiebeobachtungen",
-      "desc": "Hier kannst du sehen, wie oft Projektteilnehmer_innen eine Phänologiebeobachtung durchgeführt haben. Jede dieser Beobachtungen dauert ungefähr 10 Minuten und hilft uns Stadtbäume besser zu verstehen!",
+      "desc": "Hier kannst du sehen, wie oft Projektteilnehmer_innen eine Phänologiebeobachtung durchgeführt haben. Jede dieser Beobachtungen dauert ungefähr 10 Minuten und hilft uns, Stadtbäume besser zu verstehen!",
       "error": "Systemstatistiken konnten nicht geladen werden",
       "help_link": "Wie kann ich helfen?",
       "obs_today": "Beobachtungen heute"
@@ -477,7 +482,7 @@
   },
   "home": {
     "title": "Willkommen bei&nbsp;<b>Stadtbäume als Klimabotschafter</b>!",
-    "desc": "Du kannst diese Website benutzen, um Phänologiedaten zu Bäumen einzutragen, Informationen und Statistiken üder die Bäume und Beacons anzusehen und Punkte durch Mithelfen zu erhalten!",
+    "desc": "Du kannst diese Website benutzen, um Phänologiedaten zu Bäumen einzutragen, Informationen und Statistiken über die Bäume und Beacons anzusehen und um Punkte durch Mithelfen zu erhalten!",
     "title_user": "Willkommen zurück bei&nbsp;<b>Stadtbäume als Klimabotschafter</b>, {{username}}!",
     "desc_user_1": "Wir freuen uns über jede ",
     "desc_phenobs_link": "Phänologiebeobachtung",
@@ -493,7 +498,7 @@
     },
     "project_intro": {
       "title": "Was wir machen",
-      "desc": "Wir überprüfen viele Bäume mit Bluetooth-Beacons, welche automatisch Temperaturdaten und Luftfeuchtigkeit aufzeichnen. Außerdem beobachten wir die Bäume auf ihre Blattentfaltung, diese Informationen werden von teilnehmenden Schüler_innen hier eingetragen.",
+      "desc": "Wir beobachten viele Bäume mit Bluetooth-Beacons, welche automatisch Temperaturdaten und Luftfeuchtigkeit aufzeichnen. Außerdem beobachten wir die Bäume auf ihre Blattentfaltung, diese Informationen werden von teilnehmenden Schüler_innen hier eingetragen.",
       "error": "Projektstatistiken konnten nicht geladen werden",
       "cities": "Städte",
       "trees": "Bäume",
@@ -510,7 +515,7 @@
   },
   "user_overview": {
     "xp": "XP",
-    "desc_level_5+": "Wow, Du hast schon {{xp}} XP gesammelt!<br/>Gut gemacht! Danke, dass Du uns hilfst all diese Daten zu sammeln.",
+    "desc_level_5+": "Wow, Du hast schon {{xp}} XP gesammelt!<br/>Gut gemacht! Danke, dass Du uns hilfst, all diese Daten zu sammeln.",
     "desc_level_1-5": "Du hast {{xp}} XP gesammelt!<br/>Danke, dass Du uns hilfst mehr Daten zu sammeln!",
     "desc_level_0": "Du hast noch keine XP gesammelt!<br/>Sobald Du eine Phänologiebeobachtung oder eine Beacon-Auslese abschließt, bekommst Du Erfahrungspunkte.",
     "view_details": "Mehr Details",
@@ -545,7 +550,6 @@
       "no_obs_assoc": "Keine Beobachtungen sind bei dem gewählen Baum vorgesehen",
       "loading": "Lade Beobachtungen...",
       "obs_type_optional": "Optional",
-      "obs_type_desc": "Wähle {{type.objects.length}} zufällige {{type_name_plural}} deines Baums und klicke jeweils einmal auf das Bild, welches der {{type_name}} am ähnlichsten ist.",
       "reset": "Zurücksetzen",
       "undo": "Rückgängig",
       "undo_info_cursor": "Rechtsklick zum Rückgängig machen.",
@@ -553,12 +557,18 @@
       "no_result_img": "Kein Bild verfügbar.",
       "type": {
         "Bud": {
+          "desc": "Wähle {{type.objects.length}} zufällige {{type_name_plural}} deines Baums und klicke jeweils einmal auf das Bild, welches der {{type_name}} am ähnlichsten ist.",
           "name": "Knospe",
           "name_plural": "Knospen",
           "result": {
             "Closed bud": "Geschlossene Knospe",
             "Half-open bud": "Halboffene Knospe",
-            "Open bud": "Offene Knospe"
+            "Open bud": "Offene Knospe",
+            "plural": {
+              "Closed bud": "Geschlossene Knospen",
+              "Half-open bud": "Halboffene Knospen",
+              "Open bud": "Offene Knospen"
+            }
           }
         },
         "Leaf": {
@@ -569,7 +579,13 @@
             "All green": "Komplett grün",
             "Green and partly coloured": "Beginnt zu verfärben",
             "At least half coloured or lost": "Mindestens zur Hälfte verfärbt oder abgefallen",
-            "All coloured or lost": "Komplett verfärbt oder abgefallen"
+            "All coloured or lost": "Komplett verfärbt oder abgefallen",
+            "plural": {
+              "All green": "Komplett grün",
+              "Green and partly coloured": "Beginnt zu verfärben",
+              "At least half coloured or lost": "Mindestens zur Hälfte verfärbt oder abgefallen",
+              "All coloured or lost": "Komplett verfärbt oder abgefallen"
+            }
           }
         }
       }

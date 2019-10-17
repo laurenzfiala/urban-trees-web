@@ -81,10 +81,11 @@ import {HelpComponent} from './components/help/help.component';
 import {ReplacePipe} from './pipes/replace.pipe';
 import {LayoutModule} from '@angular/cdk/layout';
 import {LayoutConfig} from './config/layout.config';
-import { NotificationsComponent } from './components/notifications/notifications.component';
+import {NotificationsComponent} from './components/notifications/notifications.component';
 import {NotificationsService} from './services/notifications.service';
 import {AuthHelperService} from './services/auth-helper.service';
 import {UserRewardService} from './services/user-reward.service';
+import {LangDirective} from './directives/lang.directive';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, '/translations/', '.json?cacheBust=' + new Date().getTime());
@@ -137,6 +138,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     CheckDirective,
     CssVariableDirective,
     ValueaccessorDirective,
+    LangDirective,
 
     // Pipes
     StringModificationPipe,

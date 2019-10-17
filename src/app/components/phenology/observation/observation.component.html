@@ -196,7 +196,7 @@
                       <div class="obs-res-counter mx--1">
                         <div class="mx-1">{{getObservationAmount(type, result)}}</div>
                         <div class="text mx-1">
-                          {{'phen_obs.step_3.type.' + type.name + '.result.' + result.description | translate}}
+                          {{'phen_obs.step_3.type.' + type.name + '.result.' + (getObservationAmount(type, result) == 1 ? '' : 'plural.') + result.description | translate}}
                         </div>
                       </div>
                       <img *ngIf="images[result.id]?.encodedImage"

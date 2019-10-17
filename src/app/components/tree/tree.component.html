@@ -22,8 +22,7 @@
   <div class="container">
     <div class="content-cat-heading">{{'tree.species.' + tree.species.name | lowercase | translate}}</div>
     <div class="content-cat-text">
-      {{'tree.species.latin.' + tree.species.name | lowercase | translate}}
-      ({{tree.species.genus.name}})
+      <i>{{'tree.species.latin.' + tree.species.name | lowercase | translate}}</i>
     </div>
   </div>
 </div>
@@ -110,17 +109,23 @@
 
 <div class="content-cat">
   <div class="container tree-image">
-    <div class="content-cat-heading">Blattentfaltung</div>
+    <div class="content-cat-heading">{{'tree.leaf_development.title' | translate}}</div>
     <div class="content-cat-flex flex-lg-nowrap">
       <div class="content-cat-text flex-grow-1">
-        Wir haben zur Veranschaulichung der Ergebnisse unseres ersten Aufzeichnungsjahres diese Grafik mit
-        Audiokommentar erstellt. Klicke auf den Abspielen-Button, um den Kommentar anzuhören.
+        {{'tree.leaf_development.text' | translate}}
         <div class="text-subtle text-xs mt-2">
-          Information zuletzt im Oktober 2018 aktualisiert.
+          {{'tree.leaf_development.update_month' | translate}}
         </div>
       </div>
       <ut-audio-img
+        *lang="'de-DE'"
         image="../../../assets/content/img/blattentfaltung_2018_10.jpeg"
+        audio="../../../assets/content/audio/blattentfaltung_2018_10.mp3"
+        class="content-cat-img-lg">
+      </ut-audio-img>
+      <ut-audio-img
+        *lang="'en-GB'"
+        image="../../../assets/content/img/blattentfaltung_2018_10_en.jpeg"
         audio="../../../assets/content/audio/blattentfaltung_2018_10.mp3"
         class="content-cat-img-lg">
       </ut-audio-img>

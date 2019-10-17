@@ -230,17 +230,22 @@
     "loading": "Loading tree...",
     "summary": {
       "title": "Information",
-      "text": "„Urban Trees as climate messengers“: in this project researchers and students, experts and teachers from Austria, Germany and Hungary collaborate. By montoring, measuring and modelling of phenological phases and microclimate data, serve to answer the following research questions: How do urban trees affect urban climate? How does urban climate influence the trees? How can these trees affect our future?<br/><br/>The following visualisations show selected aspects of this research."
+      "text": "„Urban Trees as climate messengers“: in this project researchers and students, experts and teachers from Austria, Germany and Hungary collaborate. By monitoring, measuring and modelling phenological phases and microclimate data, we aim to answer the following research questions: How do urban trees affect urban climate? How does urban climate influence the trees? How can these trees affect our future?<br/><br/>The following visualisations show selected aspects of this research."
     },
     "through_year": {
       "title": "Trees through the seasons",
-      "text": "This image set shows the leaf development of the trees in spring and illustrates a central research objective in the project:  We investigate the length of the vegetation period of different types of urban trees and the influence of urban heat island intensity. <b>City trees cool the city and make it liveable!</b>",
+      "text": "This image set shows the leaf development of trees in spring and illustrates a central research objective in the project: We investigate the length of the vegetation period of different types of urban trees and the influence of urban heat island intensity. <b>City trees cool the city and make it liveable!</b>",
       "update_month": "Information last updated in August 2019."
     },
     "cooling_power": {
       "title": "Cooling capacity of our examined trees",
-      "text": "The <b>highest</b> measured <b>cooling capacity</b> of our observed trees was <b>5,3 °C</b>.<div class=\"my-2\">To do that, we compared the temperatures of the reference-beacons in the sun to the beacons in the tree-crowns at each school, and looked at the differences between them.</div>",
+      "text": "The <b>highest</b> measured <b>cooling capacity</b> of our observed trees was <b>5.3 °C</b>.<div class=\"my-2\">To do that, we compared the temperatures of the reference-beacons in the sun to the beacons in the tree-crowns at each school, and looked at the differences between them.</div>",
       "update_month": "Information last updated in March 2019."
+    },
+    "leaf_development": {
+      "title": "Leaf Development",
+      "text": "To illustrate the findings of our first year of observations, we have created a chart with audio commentary (only available in german). Press the Play-Button to start the commentary or press 'X' to see the chart.",
+      "update_month": "Information last updated in October 2018."
     },
 		"species": {
 			"gingko biloba": "Ginkgo",
@@ -317,7 +322,7 @@
         "maxdataentries": "Maximum datapoints",
         "none_attached": "No beacons are attached to this tree.",
         "status_locked": "This beacon can currently not be read out, because the connection credentials are unknown.",
-        "status_invalid_settings": "This beacon can currently not be read out, because incorrect configuration prevents read-out.",
+        "status_invalid_settings": "This beacon can currently not be read out, because incorrect configuration prevents readout.",
         "status_initial": "This beacon was newly deployed to this location. It has not yet been read out.",
         "no_beacon_found": "No beacon found"
       },
@@ -375,7 +380,7 @@
   "settings": {
     "language": {
       "title": "Language",
-      "desc":  "Choose which language to use for the whole site."
+      "desc":  "Choose which language to use for the entire site."
     },
     "account": {
       "title": "Manage Account",
@@ -438,14 +443,14 @@
   "statistics": {
     "beaconreadouts": {
       "title": "Beacon Readouts",
-      "desc": "Here you can see how often project participants read out our Bluetooth-Beacons every day. Every one of these read-outs helps us a tremendous amount and is hugely appreciated!",
+      "desc": "Here you can see how often project participants read out our Bluetooth-Beacons every day. Every one of these readouts helps us a tremendous amount and is hugely appreciated!",
       "error": "Could not load system statistics",
       "help_link": "How can I help?",
-      "readouts_today": "Read-outs today"
+      "readouts_today": "Readouts today"
     },
     "phenologyobs": {
       "title": "Phenology Observations",
-      "desc": "Here you can see how often project participants conducted a phenology observation. Every one of these observations takes about 10 minutes and helps a lot!",
+      "desc": "Here you can see how often project participants conducted a phenology observation. Every one of these observations takes about 10 minutes and helps us a lot!",
       "error": "Could not load system statistics",
       "help_link": "How can I help?",
       "obs_today": "Observations today"
@@ -494,7 +499,7 @@
     },
     "project_intro": {
       "title": "What we do",
-      "desc": "We monitor lots of trees with Bluetooth-beacons and by hand with what's called <span class=\"font-italic\">&raquo;Phenology observation&laquo;</span>. They are entered by interested students in three counties around europe.",
+      "desc": "We monitor lots of trees with Bluetooth-beacons and by hand with the <span class=\"font-italic\">&raquo;Phenology observation&laquo;</span>. They are entered by interested students in three countries around europe.",
       "error": "Could not load project statistics",
       "cities": "Cities",
       "trees": "Trees",
@@ -525,7 +530,7 @@
   },
   "phen_obs": {
     "title": "Phenology Observation",
-    "desc": "Enter a new phenology observation here. The five steps below can be completed in less than 5 minutes and give us valuable data about the selected tree and the city it's in.",
+    "desc": "Enter a new phenology observation here. The five steps below can be completed in less than 5 minutes and give us valuable data about the selected tree.",
     "finish_prev_steps_first": "Finish previous steps first.",
     "error": "Could not load phenology observation.",
     "step": "Step",
@@ -559,7 +564,12 @@
           "result": {
             "Closed bud": "Closed Bud",
             "Half-open bud": "Half-open bud",
-            "Open bud": "Open bud"
+            "Open bud": "Open bud",
+            "plural": {
+              "Closed bud": "Closed buds",
+              "Half-open bud": "Half-open buds",
+              "Open bud": "Open buds"
+            }
           }
         },
         "Leaf": {
@@ -570,7 +580,13 @@
             "All green": "All green",
             "Green and partly coloured": "Partly coloured or lost",
             "At least half coloured or lost": "At least half coloured or lost",
-            "All coloured or lost": "All coloured or lost"
+            "All coloured or lost": "All coloured or lost",
+            "plural": {
+              "All green": "All green",
+              "Green and partly coloured": "Partly coloured or lost",
+              "At least half coloured or lost": "At least half coloured or lost",
+              "All coloured or lost": "All coloured or lost"
+            }
           }
         }
       }
