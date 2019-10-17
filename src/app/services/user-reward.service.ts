@@ -6,6 +6,7 @@ import {NotificationsService} from './notifications.service';
 import {HttpErrorResponse} from '@angular/common/http';
 import {ApiError} from '../entities/api-error.entity';
 import {TranslateService} from '@ngx-translate/core';
+import {AuthService} from './auth.service';
 
 /**
  * Provides logic for levelling, etc.
@@ -33,12 +34,17 @@ export class UserRewardService {
 
   constructor(private userService: UserService,
               private translateService: TranslateService,
-              private notificationsService: NotificationsService) {
+              private notificationsService: NotificationsService,
+              private authService: AuthService) {
     this.loadAchievements();
   }
 
   public loadAchievements(successCallback?: (achievements: UserAchievements) => void,
                           errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void): void {
+
+    if (this.authService.isUserAnonymous()) {
+      return;
+    }
 
     this.userService.loadAchievements((achievements: UserAchievements) => {
       this.achievements = achievements;
@@ -55,6 +61,10 @@ export class UserRewardService {
   }
 
   private updateLevels(): void {
+
+    if (!this.achievements) {
+      return;
+    }
 
     this.maxLevelXp = this.calcRequiredXp(this.maxLevel);
     let xp = this.achievements.xp;

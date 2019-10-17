@@ -49,6 +49,7 @@ export class AuthService extends AbstractService {
 
     // make auth tokens accessible to the app
     window['getJWTToken'] = () => AuthService.getJWTTokenRaw();
+    window['refreshLogin'] = () => this.stateChanged();
   }
 
   /**

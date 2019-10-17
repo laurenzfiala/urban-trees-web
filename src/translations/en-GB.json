@@ -563,12 +563,12 @@
           }
         },
         "Leaf": {
-          "desc": "Check whether your observed tree is <ol class=\"my-1\"><li>completely green</li><li>or started colouring and/or is losing the first leaves</li><li>or is 50% coloured ad/or has 50% lost leaves</li><li>or is completely coloured or has no leaves</li></ol>Click the image that fits the coloring of the tree.",
+          "desc": "Check whether your observed tree is <ol class=\"my-1\"><li>completely green</li><li>or started colouring and/or is losing the first leaves</li><li>or is 50% coloured and/or has 50% lost leaves</li><li>or is completely coloured or has no leaves</li></ol>Click the image that fits the coloring of the tree.",
           "name": "leaf",
           "name_plural": "leaves",
           "result": {
             "All green": "All green",
-            "Green and partly coloured": "Green and partly coloured",
+            "Green and partly coloured": "Partly coloured or lost",
             "At least half coloured or lost": "At least half coloured or lost",
             "All coloured or lost": "All coloured or lost"
           }
