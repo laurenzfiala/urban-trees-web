@@ -5,8 +5,6 @@
   <title>Urban Trees</title>
   <base href="/">
 
-  <!-- deplyoment date: 2019/09/19 10:52 -->
-
   <!-- disable zooming on mobile -->
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
 
@@ -44,7 +42,7 @@
         border-top-color: #009a00;
       }
       50% {
-        border-top-color: #3395ff;a
+        border-top-color: #3395ff;
       }
       75% {
         border-top-color: #009a00;
@@ -54,15 +52,52 @@
         transform: rotate(1080deg);
       }
     }
+
+    .noscript {
+      font-family: 'Arial', sans-serif;
+      font-size: 1.5rem;
+      padding: 2.5rem;
+    }
+
+    .noscript > .note {
+      background-color: #dc3545;
+      color: #fff;
+      font-weight: bold;
+      padding: 0.75rem;
+      margin-bottom: 0.75rem;
+      border-radius: 0.75rem;
+    }
+
+    hr {
+      border: 0;
+      border-top: solid #e4e5e6 1px;
+    }
   </style>
 </head>
 <body>
 
-  <ut-root>
+  <noscript>
+    <div class="noscript">
+      <div class="note">Unable to access this website</div>
+      <a href="">urban-tree-climate.sbg.ac.at</a> needs JavaScript to function.
+    </div>
 
-    <div class="load-start"></div>
+    <hr/>
 
-  </ut-root>
+    <div class="noscript">
+      <div class="note">Die Webseite kann nicht angezeigt werden</div>
+      <a href="">urban-tree-climate.sbg.ac.at</a> benötigt JavaScript, um zu funktionieren.
+    </div>
+  </noscript>
+
+  <ut-root></ut-root>
+
+  <!-- add loading spinner if js is enabled -->
+  <script>
+      var loadingSpinner = document.createElement('div');
+      loadingSpinner.className = 'load-start';
+      document.getElementsByTagName('ut-root')[0].appendChild(loadingSpinner);
+  </script>
 
 </body>
 </html>

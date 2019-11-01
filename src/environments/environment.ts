@@ -7,9 +7,9 @@ export const environment = {
 
   production:                       false,
 
-  webHost:                          'http://localhost:4200',
-  host:                             'http://localhost:80',
-  mapHost:                          'http://localhost:8081',
+  webHost:                          'http://192.168.0.123:4200',
+  host:                             'http://192.168.0.123:80',
+  mapHost:                          'http://192.168.0.123:8081',
 
   endpoints: {
     // Tree

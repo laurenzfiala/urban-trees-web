@@ -1,32 +1,64 @@
+<div class="accessibility-menu navbar-bg">
+  <div class="container">
+    <span class="text-sm text-subtle mr-2">
+      {{'navigation.accessibility.title' | translate}}
+    </span>
+
+    <a class="link sr-only sr-only-focusable my-2"
+       (action)="document.getElementById('firstHeaderLink').focus()"
+       tabindex="0">
+      {{'navigation.accessibility.go_to.header' | translate}}
+    </a>
+    <a class="link sr-only sr-only-focusable my-2"
+       (action)="$('#content').find('button, a, input, select, textarea, [tabindex]:not([tabindex=\'-1\'])')[0].focus()"
+       tabindex="0">
+      {{'navigation.accessibility.go_to.content' | translate}}
+    </a>
+    <a class="link sr-only sr-only-focusable my-2"
+       (action)="document.getElementById('firstFooterLink').focus()"
+       tabindex="0">
+      {{'navigation.accessibility.go_to.footer' | translate}}
+    </a>
+  </div>
+</div>
+
 <div *ngFor="let a of announcements" class="announcement" [ngClass]="{'severity-high': a.severity > 10}">
   <div class="announcement-content">
     <div class="announcement-title">{{a.title}}</div>
     <div class="announcement-description">{{a.description}}</div>
   </div>
-  <div class="announcement-close" (click)="hideAnnoucement(a)"></div>
+  <div class="announcement-close" (action)="hideAnnoucement(a)" tabindex="0" [attr.aria-label]="'announcements.close' | translate"></div>
 </div>
 
 <div class="navbar-bg">
   <div class="container">
     <nav class="navbar navbar-expand navbar-light navbar-bg pl-0">
-        <a class="navbar-brand" routerLink="/home" routerLinkActive="active">
-          <img src="../assets/img/urbantrees_icon_small.png" class="d-inline-block align-top nav-brand-icon" alt="Urban Trees logo">
+        <a id="firstHeaderLink"
+           class="navbar-brand"
+           routerLink="/home"
+           routerLinkActive="active">
+          <img src="../assets/img/urbantrees_icon_small.png" class="d-inline-block align-top nav-brand-icon" [alt]="'navigation.home' | translate">
         </a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-          <span class="navbar-toggler-icon"></span>
-        </button>
 
         <ul class="navbar-nav navbar-left mr-auto">
           <ng-template [ngTemplateOutlet]="navContent"></ng-template>
-          <li dropdown class="nav-item dropdown">
-            <a dropdownToggle class="nav-link link plain">
+          <li dropdown
+              class="nav-item dropdown">
+            <a dropdownToggle
+               class="nav-link pointer"
+               (click)="false"
+               href>
               <i class="i i-xxs i-dark i-dots align-middle"></i>
             </a>
-            <div *dropdownMenu class="dropdown-menu dropdown-menu-right">
+            <div *dropdownMenu
+                 id="nav-dropdown-menu"
+                 role="menu"
+                 class="dropdown-menu dropdown-menu-right">
               <ng-template [ngTemplateOutlet]="navContent"></ng-template>
             </div>
           </li>
         </ul>
+
         <ul class="navbar-nav navbar-right">
           <li *auth="envService.security.rolesAdmin"
             class="nav-item pointer">
@@ -40,6 +72,7 @@
               {{userdata?.newMessagesAmount}}
             </div>
             <i class="i i-send i-dark" aria-hidden="true"></i>
+            <span class="sr-only">{{'navigation.messages' | translate}}</span>
           </a>
           </li>
           <li class="nav-item pointer">
@@ -47,20 +80,25 @@
              routerLinkActive="active"
              class="nav-link nav-settings d-flex align-items-center">
             <i class="i i-cog i-dark" aria-hidden="true"></i>
+            <span class="sr-only">{{'navigation.settings' | translate}}</span>
           </a>
           </li>
           <li *ngIf="!authService.isUserAnonymous()"
               class="nav-item pointer">
-          <a (click)="logout()"
-             class="nav-link d-flex align-items-center">
+          <a (action)="logout()"
+             class="nav-link d-flex align-items-center"
+             tabindex="0">
             <i class="i i-logout i-dark" aria-hidden="true"></i>
+            <span class="sr-only">{{'navigation.logout' | translate}}</span>
           </a>
           </li>
           <li *ngIf="authService.isUserAnonymous()"
               class="nav-item pointer">
             <a routerLink="/login"
-               class="nav-link d-flex align-items-center">
+               class="nav-link d-flex align-items-center"
+               tabindex="0">
               <i class="i i-login i-dark" aria-hidden="true"></i>
+              <span class="sr-only">{{'navigation.login' | translate}}</span>
             </a>
           </li>
         </ul>
@@ -72,7 +110,7 @@
 <ng-template #navContent>
   <li class="nav-item"
       routerLinkActive="active">
-    <a class="nav-link" routerLink="/trees">
+    <a class="nav-link link-container" routerLink="/trees">
       <div class="link">
         {{'navigation.tree_list' | translate}}
       </div>
@@ -81,7 +119,7 @@
   <li *auth="[envService.security.rolesPhenObs]"
       class="nav-item"
       routerLinkActive="active">
-    <a class="nav-link" routerLink="/project/phenology">
+    <a class="nav-link link-container" routerLink="/project/phenology">
       <div class="link">
         {{'navigation.phenology' | translate}}
       </div>
@@ -89,7 +127,7 @@
   </li>
   <li class="nav-item"
       routerLinkActive="active">
-    <a class="nav-link" routerLink="/measurements">
+    <a class="nav-link link-container" routerLink="/measurements">
       <div class="link">
         {{'navigation.measurements' | translate}}
       </div>
@@ -97,7 +135,7 @@
   </li>
   <li class="nav-item"
       routerLinkActive="active">
-    <a class="nav-link" routerLink="/statistics">
+    <a class="nav-link link-container" routerLink="/statistics">
       <div class="link">
         {{'navigation.statistics' | translate}}
       </div>
@@ -106,7 +144,7 @@
   <li *auth="[envService.security.rolesAdmin]"
       class="nav-item"
       routerLinkActive="active">
-    <a class="nav-link" routerLink="/admin">
+    <a class="nav-link link-container" routerLink="/admin">
       <div class="link">
         {{'navigation.admin' | translate}}
       </div>

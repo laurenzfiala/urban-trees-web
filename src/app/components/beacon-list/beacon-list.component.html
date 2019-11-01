@@ -13,11 +13,14 @@
     <!-- Content of beacon selection dropdown -->
     <ng-template #beaconSelectionContent>
       <div *ngFor="let beacon of beacons; let i = index"
-           (click)="selectedBeaconIndex = i; loadBeaconData()"
+           (action)="selectedBeaconIndex = i; loadBeaconData()"
            [ngClass]="{'mr-0 selected': selectedBeaconIndex === i, 'mr-2': selectedBeaconIndex !== i}"
-           class="list-entry link-container text-nowrap p-2">
+           class="list-entry link-container text-nowrap p-2"
+           role="button"
+           tabindex="0">
         <i class="i i-beacon i-dark p-2 mr-1"></i>
-        <a class="link" [ngClass]="{'active': beacon === selectedBeacon}">
+        <a class="link"
+           [ngClass]="{'active': beacon === selectedBeacon}">
           Beacon {{beacon.deviceId}}
         </a>
       </div>
@@ -42,7 +45,9 @@
 
         <div *ngIf="showAssociations && selectedBeacon.tree"
              [routerLink]="['/tree', selectedBeacon.tree.id]"
-             class="badge badge-xs d-flex flex-row align-items-center ml-1 link-container">
+             class="badge badge-xs d-flex flex-row align-items-center ml-1 link-container"
+             role="link"
+             tabindex="0">
           <i class="i i-xxs i-dark i-link mr-1"></i>
           {{'map.tree_assoc' | translate}}&nbsp;
           <a class="link">#{{selectedBeacon.tree.id}}</a>

@@ -13,15 +13,6 @@ import {FormsModule} from '@angular/forms';
 import {StringModificationPipe} from './pipes/strmod.pipe';
 import {CapitalizationPipe} from './pipes/capitalize.pipe';
 import {LowercasePipe} from './pipes/lowercase.pipe';
-import {BsDatepickerModule} from 'ngx-bootstrap/datepicker';
-import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
-import {ButtonsModule} from 'ngx-bootstrap/buttons';
-import {CollapseModule} from 'ngx-bootstrap/collapse';
-import {ModalModule} from 'ngx-bootstrap/modal';
-import {PopoverModule} from 'ngx-bootstrap/popover';
-import {TabsModule} from 'ngx-bootstrap/tabs';
-import {TimepickerModule} from 'ngx-bootstrap/timepicker';
-import {TooltipModule} from 'ngx-bootstrap/tooltip';
 import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule} from '@angular/common/http';
 import {PhenologyObservationService} from './services/phenology/observation/phenology-observation.service';
 import {EnvironmentService} from './services/environment.service';
@@ -86,6 +77,18 @@ import {NotificationsService} from './services/notifications.service';
 import {AuthHelperService} from './services/auth-helper.service';
 import {UserRewardService} from './services/user-reward.service';
 import {LangDirective} from './directives/lang.directive';
+import {ActionDirective} from './directives/action.directive';
+import {
+  BsDatepickerModule,
+  BsDropdownModule,
+  ButtonsModule,
+  CollapseModule,
+  ModalModule,
+  PopoverModule,
+  TabsModule,
+  TimepickerModule,
+  TooltipModule
+} from 'ngx-bootstrap';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, '/translations/', '.json?cacheBust=' + new Date().getTime());
@@ -139,6 +142,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     CssVariableDirective,
     ValueaccessorDirective,
     LangDirective,
+    ActionDirective,
 
     // Pipes
     StringModificationPipe,

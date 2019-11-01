@@ -1,5 +1,7 @@
 <div class="wrapper"
-     (click)="open()">
+     (action)="open()"
+     role="button"
+     tabindex="0">
   <ng-container *ngTemplateOutlet="content"></ng-container>
   <div class="expand"></div>
 </div>
@@ -8,7 +10,11 @@
      [ngClass]="{'show': isShown, 'closing': isClosing, 'controls': showControls}"
      (click)="close()">
   <div class="fullscreen-close close"
-       (click)="close()"></div>
+       (action)="close()"
+       role="button"
+       tabindex="0">
+    <span class="sr-only">{{'zoom.close' | translate}}</span>
+  </div>
   <div class="fullscreen-content-wrapper"
        (click)="$event.stopPropagation()">
     <ng-container *ngTemplateOutlet="fullscreenContent"></ng-container>

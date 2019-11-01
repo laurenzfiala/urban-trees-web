@@ -9,7 +9,18 @@
     "date_format_day": "DD.MM",
     "date_format_time": "HH:mm"
 	},
+  "announcements": {
+    "close": "Ankündigung schließen"
+  },
 	"navigation": {
+    "accessibility": {
+      "title": "Abkürzungen für Barrierefreiheit",
+      "go_to": {
+        "header": "Zur Navigation springen",
+        "content": "Zum Inhalt springen",
+        "footer": "Zur Fußleiste springen"
+      }
+    },
 		"home": "Start",
 		"phenology": "Phänologie",
 		"tree_list": "Bäume",
@@ -23,6 +34,9 @@
       "madeby": "Mit &#x2764; entwickelt vom ",
       "madeby_team": "Stadtbäume-Team"
 		},
+    "messages": "Nachrichten",
+    "settings": "Einstellungen &amp; Sprache",
+    "login": "Anmelden",
 		"logout": "Abmelden",
     "project_account_1": "Projekt-",
     "project_account_2": "Account",
@@ -234,7 +248,21 @@
     "through_year": {
       "title": "Bäume in den Jahreszeiten",
       "text": "Die Bilderreihe zeigt die Blattentwicklung der Bäume im Frühling und veranschaulicht ein zentrales Forschungsziel im Projekt: Wir erforschen die Länge der Vegetationsperiode verschiedener Stadtbaumarten und den Einfluss der städtischen Wärmeinselintensität. <b>Stadtbäume kühlen die Stadt und machen sie lebenswert!</b>",
-      "update_month": "Information zuletzt im August 2019 aktualisiert."
+      "update_month": "Information zuletzt im August 2019 aktualisiert.",
+      "pictures_alt": {
+        "1": "Foto eines Baumes vom 18. März. Der Baum hat noch keine Blätter.",
+        "2": "Foto eines Baumes vom 21. März.",
+        "3": "Foto eines Baumes vom 25. März.",
+        "4": "Foto eines Baumes vom 27. März.",
+        "5": "Foto eines Baumes vom 2. April. Viele Knospen haben sich bereits geöffnet.",
+        "6": "Foto eines Baumes vom 5. April. Der Baum hat einige größere Blätter entwickelt.",
+        "7": "Foto eines Baumes vom 8. April. Der Baum hat viele größere Blätter entwickelt.",
+        "8": "Foto eines Baumes vom 11. April. Die Baumkrone sieht wesentlich dichter aus als zuvor.",
+        "9": "Foto eines Baumes vom 14. April. Die Baumkrone sieht noch dichter aus.",
+        "10": "Foto eines Baumes vom 16. April.",
+        "11": "Foto eines Baumes vom 20. April.",
+        "12": "Foto eines Baumes vom 24. April. Die Blätter des Baumes sind komplett entwickelt."
+      }
     },
     "cooling_power": {
       "title": "Abkühlungsleistung unserer Untersuchungsbäume",
@@ -486,7 +514,7 @@
     "title_user": "Willkommen zurück bei&nbsp;<b>Stadtbäume als Klimabotschafter</b>, {{username}}!",
     "desc_user_1": "Wir freuen uns über jede ",
     "desc_phenobs_link": "Phänologiebeobachtung",
-    "desc_user_2": " oder Beacon-Auslesungen (mit der <a class=\"link\" tabindex=\"-1\" href=\"https://play.google.com/apps/internaltest/4699755394511268796\" target=\"_blank\">Android App</a>). Wenn Du währenddessen eingeloggt bist, erhältst du Erfahrungspunkte, die deinen Platz auf der Bestenliste verbessern.",
+    "desc_user_2": " oder Beacon-Auslesungen (mit der <a class=\"link\" href=\"https://play.google.com/apps/internaltest/4699755394511268796\" target=\"_blank\">Android App</a>). Wenn Du währenddessen eingeloggt bist, erhältst du Erfahrungspunkte, die deinen Platz auf der Bestenliste verbessern.",
     "user_score": {
       "title": "Dein Punktestand",
       "error": "Punktestand konnte nicht geladen werden"
@@ -632,6 +660,8 @@
     "request_error": "Nutzername oder Passwort ist falsch",
     "request_link": "Jemanden Neuen fragen",
     "list_link": "Zurück zur Liste",
+    "user_selected": "Ausgewählt",
+    "user_deselected": "Abgewählt",
     "summary": {
       "access": "{{username}} bekommt Zugang zu",
       "permissions": "{{username}} wird berechtigt"
@@ -692,5 +722,8 @@
       "title": "Aufgestiegen!",
       "subtitle": "Du hast Level {{level}} erreicht"
     }
+  },
+  "zoom": {
+    "close": "Schließen"
   }
 }

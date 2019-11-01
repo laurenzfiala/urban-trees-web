@@ -46,8 +46,8 @@
       <ng-container *ngFor="let tree of displayTrees">
 
         <div *ngIf="tree.location.city.id === city.id"
-             class="tree-container link-container">
-          <div class="inner d-flex flex-column pointer m-2"
+             class="tree-container">
+          <div class="inner link-container d-flex flex-column pointer m-2"
                [routerLink]="['/tree', tree.id]">
 
             <div class="title p-2">

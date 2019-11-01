@@ -34,7 +34,9 @@
           </div>
           <div class="m-1">
             <div class="link-btn d-flex flex-row align-items-center"
-                 (click)="showBeaconSelect = true">
+                 (action)="showBeaconSelect = true"
+                 role="button"
+                 tabindex="0">
               <i class="i i-xs i-dark i-edit mr-1"></i>
               Modify an existing beacon
             </div>
@@ -53,7 +55,9 @@
 
             <div class="m-1">
               <div class="link-btn d-flex flex-row align-items-center"
-                   (click)="showBeaconSelect = false; onSelectedBeaconChange(null)">
+                   (action)="showBeaconSelect = false; onSelectedBeaconChange(null)"
+                   role="button"
+                   tabindex="0">
                 <i class="i i-xs i-dark i-cross mr-1"></i>
                 Create a new beacon
               </div>
@@ -91,7 +95,9 @@
           </div>
           <div class="m-1">
             <div class="link-btn d-flex flex-row align-items-center"
-                 (click)="showTreeSelect = true">
+                 (action)="showTreeSelect = true"
+                 role="button"
+                 tabindex="0">
               <i class="i i-xs i-dark i-link mr-1"></i>
               Associate beacon with tree
             </div>
@@ -110,7 +116,9 @@
 
             <div class="m-1">
               <div class="link-btn d-flex flex-row align-items-center"
-                   (click)="showTreeSelect = false; onSelectedTreeChange(null)">
+                   (action)="showTreeSelect = false; onSelectedTreeChange(null)"
+                   role="button"
+                   tabindex="0">
                 <i class="i i-xs i-dark i-cross mr-1"></i>
                 Disassociate tree
               </div>
@@ -217,7 +225,9 @@
           </div>
           <div class="m-1">
             <div class="link-btn d-flex flex-row align-items-center"
-                 (click)="showLocation = true; onBeaconLocationTreeLink(false)">
+                 (action)="showLocation = true; onBeaconLocationTreeLink(false)"
+                 role="button"
+                 tabindex="0">
               <i class="i i-xs i-dark i-lock-open mr-1"></i>
               Unlock location
             </div>
@@ -233,7 +243,9 @@
 
           <div class="m-1">
             <div class="link-btn d-flex flex-row align-items-center"
-                 (click)="showLocation = false; onBeaconLocationTreeLink(true)">
+                 (action)="showLocation = false; onBeaconLocationTreeLink(true)"
+                 role="button"
+                 tabindex="0">
               <i class="i i-xs i-dark i-lock-closed mr-1"></i>
               Lock location
             </div>
@@ -284,7 +296,9 @@
                   </select>
                 </div>
                 <div class="col-auto">
-                  <div class="add-btn" (click)="showNewCityModal(newCityModal)"></div>
+                  <div class="add-btn" (action)="showNewCityModal(newCityModal)"
+                       role="button"
+                       tabindex="0"></div>
                 </div>
               </div>
 
@@ -315,11 +329,15 @@
     <div class="container">
       <div class="d-flex flex-row flex-wrap align-items-center justify-content-end justify-content-md-start m--2">
         <div class="link-container d-flex flex-row align-items-center m-2"
-             (click)="onDiscard()">
+             (action)="onDiscard()"
+             role="button"
+             tabindex="0">
           <i class="i i-sm i-dark i-cross-circle mr-1"></i>
           <a class="link">Discard</a>
         </div>
-        <div (click)="saveBeacon()"
+        <div (action)="saveBeacon()"
+             role="button"
+             tabindex="0"
              class="link-container d-flex flex-row align-items-center m-2">
           <i class="i i-sm i-send-primary mr-1"></i>
           <a *ngIf="isNewBeacon()" class="link primary">Create Beacon</a>
@@ -358,8 +376,8 @@
         <span *ngIf="hasStatus(StatusKey.NEW_CITY, StatusValue.IN_PROGRESS)">Adding city...</span>
         <span *ngIf="hasStatus(StatusKey.NEW_CITY, StatusValue.FAILED)">City could not be added.</span>
       </div>
-      <button type="button" class="btn btn-secondary" (click)="hideNewCityModal()">Close</button>
-      <button type="button" class="btn btn-primary" (click)="addCity()">Add city &amp; select</button>
+      <button type="button" class="btn btn-secondary" (action)="hideNewCityModal()">Close</button>
+      <button type="button" class="btn btn-primary" (action)="addCity()">Add city &amp; select</button>
     </div>
   </ng-template>
 </div>

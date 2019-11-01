@@ -25,8 +25,9 @@
 
     <div *ngIf="!hasStatus(StatusKey.DETAILS, StatusValue.SHOW) && hasStatus(StatusKey.ACHIEVEMENTS_LOADING, StatusValue.SUCCESSFUL)"
          class="more">
-      <a (click)="setStatus(StatusKey.DETAILS, StatusValue.SHOW)"
-            class="link-btn">
+      <a (action)="setStatus(StatusKey.DETAILS, StatusValue.SHOW)"
+         tabindex="0"
+         class="link-btn">
         {{'user_overview.view_details' | translate}}
       </a>
     </div>

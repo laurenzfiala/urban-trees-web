@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {AuthService} from '../../services/auth.service';
 import {Login} from '../../entities/login.entity';
 import {AbstractComponent} from '../abstract.component';
@@ -11,7 +11,7 @@ import {LoginStatus} from './login-status.enum';
   templateUrl: './project-login.component.html',
   styleUrls: ['./project-login.component.less']
 })
-export class ProjectLoginComponent extends AbstractComponent implements OnInit {
+export class ProjectLoginComponent extends AbstractComponent implements OnInit, AfterViewInit {
 
   private static QUERY_PARAMS_LOGIN_REASON_KEY: string = 'reason';
 
@@ -44,6 +44,12 @@ export class ProjectLoginComponent extends AbstractComponent implements OnInit {
    */
   @Output()
   public loggedin: EventEmitter<any> = new EventEmitter<any>();
+
+  @ViewChild('usernameInput', {static: false})
+  private usernameInput: ElementRef;
+
+  @ViewChild('passwordInput', {static: false})
+  private passwordInput: ElementRef;
 
   public accessReason: LoginAccessReason;
 
@@ -89,6 +95,19 @@ export class ProjectLoginComponent extends AbstractComponent implements OnInit {
     let username = this.authService.getUsername();
     if (username) {
       this.username = username;
+    }
+
+  }
+
+  /**
+   * Autofocus username (or password, if username is prefilled) field
+   */
+  public ngAfterViewInit(): void {
+
+    if (this.username) {
+      this.passwordInput.nativeElement.focus();
+    } else {
+      this.usernameInput.nativeElement.focus();
     }
 
   }

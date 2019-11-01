@@ -5,9 +5,9 @@
     </div>
     <div class="content-cat-text mb-2">
       <div class="d-inline-flex flex-row align-items-center link-container"
-           tabindex="-1"
-           (click)="showReportForm = true"
-           (keydown)="showReportForm = true">
+           tabindex="0"
+           role="button"
+           (action)="showReportForm = true">
         <i class="i i-sm i-question-technical-primary mr-1"></i>
         <a class="link primary">
           {{'report.technical_problem.link' | translate}}
@@ -50,13 +50,13 @@
     </div>
     <div class="d-flex flex-row align-items-center flex-wrap justify-content-end justify-content-md-start mx--2 mb--2">
       <div class="d-flex flex-row align-items-center m-2 link-container"
-           (click)="discardReport()">
+           (action)="discardReport()">
         <i class="i i-sm i-dark i-cross-circle mr-1"></i>
         <a class="link">{{'report.report.discard_link' | translate}}</a>
       </div>
       <div class="d-flex flex-row align-items-center m-2 link-container"
            [ngClass]="{'disabled': hasAnyStatus(StatusKey.SEND_REPORT, StatusValue.IN_PROGRESS, StatusValue.SUCCESSFUL) || !reportText}"
-           (click)="sendReport()">
+           (action)="sendReport()">
         <i class="i i-sm i-send-primary mr-1"></i>
         <a class="link primary">{{'report.report.send_link' | translate}}</a>
       </div>

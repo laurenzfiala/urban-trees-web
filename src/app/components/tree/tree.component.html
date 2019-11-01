@@ -18,22 +18,22 @@
 
 <ng-container *ngIf="tree">
 
-<div class="content-cat">
+<section class="content-cat">
   <div class="container">
     <div class="content-cat-heading">{{'tree.species.' + tree.species.name | lowercase | translate}}</div>
     <div class="content-cat-text">
       <i>{{'tree.species.latin.' + tree.species.name | lowercase | translate}}</i>
     </div>
   </div>
-</div>
+</section>
 
-<div *ngIf="tree.id === 1" class="content-cat">
+<section class="content-cat">
   <div class="container tree-image">
     <div class="content-cat-heading">{{'tree.summary.title' | translate}}</div>
     <div class="content-cat-flex flex-md-nowrap">
       <div class="content-cat-text flex-grow-1" [innerHTML]="'tree.summary.text' | translate">
       </div>
-      <ut-zoom [content]="treeImg" [fullscreenContent]="treeImgFull">
+      <ut-zoom *ngIf="tree.id === 1" [content]="treeImg" [fullscreenContent]="treeImgFull">
       </ut-zoom>
       <ng-template #treeImg>
         <img class="content-cat-img" src="../../../assets/content/img/tree_1.jpg"/>
@@ -43,9 +43,9 @@
       </ng-template>
     </div>
   </div>
-</div>
+</section>
 
-<div class="content-cat">
+<section class="content-cat">
   <div class="container tree-image">
     <div class="content-cat-heading">{{'tree.through_year.title' | translate}}</div>
     <div class="content-cat-flex flex-md-nowrap">
@@ -56,23 +56,23 @@
         </div>
       </div>
       <ut-slideshow #throughYearSlideshow [slides]="[
-                              {'url': '../../../assets/content/img/phenology_seasons/1.JPG'},
-                              {'url': '../../../assets/content/img/phenology_seasons/2.JPG'},
-                              {'url': '../../../assets/content/img/phenology_seasons/3.JPG'},
-                              {'url': '../../../assets/content/img/phenology_seasons/4.JPG'},
-                              {'url': '../../../assets/content/img/phenology_seasons/5.JPG'},
-                              {'url': '../../../assets/content/img/phenology_seasons/6.JPG'},
-                              {'url': '../../../assets/content/img/phenology_seasons/7.JPG'},
-                              {'url': '../../../assets/content/img/phenology_seasons/8.JPG'},
-                              {'url': '../../../assets/content/img/phenology_seasons/9.JPG'},
-                              {'url': '../../../assets/content/img/phenology_seasons/10.JPG'},
-                              {'url': '../../../assets/content/img/phenology_seasons/11.JPG'},
-                              {'url': '../../../assets/content/img/phenology_seasons/12.JPG'}
+                              {'url': '../../../assets/content/img/phenology_seasons/1.JPG', 'alt': 'tree.through_year.pictures_alt.1' | translate},
+                              {'url': '../../../assets/content/img/phenology_seasons/2.JPG', 'alt': 'tree.through_year.pictures_alt.2' | translate},
+                              {'url': '../../../assets/content/img/phenology_seasons/3.JPG', 'alt': 'tree.through_year.pictures_alt.3' | translate},
+                              {'url': '../../../assets/content/img/phenology_seasons/4.JPG', 'alt': 'tree.through_year.pictures_alt.4' | translate},
+                              {'url': '../../../assets/content/img/phenology_seasons/5.JPG', 'alt': 'tree.through_year.pictures_alt.5' | translate},
+                              {'url': '../../../assets/content/img/phenology_seasons/6.JPG', 'alt': 'tree.through_year.pictures_alt.6' | translate},
+                              {'url': '../../../assets/content/img/phenology_seasons/7.JPG', 'alt': 'tree.through_year.pictures_alt.7' | translate},
+                              {'url': '../../../assets/content/img/phenology_seasons/8.JPG', 'alt': 'tree.through_year.pictures_alt.8' | translate},
+                              {'url': '../../../assets/content/img/phenology_seasons/9.JPG', 'alt': 'tree.through_year.pictures_alt.9' | translate},
+                              {'url': '../../../assets/content/img/phenology_seasons/10.JPG', 'alt': 'tree.through_year.pictures_alt.10' | translate},
+                              {'url': '../../../assets/content/img/phenology_seasons/11.JPG', 'alt': 'tree.through_year.pictures_alt.11' | translate},
+                              {'url': '../../../assets/content/img/phenology_seasons/12.JPG', 'alt': 'tree.through_year.pictures_alt.12' | translate}
                               ]"
                     [slideTemplate]="treeSlide"
                     [intervalMs]="2500">
       </ut-slideshow>
-      <ng-template #treeSlide let-url="url">
+      <ng-template #treeSlide let-url="url" let-alt="alt">
         <ut-zoom [content]="img"
                  [fullscreenContent]="imgFull"
                  [showControls]="true"
@@ -82,17 +82,17 @@
                  (closed)="throughYearSlideshow.pause = false">
         </ut-zoom>
         <ng-template #img>
-          <img class="content-cat-img" [src]="url"/>
+          <img class="content-cat-img" [src]="url" [alt]="alt"/>
         </ng-template>
         <ng-template #imgFull>
-          <img class="fullscreen-content" [src]="url"/>
+          <img class="fullscreen-content" [src]="url" [alt]="alt"/>
         </ng-template>
       </ng-template>
     </div>
   </div>
-</div>
+</section>
 
-<div class="content-cat">
+<section class="content-cat">
   <div class="container tree-image">
     <div class="content-cat-heading">{{'tree.cooling_power.title' | translate}}</div>
     <div class="content-cat-flex flex-md-nowrap">
@@ -105,9 +105,9 @@
       <img class="content-cat-img" src="../../../assets/content/img/tree-temp.svg"/>
     </div>
   </div>
-</div>
+</section>
 
-<div class="content-cat">
+<section class="content-cat">
   <div class="container tree-image">
     <div class="content-cat-heading">{{'tree.leaf_development.title' | translate}}</div>
     <div class="content-cat-flex flex-lg-nowrap">
@@ -131,9 +131,9 @@
       </ut-audio-img>
     </div>
   </div>
-</div>
+</section>
 
-<div class="content-cat">
+<section class="content-cat">
   <div class="container tree-image">
     <div class="content-cat-heading">
       <i *ngIf="appTransferAmount" class="feature-pointer mr-1"></i>
@@ -162,9 +162,9 @@
       </div>
     </div>
   </div>
-</div>
+</section>
 
-<div *auth="envService.security.rolesAdmin" class="content-cat">
+<section *auth="envService.security.rolesAdmin" class="content-cat">
   <div class="container tree-image">
     <div class="content-cat-heading">
       {{'tree.admin.title' | translate}}
@@ -178,7 +178,9 @@
       {{'tree.admin.edit_link' | translate}}
     </a>
   </div>
-</div>
+</section>
+
+
 
 </ng-container>
 

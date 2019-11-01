@@ -76,7 +76,8 @@
         <div class="m-1">
           <div *ngIf="isObserveNow"
              class="link-btn d-flex flex-row align-items-center"
-             (click)="observationInPast()">
+             (action)="observationInPast()"
+             tabindex="0">
             <i class="i i-xs i-dark i-calendar mr-1"></i>
             {{'phen_obs.step_2.obs_past' | translate}}
         </div>
@@ -173,7 +174,9 @@
           <div class="obs-container"
                [ngClass]="{'done': type.done}">
             <div class="obs-header"
-                 (click)="collapse.toggle()">
+                 (action)="collapse.toggle()"
+                 role="button"
+                 tabindex="0">
               <div class="flex-shrink-0 flex-grow-1">{{'phen_obs.step_3.type.' + type.name + '.name_plural' | translate | capitalize}}</div>
               <div class="flex-shrink-0">{{type.userObservations.length}} / {{type.objects.length}}</div>
             </div>
@@ -191,8 +194,10 @@
                        [cssvar]="{name: '--result-amount', value: type.results.length}">
 
                     <div class="obs-res"
-                         (click)="addObservationResult(collapse, type, result)"
-                         (contextmenu)="undoObservationResult(type, result); $event.preventDefault()">
+                         (action)="addObservationResult(collapse, type, result)"
+                         (contextmenu)="undoObservationResult(type, result); $event.preventDefault()"
+                         role="button"
+                         tabindex="0">
                       <div class="obs-res-counter mx--1">
                         <div class="mx-1">{{getObservationAmount(type, result)}}</div>
                         <div class="text mx-1">
@@ -201,6 +206,7 @@
                       </div>
                       <img *ngIf="images[result.id]?.encodedImage"
                            [src]="images[result.id]?.encodedImage"
+                           [alt]="images[result.id]?.alternativeText"
                            class="obs-res-img w-100" />
                       <div *ngIf="images[result.id] && !images[result.id].encodedImage"
                            class="d-flex flex-row align-items-center justify-content-center my-2">
@@ -224,7 +230,9 @@
                        [cssvar]="{name: '--result-amount', value: type.results.length}">
 
                     <div class="obs-res"
-                         (click)="type.userObservations = []; addObservationResult(collapse, type, result)">
+                         (action)="type.userObservations = []; addObservationResult(collapse, type, result)"
+                         role="button"
+                         tabindex="0">
                       <div class="obs-res-counter mx--1">
                         <div class="mx-1 d-flex flex-row align-items-center">
                           <i class="i i-dark i-check"
@@ -236,6 +244,7 @@
                       </div>
                       <img *ngIf="images[result.id]?.encodedImage"
                            [src]="images[result.id]?.encodedImage"
+                           [alt]="images[result.id]?.alternativeText"
                            class="obs-res-img w-100" />
                       <div *ngIf="images[result.id] && !images[result.id].encodedImage"
                            class="d-flex flex-row align-items-center justify-content-center my-2">
@@ -257,13 +266,17 @@
                    class="d-flex flex-row flex-wrap justify-content-end justify-content-md-start justm--2">
 
                 <div class="d-flex align-items-center m-2"
-                      (click)="undoObservationResult(type, undefined, true)">
+                      (action)="undoObservationResult(type, undefined, true)"
+                     role="button"
+                     tabindex="0">
                   <i class="i i-dark i-undo-dashed i-sm mr-1"></i>
                   <a class="link">{{'phen_obs.step_3.reset' | translate}}</a>
                 </div>
 
                 <div class="d-flex align-items-center m-2"
-                      (click)="undoObservationResult(type)">
+                      (action)="undoObservationResult(type)"
+                     role="button"
+                     tabindex="0">
                   <i class="i i-dark i-undo i-sm mr-1"></i>
                   <a class="link">{{'phen_obs.step_3.undo' | translate}}</a>
                 </div>
@@ -374,7 +387,9 @@
       <div *ngIf="!addMoreObservers"
             class="m-1">
         <div class="link-btn d-flex flex-row align-items-center"
-             (click)="addMoreObservers = true">
+             (action)="addMoreObservers = true"
+             role="button"
+             tabindex="0">
           <i class="i i-xs i-dark i-user-add mr-1"></i>
           {{'phen_obs.step_5.add_more' | translate}}
         </div>
@@ -444,16 +459,20 @@
     <div class="d-flex flex-row flex-wrap justify-content-end justify-content-md-start mx--2">
 
       <div class="d-flex flex-row align-items-center justify-content-center mx-2"
-           (click)="onDiscard()">
-        <i class="i i-sm i-dark i-cross-circle mr-1"></i>
+           (action)="onDiscard()"
+           role="button"
+           tabindex="0">
+        <i class="i i-sm i-dark i-cross-circle mr-1" aria-hidden="true"></i>
         <div class="link">
           {{'phen_obs.send.discard' | translate}}
         </div>
       </div>
       <div class="d-flex flex-row align-items-center justify-content-center m-2"
            [ngClass]="{'send-disabled': !canSend || hasStatus(StatusKey.SEND_DATA, StatusValue.IN_PROGRESS) || hasAnyStatus(StatusKey.SEND_IMAGE, StatusValue.IN_PROGRESS, StatusValue.FAILED)}"
-           (click)="onSubmit()">
-        <i class="i i-sm i-dark i-send-primary mr-1"></i>
+           (action)="onSubmit()"
+           role="button"
+           tabindex="0">
+        <i class="i i-sm i-dark i-send-primary mr-1" aria-hidden="true"></i>
         <div class="link primary">
           {{'phen_obs.send.send' | translate}}
         </div>
@@ -483,7 +502,9 @@
         <i class="i i-sm i-upload-error-danger mr-1"></i>
         {{'phen_obs.send.error_img' | translate}}
         <div class="link-btn link-btn-sm danger ml-1"
-             (click)="sendUserImage()">{{'general.retry' | translate}}</div>
+             (action)="sendUserImage()"
+             role="button"
+             tabindex="0">{{'general.retry' | translate}}</div>
       </div>
       <div *ngIf="hasStatus(StatusKey.SEND_DATA, StatusValue.SUCCESSFUL) && hasStatus(StatusKey.SEND_IMAGE, StatusValue.SUCCESSFUL)"
            class="d-flex flex-row align-items-center justify-content-center text-success m-2">
@@ -581,7 +602,10 @@
       {{'phen_obs.error' | translate}}
     </div>
     <div class="status-controls">
-      <button class="btn btn-light float-right" (click)="load()" (keydown)="load()">{{'general.retry' | translate}}</button>
+      <button class="btn btn-light float-right"
+              (action)="load()"
+              role="button"
+              tabindex="0">{{'general.retry' | translate}}</button>
     </div>
   </div>
 </div>

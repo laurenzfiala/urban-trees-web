@@ -13,9 +13,9 @@
   <div *ngFor="let tree of displayTrees[currentDisplayTreePage]"
        class="tree-container link-container"
        [ngClass]="{'active': selectedTree?.id === tree.id}">
-    <div class="inner d-flex flex-column pointer m-1"
-         (click)="toggleTree(tree.id);"
-         (keydown)="toggleTree(tree.id);">
+    <div class="inner link-container d-flex flex-column pointer m-1"
+         (action)="toggleTree(tree.id)"
+         tabindex="0">
 
       <div class="title p-2">
         <i class="i i-md i-dark i-tree mr-2"></i>
@@ -53,15 +53,15 @@
   <ul class="pagination mt-2 mb-0">
     <li class="page-item">
       <a class="page-link"
-         (click)="displayTreePage(0)"
-         (keydown)="displayTreePage(0)">
+         (action)="displayTreePage(0)"
+         tabindex="0">
         <i class="i i-arrow-left-double i-dark"></i>
       </a>
     </li>
     <li class="page-item">
       <a class="page-link"
-         (click)="displayTreePage(currentDisplayTreePage-1)"
-         (keydown)="displayTreePage(currentDisplayTreePage-1)">
+         (action)="displayTreePage(currentDisplayTreePage-1)"
+         tabindex="0">
         <i class="i i-arrow-left i-dark" aria-hidden="true"></i>
       </a>
     </li>
@@ -72,15 +72,15 @@
     </li>
     <li class="page-item">
       <a class="page-link"
-         (click)="displayTreePage(currentDisplayTreePage+1)"
-         (keydown)="displayTreePage(currentDisplayTreePage+1)">
+         (action)="displayTreePage(currentDisplayTreePage+1)"
+         tabindex="0">
         <i class="i i-arrow-right i-dark"></i>
       </a>
     </li>
     <li class="page-item">
       <a class="page-link"
-         (click)="displayTreePage(currentDisplayTreePages-1)"
-         (keydown)="displayTreePage(currentDisplayTreePages-1)">
+         (action)="displayTreePage(currentDisplayTreePages-1)"
+         tabindex="0">
         <i class="i i-arrow-right-double i-dark"></i>
       </a>
     </li>

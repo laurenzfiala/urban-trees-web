@@ -6,6 +6,7 @@ import {Announcement} from '../../entities/announcement.entity';
 import {EnvironmentService} from '../../services/environment.service';
 import {UserService} from '../../services/user.service';
 import {UserData} from '../../entities/user-data.entity';
+import * as $ from 'jquery';
 
 @Component({
   selector: 'ut-header',
@@ -13,6 +14,9 @@ import {UserData} from '../../entities/user-data.entity';
   styleUrls: ['./header.component.less']
 })
 export class HeaderComponent implements OnInit {
+
+  public $ = $;
+  public document = document;
 
   get userdata(): UserData {
     return this.userService.getUserData();

@@ -242,9 +242,11 @@ textarea.form-control:focus,
 
   .link-container:hover &,
   .link-container:active &,
+  .link-container:focus &,
   &:hover,
   &:active,
-  &.active {
+  &.active,
+  &:focus {
     text-decoration: none;
     color: @linkHoverColor !important;
     border-bottom-color: @linkHoverColor !important;
@@ -256,7 +258,8 @@ textarea.form-control:focus,
 
     &:hover,
     &:active,
-    &.active {
+    &.active,
+    &:focus {
       text-decoration: none;
       color: @dangerColor !important;
       border-bottom-color: @dangerColor !important;
@@ -271,7 +274,8 @@ textarea.form-control:focus,
     .link-container:active &,
     &:hover,
     &:active,
-    &.active {
+    &.active,
+    &:focus {
       text-decoration: none;
       color: @primaryColor !important;
       border-bottom-color: @primaryColor !important;
@@ -286,7 +290,8 @@ textarea.form-control:focus,
     .link-container:active &,
     &:hover,
     &:active,
-    &.active {
+    &.active,
+    &:focus {
       text-decoration: none;
       color: @successColor !important;
       border-bottom-color: @successColor !important;

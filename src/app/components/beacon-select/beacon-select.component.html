@@ -14,8 +14,9 @@
        class="beacon-container link-container"
        [ngClass]="{'active': selectedBeacon?.id === beacon.id}">
     <div class="inner d-flex flex-column pointer m-1"
-         (click)="toggleSelect(beacon.id);"
-         (keydown)="toggleSelect(beacon.id);">
+         (action)="toggleSelect(beacon.id);"
+         role="button"
+         tabindex="0">
 
       <div class="title p-2">
         <i class="i i-md i-dark i-beacon mr-2"></i>
@@ -53,15 +54,15 @@
   <ul class="pagination mt-2 mb-0">
     <li class="page-item">
       <a class="page-link"
-         (click)="displayPage(0)"
-         (keydown)="displayPage(0)">
+         (action)="displayPage(0)"
+         tabindex="0">
         <i class="i i-arrow-left-double i-dark"></i>
       </a>
     </li>
     <li class="page-item">
       <a class="page-link"
-         (click)="displayPage(currentDisplayPage-1)"
-         (keydown)="displayPage(currentDisplayPage-1)">
+         (action)="displayPage(currentDisplayPage-1)"
+         tabindex="0">
         <i class="i i-arrow-left i-dark" aria-hidden="true"></i>
       </a>
     </li>
@@ -72,15 +73,15 @@
     </li>
     <li class="page-item">
       <a class="page-link"
-         (click)="displayPage(currentDisplayPage+1)"
-         (keydown)="displayPage(currentDisplayPage+1)">
+         (action)="displayPage(currentDisplayPage+1)"
+         tabindex="0">
         <i class="i i-arrow-right i-dark"></i>
       </a>
     </li>
     <li class="page-item">
       <a class="page-link"
-         (click)="displayPage(currentDisplayPages-1)"
-         (keydown)="displayPage(currentDisplayPages-1)">
+         (action)="displayPage(currentDisplayPages-1)"
+         tabindex="0">
         <i class="i i-arrow-right-double i-dark"></i>
       </a>
     </li>

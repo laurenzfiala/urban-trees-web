@@ -9,31 +9,31 @@
     <div *auth="envService.security.rolesUser" class="mb-2">
       <div class="content-cat-heading d-block" [innerHTML]="'home.title_user' | translate:{'username': getUsername()}"></div>
       <span [innerHTML]="'home.desc_user_1' | translate"></span>
-      <a class="link" tabindex="-1" routerLink="/phenology/observation/step">{{'home.desc_phenobs_link' | translate}}</a>
+      <a class="link" routerLink="/phenology/observation/step">{{'home.desc_phenobs_link' | translate}}</a>
       <span [innerHTML]="'home.desc_user_2' | translate"></span>
     </div>
 
     <div class="btn-img-toolbar">
       <div class="d-flex flex-wrap">
-        <a class="btn-img trees" tabindex="-1" routerLink="/trees">
+        <a class="btn-img trees" routerLink="/trees">
           <div>
             <i class="i i-md i-tree mr-2"></i>
             {{'navigation.links.tree_list' | translate}}
           </div>
         </a>
-        <a *auth="[envService.security.rolesPhenObs]" class="btn-img phenology" tabindex="-1" routerLink="/phenology/observation/step">
+        <a *auth="[envService.security.rolesPhenObs]" class="btn-img phenology" routerLink="/phenology/observation/step">
           <div>
             <i class="i i-md i-leaf mr-2"></i>
             {{'navigation.links.phen_obs' | translate}}
           </div>
         </a>
-        <a class="btn-img measurements" tabindex="-1" routerLink="/measurements">
+        <a class="btn-img measurements" routerLink="/measurements">
           <div>
             <i class="i i-md i-beacon mr-2"></i>
             {{'navigation.links.measurements' | translate}}
           </div>
         </a>
-        <a class="btn-img statistics" tabindex="-1" routerLink="/statistics">
+        <a class="btn-img statistics" routerLink="/statistics">
           <div>
             <i class="i i-md i-statistics mr-2"></i>
             {{'navigation.links.statistics' | translate}}
@@ -68,7 +68,7 @@
       {{'home.admin_console.desc' | translate}}
     </div>
 
-    <a class="content-cat-link" tabindex="-1" routerLink="/admin">
+    <a class="content-cat-link" routerLink="/admin">
       {{'home.admin_console.link' | translate}}
     </a>
   </div>
@@ -109,7 +109,7 @@
       </div>
     </div>
 
-    <a class="content-cat-link" tabindex="-1" routerLink="/statistics">
+    <a class="content-cat-link" routerLink="/statistics">
       {{'home.project_intro.link' | translate}}
     </a>
 
@@ -121,7 +121,7 @@
     <div class="content-cat-heading">{{'home.more_info.title' | translate}}</div>
     <div class="content-cat-text" [innerHTML]="'home.more_info.desc' | translate"></div>
 
-    <a class="content-cat-link" tabindex="-1" href="http://stadt-baum-klima.sbg.ac.at/" target="_blank">
+    <a class="content-cat-link" href="http://stadt-baum-klima.sbg.ac.at/" target="_blank">
       {{'home.more_info.link' | translate}}
     </a>
 

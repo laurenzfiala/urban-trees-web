@@ -24,14 +24,19 @@
         <div *ngFor="let u of grantingUsers"
              class="link-btn user-entry flex-shrink-0 m-1"
              [ngClass]="{'success': selectedUsers.has(u)}"
-             (click)="toggleUser(u)">
-          <i [ngClass]="{'i-check-success': selectedUsers.has(u), ' i-dark i-lock-open': !selectedUsers.has(u)}" class="i i-xs mr-1"></i>
+             (action)="toggleUser(u)"
+             role="button"
+             tabindex="0">
+          <i [ngClass]="{'i-check-success': selectedUsers.has(u), ' i-dark i-lock-open': !selectedUsers.has(u)}" class="i i-xs mr-1" aria-hidden="true"></i>
+          <span class="sr-only">{{('user_permissions.' + (selectedUsers.has(u) ? 'user_selected' : 'user_deselected')) | translate}}</span>
           {{u.username}}
         </div>
 
         <div class="d-inline-flex flex-row align-items-center m-1"
-             (click)="addNew = true">
-          <i class="i i-xs i-dark i-user-add mr-1"></i>
+             (action)="addNew = true"
+             role="button"
+             tabindex="0">
+          <i class="i i-xs i-dark i-user-add mr-1" aria-hidden="true"></i>
           <a class="link">{{'user_permissions.request_link' | translate}}</a>
         </div>
 
@@ -98,7 +103,9 @@
 
       <div *ngIf="grantingUsers?.size > 0" class="text-left mt-2">
         <div class="d-flex flex-row align-items-center"
-             (click)="addNew = false">
+             (action)="addNew = false"
+             role="button"
+             tabindex="0">
           <i class="i i-xs i-dark i-chevron-left mr-1"></i>
           <a class="link">{{'user_permissions.list_link' | translate}}</a>
         </div>

@@ -1,18 +1,24 @@
 <div class="content-cat">
   <div class="container">
     <div class="content-cat-heading">{{'settings.language.title' | translate}}</div>
-    <div class="content-cat-text">
+    <div class="content-cat-text mb--2">
       {{'settings.language.desc' | translate}}
 
-      <div *ngFor="let lang of availableLanguages"
-           class="d-flex flex-row align-items-center mt-2 lang"
-           [ngClass]="{'active': lang === currentLanguage}"
-           (click)="setLanguage(lang)">
-        <img class="lang-icon" [attr.src]="'/assets/img/icon/lang/' + lang + '.svg'" />
-        <a class="link">
-          {{'settings.langs.' + lang | translate}}
-        </a>
-      </div>
+      <ng-container *ngFor="let lang of availableLanguages">
+
+        <div class="my-2">
+          <a class="link-container"
+             [ngClass]="{'active': lang === currentLanguage}"
+             (action)="setLanguage(lang)"
+             tabindex="0">
+            <img class="lang-icon" [attr.src]="'/assets/img/icon/lang/' + lang + '.svg'" />
+            <div class="link">
+              {{'settings.langs.' + lang | translate}}
+            </div>
+          </a>
+        </div>
+
+      </ng-container>
     </div>
   </div>
 </div>
@@ -59,21 +65,24 @@
     </div>
     <a class="content-cat-link danger"
        [popover]="deleteAccountPopover"
+       #deleteAccountPopoverTrigger="bs-popover"
        placement="right"
        outsideClick=true
-       container="body">
+       triggers=""
+       tabindex="0"
+       (action)="deleteAccountPopoverTrigger.toggle()">
       {{'settings.delete_account.btn' | translate}}
     </a>
   </div>
 </div>
 
 <ng-template #deleteAccountPopover>
-  <div *ngIf="user" class="d-flex flex-column">
+  <div *ngIf="user" class="d-flex flex-column" (action)="$event.stopPropagation()">
     {{'settings.delete_account.popover_title' | translate}}
     <div class="text-subtle text-sm">{{'settings.delete_account.popover_desc' | translate}}</div>
     <button *ngIf="user.deleteStatus === undefined"
             class="btn btn-outline-danger btn-block mt-2"
-            (click)="deleteUser(); $event.stopPropagation()">
+            (action)="deleteUser(); $event.stopPropagation()">
       {{'settings.delete_account.popover_btn' | translate}}
     </button>
     <button *ngIf="user.deleteStatus === StatusValue.IN_PROGRESS"

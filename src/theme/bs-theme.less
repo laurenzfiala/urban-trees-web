@@ -2,14 +2,15 @@
 
 .card {
   border-color: @lightBorderColor;
-}
 
-.card a {
-  cursor: pointer;
-  color: @linkColor !important;
-  text-decoration: none !important;
+  a {
+    cursor: pointer;
+    color: @linkColor !important;
+    text-decoration: none !important;
+  }
 
-  &:hover {
+  a:hover,
+  &:focus {
     color: @linkHoverColor !important;
     text-decoration: underline !important;
   }

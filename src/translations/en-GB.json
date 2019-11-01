@@ -9,7 +9,18 @@
     "date_format_day": "MM/DD",
     "date_format_time": "HH:mm"
 	},
+  "announcements": {
+    "close": "Close announcement"
+  },
 	"navigation": {
+    "accessibility": {
+      "title": "Accessibility shortcuts",
+      "go_to": {
+        "header": "Jump to navigation",
+        "content": "Jump to content",
+        "footer": "Jump to footer"
+      }
+    },
 		"home": "Home",
 		"phenology": "Phenology",
 		"tree_list": "Trees",
@@ -23,6 +34,9 @@
 			"madeby": "Made with &#x2764; by the",
       "madeby_team": "Urban-Trees-Team"
 		},
+    "messages": "Messages",
+    "settings": "Settings &amp; Language",
+    "login": "Log in",
     "logout": "Log out",
     "project_account_1": "Project-",
     "project_account_2": "Account",
@@ -235,7 +249,21 @@
     "through_year": {
       "title": "Trees through the seasons",
       "text": "This image set shows the leaf development of trees in spring and illustrates a central research objective in the project: We investigate the length of the vegetation period of different types of urban trees and the influence of urban heat island intensity. <b>City trees cool the city and make it liveable!</b>",
-      "update_month": "Information last updated in August 2019."
+      "update_month": "Information last updated in August 2019.",
+      "pictures_alt": {
+        "1": "Photo of tree taken on 18th of March. The tree has no leaves yet.",
+        "2": "Photo of tree taken on 21st of March.",
+        "3": "Photo of tree taken on 25th of March.",
+        "4": "Photo of tree taken on 27th of March.",
+        "5": "Photo of tree taken on 2nd of April. Many buds have already opened.",
+        "6": "Photo of tree taken on 5th of April. The tree has grown some larger leaves.",
+        "7": "Photo of tree taken on 8th of April. The tree has grown many larger leaves.",
+        "8": "Photo of tree taken on 11th of April. The tree crown now looks a lot more dense.",
+        "9": "Photo of tree taken on 14th of April. The tree crown looks even more dense.",
+        "10": "Photo of tree taken on 16th of April.",
+        "11": "Photo of tree taken on 20th of April.",
+        "12": "Photo of tree taken on 24th of April. The tree has fully developed its leaves."
+      }
     },
     "cooling_power": {
       "title": "Cooling capacity of our examined trees",
@@ -487,7 +515,7 @@
     "title_user": "Welcome back to&nbsp;<b>Urban Trees</b>, {{username}}!",
     "desc_user_1": "We really appreciate any ",
     "desc_phenobs_link": "Phenology observations",
-    "desc_user_2": " or beacon readouts (using the <a class=\"link\" tabindex=\"-1\" href=\"https://play.google.com/apps/internaltest/4699755394511268796\" target=\"_blank\">android app</a>). When logged in, you can earn experience points and advance your level by completing one of these activities.",
+    "desc_user_2": " or beacon readouts (using the <a class=\"link\" href=\"https://play.google.com/apps/internaltest/4699755394511268796\" target=\"_blank\">android app</a>). When logged in, you can earn experience points and advance your level by completing one of these activities.",
     "user_score": {
       "title": "Your Score",
       "error": "Could not load your score"
@@ -633,6 +661,8 @@
     "request_error": "Username or password is wrong",
     "request_link": "Ask someone new",
     "list_link": "Back to list",
+    "user_selected": "Selected",
+    "user_deselected": "Deselected",
     "summary": {
       "access": "{{username}} gets access to",
       "permissions": "{{username}} gets permission to"
@@ -693,5 +723,8 @@
       "title": "Levelled up!",
       "subtitle": "You are now level {{level}}"
     }
+  },
+  "zoom": {
+    "close": "Close"
   }
 }

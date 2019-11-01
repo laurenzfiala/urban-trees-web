@@ -14,6 +14,10 @@ a.btn-img {
   text-decoration: none;
   cursor: pointer;
   color: white;
+
+  &:focus {
+    outline: @accessibilityFocusOutline;
+  }
 }
 
 .btn-img {
@@ -131,7 +135,8 @@ a.link-btn:not([href]):not([tabindex]) {
 
   &:hover,
   &:active,
-  &.active {
+  &.active,
+  &:focus {
     text-decoration: none;
     color: @linkHoverColor !important;
     border-color: @linkHoverColor !important;
@@ -162,7 +167,8 @@ a.link-btn:not([href]):not([tabindex]) {
     color: lighten(@dangerColor, 15%) !important;
     border-color: lighten(@dangerColor, 15%) !important;
 
-    &:hover {
+    &:hover,
+    &:focus {
       color: @dangerColor !important;
       border-color: @dangerColor !important;
     }
@@ -172,7 +178,8 @@ a.link-btn:not([href]):not([tabindex]) {
     color: lighten(@primaryColor, 15%) !important;
     border-color: lighten(@primaryColor, 15%) !important;
 
-    &:hover {
+    &:hover,
+    &:focus {
       color: @primaryColor !important;
       border-color: @primaryColor !important;
     }
@@ -190,7 +197,8 @@ a.link-btn:not([href]):not([tabindex]) {
       }
     }
 
-    &:hover {
+    &:hover,
+    &:focus {
       color: @successColor !important;
       border-color: @successColor !important;
     }
@@ -200,7 +208,8 @@ a.link-btn:not([href]):not([tabindex]) {
     color: lighten(@warningColor, 15%) !important;
     border-color: lighten(@warningColor, 15%) !important;
 
-    &:hover {
+    &:hover,
+    &:focus {
       color: @warningColor !important;
       border-color: @warningColor !important;
     }
