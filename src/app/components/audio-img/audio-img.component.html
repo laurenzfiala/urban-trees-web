@@ -1,17 +1,29 @@
-<div class="image-container" (click)="openOverlay();">
+<div class="image-container" (action)="openOverlay();" [tabindex]="this.showOverlay ? -1 : 0">
 
-  <div class="overlay" [ngClass]="{'hide': !this.showOverlay}" (click)="$event.stopPropagation();">
+  <div class="overlay" [ngClass]="{'hide': !this.showOverlay}" (action)="$event.stopPropagation();">
 
-    <div class="close" (click)="closeOverlay();"></div>
+    <div class="close" (action)="closeOverlay();" role="button" tabindex="0"></div>
 
     <div>
-      <div class="audio-control playpause" [ngClass]="{'play': !this.isPlaying, 'stop': this.isPlaying}" (click)="onClickPlayPause()"></div>
-      <div class="audio-control volume" [ngClass]="'vol-' + volumeLevel" (click)="toggleVolume();"></div>
+      <div class="audio-control playpause"
+           [ngClass]="{'play': !this.isPlaying, 'stop': this.isPlaying}"
+           (action)="onClickPlayPause()"
+           role="button"
+           tabindex="0">
+        <span [ngClass]="{'hidden': this.isPlaying}" class="sr-only">{{'tree.audioimg.play' | translate}}</span>
+        <span [ngClass]="{'hidden': !this.isPlaying}" class="sr-only">{{'tree.audioimg.stop' | translate}}</span>
+      </div>
+      <div class="audio-control volume"
+           [ngClass]="'vol-' + volumeLevel"
+           (action)="toggleVolume();"
+           tabindex="0">
+        <span class="sr-only">{{'tree.audioimg.vol_' + volumeLevel | translate}}</span>
+      </div>
     </div>
 
   </div>
 
-  <img [src]="image" class="w-100"/>
+  <img [src]="image" [alt]="imageAltText" class="w-100"/>
 
   <div class="d-flex align-items-center">
     <div class="audio-control progress" [ngStyle]="{'width': progress + '%'}"></div>

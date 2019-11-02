@@ -381,6 +381,12 @@
       }
     },
     "audioimg": {
+      "stop": "Audio stoppen",
+      "play": "Audio abspielen",
+      "vol_0": "Lautstärke erhöhen (Derzeitige Einstellung: stumm)",
+      "vol_1": "Lautstärke erhöhen (Derzeitige Einstellung: leise)",
+      "vol_2": "Lautstärke erhöhen (Derzeitige Einstellung: mittel)",
+      "vol_3": "Audio stummschalten (Derzeitige Einstellung: laut)",
       "help": {
         "controls": "Für Steuerung klicken"
       },

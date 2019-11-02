@@ -382,6 +382,12 @@
       }
     },
     "audioimg": {
+      "stop": "Stop audio",
+      "play": "Play audio",
+      "vol_0": "Increase Volume (Current setting: muted)",
+      "vol_1": "Increase Volume (Current setting: quiet)",
+      "vol_2": "Increase Volume (Current setting: medium)",
+      "vol_3": "Mute Audio (Current setting: loud)",
       "help": {
         "controls": "Click to show controls"
       },

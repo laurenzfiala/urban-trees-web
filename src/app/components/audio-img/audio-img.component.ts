@@ -11,6 +11,9 @@ export class AudioImgComponent implements OnInit {
   public image: string;
 
   @Input()
+  public imageAltText: string;
+
+  @Input()
   public audio: string;
 
   @ViewChild('player', { static: true })

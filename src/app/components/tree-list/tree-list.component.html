@@ -47,8 +47,9 @@
 
         <div *ngIf="tree.location.city.id === city.id"
              class="tree-container">
-          <div class="inner link-container d-flex flex-column pointer m-2"
-               [routerLink]="['/tree', tree.id]">
+          <a class="inner link-container d-flex flex-column pointer m-2"
+               [routerLink]="['/tree', tree.id]"
+               tabindex="0">
 
             <div class="title p-2">
               <i class="i i-md i-dark i-tree mr-2"></i>
@@ -64,13 +65,13 @@
                 {{'tree_list.tree.location' | translate:tree.location}}
               </div>
               <div class="text-right mt-1">
-                <a class="link">
+                <a class="link" tabindex="-1">
                   {{'tree_list.tree.link' | translate}}
                 </a>
               </div>
             </div>
 
-          </div>
+          </a>
         </div>
 
       </ng-container>
@@ -95,7 +96,7 @@
       {{'tree_list.error' | translate}}
     </div>
     <div class="status-controls">
-      <button class="btn btn-light float-right" (click)="load()" (keydown)="load()">{{'general.retry' | translate}}</button>
+      <button class="btn btn-light float-right" (action)="load()">{{'general.retry' | translate}}</button>
     </div>
   </div>
 </div>
