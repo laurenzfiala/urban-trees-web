@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {BeaconData} from '../../entities/beacon-data.entity';
 import {AbstractComponent} from '../abstract.component';
 import {TreeService} from '../../services/tree.service';
@@ -10,13 +10,18 @@ import {BeaconLogSeverity} from '../../entities/BeaconLogSeverity';
 import {BeaconLog} from '../../entities/beacon-log.entity';
 import {TranslateService} from '@ngx-translate/core';
 import {BeaconStatus} from '../../entities/beacon-status.entity';
+import {LayoutConfig} from '../../config/layout.config';
+import {BreakpointObserver, BreakpointState} from '@angular/cdk/layout';
+import {SubscriptionManagerService} from '../../services/subscription-manager.service';
 
 @Component({
   selector: 'ut-beacon-list',
   templateUrl: './beacon-list.component.html',
   styleUrls: ['./beacon-list.component.less']
 })
-export class BeaconListComponent extends AbstractComponent implements OnInit {
+export class BeaconListComponent extends AbstractComponent implements OnInit, OnDestroy {
+
+  private static SUBSCRIPTION_TAG = 'beacon-list';
 
   private static EFFECTIVE_BATTERY_CAPACITY: number = 30;
   public static BEACON_LOGS_PAGE_SIZE: number = 25;
@@ -26,6 +31,10 @@ export class BeaconListComponent extends AbstractComponent implements OnInit {
   public StatusValue = StatusValue;
   public BeaconStatus = BeaconStatus;
 
+  /**
+   * Limit the amount of beacons shown by default if the viewport is < LG.
+   * -1 means this value should be disregarded.
+   */
   public limit: number = BeaconListComponent.BEACON_LIST_INITIAL_SIZE;
 
   private beaconsInternal: Array<BeaconFrontend>;
@@ -33,7 +42,7 @@ export class BeaconListComponent extends AbstractComponent implements OnInit {
 
   @Input()
   set beacons(beacons: Array<BeaconFrontend>) {
-    if (this.limit > BeaconListComponent.BEACON_LIST_INITIAL_SIZE && beacons && beacons.length <= BeaconListComponent.BEACON_LIST_INITIAL_SIZE) {
+    if (this.limit !== -1 && this.limit > BeaconListComponent.BEACON_LIST_INITIAL_SIZE && beacons && beacons.length <= BeaconListComponent.BEACON_LIST_INITIAL_SIZE) {
       this.limit = BeaconListComponent.BEACON_LIST_INITIAL_SIZE;
     }
     this.beaconsInternal = beacons;
@@ -81,13 +90,32 @@ export class BeaconListComponent extends AbstractComponent implements OnInit {
 
   constructor(private treeService: TreeService,
               private adminService: AdminService,
-              private translateService: TranslateService) {
+              private translateService: TranslateService,
+              private subs: SubscriptionManagerService,
+              private bpObserver: BreakpointObserver) {
     super();
   }
 
-  ngOnInit() {
+  public ngOnInit(): void {
+
     this.preSelectDevice(this.preselectDeviceId);
     this.loadBeaconData();
+
+    this.subs.register(this.bpObserver.observe(LayoutConfig.LAYOUT_MEDIA_STEPS)
+             .subscribe((state: BreakpointState) => {
+      if (state.breakpoints[LayoutConfig.LAYOUT_MEDIA_XS] ||
+          state.breakpoints[LayoutConfig.LAYOUT_MEDIA_SM] ||
+          state.breakpoints[LayoutConfig.LAYOUT_MEDIA_MD]) {
+        this.limit = -1;
+      } else if (this.limit === -1) {
+        this.limit = BeaconListComponent.BEACON_LIST_INITIAL_SIZE;
+      }
+    }), BeaconListComponent.SUBSCRIPTION_TAG);
+
+  }
+
+  public ngOnDestroy(): void {
+    this.subs.unsubscribe(BeaconListComponent.SUBSCRIPTION_TAG);
   }
 
   /**
@@ -270,6 +298,10 @@ export class BeaconListComponent extends AbstractComponent implements OnInit {
         break;
     }
 
+  }
+
+  public getLimit(): number {
+    return this.limit === -1 ? this.beaconsInternal.length : this.limit;
   }
 
 }

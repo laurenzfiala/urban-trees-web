@@ -12,7 +12,7 @@
 
     <!-- Content of beacon selection dropdown -->
     <ng-template #beaconSelectionContent>
-      <div *ngFor="let beacon of beacons | slice:0:limit; let i = index"
+      <div *ngFor="let beacon of beacons | slice:0:getLimit(); let i = index"
            (action)="selectedBeaconIndex = i; loadBeaconData()"
            [ngClass]="{'mr-0 selected': selectedBeaconIndex === i, 'mr-2': selectedBeaconIndex !== i}"
            class="list-entry link-container text-nowrap p-2"
@@ -25,7 +25,7 @@
         </a>
       </div>
       <!-- Show more button -->
-      <div *ngIf="limit < beacons.length"
+      <div *ngIf="getLimit() < beacons.length"
            class="p-2">
         <a class="link-btn link-btn-sm d-flex justify-content-center"
            (action)="limit = beacons.length"
