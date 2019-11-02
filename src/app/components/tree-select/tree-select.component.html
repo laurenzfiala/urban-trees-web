@@ -10,7 +10,7 @@
 <div *ngIf="displayTrees"
      class="m--1 pt-2">
 
-  <div *ngFor="let tree of displayTrees[currentDisplayTreePage]"
+  <div *ngFor="let tree of displayTrees[currentDisplayPage]"
        class="tree-container link-container"
        [ngClass]="{'active': selectedTree?.id === tree.id}">
     <div class="inner link-container d-flex flex-column pointer m-1"
@@ -60,26 +60,26 @@
     </li>
     <li class="page-item">
       <a class="page-link"
-         (action)="displayTreePage(currentDisplayTreePage-1)"
+         (action)="displayTreePage(currentDisplayPage-1)"
          tabindex="0">
         <i class="i i-arrow-left i-dark" aria-hidden="true"></i>
       </a>
     </li>
     <li class="page-item">
       <a class="page-link disabled">
-        {{currentDisplayTreePage + 1}}
+        {{currentDisplayPage + 1}}
       </a>
     </li>
     <li class="page-item">
       <a class="page-link"
-         (action)="displayTreePage(currentDisplayTreePage+1)"
+         (action)="displayTreePage(currentDisplayPage+1)"
          tabindex="0">
         <i class="i i-arrow-right i-dark"></i>
       </a>
     </li>
     <li class="page-item">
       <a class="page-link"
-         (action)="displayTreePage(currentDisplayTreePages-1)"
+         (action)="displayTreePage(currentDisplayPages-1)"
          tabindex="0">
         <i class="i i-arrow-right-double i-dark"></i>
       </a>

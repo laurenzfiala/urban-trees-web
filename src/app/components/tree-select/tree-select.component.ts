@@ -34,8 +34,16 @@ export class TreeSelectComponent extends AbstractComponent implements OnInit, On
   /**
    * Holds the currently selected tree.
    */
-  @Input()
-  public selectedTree: TreeFrontend;
+  private selectedTreeInternal: TreeFrontend;
+
+  @Input() set selectedTree(value: TreeFrontend) {
+    this.selectedTreeInternal = value;
+    this.setDisplayTreesPaginated(this.availableTreesInternal);
+  }
+
+  get selectedTree(): TreeFrontend {
+    return this.selectedTreeInternal;
+  }
 
   /**
    * Wheter or not to preselect the first tree in the list.
@@ -78,12 +86,12 @@ export class TreeSelectComponent extends AbstractComponent implements OnInit, On
   /**
    * Page index to display.
    */
-  public currentDisplayTreePage: number = 0;
+  public currentDisplayPage: number = 0;
 
   /**
    * Amount of pages to display.
    */
-  public currentDisplayTreePages: number = 0;
+  public currentDisplayPages: number = 0;
 
   /**
    * Current tree search input.
@@ -131,7 +139,7 @@ export class TreeSelectComponent extends AbstractComponent implements OnInit, On
       return;
     }
 
-    this.currentDisplayTreePages = Math.ceil(trees.length / this.pageSize);
+    this.currentDisplayPages = Math.ceil(trees.length / this.pageSize);
 
     if (trees.length <= this.pageSize) {
       this.displayTreePagination = false;
@@ -147,7 +155,11 @@ export class TreeSelectComponent extends AbstractComponent implements OnInit, On
       page++;
     }
 
-    this.currentDisplayTreePage = 0;
+    if (this.selectedTree) {
+      this.currentDisplayPage = Math.floor( trees.findIndex(value => value.getId() === this.selectedTree.getId()) / this.pageSize);
+    } else {
+      this.currentDisplayPage = 0;
+    }
     this.displayTrees = paginatedArray;
 
   }
@@ -194,7 +206,7 @@ export class TreeSelectComponent extends AbstractComponent implements OnInit, On
     if (displayIndex < 0 || displayIndex >= this.displayTrees.length) {
       return;
     }
-    this.currentDisplayTreePage = displayIndex;
+    this.currentDisplayPage = displayIndex;
 
   }
 

@@ -6,8 +6,8 @@ import {BeaconFrontend} from '../../entities/beacon-frontend.entity';
 import {EnvironmentService} from '../../services/environment.service';
 import {SearchService} from '../../services/search.service';
 import {SubscriptionManagerService} from '../../services/subscription-manager.service';
-import {BreakpointObserver, BreakpointState} from '@angular/cdk/layout';
 import {LayoutConfig} from '../../config/layout.config';
+import {BreakpointObserver, BreakpointState} from '@angular/cdk/layout';
 
 @Component({
   selector: 'ut-beacon-select',
@@ -143,7 +143,11 @@ export class BeaconSelectComponent extends AbstractComponent implements OnInit, 
       page++;
     }
 
-    this.currentDisplayPage = 0;
+    if (this.selectedBeacon) {
+      this.currentDisplayPage = Math.floor( beacons.findIndex(value => value.getId() === this.selectedBeacon.getId()) / this.pageSize);
+    } else {
+      this.currentDisplayPage = 0;
+    }
     this.displayBeacons = paginatedArray;
 
   }
