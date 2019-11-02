@@ -10,7 +10,7 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "postinstall": "node version.ts",
-    "postversion": "git push && git push --tags && node version.ts && npm build"
+    "postversion": "git push && git push --tags && node version.ts && npm run build"
   },
   "private": true,
   "dependencies": {
