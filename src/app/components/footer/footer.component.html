@@ -8,12 +8,17 @@
     <div class="footer-link">
       <a class="link" routerLink="/imprint">{{ 'navigation.footer.imprint' | translate}}</a>
     </div>
-    <div class="footer-text-subtle">
-      <span [innerHtml]="'navigation.footer.madeby' | translate"></span>&nbsp;<a class="link" href="http://stadt-baum-klima.sbg.ac.at/about/project-team/" target="_blank">
-        {{'navigation.footer.madeby_team' | translate}}
-      </a>
-      &amp;
-      <a class="link" href="https://github.com/laurenzfiala" target="_blank">Laurenz Fiala</a>
+    <div class="d-flex flex-row flex-wrap">
+      <div class="flex-grow-1">
+        <span [innerHtml]="'navigation.footer.madeby' | translate"></span>&nbsp;<a class="link" href="http://stadt-baum-klima.sbg.ac.at/about/project-team/" target="_blank">
+          {{'navigation.footer.madeby_team' | translate}}
+        </a>
+        &amp;
+        <a class="link" href="https://github.com/laurenzfiala" target="_blank">Laurenz Fiala</a>
+      </div>
+      <div class="footer-version ml-4">
+        v2.0.0
+      </div>
     </div>
 
   </div>
