@@ -32,7 +32,9 @@
 			"imprint": "Imprint",
 			"home": "Home page",
 			"madeby": "Made with &#x2764; by the",
-      "madeby_team": "Urban-Trees-Team"
+      "madeby_team": "Urban-Trees-Team",
+      "info_version": "Version",
+      "info_hash": "ID"
 		},
     "messages": "Messages",
     "settings": "Settings &amp; Language",

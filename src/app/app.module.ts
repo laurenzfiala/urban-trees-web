@@ -89,9 +89,10 @@ import {
   TimepickerModule,
   TooltipModule
 } from 'ngx-bootstrap';
+import {VERSION} from '../environments/version';
 
 export function HttpLoaderFactory(http: HttpClient) {
-  return new TranslateHttpLoader(http, '/translations/', '.json?cacheBust=' + new Date().getTime());
+  return new TranslateHttpLoader(http, '/translations/', '.json?version=' + VERSION.version);
 }
 
 @NgModule({

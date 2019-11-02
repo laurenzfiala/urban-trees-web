@@ -32,7 +32,9 @@
 			"imprint": "Impressum",
 			"home": "Startseite",
       "madeby": "Mit &#x2764; entwickelt vom ",
-      "madeby_team": "Stadtbäume-Team"
+      "madeby_team": "Stadtbäume-Team",
+      "info_version": "Version",
+      "info_hash": "ID"
 		},
     "messages": "Nachrichten",
     "settings": "Einstellungen &amp; Sprache",

@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {VERSION} from '../../../environments/version';
 
 @Component({
   selector: 'ut-footer',
@@ -6,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./footer.component.less']
 })
 export class FooterComponent implements OnInit {
+
+  public version = VERSION;
 
   constructor() { }
 

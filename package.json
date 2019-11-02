@@ -8,7 +8,9 @@
     "build": "ng build --prod --aot --vendor-chunk --common-chunk --delete-output-path --build-optimizer --output-hashing all --source-map false",
     "test": "ng test",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "postinstall": "node version.ts",
+    "postversion": "node version.ts"
   },
   "private": true,
   "dependencies": {
@@ -56,6 +58,8 @@
     "ts-node": "4.1.0",
     "tslint": "5.11.0",
     "typescript": "3.5.3",
-    "@angular-devkit/build-angular": "~0.803.5"
+    "@angular-devkit/build-angular": "~0.803.5",
+    "git-describe": "4.0.4",
+    "fs-extra": "8.1.0"
   }
 }
