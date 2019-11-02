@@ -718,7 +718,8 @@
     }
   },
   "beacon_list": {
-    "empty": "Keine Beacons gefunden"
+    "empty": "Keine Beacons gefunden",
+    "show_all": "Alle anzeigen"
   },
   "notifications": {
     "auth_timeout": {

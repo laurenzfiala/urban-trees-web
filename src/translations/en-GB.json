@@ -719,7 +719,8 @@
     }
   },
   "beacon_list": {
-    "empty": "No beacons found"
+    "empty": "No beacons found",
+    "show_all": "Show all"
   },
   "notifications": {
     "auth_timeout": {

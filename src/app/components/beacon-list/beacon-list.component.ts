@@ -20,16 +20,22 @@ export class BeaconListComponent extends AbstractComponent implements OnInit {
 
   private static EFFECTIVE_BATTERY_CAPACITY: number = 30;
   public static BEACON_LOGS_PAGE_SIZE: number = 25;
+  public static BEACON_LIST_INITIAL_SIZE: number = 10;
 
   public StatusKey = StatusKey;
   public StatusValue = StatusValue;
   public BeaconStatus = BeaconStatus;
+
+  public limit: number = BeaconListComponent.BEACON_LIST_INITIAL_SIZE;
 
   private beaconsInternal: Array<BeaconFrontend>;
   private selectedBeaconIndex: number = 0;
 
   @Input()
   set beacons(beacons: Array<BeaconFrontend>) {
+    if (this.limit > BeaconListComponent.BEACON_LIST_INITIAL_SIZE && beacons && beacons.length <= BeaconListComponent.BEACON_LIST_INITIAL_SIZE) {
+      this.limit = BeaconListComponent.BEACON_LIST_INITIAL_SIZE;
+    }
     this.beaconsInternal = beacons;
     if (!this.selectedBeacon) {
       this.selectedBeaconIndex = 0;

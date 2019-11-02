@@ -12,7 +12,7 @@
 
     <!-- Content of beacon selection dropdown -->
     <ng-template #beaconSelectionContent>
-      <div *ngFor="let beacon of beacons; let i = index"
+      <div *ngFor="let beacon of beacons | slice:0:limit; let i = index"
            (action)="selectedBeaconIndex = i; loadBeaconData()"
            [ngClass]="{'mr-0 selected': selectedBeaconIndex === i, 'mr-2': selectedBeaconIndex !== i}"
            class="list-entry link-container text-nowrap p-2"
@@ -22,6 +22,17 @@
         <a class="link"
            [ngClass]="{'active': beacon === selectedBeacon}">
           Beacon {{beacon.deviceId}}
+        </a>
+      </div>
+      <!-- Show more button -->
+      <div *ngIf="limit < beacons.length"
+           class="p-2">
+        <a class="link-btn link-btn-sm d-flex justify-content-center"
+           (action)="limit = beacons.length"
+           role="button"
+           tabindex="0">
+          <i class="i i-xs i-chevron-down i-dark mr-1"></i>
+          {{'beacon_list.show_all' | translate}}
         </a>
       </div>
     </ng-template>
@@ -37,6 +48,8 @@
     </div>
 
   </div>
+
+  <!-- Beacon content -->
   <div class="p-2 flex-grow-1 beacon-info-wrapper d-flex flex-column">
 
     <div class="d-flex flex-row justify-content-between">
@@ -336,6 +349,8 @@
       </div>
 
     </div>
+
+  </div>
 
 </div>
 
