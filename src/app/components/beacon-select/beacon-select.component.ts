@@ -144,7 +144,7 @@ export class BeaconSelectComponent extends AbstractComponent implements OnInit, 
     }
 
     if (this.selectedBeacon) {
-      this.currentDisplayPage = Math.floor( beacons.findIndex(value => value.getId() === this.selectedBeacon.getId()) / this.pageSize);
+      this.currentDisplayPage = Math.floor( beacons.findIndex(value => value.id === this.selectedBeacon.id) / this.pageSize);
     } else {
       this.currentDisplayPage = 0;
     }

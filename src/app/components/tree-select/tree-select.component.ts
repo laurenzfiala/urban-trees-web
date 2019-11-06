@@ -156,7 +156,7 @@ export class TreeSelectComponent extends AbstractComponent implements OnInit, On
     }
 
     if (this.selectedTree) {
-      this.currentDisplayPage = Math.floor( trees.findIndex(value => value.getId() === this.selectedTree.getId()) / this.pageSize);
+      this.currentDisplayPage = Math.floor( trees.findIndex(value => value.id === this.selectedTree.id) / this.pageSize);
     } else {
       this.currentDisplayPage = 0;
     }

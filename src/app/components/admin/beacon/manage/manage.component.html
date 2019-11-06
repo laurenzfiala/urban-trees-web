@@ -158,7 +158,7 @@
 
             <div class="form-row mb-2">
               <div class="col">
-                <input id="beaconDeviceId" class="form-control" type="text" name="beaconDeviceId" [(ngModel)]="beacon.deviceId" />
+                <input *ngIf="beacon" id="beaconDeviceId" class="form-control" type="text" name="beaconDeviceId" [(ngModel)]="beacon.deviceId" />
               </div>
             </div>
 
@@ -171,7 +171,7 @@
 
             <div class="form-row mb-2">
               <div class="col">
-                <input id="beaconBluetoothAddress" class="form-control" type="text" name="beaconBluetoothAddress" [(ngModel)]="beacon.bluetoothAddress" />
+                <input *ngIf="beacon" id="beaconBluetoothAddress" class="form-control" type="text" name="beaconBluetoothAddress" [(ngModel)]="beacon.bluetoothAddress" />
               </div>
             </div>
 
@@ -180,13 +180,13 @@
           <!-- PIN -->
           <div class="col-sm-12 col-md-6 form-group">
 
-            <div *ngIf="beacon.settingsLoadingStatus === StatusValue.FAILED"
+            <div *ngIf="beacon?.settingsLoadingStatus === StatusValue.FAILED"
                  class="d-flex flex-row align-items-center text-danger">
               <i class="i i-sm i-warning-danger mr-1"></i>
               Beacon settings are invalid - can't set PIN
             </div>
 
-            <div *ngIf="beacon.settingsLoadingStatus === StatusValue.IN_PROGRESS"
+            <div *ngIf="beacon?.settingsLoadingStatus === StatusValue.IN_PROGRESS"
                  class="d-flex flex-row align-items-center">
               <i class="i i-sm i-load i-spin mr-1"></i>
               Loading beacon settings...
@@ -255,7 +255,7 @@
 
       </ng-container>
 
-      <ng-container *ngIf="showLocation || !assocTree">
+      <ng-container *ngIf="beacon && (showLocation || !assocTree)">
 
         <hr *ngIf="assocTree" />
 
@@ -325,7 +325,7 @@
     </div>
   </div>
 
-  <div class="content-cat">
+  <div *ngIf="beacon" class="content-cat">
     <div class="container">
       <div class="d-flex flex-row flex-wrap align-items-center justify-content-end justify-content-md-start m--2">
         <div class="link-container d-flex flex-row align-items-center m-2"
