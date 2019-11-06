@@ -17,3 +17,11 @@ AddOutputFilterByType DEFLATE application/x-javascript
     Header set Expires "Wed, 12 Jan 1980 05:00:00 GMT"
   </IfModule>
 </FilesMatch>
+
+<FilesMatch "\.js$">
+  FileETag None
+  <IfModule mod_headers.c>
+    Header unset ETag
+    Header set Cache-Control "private, max-age=31536000, must-revalidate"
+  </IfModule>
+</FilesMatch>
