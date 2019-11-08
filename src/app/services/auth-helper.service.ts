@@ -3,7 +3,7 @@ import {Log} from './log.service';
 import {EnvironmentService} from './environment.service';
 import {AbstractService} from './abstract.service';
 import {AuthService} from './auth.service';
-import {ActivatedRoute, ActivatedRouteSnapshot} from '@angular/router';
+import {ActivatedRouteSnapshot, RouterStateSnapshot} from '@angular/router';
 import {AdminGuard} from '../components/admin/admin.guard';
 import {ProjectLoginGuard} from '../components/project-login/project-login.guard';
 

@@ -70,7 +70,7 @@
   align-items: center;
   margin-top: -@borderRadiusNew;
   padding: (@borderRadiusNew + @announcementYPadding) @gutter2x @announcementYPadding @gutter2x;
-  background-color: lighten(@info, 65%);
+  background-color: lighten(@infoDark, 65%);
 
   .ordering(@i: 1) when (@i <= @maxAnnoucements) {
     &:nth-child(@{i}) {
@@ -98,7 +98,7 @@
     flex-grow: 1;
 
     > .announcement-title {
-      color: @info;
+      color: @infoDark;
     }
 
     > .announcement-description {

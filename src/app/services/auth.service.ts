@@ -42,6 +42,13 @@ export class AuthService extends AbstractService {
   // TODO
   public stateChangedSubject: Subject<boolean> = new Subject<boolean>();
 
+  /**
+   * Cached permissions PIN is stored here.
+   * When #loadPPIN is called and returns successfully,
+   * this holds the current users' PPIN.
+   */
+  private ppin: string;
+
   constructor(private http: HttpClient,
               private router: Router,
               private envService: EnvironmentService) {
@@ -82,13 +89,24 @@ export class AuthService extends AbstractService {
    * Returns the logged in users' username.
    * If the user is not logged in or login is anonymous (=> not JWT),
    * return undefined.
+   * @param forExpiredAuth  (optional; defaults to false) also returns a username
+   *                        when the token has expired
    */
-  public getUsername(): string {
+  public getUsername(forExpiredAuth: boolean = false): string {
+
+    if (forExpiredAuth) {
+      const potentiallyExpiredToken = AuthService.getJWTTokenRaw();
+      if (potentiallyExpiredToken) {
+        return JWTToken.fromObject(this.jwtHelper.decodeToken()).sub;
+      }
+      return undefined;
+    }
     let token = this.getJWTToken();
     if (!token) {
       return undefined;
     }
     return token.sub;
+
   }
 
   /**
@@ -266,6 +284,29 @@ export class AuthService extends AbstractService {
   }
 
   /**
+   * Load the users' current permissions PIN (PPIN).
+   * @param successCallback called with result when successful
+   * @param errorCallback called with error if failed
+   */
+  public loadPPIN(successCallback: (ppin: string) => void,
+                  errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void): void {
+
+    AuthService.LOG.debug('Loading PPIN...');
+    this.http.get(this.envService.endpoints.loadPPIN, {responseType: 'text'})
+      .subscribe((ppin: string) => {
+        this.ppin = ppin;
+        AuthService.LOG.debug('Loaded PPIN successfully.');
+        successCallback(ppin);
+      }, (e: any) => {
+        AuthService.LOG.error('Could not load granting users: ' + e.message, e);
+        if (errorCallback) {
+          errorCallback(e, this.safeApiError(e));
+        }
+      });
+
+  }
+
+  /**
    * Delete JWT token from local storage.
    * @see AuthService#deleteJWTToken
    */
@@ -403,6 +444,13 @@ export class AuthService extends AbstractService {
       return undefined;
     }
     return token;
+  }
+
+  /**
+   * @see #ppin
+   */
+  public getPPIN() {
+    return this.ppin;
   }
 
   private stateChanged(): void {

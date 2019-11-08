@@ -9,9 +9,9 @@
 <div>
   <div class="content-cat">
     <div class="container">
-      <div class="content-cat-heading">
+      <h1 class="content-cat-heading">
         Manage trees
-      </div>
+      </h1>
       <div class="content-cat-text">
         Create or modify a tree below.
       </div>
@@ -20,9 +20,9 @@
 
   <div class="content-cat">
     <div class="container">
-      <div class="content-cat-heading">
+      <h1 class="content-cat-heading">
         Which Tree?
-      </div>
+      </h1>
       <div class="content-cat-text">
 
         <div *ngIf="!showTreeSelect"
@@ -77,9 +77,9 @@
 
   <div class="content-cat">
     <div class="container">
-      <div class="content-cat-heading">
+      <h1 class="content-cat-heading">
         Location
-      </div>
+      </h1>
       <div *ngIf="isNewTree()" class="content-cat-text mb-2">
         Select on map
       </div>
@@ -103,9 +103,9 @@
 
   <div class="content-cat">
     <div class="container">
-      <div class="content-cat-heading">
+      <h1 class="content-cat-heading">
         Properties
-      </div>
+      </h1>
       <form class="mt-2">
 
         <div class="row">
@@ -166,9 +166,9 @@
   <div *ngIf="savedTree || !isNewTree()"
        class="content-cat">
     <div class="container">
-      <div class="content-cat-heading">
+      <h1 class="content-cat-heading">
         Tree-Beacons
-      </div>
+      </h1>
       <div [routerLink]="['/admin/beacon/manage']"
            [queryParams]="{'assocTree': tree.id}"
            class="d-inline-flex flex-row align-items-center link-container mx--2 p-2">

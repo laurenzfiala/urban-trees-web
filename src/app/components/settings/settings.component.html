@@ -1,6 +1,6 @@
 <div class="content-cat">
   <div class="container">
-    <div class="content-cat-heading">{{'settings.language.title' | translate}}</div>
+    <h1 class="content-cat-heading">{{'settings.language.title' | translate}}</h1>
     <div class="content-cat-text mb--2">
       {{'settings.language.desc' | translate}}
 
@@ -26,19 +26,60 @@
 <div *auth="[envService.security.rolesUser]"
      class="content-cat">
   <div class="container">
-    <div class="content-cat-heading">{{'settings.account.title' | translate}}</div>
+    <h1 class="content-cat-heading">{{'settings.one_time_token.title' | translate}}</h1>
+    <div class="d-flex align-items-center my-2">
+      <div *ngIf="hasStatus(StatusKey.PPIN, StatusValue.IN_PROGRESS)" class="permissions-pin loading">
+        <i class="i i-sm i-load i-spin i-dark"></i>
+      </div>
+      <div *ngIf="hasStatus(StatusKey.PPIN, StatusValue.FAILED)"
+           class="permissions-pin locked">******</div>
+      <div *ngIf="hasStatus(StatusKey.PPIN, StatusValue.SUCCESSFUL)"
+           class="permissions-pin"
+           (mousedown)="setStatus(StatusKey.PPIN_USED, StatusValue.SHOW)">{{ppin}}</div>
+      <div class="d-flex align-items-center">
+        <i *ngIf="!hasStatus(StatusKey.PPIN, StatusValue.IN_PROGRESS)"
+           class="i i-xs i-load i-dark ml-2"
+           (action)="requestPPIN()"
+           role="button"
+           tabindex="0"></i>
+        <span class="sr-only">{{'settings.one_time_token.refresh' | translate}}</span>
+      </div>
+    </div>
+    <div class="d-flex align-items-center text-subtle text-info mb-1">
+      <i class="i i-xs i-info-info mr-2"></i>
+      {{'settings.one_time_token.info' | translate}}
+    </div>
+    <hr class="my-1"/>
+    <div class="content-cat-text">
+      {{'settings.one_time_token.desc' | translate}}
+    </div>
+  </div>
+</div>
+
+<div *auth="[envService.security.rolesUser]"
+     class="content-cat">
+  <div class="container">
+    <h1 class="content-cat-heading">{{'settings.account.title' | translate}}</h1>
     <div class="content-cat-text">
       {{'settings.account.desc' | translate:{'username': user?.username} }}<br/>
       {{'settings.account.desc_2' | translate}}
 
-      <div class="d-flex flex-row align-items-center mt-2">
-        <i class="i i-user i-dark mr-1"></i>
-        <a class="link" routerLink="/account/changeusername">{{'settings.account.change_username' | translate}}</a>
+      <div>
+        <a class="d-inline-flex flex-row align-items-center mt-2 link-container"
+           routerLink="/account/changeusername"
+           tabindex="0">
+          <i class="i i-user i-dark mr-1"></i>
+          <div class="link">{{'settings.account.change_username' | translate}}</div>
+        </a>
       </div>
 
-      <div class="d-flex flex-row align-items-center mt-2">
-        <i class="i i-key i-dark mr-1"></i>
-        <a class="link" routerLink="/account/changepassword">{{'settings.account.change_password' | translate}}</a>
+      <div>
+        <a class="d-inline-flex flex-row align-items-center mt-1 link-container"
+             routerLink="/account/changepassword"
+             tabindex="0">
+          <i class="i i-key i-dark mr-1"></i>
+          <div class="link">{{'settings.account.change_password' | translate}}</div>
+        </a>
       </div>
     </div>
   </div>
@@ -47,7 +88,7 @@
 <div *auth
      class="content-cat">
   <div class="container">
-    <div class="content-cat-heading">{{'settings.support.title' | translate}}</div>
+    <h1 class="content-cat-heading">{{'settings.support.title' | translate}}</h1>
     <div class="content-cat-text">
       {{'settings.support.desc' | translate}}
     </div>
@@ -58,7 +99,7 @@
 <div *auth="[envService.security.rolesUser];checkChanges:false"
      class="content-cat">
   <div class="container">
-    <div class="content-cat-heading">{{'settings.delete_account.title' | translate}}</div>
+    <h1 class="content-cat-heading">{{'settings.delete_account.title' | translate}}</h1>
     <div class="content-cat-text">
       {{'settings.delete_account.desc' | translate}}<br/>
       <span class="font-italic">{{'settings.delete_account.warning' | translate}}</span><br/>

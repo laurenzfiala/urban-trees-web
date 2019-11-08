@@ -7,9 +7,9 @@ export const environment = {
 
   production:                       false,
 
-  webHost:                          'http://192.168.0.123:4200',
-  host:                             'http://192.168.0.123:80',
-  mapHost:                          'http://192.168.0.123:8081',
+  webHost:                          'http://localhost:4200',
+  host:                             'http://localhost:80',
+  mapHost:                          'http://localhost:8081',
 
   endpoints: {
     // Tree
@@ -74,7 +74,8 @@ export const environment = {
     changePassword:                   '/account/changepassword',
     changeUsername:                   '/account/changeusername',
     addUserPermission:                '/account/permission/request',
-    usersGrantingPermission:          '/account/permission/granted/{permission}'
+    usersGrantingPermission:          '/account/permission/granted/{permission}',
+    loadPPIN:                         '/account/permission/pin'
   },
 
   searchDebounceMs:                   200,
@@ -91,18 +92,18 @@ export const environment = {
   },
 
   security: {
-    minUsernameLength:                5,
-    minPasswordLength:                10,
-    jwtTokenExpireMs:                 86400000,
-    adminTimeoutMs:                   1800000,
+    minUsernameLength:                  5,
+    minPasswordLength:                  10,
+    jwtTokenExpireMs:                   86400000,
+    adminTimeoutMs:                     1800000,
 
-    interceptorRedirectExclusions:    ['/login'],
+    interceptorRedirectExclusions:      ['/login'],
 
     roles: {
-      user:                           ['ROLE_USER'],
-      phenObs:                        ['ROLE_PHENOBS'],
-      admin:                          ['ROLE_ADMIN'],
-      tempChangePassword:             'ROLE_TEMP_CHANGE_PASSWORD'
+      user:                             ['ROLE_USER'],
+      phenObs:                          ['ROLE_PHENOBS'],
+      admin:                            ['ROLE_ADMIN'],
+      tempChangePassword:               'ROLE_TEMP_CHANGE_PASSWORD'
     }
   }
 

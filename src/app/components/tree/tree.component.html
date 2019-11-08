@@ -20,7 +20,7 @@
 
 <section class="content-cat">
   <div class="container">
-    <div class="content-cat-heading">{{'tree.species.' + tree.species.name | lowercase | translate}}</div>
+    <h1 class="content-cat-heading">{{'tree.species.' + tree.species.name | lowercase | translate}}</h1>
     <div class="content-cat-text">
       <i>{{'tree.species.latin.' + tree.species.name | lowercase | translate}}</i>
     </div>
@@ -29,7 +29,7 @@
 
 <section class="content-cat">
   <div class="container tree-image">
-    <div class="content-cat-heading">{{'tree.summary.title' | translate}}</div>
+    <h1 class="content-cat-heading">{{'tree.summary.title' | translate}}</h1>
     <div class="content-cat-flex flex-md-nowrap">
       <div class="content-cat-text flex-grow-1" [innerHTML]="'tree.summary.text' | translate">
       </div>
@@ -47,7 +47,7 @@
 
 <section class="content-cat">
   <div class="container tree-image">
-    <div class="content-cat-heading">{{'tree.through_year.title' | translate}}</div>
+    <h1 class="content-cat-heading">{{'tree.through_year.title' | translate}}</h1>
     <div class="content-cat-flex flex-md-nowrap">
       <div class="content-cat-text flex-grow-1">
         <div [innerHTML]="'tree.through_year.text' | translate"></div>
@@ -94,7 +94,7 @@
 
 <section class="content-cat">
   <div class="container tree-image">
-    <div class="content-cat-heading">{{'tree.cooling_power.title' | translate}}</div>
+    <h1 class="content-cat-heading">{{'tree.cooling_power.title' | translate}}</h1>
     <div class="content-cat-flex flex-md-nowrap">
       <div class="content-cat-text flex-grow-1">
         <div [innerHTML]="'tree.cooling_power.text' | translate"></div>
@@ -109,7 +109,7 @@
 
 <section class="content-cat">
   <div class="container tree-image">
-    <div class="content-cat-heading">{{'tree.leaf_development.title' | translate}}</div>
+    <h1 class="content-cat-heading">{{'tree.leaf_development.title' | translate}}</h1>
     <div class="content-cat-flex flex-lg-nowrap">
       <div class="content-cat-text flex-grow-1">
         {{'tree.leaf_development.text' | translate}}
@@ -135,10 +135,10 @@
 
 <section class="content-cat">
   <div class="container tree-image">
-    <div class="content-cat-heading">
+    <h1 class="content-cat-heading">
       <i *ngIf="appTransferAmount" class="feature-pointer mr-1"></i>
       {{'tree.beacon.details.heading' | translate}}
-    </div>
+    </h1>
     <div *ngIf="appTransferAmount" class="text-center">
       <div class="transfer-message">
         {{'tree.beacon.transfer.message.title' | translate}}
@@ -166,9 +166,9 @@
 
 <section *auth="envService.security.rolesAdmin" class="content-cat">
   <div class="container tree-image">
-    <div class="content-cat-heading">
+    <h1 class="content-cat-heading">
       {{'tree.admin.title' | translate}}
-    </div>
+    </h1>
     <div class="content-cat-text">
       {{'tree.admin.desc' | translate}}
     </div>

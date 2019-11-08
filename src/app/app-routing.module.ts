@@ -77,8 +77,7 @@ const routes: Routes = [
     component: PasswordChangeComponent,
     canActivate: [ProjectLoginGuard],
     data: {
-      roles: [...environment.security.roles.user, environment.security.roles.tempChangePassword],
-      showAuthTimeout: true
+      roles: [...environment.security.roles.user, environment.security.roles.tempChangePassword]
     }
   },
   {
@@ -86,8 +85,7 @@ const routes: Routes = [
     component: UsernameChangeComponent,
     canActivate: [ProjectLoginGuard],
     data: {
-      roles: environment.security.roles.user,
-      showAuthTimeout: true
+      roles: environment.security.roles.user
     }
   },
   {

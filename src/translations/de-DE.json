@@ -417,6 +417,12 @@
       "title": "Sprache",
       "desc":  "Wähle eine Sprache für die gesamte Seite."
     },
+    "one_time_token": {
+      "title": "Dein Berechtigungs-PIN",
+      "desc": "Dieser PIN-Code kann bei anderen Nutzer_innen eingegeben werden, um mit ihnen Phänologiebeobachtungnen zu teilen.",
+      "info": "Kann nur einmal benutzt werden und wird nach falscher Eingabe invalidiert.",
+      "refresh": "Einen neuen Berechtigungs-PIN anzeigen"
+    },
     "account": {
       "title": "Konto verwalten",
       "desc":  "Du bist als {{username}} angemeldet.",
@@ -661,15 +667,20 @@
     "list_desc": "Diese Nutzer_innen haben Dir bereits ihre Erlaubnis erteilt, {{permission}}. Wähle eine Person oder frage jemanden Neuen.",
     "title": "Gib {{username}} Erlaubnis, ",
     "desc": "Lass die andere Person ihre Logindaten hier eingeben, um",
+    "ppin_info_1": "Du kannst deinen Berechtigungs-PIN in den",
+    "ppin_info_2": "Einstellungen finden",
     "loading": "Lade",
     "error": "Nutzer_innen konnten nicht geldaen werden",
     "request": "Gib Erlaubnis",
     "requesting": "Überprüfe",
+    "request_same_account": "Du kannst dir selbst keine Berechtigung geben.",
     "request_error": "Nutzername oder Passwort ist falsch",
     "request_link": "Jemanden Neuen fragen",
     "list_link": "Zurück zur Liste",
     "user_selected": "Ausgewählt",
     "user_deselected": "Abgewählt",
+    "username_placeholder": "Username",
+    "password_placeholder": "Berechtigungs-PIN",
     "summary": {
       "access": "{{username}} bekommt Zugang zu",
       "permissions": "{{username}} wird berechtigt"

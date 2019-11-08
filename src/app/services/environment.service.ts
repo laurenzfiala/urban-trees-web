@@ -279,6 +279,10 @@ class EnvironmentEndpoints {
 
   }
 
+  get loadPPIN() {
+    return this.prependCommonPath(this.context.loadPPIN);
+  }
+
   get addCity() {
     return this.prependCommonPath(this.context.addCity);
   }

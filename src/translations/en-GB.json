@@ -418,6 +418,12 @@
       "title": "Language",
       "desc":  "Choose which language to use for the entire site."
     },
+    "one_time_token": {
+      "title": "Your Permissions PIN",
+      "desc": "This PIN can be entered on other people's accounts, so they get access to sharing phenology observations with you.",
+      "info": "Can only be used once and becomes invalid when entered incorrectly.",
+      "refresh": "Get a new permissions PIN"
+    },
     "account": {
       "title": "Manage Account",
       "desc":  "You are logged in as {{username}}.",
@@ -662,15 +668,20 @@
     "list_desc": "These users have already given you permission to {{permission}} with them. Select one or ask someone new to give you permission.",
     "title": "Give user {{username}} permission to",
     "desc": "Let the other person enter their information below to",
+    "ppin_info_1": "You can find your Permissions PIN on the",
+    "ppin_info_2": "settings page",
     "loading": "Loading",
     "error": "Could not load users granting permission",
     "request": "Give permission",
     "requesting": "Validating",
+    "request_same_account": "You may not request permission for yourself.",
     "request_error": "Username or password is wrong",
     "request_link": "Ask someone new",
     "list_link": "Back to list",
     "user_selected": "Selected",
     "user_deselected": "Deselected",
+    "username_placeholder": "Username",
+    "password_placeholder": "Permissions PIN",
     "summary": {
       "access": "{{username}} gets access to",
       "permissions": "{{username}} gets permission to"

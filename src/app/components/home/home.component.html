@@ -2,12 +2,12 @@
   <div class="container">
 
     <div *noauth="true" class="mb-2">
-      <div class="content-cat-heading d-block" [innerHTML]="'home.title' | translate"></div>
+      <h1 class="content-cat-heading d-block" [innerHTML]="'home.title' | translate"></h1>
       {{'home.desc' | translate}}
     </div>
 
     <div *auth="envService.security.rolesUser" class="mb-2">
-      <div class="content-cat-heading d-block" [innerHTML]="'home.title_user' | translate:{'username': getUsername()}"></div>
+      <h1 class="content-cat-heading d-block" [innerHTML]="'home.title_user' | translate:{'username': getUsername()}"></h1>
       <span [innerHTML]="'home.desc_user_1' | translate"></span>
       <a class="link" routerLink="/phenology/observation/step">{{'home.desc_phenobs_link' | translate}}</a>
       <span [innerHTML]="'home.desc_user_2' | translate"></span>
@@ -48,13 +48,13 @@
 <div *auth="[envService.security.rolesUser]"
      class="content-cat content-cat-user">
   <div class="container">
-    <div class="content-cat-heading">
+    <h1 class="content-cat-heading">
       <i *ngIf="hasStatus(StatusKey.USER_LEVEL_UP, StatusValue.LEVELLED_UP)" class="feature-pointer mr-1"></i>{{'home.user_score.title' | translate}}
       <ut-loading-status
         errorDescription="home.user_score.error"
         [status]="getStatusObservable(StatusKey.USER_OVERVIEW)"
         [error]="getStatusErrorObservable(StatusKey.USER_OVERVIEW)"></ut-loading-status>
-    </div>
+    </h1>
     <ut-user-overview (levelUpOutput)="setStatus(StatusKey.USER_LEVEL_UP, StatusValue.LEVELLED_UP)"
                       (status)="setStatus(StatusKey.USER_OVERVIEW, $event[0], $event[1])"></ut-user-overview>
   </div>
@@ -63,7 +63,7 @@
 <div *auth="[envService.security.rolesAdmin]"
      class="content-cat">
   <div class="container">
-    <div class="content-cat-heading">{{'home.admin_console.title' | translate}}</div>
+    <h1 class="content-cat-heading">{{'home.admin_console.title' | translate}}</h1>
     <div class="content-cat-text">
       {{'home.admin_console.desc' | translate}}
     </div>
@@ -76,13 +76,13 @@
 
 <div class="content-cat">
   <div class="container">
-    <div class="content-cat-heading">
+    <h1 class="content-cat-heading">
       {{'home.project_intro.title' | translate}}
       <ut-loading-status
         errorDescription="home.project_intro.error"
         [status]="getStatusObservable(StatusKey.STATISTICS)"
         [error]="getStatusErrorObservable(StatusKey.STATISTICS)"></ut-loading-status>
-    </div>
+    </h1>
     <div class="content-cat-text" [innerHTML]="'home.project_intro.desc' | translate"></div>
 
     <div *ngIf="hasStatus(StatusKey.STATISTICS, StatusValue.SUCCESSFUL)"
@@ -118,7 +118,7 @@
 
 <div class="content-cat">
   <div class="container">
-    <div class="content-cat-heading">{{'home.more_info.title' | translate}}</div>
+    <h1 class="content-cat-heading">{{'home.more_info.title' | translate}}</h1>
     <div class="content-cat-text" [innerHTML]="'home.more_info.desc' | translate"></div>
 
     <a class="content-cat-link" href="http://stadt-baum-klima.sbg.ac.at/" target="_blank">

@@ -92,7 +92,7 @@ export class ProjectLoginComponent extends AbstractComponent implements OnInit, 
     });
 
     // pre-fill username if a token exists
-    let username = this.authService.getUsername();
+    let username = this.authService.getUsername(true);
     if (username) {
       this.username = username;
     }

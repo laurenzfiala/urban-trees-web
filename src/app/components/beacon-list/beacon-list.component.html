@@ -53,7 +53,7 @@
   <div class="p-2 flex-grow-1 beacon-info-wrapper d-flex flex-column">
 
     <div class="d-flex flex-row justify-content-between">
-      <div class="content-cat-heading">
+      <h1 class="content-cat-heading">
         Beacon {{selectedBeacon.deviceId}}
 
         <div *ngIf="showAssociations && selectedBeacon.tree"
@@ -79,7 +79,7 @@
           [status]="getStatusObservable(StatusKey.BEACON_DATA)"
           [error]="getStatusErrorObservable(StatusKey.BEACON_DATA)"></ut-loading-status>
 
-      </div>
+      </h1>
       <div *ngIf="showData">
         <div dropdown class="btn-group">
           <button dropdownToggle type="button" class="btn btn-sm btn-outline-dark dropdown-toggle">

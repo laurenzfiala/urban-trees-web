@@ -1,6 +1,6 @@
 <div class="content-cat">
   <div class="container">
-    <div class="content-cat-heading">{{'phen_obs.title' | translate}}</div>
+    <h1 class="content-cat-heading">{{'phen_obs.title' | translate}}</h1>
     <div class="content-cat-text" [innerHTML]="'phen_obs.desc' | translate"></div>
   </div>
 </div>
@@ -8,10 +8,10 @@
 <div class="content-cat"
      [ngClass]="{'disabled': hasStatus(StatusKey.STEP_TREE, StatusValue.HIDE)}">
   <div class="container">
-    <div class="content-cat-heading">
+    <h1 class="content-cat-heading">
       <span class="badge primary mr-1">{{'phen_obs.step' | translate}} 1</span>
       {{'phen_obs.step_1.title' | translate}}
-    </div>
+    </h1>
 
     <div *ngIf="hasStatus(StatusKey.TREES, StatusValue.IN_PROGRESS)"
          class="d-flex flex-row align-items-center mt-2">
@@ -60,10 +60,10 @@
 <div class="content-cat"
      [ngClass]="{'disabled': hasStatus(StatusKey.STEP_TIME, StatusValue.HIDE)}">
   <div class="container">
-    <div class="content-cat-heading">
+    <h1 class="content-cat-heading">
       <span class="badge primary mr-1">{{'phen_obs.step' | translate}} 2</span>
       {{'phen_obs.step_2.title' | translate}}
-    </div>
+    </h1>
 
     <div class="content-cat-text">
       <div *ngIf="isObserveNow"
@@ -128,11 +128,11 @@
 <div class="content-cat"
      [ngClass]="{'disabled': hasStatus(StatusKey.STEP_OBS, StatusValue.HIDE)}">
   <div class="container">
-    <div class="content-cat-heading">
+    <h1 class="content-cat-heading">
       <span class="badge mr-1"
             [ngClass]="{'primary': isObservationsDone(), 'danger': !isObservationsDone()}">{{'phen_obs.step' | translate}} 3</span>
       {{'phen_obs.step_3.title' | translate}}
-    </div>
+    </h1>
 
     <div *ngIf="hasStatus(StatusKey.STEP_OBS, StatusValue.HIDE)"
          class="obs-insufficient-progress">
@@ -303,13 +303,13 @@
 <div class="content-cat"
      [ngClass]="{'disabled': hasStatus(StatusKey.STEP_IMG, StatusValue.HIDE)}">
   <div class="container">
-    <div class="content-cat-heading">
+    <h1 class="content-cat-heading">
       <span class="badge mr-1"
             [ngClass]="{'primary': isImgOk(), 'danger': !isImgOk()}">
         {{'phen_obs.step' | translate}} 4
       </span>
       {{'phen_obs.step_4.title' | translate}}
-    </div>
+    </h1>
 
     <div *ngIf="hasStatus(StatusKey.STEP_IMG, StatusValue.HIDE)"
          class="obs-insufficient-progress">
@@ -357,13 +357,13 @@
 <div class="content-cat"
      [ngClass]="{'disabled': hasStatus(StatusKey.STEP_USERS, StatusValue.HIDE)}">
   <div class="container">
-    <div class="content-cat-heading">
+    <h1 class="content-cat-heading">
       <span class="badge primary mr-1"
             [ngClass]="{'primary': isUsersOk(), 'danger': !isUsersOk()}">
         {{'phen_obs.step' | translate}} 5
       </span>
       {{'phen_obs.step_5.title' | translate}}
-    </div>
+    </h1>
 
     <div *ngIf="hasStatus(StatusKey.STEP_USERS, StatusValue.HIDE)"
          class="obs-insufficient-progress">
@@ -442,9 +442,9 @@
 <div class="content-cat">
   <div class="container">
 
-    <div class="content-cat-heading">
+    <h1 class="content-cat-heading">
       {{'phen_obs.send.title' | translate}}
-    </div>
+    </h1>
 
     <div class="content-cat-text">
       {{'phen_obs.send.desc' | translate}}

@@ -56,12 +56,12 @@
       }
 
       &.danger {
-        background-color: @dangerColor;
+        background-color: @danger;
         color: @white;
 
         &:hover {
-          background-color: darken(@dangerColor, 5%);
-      }
+          background-color: darken(@danger, 5%);
+        }
       }
 
       &.dark {
@@ -139,7 +139,7 @@
     color: @darkerGrey;
 
     &.danger {
-      background-color: @dangerColor;
+      background-color: @danger;
       color: @white;
     }
 
@@ -183,11 +183,11 @@
 
     &.role-existing {
       background-color: @successBg;
-      color: @successColor;
+      color: @successDark;
       background-image: url("/assets/img/icon/special/cross-success.svg");
 
       &:hover {
-        color: darken(@successColor, 15%);
+        color: darken(@successDark, 15%);
       }
     }
   }

@@ -1,8 +1,8 @@
 <div class="content-cat">
   <div class="container">
-    <div class="content-cat-heading">
+    <h1 class="content-cat-heading">
       {{'report.title' | translate}}
-    </div>
+    </h1>
     <div class="content-cat-text mb-2">
       <div class="d-inline-flex flex-row align-items-center link-container"
            tabindex="0"
@@ -35,9 +35,9 @@
 
 <div *ngIf="showReportForm" class="content-cat">
   <div class="container">
-    <div class="content-cat-heading">
+    <h1 class="content-cat-heading">
       {{'report.report.title' | translate}}
-    </div>
+    </h1>
     <div class="content-cat-text">
       <div class="mb-2">
         {{'report.report.desc' | translate}}
@@ -81,13 +81,13 @@
 
 <div class="content-cat">
   <div class="container">
-    <div class="content-cat-heading">
+    <h1 class="content-cat-heading">
       {{'report.user_reports.title' | translate}}
       <ut-loading-status
         errorDescription="report.user_reports.error"
         [status]="getStatusObservable(StatusKey.LOAD_REPORTS)"
         [error]="getStatusErrorObservable(StatusKey.LOAD_REPORTS)"></ut-loading-status>
-    </div>
+    </h1>
     <div class="content-cat-text mb-2">
       {{'report.user_reports.desc' | translate}}
       <div class="font-italic">{{'report.user_reports.desc_annotation' | translate}}</div>

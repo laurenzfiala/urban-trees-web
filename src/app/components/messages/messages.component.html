@@ -5,7 +5,7 @@
 
     <ng-container *ngIf="!r.wasResolved">
 
-      <div class="content-cat-heading d-flex flex-row flex-wrap align-items-center">
+      <h1 class="content-cat-heading d-flex flex-row flex-wrap align-items-center">
         <div class="flex-shrink-0 flex-grow-1">
           Report {{r.id}}
           <span *ngIf="!r.autoCreate" class="badge badge-sm warning align-text-bottom ml-1">USER</span>
@@ -30,7 +30,7 @@
           <i class="i i-send-primary i-sm mr-1"></i>
           <a class="link primary">Save</a>
         </div>
-      </div>
+      </h1>
 
       <div class="content-cat-text">
         {{r.message}}

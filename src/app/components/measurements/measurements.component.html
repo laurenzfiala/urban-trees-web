@@ -1,12 +1,12 @@
 <div class="content-cat">
   <div class="container">
-    <div class="content-cat-heading">
+    <h1 class="content-cat-heading">
       {{'measurements.temperature.title' | translate}}
       <ut-loading-status
         errorDescription="measurements.temperature.error"
         [status]="getStatusObservable(StatusKey.STATISTICS)"
         [error]="getStatusErrorObservable(StatusKey.STATISTICS)"></ut-loading-status>
-    </div>
+    </h1>
 
     <div *ngIf="hasStatus(StatusKey.STATISTICS, StatusValue.SUCCESSFUL)"
          class="content-cat-highlight-bar mt-2">
@@ -38,14 +38,14 @@
 
 <div class="content-cat">
   <div class="container">
-    <div class="content-cat-heading">
+    <h1 class="content-cat-heading">
       {{'measurements.humidity.title' | translate}}
       <ut-loading-status
         errorDescription="measurements.humidity.error"
         [status]="getStatusObservable(StatusKey.STATISTICS)"
         [error]="getStatusErrorObservable(StatusKey.STATISTICS)"
         (retry)="loadStatistics()"></ut-loading-status>
-    </div>
+    </h1>
 
     <div *ngIf="hasStatus(StatusKey.STATISTICS, StatusValue.SUCCESSFUL)"
          class="content-cat-highlight-bar mt-2">
@@ -77,13 +77,13 @@
 
 <div class="content-cat">
   <div class="container">
-    <div class="content-cat-heading">
+    <h1 class="content-cat-heading">
       {{'measurements.beacons.title' | translate}}
       <ut-loading-status
         errorDescription="measurements.beacons.error"
         [status]="getStatusObservable(StatusKey.BEACONS)"
         [error]="getStatusErrorObservable(StatusKey.BEACONS)"></ut-loading-status>
-    </div>
+    </h1>
     <div class="content-cat-text">
       {{'measurements.beacons.desc' | translate}}<br/>
       <span class="font-italic">{{'measurements.beacons.help' | translate}} </span>

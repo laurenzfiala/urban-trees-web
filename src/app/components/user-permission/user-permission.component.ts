@@ -63,6 +63,11 @@ export class UserPermissionComponent extends AbstractComponent implements OnInit
 
   public request(): void {
 
+    if (this.username === this.getUsername()) {
+      this.setStatus(StatusKey.REQUEST, StatusValue.SAME_ACCOUNT);
+      return;
+    }
+
     this.setStatus(StatusKey.REQUEST, StatusValue.IN_PROGRESS);
     this.authService.addUserPermission(this.permission, this.username, this.password, (result: UserIdentity) => {
       this.grantingUsers.add(result);
@@ -110,6 +115,7 @@ export enum StatusValue {
 
   IN_PROGRESS = 0,
   SUCCESSFUL = 1,
-  FAILED = 2
+  FAILED = 2,
+  SAME_ACCOUNT
 
 }

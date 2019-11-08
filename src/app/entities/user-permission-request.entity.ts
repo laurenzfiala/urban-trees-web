@@ -7,14 +7,14 @@
 export class UserPermissionRequest {
 
   public username: string;
-  public password: string;
+  public ppin: string;
   public permission: string;
 
   constructor(username?: string,
-              password?: string,
+              ppin?: string,
               permission?: string) {
     this.username = username;
-    this.password = password;
+    this.ppin = ppin;
     this.permission = permission;
   }
 
@@ -22,7 +22,7 @@ export class UserPermissionRequest {
 
     return new UserPermissionRequest(
       o.username,
-      o.password,
+      o.ppin,
       o.permission
     );
 

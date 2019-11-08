@@ -72,6 +72,22 @@
   font-size: 0.7em;
 }
 
+.text-info {
+  color: @info !important;
+}
+
+.text-success {
+  color: @success !important;
+}
+
+.text-warning {
+  color: @warning !important;
+}
+
+.text-danger {
+  color: @danger !important;
+}
+
 .pointer {
   cursor: pointer;
 }
@@ -206,8 +222,8 @@ textarea.form-control:focus,
   }
 
   &.danger {
-    color: lighten(@dangerColor, 15%);
-    background-color: lighten(@dangerColor, 40%);
+    color: lighten(@dangerDark, 15%);
+    background-color: lighten(@dangerDark, 40%);
   }
 
   &.primary {
@@ -216,13 +232,13 @@ textarea.form-control:focus,
   }
 
   &.success {
-    color: lighten(@successColor, 15%);
-    background-color: lighten(@successColor, 55%);
+    color: lighten(@successDark, 15%);
+    background-color: lighten(@successDark, 55%);
   }
 
   &.warning {
-    color: lighten(@warningColor, 15%);
-    background-color: lighten(@warningColor, 55%);
+    color: lighten(@warningDark, 15%);
+    background-color: lighten(@warningDark, 55%);
   }
 }
 
@@ -254,16 +270,16 @@ textarea.form-control:focus,
   }
 
   &.danger {
-    color: lighten(@dangerColor, 15%) !important;
-    border-bottom-color: lighten(@dangerColor, 15%) !important;
+    color: lighten(@dangerDark, 15%) !important;
+    border-bottom-color: lighten(@dangerDark, 15%) !important;
 
     &:hover,
     &:active,
     &.active,
     &:focus {
       text-decoration: none;
-      color: @dangerColor !important;
-      border-bottom-color: @dangerColor !important;
+      color: @dangerDark !important;
+      border-bottom-color: @dangerDark !important;
     }
   }
 
@@ -284,8 +300,8 @@ textarea.form-control:focus,
   }
 
   &.success {
-    color: lighten(@successColor, 15%) !important;
-    border-bottom-color: lighten(@successColor, 15%) !important;
+    color: lighten(@successDark, 15%) !important;
+    border-bottom-color: lighten(@successDark, 15%) !important;
 
     .link-container:hover &,
     .link-container:active &,
@@ -294,8 +310,8 @@ textarea.form-control:focus,
     &.active,
     &:focus {
       text-decoration: none;
-      color: @successColor !important;
-      border-bottom-color: @successColor !important;
+      color: @successDark !important;
+      border-bottom-color: @successDark !important;
     }
   }
 
@@ -415,7 +431,7 @@ a.link {
 
   &.success {
     background-color: @successBg;
-    color: @successColor;
+    color: @successDark;
 
     > .container:before {
       background-image: url("/assets/img/icon/round/success.svg");
@@ -423,7 +439,7 @@ a.link {
   }
   &.danger {
     background-color: @dangerBg;
-    color: @dangerColor;
+    color: @dangerDark;
 
     > .container:before {
       background-image: url("/assets/img/icon/round/error.svg");
@@ -507,5 +523,20 @@ a.link {
   &.middle {
     height: 100%;
     max-height: 100vh;
+  }
+}
+
+// lists
+ul.list {
+  list-style-type: none;
+  padding-left: (@gutter*3);
+
+  li:before {
+    content: "–";
+    width: @gutter;
+    display: inline-block;
+    margin-left: -@gutter2x;
+    padding-right: @gutter2x;
+    color: @subtleTextColor;
   }
 }

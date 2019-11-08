@@ -164,13 +164,13 @@ a.link-btn:not([href]):not([tabindex]) {
   }
 
   &.danger {
-    color: lighten(@dangerColor, 15%) !important;
-    border-color: lighten(@dangerColor, 15%) !important;
+    color: lighten(@dangerDark, 15%) !important;
+    border-color: lighten(@dangerDark, 15%) !important;
 
     &:hover,
     &:focus {
-      color: @dangerColor !important;
-      border-color: @dangerColor !important;
+      color: @dangerDark !important;
+      border-color: @dangerDark !important;
     }
   }
 
@@ -186,8 +186,8 @@ a.link-btn:not([href]):not([tabindex]) {
   }
 
   &.success {
-    color: lighten(@successColor, 15%) !important;
-    border-color: lighten(@successColor, 15%) !important;
+    color: lighten(@successDark, 15%) !important;
+    border-color: lighten(@successDark, 15%) !important;
 
     &.highlight {
       animation: -anim-btn-success @btnAnimDuration infinite ease-in;
@@ -199,31 +199,31 @@ a.link-btn:not([href]):not([tabindex]) {
 
     &:hover,
     &:focus {
-      color: @successColor !important;
-      border-color: @successColor !important;
+      color: @successDark !important;
+      border-color: @successDark !important;
     }
   }
 
   &.warning {
-    color: lighten(@warningColor, 15%) !important;
-    border-color: lighten(@warningColor, 15%) !important;
+    color: lighten(@warningDark, 15%) !important;
+    border-color: lighten(@warningDark, 15%) !important;
 
     &:hover,
     &:focus {
-      color: @warningColor !important;
-      border-color: @warningColor !important;
+      color: @warningDark !important;
+      border-color: @warningDark !important;
     }
   }
 }
 
 @keyframes -anim-btn-success {
   0% {
-    box-shadow: 0 0 0 0px fade(lighten(@successColor, 5%), 60%);
+    box-shadow: 0 0 0 0px fade(lighten(@successDark, 5%), 60%);
   }
   75% {
-    box-shadow: 0 0 0 3px fade(lighten(@successColor, 5%), 25%);
+    box-shadow: 0 0 0 3px fade(lighten(@successDark, 5%), 25%);
   }
   100% {
-    box-shadow: 0 0 0 6px fade(lighten(@successColor, 5%), 0%);
+    box-shadow: 0 0 0 6px fade(lighten(@successDark, 5%), 0%);
   }
 }

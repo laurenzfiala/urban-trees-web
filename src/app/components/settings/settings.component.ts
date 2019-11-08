@@ -23,6 +23,10 @@ export class SettingsComponent extends AbstractComponent implements OnInit {
    */
   public user: User;
 
+  get ppin(): string {
+    return this.authService.getPPIN();
+  }
+
   constructor(public envService: EnvironmentService,
               private translateService: TranslateService,
               private userService: UserService,
@@ -31,7 +35,14 @@ export class SettingsComponent extends AbstractComponent implements OnInit {
   }
 
   public ngOnInit() {
+
     this.user = new User(this.authService.getUserId(), this.authService.getUsername());
+    if (!this.authService.isUserAnonymous() && this.authService.getPPIN() === undefined) {
+      this.requestPPIN();
+    } else {
+      this.setStatus(StatusKey.PPIN, StatusValue.SUCCESSFUL);
+    }
+
   }
 
   public deleteUser() {
@@ -58,11 +69,27 @@ export class SettingsComponent extends AbstractComponent implements OnInit {
     this.translateService.use(lang);
   }
 
+  /**
+   * Request a new permissions PIN from backend.
+   */
+  public requestPPIN(): void {
+
+    this.setStatus(StatusKey.PPIN, StatusValue.IN_PROGRESS);
+    this.authService.loadPPIN((ppin: string) => {
+      this.setStatus(StatusKey.PPIN, StatusValue.SUCCESSFUL);
+    }, (error, apiError) => {
+      this.setStatus(StatusKey.PPIN, StatusValue.FAILED);
+    });
+
+  }
+
 }
 
 export enum StatusKey {
 
-  DELETE_USER
+  DELETE_USER,
+  PPIN,
+  PPIN_USED
 
 }
 
@@ -70,6 +97,7 @@ export enum StatusValue {
 
   IN_PROGRESS,
   SUCCESSFUL,
-  FAILED
+  FAILED,
+  SHOW
 
 }
