@@ -41,12 +41,13 @@
            class="i i-xs i-load i-dark ml-2 pointer"
            (action)="requestPPIN()"
            role="button"
-           tabindex="0"></i>
-        <span class="sr-only">{{'settings.one_time_token.refresh' | translate}}</span>
+           tabindex="0">
+          <span class="sr-only">{{'settings.one_time_token.refresh' | translate}}</span>
+        </i>
       </div>
     </div>
-    <div class="d-flex align-items-center text-subtle text-info mb-1">
-      <i class="i i-xs i-info-info mr-2"></i>
+    <div class="d-flex flex-row text-subtle text-info mb-1">
+      <i class="i i-xs i-info-info flex-shrink-0 ppin-info-icon mr-2"></i>
       {{'settings.one_time_token.info' | translate}}
     </div>
     <hr class="my-1"/>
