@@ -97,7 +97,7 @@ export class AuthService extends AbstractService {
     if (forExpiredAuth) {
       const potentiallyExpiredToken = AuthService.getJWTTokenRaw();
       if (potentiallyExpiredToken) {
-        return JWTToken.fromObject(this.jwtHelper.decodeToken()).sub;
+        return JWTToken.fromObject(this.jwtHelper.decodeToken(potentiallyExpiredToken)).sub;
       }
       return undefined;
     }
