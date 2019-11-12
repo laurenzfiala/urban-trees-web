@@ -15,6 +15,7 @@
 	"navigation": {
     "accessibility": {
       "title": "Abkürzungen für Barrierefreiheit",
+      "more_items": "Zeige mehr Menüeinträge an",
       "go_to": {
         "header": "Zur Navigation springen",
         "content": "Zum Inhalt springen",
