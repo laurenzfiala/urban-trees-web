@@ -16,6 +16,7 @@
     "accessibility": {
       "title": "Accessibility shortcuts",
       "more_items": "Show more menu items",
+      "less_items": "Show less menu items",
       "go_to": {
         "header": "Jump to navigation",
         "content": "Jump to content",

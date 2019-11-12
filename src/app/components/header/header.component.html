@@ -43,13 +43,16 @@
         <ul class="navbar-nav navbar-left mr-auto">
           <ng-template [ngTemplateOutlet]="navContent"></ng-template>
           <li dropdown
+              #navLinksDropdown="bs-dropdown"
               class="nav-item dropdown">
             <a dropdownToggle
                class="nav-link pointer"
                (click)="false"
+               role="button"
                href>
               <i class="i i-xxs i-dark i-dots align-middle"></i>
-              <span class="sr-only">{{'navigation.accessibility.more_items' | translate}}</span>
+              <span *ngIf="!navLinksDropdown.isOpen" class="sr-only">{{'navigation.accessibility.more_items' | translate}}</span>
+              <span *ngIf="navLinksDropdown.isOpen" class="sr-only">{{'navigation.accessibility.less_items' | translate}}</span>
             </a>
             <div *dropdownMenu
                  id="nav-dropdown-menu"

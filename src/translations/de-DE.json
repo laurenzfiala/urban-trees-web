@@ -16,6 +16,7 @@
     "accessibility": {
       "title": "Abkürzungen für Barrierefreiheit",
       "more_items": "Zeige mehr Menüeinträge an",
+      "less_items": "Zeige weniger Menüeinträge an",
       "go_to": {
         "header": "Zur Navigation springen",
         "content": "Zum Inhalt springen",
