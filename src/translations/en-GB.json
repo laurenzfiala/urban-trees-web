@@ -560,13 +560,14 @@
   },
   "user_overview": {
     "xp": "XP",
+    "level": "Level",
     "desc_level_5+": "Wow, you've already earned {{xp}} XP!<br/>Great job! Thank you for helping us collect all this information.",
     "desc_level_1-5": "You've earned {{xp}} XP!<br/>Thank you so much for helping us collect more data!",
     "desc_level_0": "You have not yet earned any XP!<br/>Consider contributing and earning XP by reading out beacons and submitting phenology observations.",
     "view_details": "View details",
     "details": {
       "title": "Score details",
-      "desc_level": "You are level {{level}}.",
+      "desc_level": "You are level {{level}} of {{maxlevel}}.",
       "desc_new_level": "You have just reached level {{level}}!",
       "desc_xp_needed": "{{nextLevelRemainingXp}} XP more needed for level {{nextLevel}}.",
       "contributions": "Your latest contributions:"

@@ -48,7 +48,7 @@
 <div *auth="[envService.security.rolesUser]"
      class="content-cat content-cat-user">
   <div class="container">
-    <h1 class="content-cat-heading">
+    <h1 class="content-cat-heading mb-2">
       <i *ngIf="hasStatus(StatusKey.USER_LEVEL_UP, StatusValue.LEVELLED_UP)" class="feature-pointer mr-1"></i>{{'home.user_score.title' | translate}}
       <ut-loading-status
         errorDescription="home.user_score.error"

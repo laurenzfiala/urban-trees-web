@@ -1,16 +1,19 @@
 <div class="user-overview-container" [ngClass]="'level-' + level">
   <div class="info">
-    <div class="stats-wrapper" [ngClass]="{'no-level-up': !levelUp}">
+
+    <div class="stats-wrapper">
 
       <div *ngIf="hasStatus(StatusKey.ACHIEVEMENTS_LOADING, StatusValue.SUCCESSFUL)"
            class="level-progress">
         <div class="level-info">
-          <div class="d-flex flex-row align-items-center">
-            Level {{level}} / {{maxLevel}}
+          <div class="d-flex flex-row align-items-center justify-content-between flex-grow-1">
+            <div>{{'user_overview.level' | translate}} {{level}}</div>
+            <div>{{'user_overview.level' | translate}} {{nextLevel}}</div>
           </div>
         </div>
         <div class="bar">
-          <div class="bar-inner" [cssvar]="{name: '--target-width', value: (achievements.xp > maxLevelXp ? 100 : ((achievements.xp / maxLevelXp) * 100)) + '%'}"></div>
+          <div class="bar-inner" [cssvar]="[{name: '--target-width', value: (achievements.xp > maxLevelXp ? 100 : ((achievements.xp - levelXp) / (nextLevelXp - levelXp) * 100)) + '%'},
+                                            {name: '--target-width-multiplier', value: (achievements.xp > maxLevelXp ? 1 : (nextLevelXp - levelXp) / (achievements.xp - levelXp))}]"></div>
         </div>
       </div>
 
@@ -18,6 +21,8 @@
 
     <div *ngIf="hasStatus(StatusKey.ACHIEVEMENTS_LOADING, StatusValue.SUCCESSFUL)"
          class="description">
+      <div *ngIf="levelUp" class="font-weight-bold mb-1" [innerHTML]="'user_overview.details.desc_new_level' | translate:{'level': level}"></div>
+
       <div *ngIf="level >= 5" [innerHTML]="'user_overview.desc_level_5+' | translate:{'xp': achievements.xp}"></div>
       <div *ngIf="achievements.xp > 0 && level < 5" [innerHTML]="'user_overview.desc_level_1-5' | translate:{'xp': achievements.xp}"></div>
       <div *ngIf="achievements.xp === 0" [innerHTML]="'user_overview.desc_level_0' | translate"></div>
@@ -41,27 +46,34 @@
         {{'user_overview.details.title' | translate}}
       </div>
 
-
-      <div class="level-progress">
-        <div class="level-info">
-          <div class="d-flex flex-row align-items-center justify-content-between flex-grow-1">
-            <div>Level {{level}} </div>
-            <div>Level {{nextLevel}}</div>
+      <div [cssvar]="{name: '--target-width', value: (achievements.xp > maxLevelXp ? 100 : ((achievements.xp / maxLevelXp) * 100)) + '%'}">
+        <div *ngIf="level > 1 && level < maxLevel" class="progress-annotation-container mb-1">
+          <div class="progress-annotation">{{achievements.xp}} {{'user_overview.xp' | translate}}</div>
+        </div>
+        <div class="xp-progress">
+          <div class="level-info">
+            <div class="d-flex flex-row align-items-center justify-content-between flex-grow-1">
+              <div>0 {{'user_overview.xp' | translate}}</div>
+              <div>{{maxLevelXp}} {{'user_overview.xp' | translate}}</div>
+            </div>
+          </div>
+          <div class="bar">
+            <div class="bar-inner"></div>
           </div>
         </div>
-        <div class="bar">
-          <div class="bar-inner" [cssvar]="{name: '--target-width', value: (achievements.xp > maxLevelXp ? 100 : ((achievements.xp - levelXp) / (nextLevelXp - levelXp) * 100)) + '%'}"></div>
-        </div>
       </div>
-      <div class="mt-2 d-flex flex-row justify-content-between">
-        <div>
-          <span *ngIf="levelUp" class="font-weight-bold" [innerHTML]="'user_overview.details.desc_new_level' | translate:{'level': level}"></span>
-          <span *ngIf="!levelUp" [innerHTML]="'user_overview.details.desc_level' | translate:{'level': level}"></span>
-          <div *ngIf="!levelUp" [innerHTML]="'user_overview.details.desc_xp_needed' | translate:{'nextLevelRemainingXp': nextLevelRemainingXp, 'nextLevel': nextLevel}"></div>
-        </div>
-        <div>
-          {{'user_overview.details.contributions' | translate}}
 
+      <div class="mt-1 d-flex flex-row justify-content-between flex-wrap mx--1 mb--1">
+
+        <!-- Infos -->
+        <div class="m-1">
+          <div [innerHTML]="'user_overview.details.desc_level' | translate:{'level': level, 'maxlevel': maxLevel}"></div>
+          <div [innerHTML]="'user_overview.details.desc_xp_needed' | translate:{'nextLevelRemainingXp': nextLevelRemainingXp, 'nextLevel': nextLevel}"></div>
+        </div>
+
+        <!-- Contribution list -->
+        <div class="m-1">
+          {{'user_overview.details.contributions' | translate}}
           <div *ngIf="hasStatus(StatusKey.ACHIEVEMENTS_LOADING, StatusValue.SUCCESSFUL)"
                class="d-flex flex-row align-items-stretch justify-content-between">
 
@@ -80,8 +92,8 @@
 
           </div>
         </div>
-      </div>
 
+      </div>
 
     </div>
 

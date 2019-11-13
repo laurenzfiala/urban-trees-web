@@ -559,13 +559,14 @@
   },
   "user_overview": {
     "xp": "XP",
+    "level": "Level",
     "desc_level_5+": "Wow, Du hast schon {{xp}} XP gesammelt!<br/>Gut gemacht! Danke, dass Du uns hilfst, all diese Daten zu sammeln.",
     "desc_level_1-5": "Du hast {{xp}} XP gesammelt!<br/>Danke, dass Du uns hilfst mehr Daten zu sammeln!",
     "desc_level_0": "Du hast noch keine XP gesammelt!<br/>Sobald Du eine Phänologiebeobachtung oder eine Beacon-Auslese abschließt, bekommst Du Erfahrungspunkte.",
     "view_details": "Mehr Details",
     "details": {
       "title": "Details",
-      "desc_level": "Du bist Level {{level}}.",
+      "desc_level": "Du bist Level {{level}} von {{maxlevel}}.",
       "desc_new_level": "Du hast soeben Level {{level}} erreicht!",
       "desc_xp_needed": "{{nextLevelRemainingXp}} XP werden noch für Level {{nextLevel}} benötigt.",
       "contributions": "Deine letzten Beiträge:"

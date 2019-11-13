@@ -1,4 +1,4 @@
-import {Directive, ElementRef, Input, SimpleChanges} from '@angular/core';
+import {Directive, ElementRef, Input, OnChanges, SimpleChanges} from '@angular/core';
 
 /**
  * See https://github.com/angular/angular/issues/9343.
@@ -9,7 +9,7 @@ import {Directive, ElementRef, Input, SimpleChanges} from '@angular/core';
 @Directive({
   selector: '[cssvar]'
 })
-export class CssVariableDirective {
+export class CssVariableDirective implements OnChanges {
 
   @Input('cssvar')
   public properties: Property|Property[] = [];
@@ -17,6 +17,7 @@ export class CssVariableDirective {
   constructor(private element: ElementRef) { }
 
   public ngOnChanges(changes: SimpleChanges) {
+
     const set = (variable: Property) => {
       if (variable.value) {
         this.element.nativeElement.style.setProperty(variable.name, variable.value);
@@ -24,16 +25,17 @@ export class CssVariableDirective {
         this.element.nativeElement.style.removeProperty(variable.name);
       }
     };
+
     if (changes.properties) {
       if (Array.isArray(this.properties)) {
         for (const v of this.properties) {
           set(v);
         }
-      }
-      else {
+      } else {
         set(this.properties);
       }
     }
+
   }
 
 }

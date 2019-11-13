@@ -1,12 +1,12 @@
 @import (reference) "../../../theme/variables";
 
+
 .user-overview-container {
   border-radius: @borderRadiusNew;
   position: relative;
   z-index: 1;
 
   .info {
-    overflow: hidden;
     border-bottom-left-radius: @borderRadiusNew;
     border-bottom-right-radius: @borderRadiusNew;
 
@@ -52,6 +52,7 @@
 // --- LEVELS ---
 
 @levelDropShadow:   0 0 10px;
+@levelBorderWidth:  @borderWidth;
 @level1Color:       rgb(170, 170, 170);
 @level2Color:       rgb(196, 68, 149);
 @level3Color:       rgb(154, 103, 208);
@@ -113,7 +114,54 @@
     }
   }
 
-  .level-progress {
+  .progress-annotation-container {
+    position: relative;
+    padding-bottom: (@gutter/2);
+    height: @fontSizeExtraLarge;
+
+    color: @lightGrey;
+    text-shadow: 0 0.5px 0.5px @darkerGrey;
+
+    .progress-annotation {
+      position: absolute;
+      bottom: 0;
+      left: var(--target-width);
+      transform: translateX(-50%);
+
+      opacity: 0;
+      padding: (@gutter/4) (@gutter/2);
+
+      white-space: nowrap;
+      border: solid transparent @levelBorderWidth;
+      animation: 0.75s i-progress-annotation 2s forwards;
+
+      &:after,
+      &:before {
+        top: 100%;
+        left: 50%;
+        border: solid transparent @levelBorderWidth;
+        content: "";
+        height: 0;
+        width: 0;
+        position: absolute;
+        pointer-events: none;
+      }
+
+      @arrowSize:     5px; // must be the same unit as @levelBorderWidth
+      &:after {
+        border-width: @arrowSize;
+        margin-left: -@arrowSize;
+      }
+
+      &:before {
+        border-width: (@arrowSize + @levelBorderWidth + 0.5px);
+        margin-left: -(@arrowSize + @levelBorderWidth + 0.5px);
+      }
+    }
+  }
+
+  .level-progress,
+  .xp-progress {
     display: flex;
     position: relative;
     flex-direction: column;
@@ -124,10 +172,10 @@
     border-bottom-left-radius: @borderRadiusNew;
 
     .bar {
-      height: @fontSizeExtraLarge;
-      background: linear-gradient(to right, darken(@bgColor, 15%), darken(@bgColor, 20%));
+      height: 2rem;
+      background: linear-gradient(to right, darken(@bgColor, 15%), darken(@bgColor, 25%));
       width: 100%;
-      box-shadow: 0 0 0px 1px rgba(0, 0, 0, 0.1) inset;
+      box-shadow: 0 0 0px @levelBorderWidth rgba(0, 0, 0, 0.1) inset;
       //margin-bottom: -1px;
       position: relative;
       border-radius: @borderRadiusNew;
@@ -154,10 +202,15 @@
       flex-direction: row;
       align-items: center;
 
-      font-size: @fontSizeSmall;
-      color: @white;
-      text-shadow: 0px 0.5px 0.5px @black;
+      font-size: @fontSizeBase;
+      color: @lightGrey;
+      text-shadow: 0px 0.5px 0.5px @darkerGrey;
     }
+  }
+
+  .level-progress .bar-inner {
+    background: linear-gradient(to right, @level1Color, lighten(@level1Color, 10%));
+    border: solid darken(@level1Color, 15%) @levelBorderWidth;
   }
 
   &.level-1 {
@@ -176,13 +229,25 @@
     }
 
     .level-progress .bar-inner {
-      background: linear-gradient(to top right, @level1Color, darken(@level1Color, 15%));
+      background: linear-gradient(to right, @level1Color 0%, @level2Color calc(100% * var(--target-width-multiplier)));
     }
-  }
 
-  .level-progress .bar-inner {
-    background: linear-gradient(to right, @level1Color, lighten(@level1Color, 10%));
-    border: solid darken(@level1Color, 15%) 1px;
+    .progress-annotation-container .progress-annotation {
+      background-color: darken(@level1Color, 7%);
+      border-color: darken(@level1Color, 15%);
+
+      &:before {
+        border-top-color: darken(@level1Color, 15%);
+      }
+      &:after {
+        border-top-color: darken(@level1Color, 7%);
+      }
+    }
+
+    .xp-progress .bar-inner {
+      background: linear-gradient(to right, @level1Color 0%, darken(@level1Color, 7%));
+      border: solid darken(@level1Color, 15%) @levelBorderWidth;
+    }
   }
 
   &.level-2 {
@@ -201,8 +266,25 @@
     }
 
     .level-progress .bar-inner {
-      background: linear-gradient(to right, @level2Color, lighten(@level2Color, 10%));
-      border: solid darken(@level2Color, 15%) 1px;
+      background: linear-gradient(to right, @level2Color 0%, @level3Color calc(100% * var(--target-width-multiplier)));
+      border: solid darken(@level2Color, 15%) @levelBorderWidth;
+    }
+
+    .progress-annotation-container .progress-annotation {
+      background-color: darken(@level2Color, 7%);
+      border-color: darken(@level2Color, 15%);
+
+      &:before {
+        border-top-color: darken(@level2Color, 15%);
+      }
+      &:after {
+        border-top-color: darken(@level2Color, 7%);
+      }
+    }
+
+    .xp-progress .bar-inner {
+      background: linear-gradient(to right, @level2Color 0%, darken(@level2Color, 7%));
+      border: solid darken(@level2Color, 15%) @levelBorderWidth;
     }
   }
 
@@ -222,8 +304,25 @@
     }
 
     .level-progress .bar-inner {
-      background: linear-gradient(to right, @level3Color, lighten(@level3Color, 10%));
-      border: solid darken(@level3Color, 15%) 1px;
+      background: linear-gradient(to right, @level3Color 0%, @level4Color calc(100% * var(--target-width-multiplier)));
+      border: solid darken(@level3Color, 15%) @levelBorderWidth;
+    }
+
+    .progress-annotation-container .progress-annotation {
+      background-color: darken(@level3Color, 7%);
+      border-color: darken(@level3Color, 15%);
+
+      &:before {
+        border-top-color: darken(@level3Color, 15%);
+      }
+      &:after {
+        border-top-color: darken(@level3Color, 7%);
+      }
+    }
+
+    .xp-progress .bar-inner {
+      background: linear-gradient(to right, @level3Color 0%, darken(@level3Color, 7%));
+      border: solid darken(@level3Color, 15%) @levelBorderWidth;
     }
   }
 
@@ -243,8 +342,25 @@
     }
 
     .level-progress .bar-inner {
-      background: linear-gradient(to right, @level4Color, lighten(@level4Color, 10%));
-      border: solid darken(@level4Color, 15%) 1px;
+      background: linear-gradient(to right, @level4Color 0%, @level5Color calc(100% * var(--target-width-multiplier)));
+      border: solid darken(@level4Color, 15%) @levelBorderWidth;
+    }
+
+    .progress-annotation-container .progress-annotation {
+      background-color: darken(@level4Color, 7%);
+      border-color: darken(@level4Color, 15%);
+
+      &:before {
+        border-top-color: darken(@level4Color, 15%);
+      }
+      &:after {
+        border-top-color: darken(@level4Color, 7%);
+      }
+    }
+
+    .xp-progress .bar-inner {
+      background: linear-gradient(to right, @level4Color 0%, darken(@level4Color, 7%));
+      border: solid darken(@level4Color, 15%) @levelBorderWidth;
     }
   }
 
@@ -264,8 +380,25 @@
     }
 
     .level-progress .bar-inner {
-      background: linear-gradient(to right, @level5Color, lighten(@level5Color, 10%));
-      border: solid darken(@level5Color, 15%) 1px;
+      background: linear-gradient(to right, @level5Color 0%, @level6Color calc(100% * var(--target-width-multiplier)));
+      border: solid darken(@level5Color, 15%) @levelBorderWidth;
+    }
+
+    .progress-annotation-container .progress-annotation {
+      background-color: darken(@level5Color, 7%);
+      border-color: darken(@level5Color, 15%);
+
+      &:before {
+        border-top-color: darken(@level5Color, 15%);
+      }
+      &:after {
+        border-top-color: darken(@level5Color, 7%);
+      }
+    }
+
+    .xp-progress .bar-inner {
+      background: linear-gradient(to right, @level5Color 0%, darken(@level5Color, 7%));
+      border: solid darken(@level5Color, 15%) @levelBorderWidth;
     }
   }
 
@@ -285,8 +418,25 @@
     }
 
     .level-progress .bar-inner {
-      background: linear-gradient(to right, @level6Color, lighten(@level6Color, 10%));
-      border: solid darken(@level6Color, 15%) 1px;
+      background: linear-gradient(to right, @level6Color 0%, @level7Color calc(100% * var(--target-width-multiplier)));
+      border: solid darken(@level6Color, 15%) @levelBorderWidth;
+    }
+
+    .progress-annotation-container .progress-annotation {
+      background-color: darken(@level6Color, 7%);
+      border-color: darken(@level6Color, 15%);
+
+      &:before {
+        border-top-color: darken(@level6Color, 15%);
+      }
+      &:after {
+        border-top-color: darken(@level6Color, 7%);
+      }
+    }
+
+    .xp-progress .bar-inner {
+      background: linear-gradient(to right, @level6Color 0%, darken(@level6Color, 7%));
+      border: solid darken(@level6Color, 15%) @levelBorderWidth;
     }
   }
 
@@ -306,8 +456,25 @@
     }
 
     .level-progress .bar-inner {
-      background: linear-gradient(to right, @level7Color, lighten(@level7Color, 10%));
-      border: solid darken(@level7Color, 15%) 1px;
+      background: linear-gradient(to right, @level7Color 0%, @level8Color calc(100% * var(--target-width-multiplier)));
+      border: solid darken(@level7Color, 15%) @levelBorderWidth;
+    }
+
+    .progress-annotation-container .progress-annotation {
+      background-color: darken(@level7Color, 7%);
+      border-color: darken(@level7Color, 15%);
+
+      &:before {
+        border-top-color: darken(@level7Color, 15%);
+      }
+      &:after {
+        border-top-color: darken(@level7Color, 7%);
+      }
+    }
+
+    .xp-progress .bar-inner {
+      background: linear-gradient(to right, @level7Color 0%, darken(@level7Color, 7%));
+      border: solid darken(@level7Color, 15%) @levelBorderWidth;
     }
   }
 
@@ -327,8 +494,25 @@
     }
 
     .level-progress .bar-inner {
-      background: linear-gradient(to right, @level8Color, lighten(@level8Color, 10%));
-      border: solid darken(@level8Color, 15%) 1px;
+      background: linear-gradient(to right, @level8Color 0%, @level9Color calc(100% * var(--target-width-multiplier)));
+      border: solid darken(@level8Color, 15%) @levelBorderWidth;
+    }
+
+    .progress-annotation-container .progress-annotation {
+      background-color: darken(@level8Color, 7%);
+      border-color: darken(@level8Color, 15%);
+
+      &:before {
+        border-top-color: darken(@level8Color, 15%);
+      }
+      &:after {
+        border-top-color: darken(@level8Color, 7%);
+      }
+    }
+
+    .xp-progress .bar-inner {
+      background: linear-gradient(to right, @level8Color 0%, darken(@level8Color, 7%));
+      border: solid darken(@level8Color, 15%) @levelBorderWidth;
     }
   }
 
@@ -348,8 +532,25 @@
     }
 
     .level-progress .bar-inner {
-      background: linear-gradient(to right, @level9Color, lighten(@level9Color, 10%));
-      border: solid darken(@level9Color, 15%) 1px;
+      background: linear-gradient(to right, @level9Color 0%, @level10Color calc(100% * var(--target-width-multiplier)));
+      border: solid darken(@level9Color, 15%) @levelBorderWidth;
+    }
+
+    .progress-annotation-container .progress-annotation {
+      background-color: darken(@level9Color, 7%);
+      border-color: darken(@level9Color, 15%);
+
+      &:before {
+        border-top-color: darken(@level9Color, 15%);
+      }
+      &:after {
+        border-top-color: darken(@level9Color, 7%);
+      }
+    }
+
+    .xp-progress .bar-inner {
+      background: linear-gradient(to right, @level9Color 0%, darken(@level9Color, 7%));
+      border: solid darken(@level9Color, 15%) @levelBorderWidth;
     }
   }
 
@@ -369,8 +570,25 @@
     }
 
     .level-progress .bar-inner {
-      background: linear-gradient(to right, @level10Color, lighten(@level10Color, 10%));
-      border: solid darken(@level10Color, 15%) 1px;
+      background: linear-gradient(to right, @level10Color 0%, @level11Color calc(100% * var(--target-width-multiplier)));
+      border: solid darken(@level10Color, 15%) @levelBorderWidth;
+    }
+
+    .progress-annotation-container .progress-annotation {
+      background-color: darken(@level10Color, 7%);
+      border-color: darken(@level10Color, 15%);
+
+      &:before {
+        border-top-color: darken(@level10Color, 15%);
+      }
+      &:after {
+        border-top-color: darken(@level10Color, 7%);
+      }
+    }
+
+    .xp-progress .bar-inner {
+      background: linear-gradient(to right, @level10Color 0%, darken(@level10Color, 7%));
+      border: solid darken(@level10Color, 15%) @levelBorderWidth;
     }
   }
 
@@ -391,8 +609,25 @@
     }
 
     .level-progress .bar-inner {
-      background: linear-gradient(to right, @level11Color, lighten(@level11Color, 10%));
-      border: solid darken(@level11Color, 15%) 1px;
+      background: linear-gradient(to right, @level11Color 0%, @level12Color calc(100% * var(--target-width-multiplier)));
+      border: solid darken(@level11Color, 15%) @levelBorderWidth;
+    }
+
+    .progress-annotation-container .progress-annotation {
+      background-color: darken(@level11Color, 7%);
+      border-color: darken(@level11Color, 15%);
+
+      &:before {
+        border-top-color: darken(@level11Color, 15%);
+      }
+      &:after {
+        border-top-color: darken(@level11Color, 7%);
+      }
+    }
+
+    .xp-progress .bar-inner {
+      background: linear-gradient(to right, @level11Color 0%, darken(@level11Color, 7%));
+      border: solid darken(@level11Color, 15%) @levelBorderWidth;
     }
   }
 
@@ -412,8 +647,25 @@
     }
 
     .level-progress .bar-inner {
-      background: linear-gradient(to right, @level12Color, lighten(@level12Color, 10%));
-      border: solid darken(@level12Color, 15%) 1px;
+      background: linear-gradient(to right, @level12Color 0%, @level13Color calc(100% * var(--target-width-multiplier)));
+      border: solid darken(@level12Color, 15%) @levelBorderWidth;
+    }
+
+    .progress-annotation-container .progress-annotation {
+      background-color: darken(@level12Color, 7%);
+      border-color: darken(@level12Color, 15%);
+
+      &:before {
+        border-top-color: darken(@level12Color, 15%);
+      }
+      &:after {
+        border-top-color: darken(@level12Color, 7%);
+      }
+    }
+
+    .xp-progress .bar-inner {
+      background: linear-gradient(to right, @level12Color 0%, darken(@level12Color, 7%));
+      border: solid darken(@level12Color, 15%) @levelBorderWidth;
     }
   }
 
@@ -433,15 +685,32 @@
     }
 
     .level-progress .bar-inner {
-      background: linear-gradient(to right, @level13Color, lighten(@level13Color, 10%));
-      border: solid darken(@level13Color, 15%) 1px;
+      background: linear-gradient(to right, @level13Color 0%, @level14Color calc(100% * var(--target-width-multiplier)));
+      border: solid darken(@level13Color, 15%) @levelBorderWidth;
+    }
+
+    .progress-annotation-container .progress-annotation {
+      background-color: darken(@level13Color, 7%);
+      border-color: darken(@level13Color, 15%);
+
+      &:before {
+        border-top-color: darken(@level13Color, 15%);
+      }
+      &:after {
+        border-top-color: darken(@level13Color, 7%);
+      }
+    }
+
+    .xp-progress .bar-inner {
+      background: linear-gradient(to right, @level13Color 0%, darken(@level13Color, 7%));
+      border: solid darken(@level13Color, 15%) @levelBorderWidth;
     }
   }
 
   &.level-14 {
     .level-container {
       &:before {
-        background: linear-gradient(to top right, @level14Color, darken(@level14Color, 15%));
+        background: linear-gradient(to top right, @level14Color 0, @level15Color calc(100% * var(--target-width-multiplier)));
       }
 
       .level {
@@ -455,7 +724,24 @@
 
     .level-progress .bar-inner {
       background: linear-gradient(to right, @level14Color, lighten(@level14Color, 10%));
-      border: solid darken(@level14Color, 15%) 1px;
+      border: solid darken(@level14Color, 15%) @levelBorderWidth;
+    }
+
+    .progress-annotation-container .progress-annotation {
+      background-color: darken(@level14Color, 7%);
+      border-color: darken(@level14Color, 15%);
+
+      &:before {
+        border-top-color: darken(@level14Color, 15%);
+      }
+      &:after {
+        border-top-color: darken(@level14Color, 7%);
+      }
+    }
+
+    .xp-progress .bar-inner {
+      background: linear-gradient(to right, @level14Color 0%, darken(@level14Color, 7%));
+      border: solid darken(@level14Color, 15%) @levelBorderWidth;
     }
   }
 
@@ -475,8 +761,25 @@
     }
 
     .level-progress .bar-inner {
-      background: linear-gradient(to right, @level15Color, lighten(@level15Color, 10%));
-      border: solid darken(@level15Color, 15%) 1px;
+      background-color: @level15Color;
+      border: solid darken(@level15Color, 15%) @levelBorderWidth;
+    }
+
+    .progress-annotation-container .progress-annotation {
+      background-color: darken(@level15Color, 7%);
+      border-color: darken(@level15Color, 15%);
+
+      &:before {
+        border-top-color: darken(@level15Color, 15%);
+      }
+      &:after {
+        border-top-color: darken(@level15Color, 7%);
+      }
+    }
+
+    .xp-progress .bar-inner {
+      background: linear-gradient(to right, @level15Color 0%, darken(@level15Color, 7%));
+      border: solid darken(@level15Color, 15%) @levelBorderWidth;
     }
   }
 }
@@ -504,4 +807,10 @@
 {
   0%   {width: 0}
   100% {width: var(--target-width)}
+}
+
+@keyframes i-progress-annotation
+{
+  0%   {transform: translateX(-50%) translateY(25%); opacity: 0}
+  100% {transform: translateX(-50%) translateY(0); opacity: 1}
 }
