@@ -37,7 +37,9 @@
            class="navbar-brand"
            routerLink="/home"
            routerLinkActive="active">
-          <img src="../assets/img/urbantrees_icon_xsmall.png" class="d-inline-block align-top nav-brand-icon" [alt]="'navigation.home' | translate">
+          <div class="d-inline-block align-top nav-brand-icon">
+            <span class="sr-only">{{'navigation.home' | translate}}</span>
+          </div>
         </a>
 
         <ul class="navbar-nav navbar-left mr-auto">
