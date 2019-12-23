@@ -373,11 +373,11 @@
     <div *ngIf="hasStatus(StatusKey.STEP_USERS, StatusValue.SHOW) && !authService.isUserAnonymous()"
          class="d-flex flex-row align-items-center flex-wrap m--1">
 
-      <div *ngIf="dataset.observersUserIdentities.size === 0" class="m-1">
+      <div *ngIf="dataset.observersUserIdentities.size === 0" class="text-link m-1">
         {{'phen_obs.step_5.alone' | translate}}
       </div>
 
-      <div *ngIf="dataset.observersUserIdentities.size > 0" class="m-1">
+      <div *ngIf="dataset.observersUserIdentities.size > 0" class="text-link m-1">
         {{'phen_obs.step_5.together' | translate}}
         <span *ngFor="let observer of dataset.observersUserIdentities; let i = index">
           <ng-container *ngIf="observer.id !== authService.getUserId()"><span *ngIf="i > 0">, </span>{{observer.username}}</ng-container>

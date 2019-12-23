@@ -222,23 +222,28 @@ textarea.form-control:focus,
   }
 
   &.danger {
-    color: lighten(@dangerDark, 15%);
-    background-color: lighten(@dangerDark, 40%);
+    color: @dangerDark;
+    background-color: @dangerBg;
   }
 
   &.primary {
-    color: lighten(@primaryColor, 15%);
+    color: @primaryColor;
     background-color: lighten(@primaryColor, 45%);
   }
 
   &.success {
-    color: lighten(@successDark, 15%);
-    background-color: lighten(@successDark, 55%);
+    color: @successDark;
+    background-color: @successBg;
   }
 
   &.warning {
-    color: lighten(@warningDark, 15%);
-    background-color: lighten(@warningDark, 55%);
+    color: @warningDark;
+    background-color: @warningBg;
+  }
+
+  &.info {
+    color: @infoDark;
+    background-color: @infoBg;
   }
 }
 
