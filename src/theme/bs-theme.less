@@ -205,16 +205,9 @@ hr {
 
 .custom-file {
 
-  .custom-file-input {
-
-    &.is-invalid ~ .custom-file-label {
-      border: solid @lightBorderColor 1px;
-
-      &:after {
-        background-color: @danger;
-        color: white;
-      }
-    }
+  .custom-file-input.is-invalid ~ .custom-file-label:after {
+    background-color: @danger;
+    color: @white;
   }
 }
 
@@ -223,14 +216,13 @@ hr {
   overflow: hidden;
 
   &.is-invalid {
-    border: solid @lightBorderColor 1px;
+    border: solid @lightBorderColor @borderWidth;
   }
 
   &:after {
     border: 0;
     margin: 0.3rem;
     background-color: @bgColor;
-    box-shadow: 0 1px 1px @darkBgColor;
     font-size: 0.8rem;
     display: flex;
     flex-direction: column;
