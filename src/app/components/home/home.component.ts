@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import {EnvironmentService} from '../../services/environment.service';
 import {AuthService} from '../../services/auth.service';
 import {AbstractComponent} from '../abstract.component';
-import {TreeService} from '../../services/tree.service';
 import {SystemStatistics} from '../../entities/system-statistics.entity';
 import {UIService} from '../../services/ui.service';
 

@@ -1,6 +1,9 @@
 import {Component, OnInit, TemplateRef} from '@angular/core';
 import {Beacon} from '../../../../entities/beacon.entity';
-import {BsModalRef, BsModalService} from 'ngx-bootstrap';
+import {
+  BsModalRef,
+  BsModalService
+} from 'ngx-bootstrap/modal';
 import {AbstractComponent} from '../../../abstract.component';
 import {AdminService} from '../../../../services/admin/admin.service';
 import {MapMarker} from '../../../../interfaces/map-marker.interface';

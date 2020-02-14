@@ -78,18 +78,17 @@ import {AuthHelperService} from './services/auth-helper.service';
 import {UserRewardService} from './services/user-reward.service';
 import {LangDirective} from './directives/lang.directive';
 import {ActionDirective} from './directives/action.directive';
-import {
-  BsDatepickerModule,
-  BsDropdownModule,
-  ButtonsModule,
-  CollapseModule,
-  ModalModule,
-  PopoverModule,
-  TabsModule,
-  TimepickerModule,
-  TooltipModule
-} from 'ngx-bootstrap';
+import {BsDatepickerModule} from 'ngx-bootstrap/datepicker';
+import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
+import {ButtonsModule} from 'ngx-bootstrap/buttons';
+import {CollapseModule} from 'ngx-bootstrap/collapse';
+import {ModalModule} from 'ngx-bootstrap/modal';
+import {PopoverModule} from 'ngx-bootstrap/popover';
+import {TabsModule} from 'ngx-bootstrap/tabs';
+import {TimepickerModule} from 'ngx-bootstrap/timepicker';
+import {TooltipModule} from 'ngx-bootstrap/tooltip';
 import {VERSION} from '../environments/version';
+import { CsaComponent } from './components/csa/csa.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, '/translations/', '.json?version=' + VERSION.version);
@@ -150,7 +149,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     CapitalizationPipe,
     LowercasePipe,
     ReplacePipe,
-    DecimalPlacesPipe
+    DecimalPlacesPipe,
+    CsaComponent
   ],
   imports: [
     // Core

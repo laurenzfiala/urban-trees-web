@@ -7,6 +7,7 @@
  */
 import {ApiError} from '../entities/api-error.entity';
 import {Observable, Subject} from 'rxjs';
+import {EventEmitter} from '@angular/core';
 
 export abstract class AbstractStatusComponent {
 

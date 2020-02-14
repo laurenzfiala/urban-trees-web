@@ -25,6 +25,7 @@ import {MessagesComponent} from './components/messages/messages.component';
 import {ReportComponent} from './components/report/report.component';
 import {AdminBeaconManageComponent} from './components/admin/beacon/manage/manage.component';
 import {HelpComponent} from './components/help/help.component';
+import {CsaComponent} from './components/csa/csa.component';
 
 const routes: Routes = [
   {
@@ -35,6 +36,10 @@ const routes: Routes = [
   {
     path: 'home',
     component: HomeComponent
+  },
+  {
+    path: 'csa',
+    component: CsaComponent
   },
   {
     path: 'missing',

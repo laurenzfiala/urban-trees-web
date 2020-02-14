@@ -13,6 +13,18 @@
       <span [innerHTML]="'home.desc_user_2' | translate"></span>
     </div>
 
+    <div *noauth class="my-2 alert alert-warning d-block">
+      <b>Citizen Science Award 2020</b>
+      <div>{{'home.csa_intro' | translate}}</div>
+      <a routerLink="/csa" class="link mt-1">{{'home.csa_intro_ref' | translate}}</a>
+    </div>
+
+    <div *auth class="my-2 alert alert-warning d-block">
+      <b>Citizen Science Award 2019</b>
+      <div>{{'home.csa' | translate}}</div>
+      <a routerLink="/phenology" class="link mt-1">{{'home.csa_ref' | translate}}</a>
+    </div>
+
     <div class="btn-img-toolbar">
       <div class="d-flex flex-wrap">
         <a class="btn-img trees" routerLink="/trees">

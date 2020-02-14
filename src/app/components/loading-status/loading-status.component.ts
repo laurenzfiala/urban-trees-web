@@ -1,4 +1,12 @@
-import {ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output
+} from '@angular/core';
 import {AbstractComponent} from '../abstract.component';
 import {ApiError} from '../../entities/api-error.entity';
 import {Observable} from 'rxjs';
@@ -7,7 +15,8 @@ import {SubscriptionManagerService} from '../../services/subscription-manager.se
 @Component({
   selector: 'ut-loading-status',
   templateUrl: './loading-status.component.html',
-  styleUrls: ['./loading-status.component.less']
+  styleUrls: ['./loading-status.component.less'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class LoadingStatusComponent extends AbstractComponent implements OnInit, OnDestroy {
 
@@ -42,8 +51,7 @@ export class LoadingStatusComponent extends AbstractComponent implements OnInit,
   @Output()
   public retry: EventEmitter<boolean> = new EventEmitter<boolean>();
 
-  constructor(private subs: SubscriptionManagerService,
-              private cdRef: ChangeDetectorRef) {
+  constructor(private subs: SubscriptionManagerService) {
     super();
   }
 
@@ -63,7 +71,6 @@ export class LoadingStatusComponent extends AbstractComponent implements OnInit,
         default:
           this.setStatus(StatusKey.EXTERNAL_STATUS, StatusValue.UNDEFINED);
       }
-      this.cdRef.detectChanges();
     }), LoadingStatusComponent.SUBSCRIPTION_TAG);
 
     this.subs.register(this.error.subscribe(value => {
@@ -71,7 +78,6 @@ export class LoadingStatusComponent extends AbstractComponent implements OnInit,
         return;
       }
       this.internalError = value;
-      this.cdRef.detectChanges();
     }), LoadingStatusComponent.SUBSCRIPTION_TAG);
 
   }

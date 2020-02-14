@@ -1,5 +1,6 @@
-import {Directive, ElementRef, Input, TemplateRef, ViewContainerRef} from '@angular/core';
+import {Directive, ElementRef, Input, OnDestroy, OnInit, TemplateRef, ViewContainerRef} from '@angular/core';
 import {AuthService} from '../services/auth.service';
+import {Subscription} from 'rxjs';
 
 /**
  * Conditional directive to hide elements
@@ -12,7 +13,20 @@ import {AuthService} from '../services/auth.service';
 @Directive({
   selector: '[noauth]'
 })
-export class NoAuthDirective {
+export class NoAuthDirective implements OnInit, OnDestroy {
+
+  @Input('noauth')
+  private includeAnonymous: boolean = false;
+
+  @Input('noauthCheckChanges')
+  private noauthCheckChanges: boolean = true;
+
+  /**
+   * Rarely content may be added multiple times, which we prevent with this switch.
+   */
+  private isRemoved: boolean = true;
+
+  private authServiceOnStateChanged: Subscription;
 
   constructor(
     private authService: AuthService,
@@ -21,13 +35,37 @@ export class NoAuthDirective {
     private viewContainer: ViewContainerRef
   ) {}
 
-  @Input()
-  set noauth(includeAnonymous: boolean) {
+  public ngOnInit(): void {
 
-    if (!this.authService.isLoggedIn() || (includeAnonymous && this.authService.isUserAnonymous())) {
-      this.viewContainer.createEmbeddedView(this.templateRef);
+    this.do();
+    if (this.noauthCheckChanges) {
+      this.authServiceOnStateChanged = this.authService.onStateChanged().subscribe(value => {
+        this.do();
+      });
+    }
+
+  }
+
+  private do(): void {
+
+    if (!this.authService.isLoggedIn() || (this.includeAnonymous && this.authService.isUserAnonymous())) {
+      if (this.isRemoved) {
+        this.viewContainer.createEmbeddedView(this.templateRef);
+      }
+      this.isRemoved = false;
     } else {
-      this.viewContainer.clear();
+      if (!this.isRemoved) {
+        this.viewContainer.clear();
+      }
+      this.isRemoved = true;
+    }
+
+  }
+
+  public ngOnDestroy(): void {
+
+    if (this.authServiceOnStateChanged) {
+      this.authServiceOnStateChanged.unsubscribe();
     }
 
   }
