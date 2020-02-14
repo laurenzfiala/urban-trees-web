@@ -1,7 +1,8 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
 import {Log} from './services/log.service';
 import {NavigationEnd, Router} from '@angular/router';
+import * as $ from 'jquery';
 
 @Component({
   selector: 'ut-root',
@@ -17,7 +18,6 @@ export class AppComponent implements OnInit {
    */
   public static APP_NAME = 'Urban Trees';
 
-  // TODO rework this
   constructor(private translate: TranslateService,
               private router: Router) {
 

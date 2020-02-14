@@ -104,3 +104,56 @@
   }
 }
 
+.uc-container {
+  position: relative;
+  z-index: @ucZIndex;
+  padding: @gutter;
+
+  &.active {
+    background-color: @infoBg;
+  }
+
+  .uc-active-info,
+  .uc-info {
+    padding: @gutter 0;
+    background-color: @infoBg;
+    color: @infoDark;
+  }
+}
+
+.uc-toolbar-spacer {
+  height: 8rem;
+}
+
+.uc-toolbar {
+  position: absolute;
+  left: @gutter;
+  right: @gutter;
+  top: 0;
+
+  background-color: @medLightBgColor;
+
+  .uc-btn {
+    padding: (@gutter/2);
+    margin-right: @gutter;
+    width: 70px;
+
+    border: @linkBorder;
+    user-select: none;
+
+    .uc-btn-label {
+      font-size: @fontSizeSmall;
+      text-align: center;
+    }
+  }
+}
+
+.uc-new-section {
+  border: dashed @borderColor 3px;
+  padding: @gutter2x;
+  text-align: center;
+  color: @subtleTextColor;
+  font-size: @fontSizeMedium;
+  user-select: none;
+}
+
