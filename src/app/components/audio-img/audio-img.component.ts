@@ -19,7 +19,7 @@ export class AudioImgComponent implements OnInit {
   @ViewChild('player', { static: true })
   private player: any;
 
-  @ViewChild('infoPopover', { static: false })
+  @ViewChild('infoPopover')
   private infoPopover: any;
 
   /**

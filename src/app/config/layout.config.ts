@@ -1,9 +1,11 @@
+import { Injectable } from "@angular/core";
 /**
  * Layout configuration.
  *
  * @author Laurenz Fiala
  * @since 2019/09/09
  */
+@Injectable()
 export class LayoutConfig {
 
   public static LAYOUT_MEDIA_XS: string = '(max-width: 575px)';

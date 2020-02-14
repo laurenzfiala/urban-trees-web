@@ -45,10 +45,10 @@ export class ProjectLoginComponent extends AbstractComponent implements OnInit, 
   @Output()
   public loggedin: EventEmitter<any> = new EventEmitter<any>();
 
-  @ViewChild('usernameInput', {static: false})
+  @ViewChild('usernameInput')
   private usernameInput: ElementRef;
 
-  @ViewChild('passwordInput', {static: false})
+  @ViewChild('passwordInput')
   private passwordInput: ElementRef;
 
   public accessReason: LoginAccessReason;
