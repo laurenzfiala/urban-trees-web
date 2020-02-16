@@ -370,71 +370,76 @@
       {{'phen_obs.finish_prev_steps_first' | translate}}
     </div>
 
-    <div *ngIf="hasStatus(StatusKey.STEP_USERS, StatusValue.SHOW) && !authService.isUserAnonymous()"
-         class="d-flex flex-row align-items-center flex-wrap m--1">
+    <ng-container *ngIf="hasStatus(StatusKey.STEP_USERS, StatusValue.SHOW)">
 
-      <div *ngIf="dataset.observersUserIdentities.size === 0" class="text-link m-1">
-        {{'phen_obs.step_5.alone' | translate}}
-      </div>
+      <div *ngIf="!authService.isUserAnonymous()"
+           class="d-flex flex-row align-items-center flex-wrap m--1">
 
-      <div *ngIf="dataset.observersUserIdentities.size > 0" class="text-link m-1">
-        {{'phen_obs.step_5.together' | translate}}
-        <span *ngFor="let observer of dataset.observersUserIdentities; let i = index">
-          <ng-container *ngIf="observer.id !== authService.getUserId()"><span *ngIf="i > 0">, </span>{{observer.username}}</ng-container>
-        </span>
-      </div>
-
-      <div *ngIf="!addMoreObservers"
-            class="m-1">
-        <div class="link-btn d-flex flex-row align-items-center"
-             (action)="addMoreObservers = true"
-             role="button"
-             tabindex="0">
-          <i class="i i-xs i-dark i-user-add mr-1"></i>
-          {{'phen_obs.step_5.add_more' | translate}}
+        <div *ngIf="dataset.observersUserIdentities.size === 0" class="text-link m-1">
+          {{'phen_obs.step_5.alone' | translate}}
         </div>
-      </div>
 
-    </div>
+        <div *ngIf="dataset.observersUserIdentities.size > 0" class="text-link m-1">
+          {{'phen_obs.step_5.together' | translate}}
+          <span *ngFor="let observer of dataset.observersUserIdentities; let i = index">
+            <ng-container *ngIf="observer.id !== authService.getUserId()"><span *ngIf="i > 0">, </span>{{observer.username}}</ng-container>
+          </span>
+        </div>
 
-    <div *ngIf="addMoreObservers"
-         class="user-permission-container mt-2">
-      <ut-user-permission [permission]="'PHENOLOGY_OBSERVATION'"
-                          (selectedUser)="dataset.observersUserIdentities.add($event)"
-                          (deselectedUsers)="dataset.observersUserIdentities.delete($event)"
-                          (newlyGrantedUsers)="dataset.observersUserIdentities.add($event)">
-      </ut-user-permission>
-    </div>
-
-    <ng-container *ngIf="authService.isUserAnonymous()">
-
-      <div class="content-cat-text mb-1">
-        {{'phen_obs.step_5.manual' | translate}}
-      </div>
-
-      <div class="d-flex flex-row align-items-center">
-
-        <div class="input-group">
-          <input
-            [(ngModel)]="dataset.observers"
-            #observersInput="ngModel"
-            name="observersInput"
-            (keyup)="checkProgress()"
-            minlength="5"
-            maxlength="200"
-            required
-            class="form-control"
-            [placeholder]="'phen_obs.step_5.manual_placeholder' | translate" />
-          <div class="input-group-append">
-            <span class="input-group-text" [ngClass]="{'is-invalid': !observersInput.valid}">
-              {{dataset.observers ? dataset.observers.length : 0}} / 5-200
-            </span>
+        <div *ngIf="!addMoreObservers"
+              class="m-1">
+          <div class="link-btn d-flex flex-row align-items-center"
+               (action)="addMoreObservers = true"
+               role="button"
+               tabindex="0">
+            <i class="i i-xs i-dark i-user-add mr-1"></i>
+            {{'phen_obs.step_5.add_more' | translate}}
           </div>
         </div>
 
       </div>
 
+      <div *ngIf="addMoreObservers"
+           class="user-permission-container mt-2">
+        <ut-user-permission [permission]="'PHENOLOGY_OBSERVATION'"
+                            (selectedUser)="dataset.observersUserIdentities.add($event)"
+                            (deselectedUsers)="dataset.observersUserIdentities.delete($event)"
+                            (newlyGrantedUsers)="dataset.observersUserIdentities.add($event)">
+        </ut-user-permission>
+      </div>
+
+      <ng-container *ngIf="authService.isUserAnonymous()">
+
+        <div class="content-cat-text mb-1">
+          {{'phen_obs.step_5.manual' | translate}}
+        </div>
+
+        <div class="d-flex flex-row align-items-center">
+
+          <div class="input-group">
+            <input
+              [(ngModel)]="dataset.observers"
+              #observersInput="ngModel"
+              name="observersInput"
+              (keyup)="checkProgress()"
+              minlength="5"
+              maxlength="200"
+              required
+              class="form-control"
+              [placeholder]="'phen_obs.step_5.manual_placeholder' | translate" />
+            <div class="input-group-append">
+              <span class="input-group-text" [ngClass]="{'is-invalid': !observersInput.valid}">
+                {{dataset.observers ? dataset.observers.length : 0}} / 5-200
+              </span>
+            </div>
+          </div>
+
+        </div>
+
+      </ng-container>
+      
     </ng-container>
+
 
   </div>
 </div>

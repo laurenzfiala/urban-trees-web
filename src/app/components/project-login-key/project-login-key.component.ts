@@ -11,10 +11,10 @@ import {ActivatedRoute, Router} from '@angular/router';
 })
 export class ProjectLoginKeyComponent extends AbstractComponent implements OnInit {
 
+  private static PATH_PARAMS_TOKEN = 'token';
+
   public StatusKey = StatusKey;
   public StatusValue = StatusValue;
-
-  private static PATH_PARAMS_TOKEN = 'token';
 
   constructor(private route: ActivatedRoute,
               private router: Router,
@@ -37,7 +37,7 @@ export class ProjectLoginKeyComponent extends AbstractComponent implements OnIni
 
         setTimeout(() => {
 
-          let redirectTo = '/project';
+          let redirectTo = '/';
           if (this.authService.isTempChangePasswordAuth()) {
             redirectTo = '/account/changepassword';
           }

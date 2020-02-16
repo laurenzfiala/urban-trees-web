@@ -1,0 +1,31 @@
+@import (reference) "../../../theme/theme.less";
+
+.process {
+
+  .step {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+
+    margin-bottom: @gutter;
+    padding: @gutter 0;
+
+    background-color: @bgColor;
+
+    .indicator {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      flex-shrink: 0;
+
+      width: (@gutter*3);
+      height: (@gutter*3);
+
+      margin: 0 @gutter2x;
+
+      color: @primaryColor;
+      font-size: @fontSizeExtraLarge;
+    }
+  }
+}
