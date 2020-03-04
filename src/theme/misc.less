@@ -282,10 +282,28 @@ textarea.form-control:focus,
     border-bottom-color: @linkHoverColor !important;
   }
 
+  &.light {
+    color: @white !important;
+    border-bottom-color: @white !important;
+
+    .link-container:hover &,
+    .link-container:active &,
+    &:hover,
+    &:active,
+    &.active,
+    &:focus {
+      text-decoration: none;
+      color: darken(@white, 10%) !important;
+      border-bottom-color: darken(@white, 10%) !important;
+    }
+  }
+
   &.danger {
     color: lighten(@dangerDark, 15%) !important;
     border-bottom-color: lighten(@dangerDark, 15%) !important;
 
+    .link-container:hover &,
+    .link-container:active &,
     &:hover,
     &:active,
     &.active,

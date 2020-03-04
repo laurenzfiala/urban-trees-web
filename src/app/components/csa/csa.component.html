@@ -14,6 +14,20 @@
   </div>
 </div>
 
+<div class="intro-separator">
+  <div *noauth class="container py-4">
+    <b>Jetzt mitmachen!</b> Einfach die 6 Schritte erledigen und phänologische Beobachtungen durchführen!
+  </div>
+</div>
+
+<a *auth
+   routerLink="/phenology"
+   class="intro-separator d-block link-container">
+  <div class="text-center py-4 px-2">
+    <span class="link light">Jetzt Phänologiebeobachtung eintragen</span>
+  </div>
+</a>
+
 <div class="content-cat">
   <div class="container">
 
@@ -30,13 +44,16 @@
           Suchen Sie die zu beobachtenden Bäume aus.
         </h1>
 
-        <a class="link link-btn"
-           role="button"
-           routerLink="."
-           fragment="tree-species"
-           (click)="scrollIntoView(treeSpecies)">
-          Welche Baumspezies kann ich beobachten?
-        </a>
+        <div class="d-inline-flex flex-row align-items-center">
+          <i class="i i-sm i-leaf i-dark mr-1"></i>
+          <a class="link"
+             role="button"
+             routerLink="."
+             fragment="tree-species"
+             (click)="scrollIntoView(treeSpecies)">
+            Welche Baumspezies kann ich beobachten?
+          </a>
+        </div>
       </div>
     </div>
 

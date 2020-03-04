@@ -1,6 +1,6 @@
 @import (reference) "../../../theme/theme.less";
 
-::ng-deep body {
+::ng-deep * {
   scroll-behavior: smooth;
 }
 
@@ -49,5 +49,21 @@
 @media @md {
   .bud-container {
     width: 25%
+  }
+}
+
+.intro-separator {
+  text-decoration: none;
+  color: @white;
+  font-size: @fontSizeLarge;
+
+  background-image: url("../../../assets/content/csa/phenobs_link_bg.jpg");
+  background-size: cover;
+  background-position: center;
+}
+
+@media @xs {
+  .intro-separator {
+    font-size: @fontSizeMedium;
   }
 }
