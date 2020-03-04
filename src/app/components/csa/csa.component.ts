@@ -9,7 +9,11 @@ export class CsaComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
+  }
+
+  public scrollIntoView(el: any): void {
+    el.scrollIntoView();
   }
 
 }
