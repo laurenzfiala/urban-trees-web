@@ -1,0 +1,183 @@
+@import (reference) "../../../../../theme/theme.less";
+
+@media @xs {
+  .notifications-container {
+    width: calc(100% - @gutter2x);
+  }
+}
+
+@media @sm, @md {
+  .notifications-container {
+    min-width: 300px;
+  }
+}
+
+@media @lg, @xl {
+  .notifications-container {
+    min-width: 400px;
+  }
+}
+
+.notifications-container {
+  position: fixed;
+  bottom: @gutter;
+  right: @gutter;
+  z-index: @notificationsZIndex;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+
+  max-width: calc(100% - @gutter2x);
+  max-height: calc(100% - @gutter2x);
+
+  .notification {
+    display: flex;
+    flex-direction: column;
+
+    background-color: @white;
+    //border: solid @darkBorderColor 1.5px;
+    box-shadow: @boxShadowHighlight;
+
+    animation: i-notification-intro 0.5s;
+
+    &:not(:first-child) {
+      margin-top: @gutter;
+    }
+
+    &.hide {
+      animation: i-notification-outro 0.25s forwards;
+    }
+
+    .notification-icon {
+      position: relative;
+      display: none;
+
+      object {
+        position: absolute;
+        top: @gutter;
+        left: @gutter;
+        z-index: (@notificationsZIndex+1);
+
+        width: 40px;
+        height: 40px;
+      }
+
+      .not-icon-text {
+        z-index: (@notificationsZIndex+2);
+
+        animation: i-notification-icon-text-intro 3.5s;
+      }
+    }
+
+    &.levelup,
+    &.success,
+    &.info,
+    &.warning,
+    &.danger {
+      .title-bar .notification-icon {
+        width: calc(40px + @gutter2x);
+        height: calc(40px + @gutter2x);
+
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        flex-shrink: 0;
+
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: 40px;
+        color: @white;
+        font-weight: bold;
+        line-height: 1;
+        background-image: none;
+
+        margin: -@gutter 0 -@gutter -@gutter;
+      }
+    }
+
+    &.levelup .title-bar {
+      color: @infoDark;
+    }
+
+    &.success .title-bar {
+      color: @successDark;
+    }
+
+    &.info .title-bar {
+      color: @infoDark;
+    }
+
+    &.warning .title-bar {
+      color: @warningDark;
+    }
+
+    &.danger .title-bar {
+      color: @dangerDark;
+    }
+
+    .title-bar {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+
+      padding: @gutter;
+
+      word-break: break-word;
+
+      font-size: @fontSizeBase;
+      background-color: @medLightBgColor;
+
+      & + .content {
+        margin-top: @gutter;
+      }
+
+      .subtitle {
+        color: @subtleTextColor;
+        font-size: @fontSizeExtraSmall;
+      }
+    }
+
+    .content {
+      padding: 0 @gutter @gutter @gutter;
+    }
+
+    .dismiss {
+      width: 40px;
+      height: 40px;
+
+      background-image: url("/assets/img/icon/dark/cross.svg");
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: 25px;
+
+      cursor: pointer;
+
+      opacity: 0;
+      transition: opacity 0.25s;
+    }
+
+    &:hover .dismiss {
+      opacity: 1;
+    }
+  }
+}
+
+@keyframes i-notification-intro
+{
+ 0%   {transform: translateY(@gutter); opacity: 0;}
+ 100% {transform: translateY(0); opacity: 1;}
+}
+
+@keyframes i-notification-outro
+{
+ 0% {transform: translateX(0); opacity: 1;}
+ 100%   {transform: translateX(@gutter); opacity: 0;}
+}
+
+@keyframes i-notification-icon-text-intro
+{
+ 0%, 85.7% {opacity: 0;}
+ 100%   {opacity: 1;}
+}

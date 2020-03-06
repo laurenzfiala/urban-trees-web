@@ -1,0 +1,75 @@
+@import (reference) "../../../../../theme/theme.less";
+
+@progressBgColor: rgba(150, 150, 150, 0.5);
+@controlsBgColor: rgba(100, 100, 100, 0.5);
+@controlsHeight: 35px;
+
+.slideshow {
+  display: flex;
+  flex-direction: column;
+
+  background-color: @lightBgColor;
+
+  &:hover {
+    .slide-next,
+    .slide-previous {
+      opacity: 1;
+    }
+  }
+}
+
+::ng-deep .content-cat:nth-child(even) .slideshow {
+  background-color: @white;
+}
+
+.slide-progress {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  height: 4px;
+  background-color: @progressBgColor;
+
+  .inner {
+    height: 100%;
+    background-color: @primaryColor;
+
+    transition: width 1s;
+  }
+}
+
+.slide-next,
+.slide-previous {
+  position: absolute;
+  top: calc(50% - (@controlsHeight/2));
+
+  width: 40px;
+  height: @controlsHeight;
+
+  opacity: 0;
+
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  background-color: @controlsBgColor;
+
+  cursor: pointer;
+
+  transition: opacity 250ms;
+}
+
+.slide-previous {
+  left: 0;
+  background-image: url("/assets/img/icon/light/arrow-left.svg");
+}
+
+.slide-next {
+  right: 0;
+  background-image: url("/assets/img/icon/light/arrow-right.svg");
+}
+
+.subtitle {
+  font-size: @fontSizeSmall;
+  color: @subtleTextColor;
+  padding: (@gutter/2) @gutter;
+}

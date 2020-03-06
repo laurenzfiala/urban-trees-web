@@ -1,4 +1,4 @@
-import {LogLevel} from '../app/entities/log-level.entity';
+import {LogLevel} from '../app/modules/trees/entities/log-level.entity';
 
 /**
  * Environment config for local testing.

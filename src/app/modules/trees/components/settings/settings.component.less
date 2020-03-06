@@ -1,0 +1,42 @@
+@import (reference) "../../../../../theme/theme.less";
+
+.lang-icon {
+  width: 3rem;
+  margin-right: @gutter;
+}
+
+.permissions-pin {
+  display: inline-block;
+  padding: (@gutter/4) @gutter;
+
+  font-size: @fontSizeExtraLarge;
+  font-family: 'Source Code Pro', monospace;
+  letter-spacing: 0.2rem;
+
+  background-color: @white;
+  border: solid @borderColor 1px;
+
+  &.loading {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    > i {
+      margin: (@gutter/4);
+    }
+  }
+
+  &.locked {
+    opacity: 0.5;
+    pointer-events: none;
+    user-select: none;
+  }
+}
+
+.ppin-info-icon {
+  margin-top: (@gutter/4);
+}
+
+::ng-deep .content-cat:nth-child(odd) .permissions-pin {
+  background-color: @lightBgColor;
+}

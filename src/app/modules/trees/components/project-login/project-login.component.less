@@ -1,0 +1,117 @@
+@import (reference) "../../../../../theme/theme.less";
+
+@maxAnnotations:  10;
+@maxWidth:        400px;
+
+.login-container {
+  border-radius: @borderRadiusOuterNew;
+  background-color: @medLightBgColor;
+  padding: @gutter2x;
+  z-index: @maxAnnotations + 1;
+}
+
+.login-annotation-container {
+  background-color: @lightBgColor;
+  color: @darkGrey;
+  font-size: @fontSizeSmall;
+  border-bottom-left-radius: @borderRadiusOuterNew;
+  border-bottom-right-radius: @borderRadiusOuterNew;
+  padding: (@gutter2x + @borderRadiusOuterNew) @gutter2x @gutter2x @gutter2x;
+  margin-top: -@borderRadiusOuterNew;
+
+  &.login-annotation-danger,
+  &.login-annotation-success,
+  &.login-annotation-warning,
+  &.login-annotation-info {
+    display: flex;
+    flex-direction: row;
+    font-size: 1rem;
+
+    &.center-icon {
+      align-items: center;
+    }
+
+    &:before {
+      content: "";
+      display: inline-block;
+      flex-grow: 0;
+      flex-shrink: 0;
+      background-size: contain;
+      background-repeat: no-repeat;
+      margin-right: @gutter;
+      .i-sm;
+    }
+  }
+
+  &.login-annotation-danger {
+    color: @dangerDark;
+    background-color: @dangerBg;
+
+    &:before {
+      background-image: url("/assets/img/icon/special/cross-danger.svg");
+    }
+  }
+
+  &.login-annotation-success {
+    color: @successDark;
+    background-color: @successBg;
+
+    &:before {
+      background-image: url("/assets/img/icon/special/check-success.svg");
+    }
+  }
+
+  &.login-annotation-warning {
+    color: @warningDark;
+    background-color: @warningBg;
+
+    &:before {
+      background-image: url("/assets/img/icon/special/warning-warning.svg");
+    }
+  }
+
+  &.login-annotation-info {
+    color: @infoDark;
+    background-color: @infoBg;
+
+    &:before {
+      background-image: url("/assets/img/icon/special/info-info.svg");
+    }
+  }
+
+  .ordering(@i: 1) when (@i <= @maxAnnotations) {
+    &:nth-child(@{i}) {
+      z-index: @maxAnnotations - @i;
+    }
+
+    .ordering(@i + 1);
+  }
+  .ordering();
+
+  a {
+    color: @darkGrey;
+    cursor: pointer;
+
+    &:hover {
+      color: @darkestGrey;
+      text-decoration: none;
+    }
+  }
+}
+
+.info {
+  color: @darkGrey;
+  font-size: @fontSizeExtraSmall;
+  border-bottom-left-radius: @borderRadiusOuterNew;
+  border-bottom-right-radius: @borderRadiusOuterNew;
+
+  ::ng-deep ul {
+    padding: 0.2rem 0 0 0.75rem;
+    margin: 0;
+    list-style: "– ";
+  }
+}
+
+.max-width {
+  max-width: @maxWidth;
+}

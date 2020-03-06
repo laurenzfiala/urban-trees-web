@@ -1,0 +1,54 @@
+@import (reference) "../../../../../theme/variables";
+
+.heading {
+  font-size: @fontSizeMedium;
+  margin-bottom: @gutter;
+}
+
+.user-entry {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+
+  background-color: @lightBgColor;
+}
+
+input[name="password"] {
+  font-family: 'Source Code Pro', monospace;
+  letter-spacing: 0.2rem;
+}
+
+.permissions-info {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+
+  padding: @gutter;
+
+  background-color: @lightBgColor;
+  color: @subtleTextColor;
+  font-size: @fontSizeSmall;
+}
+
+.permissions-alert {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-start;
+
+  padding: @gutter;
+
+  background-color: @dangerBg;
+  color: @dangerDark;
+  font-size: @fontSizeSmall;
+}
+
+::ng-deep .user-perm-container ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0 (@gutter/2);
+
+  li:before {
+    content: "–";
+    padding: 0 (@gutter/2);
+  }
+}

@@ -1,6 +1,6 @@
 import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
-import {Log} from './services/log.service';
+import {Log} from './modules/trees/services/log.service';
 import {NavigationEnd, Router} from '@angular/router';
 
 @Component({
