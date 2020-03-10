@@ -1,0 +1,65 @@
+@import (reference) "../../../theme/variables";
+
+@lpPrimaryColor: #50ae72;
+
+.background-main {
+  width: 100%;
+  padding: @gutter;
+
+  background-image: url("/assets/landing-page/bg-main.jpg");
+  background-size: cover;
+  background-position: top center;
+}
+
+.title {
+  font-family: 'Bellota Light';
+  font-size: 3.5rem;
+  color: @white;
+  text-align: center;
+  margin-top: (@gutter*6);
+  margin-bottom: (@gutter*20);
+
+  img {
+    height: 1em;
+  }
+}
+
+.summary {
+  font-family: 'CrimsonText Regular';
+  color: @white;
+  text-align: justify;
+
+  .summary-separator {
+    margin: (@gutter*5) @gutter2x;
+    border-left: solid rgba(255, 255, 255, 0.25) 1px;
+  }
+
+  h1 {
+    font-size: @fontSizeLarge;
+    font-family: 'Bellota';
+    color: #a1de9e;
+  }
+}
+
+.lp-link {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  padding: (@gutter/2) @gutter;
+
+  color: @white;
+  font-size: @fontSizeMedium;
+
+  .i {
+    transition: transform 0.25s;
+  }
+
+  &:hover {
+    text-decoration: none;
+
+    .i {
+      transform: translateX(@gutter);
+    }
+  }
+}
