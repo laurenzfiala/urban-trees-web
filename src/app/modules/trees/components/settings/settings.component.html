@@ -12,9 +12,7 @@
              (action)="setLanguage(lang)"
              tabindex="0">
             <img class="lang-icon" [attr.src]="'/assets/img/icon/lang/' + lang + '.svg'" />
-            <div class="link">
-              {{'settings.langs.' + lang | translate}}
-            </div>
+            <div class="link">{{'settings.langs.' + lang | translate}}</div>
           </a>
         </div>
 

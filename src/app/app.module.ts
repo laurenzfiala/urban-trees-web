@@ -31,6 +31,7 @@ import {AuthHelperService} from './modules/trees/services/auth-helper.service';
 import {UserRewardService} from './modules/trees/services/user-reward.service';
 import {VERSION} from '../environments/version';
 import {LandingPageComponent} from './components/landing-page/landing-page.component';
+import {ActionDirective} from './modules/shared/directives/action.directive';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, '/translations/', '.json?version=' + VERSION.version);
@@ -38,6 +39,7 @@ export function HttpLoaderFactory(http: HttpClient) {
 
 @NgModule({
   declarations: [
+    // Components
     AppComponent,
     LandingPageComponent
   ],

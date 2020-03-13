@@ -45,7 +45,6 @@ import {CheckDirective} from './directives/check.directive';
 import {CssVariableDirective} from './directives/css-variable.directive';
 import {ValueaccessorDirective} from './directives/valueaccessor.directive';
 import {LangDirective} from './directives/lang.directive';
-import {ActionDirective} from './directives/action.directive';
 import {StringModificationPipe} from './pipes/strmod.pipe';
 import {CapitalizationPipe} from './pipes/capitalize.pipe';
 import {LowercasePipe} from './pipes/lowercase.pipe';
@@ -85,6 +84,8 @@ import {ProjectLoginGuard} from './components/project-login/project-login.guard'
 import {AdminGuard} from './components/admin/admin.guard';
 import {LayoutConfig} from './config/layout.config';
 import {AuthInterceptor} from './interceptors/auth.interceptor';
+import {ActionDirective} from '../shared/directives/action.directive';
+import {SharedModule} from '../shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -134,7 +135,6 @@ import {AuthInterceptor} from './interceptors/auth.interceptor';
     CssVariableDirective,
     ValueaccessorDirective,
     LangDirective,
-    ActionDirective,
 
     // Pipes
     StringModificationPipe,
@@ -142,11 +142,12 @@ import {AuthInterceptor} from './interceptors/auth.interceptor';
     LowercasePipe,
     ReplacePipe,
     DecimalPlacesPipe,
-    CsaComponent
+    CsaComponent,
   ],
   imports: [
     // Core
     CommonModule,
+    SharedModule,
     TreesRoutingModule,
     FormsModule,
     HttpClientModule,
