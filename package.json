@@ -26,7 +26,7 @@
     "@auth0/angular-jwt": "2.1.1",
     "@ngx-translate/core": "11.0.1",
     "@ngx-translate/http-loader": "4.0.0",
-    "@swimlane/ngx-charts": "12.1.0",
+    "@swimlane/ngx-charts": "13.0.1",
     "bootstrap": "4.3.1",
     "core-js": "2.6.3",
     "jquery": "3.4.1",
@@ -39,8 +39,8 @@
     "zone.js": "~0.10.2"
   },
   "devDependencies": {
-    "@angular-devkit/build-angular": "~0.900.2",
-    "@angular/cli": "9.0.2",
+    "@angular-devkit/build-angular": "~0.900.6",
+    "@angular/cli": "9.0.6",
     "@angular/compiler-cli": "9.0.1",
     "@angular/language-service": "9.0.1",
     "@types/jasmine": "2.8.6",
