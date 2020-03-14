@@ -1,13 +1,29 @@
-import { Component, OnInit } from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import * as $ from 'jquery';
 
 @Component({
   selector: 'ut-landing-page',
   templateUrl: './landing-page.component.html',
   styleUrls: ['./landing-page.component.less']
 })
-export class LandingPageComponent implements OnInit {
+export class LandingPageComponent implements OnInit, AfterViewInit {
 
-  public runSlideCycle: boolean = false;
+  private static CYCLE_INTERVAL_MS: number = 5000;
+
+  @ViewChild('introModulesContentWrapper')
+  public introModulesContentWrapper: ElementRef;
+
+  public _runSlideCycle: boolean = false;
+  private cycleIntervalId: number;
+
+  set runSlideCycle(val: boolean) {
+    this._runSlideCycle = val;
+
+    if (this.cycleIntervalId) {
+      clearInterval(this.cycleIntervalId);
+    }
+    this.startSlideCycle();
+  }
 
   public moduleSlides: any = [
     {
@@ -30,6 +46,9 @@ export class LandingPageComponent implements OnInit {
   constructor() { }
 
   public ngOnInit(): void {
+  }
+
+  public ngAfterViewInit(): void {
 
     this.showSlide(this.moduleSlides[0]);
     this.startSlideCycle();
@@ -38,16 +57,16 @@ export class LandingPageComponent implements OnInit {
 
   private startSlideCycle(): void {
 
-    setInterval(() => {
-      if (!this.runSlideCycle) {
+    this.cycleIntervalId = setInterval(() => {
+      if (!this._runSlideCycle) {
         return;
       }
-      let nextSlide = this.moduleSlides.findIndex(s => s.isShown) + 1;
+      let nextSlide = this.currentSlideIndex() + 1;
       if (nextSlide >= this.moduleSlides.length) {
         nextSlide = 0;
       }
       this.showSlide(this.moduleSlides[nextSlide]);
-    }, 5000);
+    }, LandingPageComponent.CYCLE_INTERVAL_MS);
 
   }
 
@@ -62,7 +81,15 @@ export class LandingPageComponent implements OnInit {
       s.isShown = false;
     }
     slide.isShown = true;
+    let scrollEl = $(this.introModulesContentWrapper.nativeElement);
+    let slideContentWidth = scrollEl.find('.intro-module')[0].clientWidth;
+    let scrollLeftTarget = slideContentWidth * this.currentSlideIndex() - (window.innerWidth - slideContentWidth) / 2;
+    scrollEl.stop().animate({scrollLeft: scrollLeftTarget}, 500);
 
+  }
+
+  private currentSlideIndex(): number {
+    return this.moduleSlides.findIndex(s => s.isShown);
   }
 
   get selectedSlide(): any {

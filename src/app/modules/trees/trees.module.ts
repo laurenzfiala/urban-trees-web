@@ -42,7 +42,6 @@ import {SpyDirective} from './directives/spy.directive';
 import {AuthDirective} from './directives/auth.directive';
 import {NoAuthDirective} from './directives/noauth.directive';
 import {CheckDirective} from './directives/check.directive';
-import {CssVariableDirective} from './directives/css-variable.directive';
 import {ValueaccessorDirective} from './directives/valueaccessor.directive';
 import {LangDirective} from './directives/lang.directive';
 import {StringModificationPipe} from './pipes/strmod.pipe';
@@ -52,7 +51,7 @@ import {ReplacePipe} from './pipes/replace.pipe';
 import {DecimalPlacesPipe} from './pipes/decimal-places.pipe';
 import {CsaComponent} from './components/csa/csa.component';
 import {FormsModule} from '@angular/forms';
-import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {LayoutModule} from '@angular/cdk/layout';
 import {BsDatepickerModule} from 'ngx-bootstrap/datepicker';
 import {ModalModule} from 'ngx-bootstrap/modal';
@@ -64,7 +63,7 @@ import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
 import {CollapseModule} from 'ngx-bootstrap/collapse';
 import {TabsModule} from 'ngx-bootstrap/tabs';
 import {NgxChartsModule} from '@swimlane/ngx-charts';
-import {TranslateLoader, TranslateModule, TranslatePipe} from '@ngx-translate/core';
+import {TranslateModule} from '@ngx-translate/core';
 import {EnvironmentService} from './services/environment.service';
 import {SubscriptionManagerService} from './services/subscription-manager.service';
 import {AuthService} from './services/auth.service';
@@ -84,7 +83,6 @@ import {ProjectLoginGuard} from './components/project-login/project-login.guard'
 import {AdminGuard} from './components/admin/admin.guard';
 import {LayoutConfig} from './config/layout.config';
 import {AuthInterceptor} from './interceptors/auth.interceptor';
-import {ActionDirective} from '../shared/directives/action.directive';
 import {SharedModule} from '../shared/shared.module';
 
 @NgModule({
@@ -132,7 +130,6 @@ import {SharedModule} from '../shared/shared.module';
     AuthDirective,
     NoAuthDirective,
     CheckDirective,
-    CssVariableDirective,
     ValueaccessorDirective,
     LangDirective,
 

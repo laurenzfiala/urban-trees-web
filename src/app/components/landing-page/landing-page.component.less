@@ -26,6 +26,8 @@
 @introModuleShadow: 0 0 0 @headerLinkColor inset;
 @introModuleActiveShadow: 0 -4px 0 @headerLinkColor inset;
 @introModuleSlideDescBgColor: rgba(0, 0, 0, 0.5);
+@introModuleSlideDescColorSm: @black;
+@introModuleSlideDescBgColorSm: @bgColor;
 @lpBgColor: @white;
 @footerBgColor: @bgColor;
 
@@ -114,7 +116,7 @@ h1 {
 }
 
 h2 {
-  font-size: @fontSizeLarge;
+  font-size: @fontSizeMedium;
 }
 
 section {
@@ -301,6 +303,9 @@ section {
   flex-direction: row;
   align-items: center;
 
+  width: 100%;
+
+  overflow: hidden;
   background-color: @introImgBarContentBgColor;
 }
 
@@ -316,6 +321,7 @@ section {
   user-select: none;
 
   .intro-module {
+    max-width: 66.6vw;
     padding: @gutter2x;
 
     font-size: @introImgBarContentFontSize;
@@ -336,6 +342,7 @@ section {
 
 @media @xs, @sm {
   .intro-modules-content .intro-module {
+    width: 350px;
     padding: @gutter;
 
     font-size: @introImgBarContentFontSizeSmall;
@@ -379,16 +386,28 @@ section {
   > img {
     width: 100%;
   }
+}
 
-  > .description {
-    position: absolute;
-    left: @gutter2x;
-    bottom: @gutter2x;
+.intro-modules-slide-description {
+  position: absolute;
+  left: @gutter2x;
+  bottom: @gutter2x;
 
-    padding: @gutter;
+  padding: @gutter;
 
-    color: @white;
-    background-color: @introModuleSlideDescBgColor;
+  color: @white;
+  background-color: @introModuleSlideDescBgColor;
+}
+
+@media @xs, @sm {
+  .intro-modules-slideshow-wrapper,
+  .intro-modules-slide {
+    > .intro-modules-slide-description {
+      position: initial;
+
+      color: @introModuleSlideDescColorSm;
+      background-color: @introModuleSlideDescBgColorSm;
+    }
   }
 }
 
