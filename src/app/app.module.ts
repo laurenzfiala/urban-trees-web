@@ -32,6 +32,7 @@ import {UserRewardService} from './modules/trees/services/user-reward.service';
 import {VERSION} from '../environments/version';
 import {LandingPageComponent} from './components/landing-page/landing-page.component';
 import {ActionDirective} from './modules/shared/directives/action.directive';
+import {SharedModule} from './modules/shared/shared.module';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, '/translations/', '.json?version=' + VERSION.version);
@@ -51,6 +52,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     AppRoutingModule,
     HttpClientModule,
     LayoutModule,
+    SharedModule,
 
     // Translation
     TranslateModule.forRoot({
