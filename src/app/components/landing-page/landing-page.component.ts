@@ -10,15 +10,18 @@ export class LandingPageComponent implements OnInit {
   public moduleSlides: any = [
     {
       imageUrl: '/assets/landing-page/modules/module1.jpg',
-      text: 'This should describe what\'s going on in the picture.'
+      tabText: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.',
+      imgDesc: 'This should describe what\'s going on in the picture.'
     },
     {
       imageUrl: '/assets/landing-page/modules/module2.jpg',
-      text: 'This should describe what\'s going on in the picture. (2)'
+      tabText: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.',
+      imgDesc: 'This should describe what\'s going on in the picture. (2)'
     },
     {
       imageUrl: '/assets/landing-page/modules/module3.jpg',
-      text: 'This should describe what\'s going on in the picture. (3)'
+      tabText: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.',
+      imgDesc: 'This should describe what\'s going on in the picture. (3)'
     }
   ];
 

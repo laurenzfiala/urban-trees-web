@@ -1,4 +1,4 @@
-<div class="d-flex flex-column min-vh-100">
+<div class="lp-root d-flex flex-column min-vh-100">
 
   <div id="content" class="flex-grow-1">
 
@@ -41,7 +41,7 @@
              role="button"
              tabindex="0"
              (action)="showSlide(slide)">
-          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+          {{slide.tabText}}
         </div>
       </div>
 
@@ -53,7 +53,7 @@
            class="intro-modules-slide"
            [ngClass]="{'show': slide.isShown, 'previously-shown': slide.wasPreviouslyShown}">
         <img [src]="slide.imageUrl" />
-        <div class="description">{{slide.text}}</div>
+        <div class="description">{{slide.imgDesc}}</div>
       </div>
     </div>
 
@@ -61,7 +61,7 @@
       <section>
         <img class="content-img float-right" src="/assets/landing-page/bg-main.jpg" />
         <div class="lp-text-container">
-          <h1>What it's about</h1>
+          <h1><div class="heading-text">What it's about</div></h1>
           Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
           Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
           Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
@@ -79,7 +79,7 @@
       <section>
         <img class="content-img float-left" src="/assets/landing-page/bg-main.jpg" />
         <div class="lp-text-container">
-          <h1>Data2Sensor</h1>
+          <h1><div class="heading-text">Data2Sensor</div></h1>
           Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
           Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
           Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
@@ -90,7 +90,7 @@
       <section>
         <img class="content-img float-right" src="/assets/landing-page/bg-main.jpg" />
         <div class="lp-text-container">
-          <h1>Sensor2App</h1>
+          <h1><div class="heading-text">Sensor2App</div></h1>
           Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
           Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
         </div>
@@ -98,7 +98,7 @@
       <section>
         <img class="content-img float-left" src="/assets/landing-page/bg-main.jpg" />
         <div class="lp-text-container">
-          <h1>App2Analyse</h1>
+          <h1><div class="heading-text">App2Analyse</div></h1>
           Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
           Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
           Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
@@ -122,9 +122,9 @@
   </div>
 
   <div class="footer">
-    <div class="lp-text-container">
+    <div class="lp-text-container overflow-hidden">
 
-      <div class="d-flex flex-row flex-wrap align-items-center my--2 mx--4">
+      <div class="footer-content my--2 mx--4">
         <div class="my-2 mx-4">
           &copy; Universität Salzburg {{currentYear()}}
         </div>
