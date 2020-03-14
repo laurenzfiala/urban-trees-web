@@ -32,7 +32,7 @@
 @footerBgColor: @bgColor;
 
 * {
-  font-family: 'Quicksand';
+  font-family: 'Quicksand', sans-serif;
 }
 
 .lp-root {
@@ -240,7 +240,7 @@ section {
   align-items: center;
 
   position: absolute;
-  bottom: @gutter;
+  bottom: 0;
   right: 0;
   left: 0;
 
@@ -270,8 +270,12 @@ section {
     flex-direction: row;
     align-items: center;
 
+    padding-bottom: @gutter;
+
     color: @introImgBarTitleColor;
     font-size: @introImgBarTitleFontSize;
+    cursor: pointer;
+    user-select: none;
 
     transition: font-weight 0.5s;
 

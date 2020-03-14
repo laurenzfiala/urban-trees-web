@@ -26,7 +26,8 @@
         <div class="intro-modules-bar lp-container">
           <div *ngFor="let module of modules"
                class="intro-module"
-               [ngClass]="{'active': module.isShown}">
+               [ngClass]="{'active': module.isShown}"
+               (action)="showSlide(module)">
             {{module.title}}
           </div>
         </div>
