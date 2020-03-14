@@ -252,6 +252,8 @@ section {
     flex-grow: 1;
 
     height: @separatorWidth;
+    margin-bottom: @gutter;
+
     background-color: @introImgBarSeparatorColor;
   }
 }
@@ -423,8 +425,8 @@ section {
 
 .footer {
   margin-top: (@gutter*4);
-  padding-top: @gutter2x;
-  padding-bottom: @gutter2x;
+  padding-top: (@gutter*4);
+  padding-bottom: (@gutter*4);
 
   background-color: @footerBgColor;
 }

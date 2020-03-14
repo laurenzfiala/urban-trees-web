@@ -26,6 +26,7 @@
         <div class="intro-modules-bar lp-container">
           <div *ngFor="let module of modules"
                class="intro-module"
+               role="button"
                [ngClass]="{'active': module.isShown}"
                (action)="showSlide(module)">
             {{module.title}}
