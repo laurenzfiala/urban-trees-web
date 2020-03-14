@@ -24,9 +24,11 @@
 
       <div class="intro-modules-bar-wrapper">
         <div class="intro-modules-bar lp-container">
-          <div class="intro-module">Data2Sensor</div>
-          <div class="intro-module">Sensor2App</div>
-          <div class="intro-module">App2Analyse</div>
+          <div *ngFor="let module of modules"
+               class="intro-module"
+               [ngClass]="{'active': module.isShown}">
+            {{module.title}}
+          </div>
         </div>
       </div>
 
@@ -38,7 +40,7 @@
          (mouseout)="runSlideCycle = true">
 
       <div class="intro-modules-content lp-container">
-        <div *ngFor="let slide of moduleSlides"
+        <div *ngFor="let slide of modules"
              class="intro-module"
              [ngClass]="{'active': slide.isShown}"
              role="button"
@@ -57,7 +59,7 @@
         <img [src]="selectedSlide?.imageUrl" />
         <div class="intro-modules-slide-description">{{selectedSlide?.imgDesc}}</div>
       </div>
-      <div *ngFor="let slide of moduleSlides"
+      <div *ngFor="let slide of modules"
            class="intro-modules-slide"
            [ngClass]="{'show': slide.isShown, 'previously-shown': slide.wasPreviouslyShown}">
         <img [src]="slide.imageUrl" />

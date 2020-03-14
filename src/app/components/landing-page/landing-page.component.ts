@@ -25,18 +25,21 @@ export class LandingPageComponent implements OnInit, AfterViewInit {
     this.startSlideCycle();
   }
 
-  public moduleSlides: any = [
+  public modules: any = [
     {
+      title: 'Data2Sensor',
       imageUrl: '/assets/landing-page/modules/module1.jpg',
       tabText: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.',
       imgDesc: 'This should describe what\'s going on in the picture.'
     },
     {
+      title: 'Sensor2App',
       imageUrl: '/assets/landing-page/modules/module2.jpg',
       tabText: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.',
       imgDesc: 'This should describe what\'s going on in the picture. (2)'
     },
     {
+      title: 'App2Analyse',
       imageUrl: '/assets/landing-page/modules/module3.jpg',
       tabText: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.',
       imgDesc: 'This should describe what\'s going on in the picture. (3)'
@@ -50,8 +53,8 @@ export class LandingPageComponent implements OnInit, AfterViewInit {
 
   public ngAfterViewInit(): void {
 
-    this.showSlide(this.moduleSlides[0]);
-    this.startSlideCycle();
+    this.showSlide(this.modules[0]);
+    this.runSlideCycle = true;
 
   }
 
@@ -62,10 +65,10 @@ export class LandingPageComponent implements OnInit, AfterViewInit {
         return;
       }
       let nextSlide = this.currentSlideIndex() + 1;
-      if (nextSlide >= this.moduleSlides.length) {
+      if (nextSlide >= this.modules.length) {
         nextSlide = 0;
       }
-      this.showSlide(this.moduleSlides[nextSlide]);
+      this.showSlide(this.modules[nextSlide]);
     }, LandingPageComponent.CYCLE_INTERVAL_MS);
 
   }
@@ -76,7 +79,7 @@ export class LandingPageComponent implements OnInit, AfterViewInit {
 
   public showSlide(slide: any): void {
 
-    for (let s of this.moduleSlides) {
+    for (let s of this.modules) {
       s.wasPreviouslyShown = s.isShown;
       s.isShown = false;
     }
@@ -89,11 +92,11 @@ export class LandingPageComponent implements OnInit, AfterViewInit {
   }
 
   private currentSlideIndex(): number {
-    return this.moduleSlides.findIndex(s => s.isShown);
+    return this.modules.findIndex(s => s.isShown);
   }
 
   get selectedSlide(): any {
-    return this.moduleSlides.find(s => s.isShown);
+    return this.modules.find(s => s.isShown);
   }
 
 }

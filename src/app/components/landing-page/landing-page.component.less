@@ -273,6 +273,8 @@ section {
     color: @introImgBarTitleColor;
     font-size: @introImgBarTitleFontSize;
 
+    transition: font-weight 0.5s;
+
     &:before,
     &:after {
       content: "";
@@ -288,6 +290,10 @@ section {
 
     &:after {
       margin-left: @gutter;
+    }
+
+    &.active {
+      font-weight: bold;
     }
   }
 }
