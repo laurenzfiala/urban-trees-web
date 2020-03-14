@@ -32,7 +32,9 @@
 
     </div>
 
-    <div class="intro-modules-content-wrapper">
+    <div class="intro-modules-content-wrapper"
+         (mouseover)="runSlideCycle = false"
+         (mouseout)="runSlideCycle = true">
 
       <div class="intro-modules-content lp-container">
         <div *ngFor="let slide of moduleSlides"
@@ -47,7 +49,9 @@
 
     </div>
 
-    <div class="intro-modules-slideshow-wrapper lp-container mb-3">
+    <div class="intro-modules-slideshow-wrapper lp-container mb-3"
+         (mouseover)="runSlideCycle = false"
+         (mouseout)="runSlideCycle = true">
       <img class="invisible w-100" [src]="selectedSlide?.imageUrl" />
       <div *ngFor="let slide of moduleSlides"
            class="intro-modules-slide"

@@ -7,6 +7,8 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LandingPageComponent implements OnInit {
 
+  public runSlideCycle: boolean = false;
+
   public moduleSlides: any = [
     {
       imageUrl: '/assets/landing-page/modules/module1.jpg',
@@ -30,6 +32,22 @@ export class LandingPageComponent implements OnInit {
   public ngOnInit(): void {
 
     this.showSlide(this.moduleSlides[0]);
+    this.startSlideCycle();
+
+  }
+
+  private startSlideCycle(): void {
+
+    setInterval(() => {
+      if (!this.runSlideCycle) {
+        return;
+      }
+      let nextSlide = this.moduleSlides.findIndex(s => s.isShown) + 1;
+      if (nextSlide >= this.moduleSlides.length) {
+        nextSlide = 0;
+      }
+      this.showSlide(this.moduleSlides[nextSlide]);
+    }, 5000);
 
   }
 
