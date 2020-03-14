@@ -1,5 +1,5 @@
 <div id="map" class="map has-status-overlay" (mousedown)="onMapMouseDown($event)" (mouseup)="onMapMouseUp($event)">
-  <div *ngIf="hasStatus(StatusKey.MAP, StatusValue.IN_PROGRESS)" class="status-overlay load load-md"></div>
+  <div *ngIf="hasStatus(StatusKey.MAP, StatusValue.IN_PROGRESS)" class="status-overlay load"></div>
   <div *ngIf="hasStatus(StatusKey.MAP, StatusValue.FAILED)" class="status-overlay">
     <div class="status-content">
       <div class="status-heading heading-danger">

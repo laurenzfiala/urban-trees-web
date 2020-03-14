@@ -15,7 +15,8 @@ import {CssVariableDirective} from './directives/css-variable.directive';
   ],
   exports: [
     // Directives
-    ActionDirective
+    ActionDirective,
+    CssVariableDirective
   ]
 })
 export class SharedModule { }
