@@ -1,11 +1,11 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
-import {AbstractService} from './abstract.service';
-import {EnvironmentService} from './environment.service';
+import {AbstractService} from '../../shared/services/abstract.service';
+import {EnvironmentService} from '../../shared/services/environment.service';
 import {Announcement} from '../entities/announcement.entity';
 import {Log} from './log.service';
 import 'rxjs/add/operator/map';
-import {ApiError} from '../entities/api-error.entity';
+import {ApiError} from '../../shared/entities/api-error.entity';
 
 /**
  * Service used to hold data about announcements shown on top of the page.

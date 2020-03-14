@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'ut-trees',
@@ -7,9 +8,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TreesComponent implements OnInit {
 
-  constructor() { }
+  constructor(private translate: TranslateService) { }
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
   }
 
 }

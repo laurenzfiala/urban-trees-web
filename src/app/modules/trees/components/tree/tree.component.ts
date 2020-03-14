@@ -3,7 +3,7 @@ import {AbstractComponent} from '../abstract.component';
 import {ActivatedRoute} from '@angular/router';
 import {TreeService} from '../../services/tree.service';
 import {Tree} from '../../entities/tree.entity';
-import {EnvironmentService} from '../../services/environment.service';
+import {EnvironmentService} from '../../../shared/services/environment.service';
 
 @Component({
   selector: 'ut-tree',

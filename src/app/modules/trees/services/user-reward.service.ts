@@ -4,9 +4,9 @@ import {UserAchievements} from '../entities/user-achievement.entity';
 import {UserService} from './user.service';
 import {NotificationsService} from './notifications.service';
 import {HttpErrorResponse} from '@angular/common/http';
-import {ApiError} from '../entities/api-error.entity';
+import {ApiError} from '../../shared/entities/api-error.entity';
 import {TranslateService} from '@ngx-translate/core';
-import {AuthService} from './auth.service';
+import {AuthService} from '../../shared/services/auth.service';
 
 /**
  * Provides logic for levelling, etc.

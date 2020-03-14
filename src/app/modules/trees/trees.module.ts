@@ -38,12 +38,6 @@ import {SlideshowComponent} from './components/slideshow/slideshow.component';
 import {UserPermissionComponent} from './components/user-permission/user-permission.component';
 import {AnnouncementsComponent} from './components/admin/announcements/announcements.component';
 import {NotificationsComponent} from './components/notifications/notifications.component';
-import {SpyDirective} from './directives/spy.directive';
-import {AuthDirective} from './directives/auth.directive';
-import {NoAuthDirective} from './directives/noauth.directive';
-import {CheckDirective} from './directives/check.directive';
-import {ValueaccessorDirective} from './directives/valueaccessor.directive';
-import {LangDirective} from './directives/lang.directive';
 import {StringModificationPipe} from './pipes/strmod.pipe';
 import {CapitalizationPipe} from './pipes/capitalize.pipe';
 import {LowercasePipe} from './pipes/lowercase.pipe';
@@ -51,7 +45,7 @@ import {ReplacePipe} from './pipes/replace.pipe';
 import {DecimalPlacesPipe} from './pipes/decimal-places.pipe';
 import {CsaComponent} from './components/csa/csa.component';
 import {FormsModule} from '@angular/forms';
-import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule} from '@angular/common/http';
 import {LayoutModule} from '@angular/cdk/layout';
 import {BsDatepickerModule} from 'ngx-bootstrap/datepicker';
 import {ModalModule} from 'ngx-bootstrap/modal';
@@ -63,10 +57,9 @@ import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
 import {CollapseModule} from 'ngx-bootstrap/collapse';
 import {TabsModule} from 'ngx-bootstrap/tabs';
 import {NgxChartsModule} from '@swimlane/ngx-charts';
-import {TranslateModule} from '@ngx-translate/core';
-import {EnvironmentService} from './services/environment.service';
+import {TranslateLoader, TranslateModule, TranslateService} from '@ngx-translate/core';
+import {EnvironmentService} from '../shared/services/environment.service';
 import {SubscriptionManagerService} from './services/subscription-manager.service';
-import {AuthService} from './services/auth.service';
 import {AnnouncementService} from './services/announcement.service';
 import {PhenologyObservationService} from './services/phenology/observation/phenology-observation.service';
 import {TreeService} from './services/tree.service';
@@ -84,6 +77,13 @@ import {AdminGuard} from './components/admin/admin.guard';
 import {LayoutConfig} from './config/layout.config';
 import {AuthInterceptor} from './interceptors/auth.interceptor';
 import {SharedModule} from '../shared/shared.module';
+import {AuthService} from '../shared/services/auth.service';
+import {TranslateHttpLoader} from '@ngx-translate/http-loader';
+import {VERSION} from '../../../environments/version';
+
+export function HttpLoaderFactory2(http: HttpClient) {
+  return new TranslateHttpLoader(http, '/translations/trees/', '.json?version=' + VERSION.version);
+}
 
 @NgModule({
   declarations: [
@@ -125,14 +125,6 @@ import {SharedModule} from '../shared/shared.module';
     AnnouncementsComponent,
     NotificationsComponent,
 
-    // Directives
-    SpyDirective,
-    AuthDirective,
-    NoAuthDirective,
-    CheckDirective,
-    ValueaccessorDirective,
-    LangDirective,
-
     // Pipes
     StringModificationPipe,
     CapitalizationPipe,
@@ -161,17 +153,24 @@ import {SharedModule} from '../shared/shared.module';
     CollapseModule.forRoot(),
     TabsModule.forRoot(),
 
-    // Charts
-    NgxChartsModule,
-
     // Translation
-    TranslateModule
+    TranslateModule.forChild({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory2,
+        deps: [HttpClient]
+      },
+      isolate: true
+    }),
+
+    // Charts
+    NgxChartsModule
   ],
   providers: [
     // Core services
+    AuthService,
     EnvironmentService,
     SubscriptionManagerService,
-    AuthService,
 
     // Component-Services
     AnnouncementService,

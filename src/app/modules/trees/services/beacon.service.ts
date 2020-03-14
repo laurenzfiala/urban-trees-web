@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {Tree} from '../entities/tree.entity';
-import {ApiError} from '../entities/api-error.entity';
-import {EnvironmentService} from './environment.service';
-import {AbstractService} from './abstract.service';
+import {ApiError} from '../../shared/entities/api-error.entity';
+import {EnvironmentService} from '../../shared/services/environment.service';
+import {AbstractService} from '../../shared/services/abstract.service';
 import {Log} from './log.service';
 import {BeaconData} from '../entities/beacon-data.entity';
 import * as moment from 'moment';

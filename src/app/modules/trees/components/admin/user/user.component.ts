@@ -3,11 +3,11 @@ import {User} from '../../../entities/user.entity';
 import {AdminService} from '../../../services/admin/admin.service';
 import {AbstractComponent} from '../../abstract.component';
 import {HttpErrorResponse} from '@angular/common/http';
-import {ApiError} from '../../../entities/api-error.entity';
+import {ApiError} from '../../../../shared/entities/api-error.entity';
 import {BsModalRef} from 'ngx-bootstrap/modal';
 import {BsModalService} from 'ngx-bootstrap/modal';
 import {Role} from '../../../entities/role.entity';
-import {EnvironmentService} from '../../../services/environment.service';
+import {EnvironmentService} from '../../../../shared/services/environment.service';
 
 @Component({
   selector: 'ut-admin-user',

@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {AnnouncementService} from '../../services/announcement.service';
-import {AuthService} from '../../services/auth.service';
+import {AuthService} from '../../../shared/services/auth.service';
 import {LoginAccessReason} from '../project-login/logout-reason.enum';
 import {Announcement} from '../../entities/announcement.entity';
-import {EnvironmentService} from '../../services/environment.service';
+import {EnvironmentService} from '../../../shared/services/environment.service';
 import {UserService} from '../../services/user.service';
 import {UserData} from '../../entities/user-data.entity';
 import * as $ from 'jquery';

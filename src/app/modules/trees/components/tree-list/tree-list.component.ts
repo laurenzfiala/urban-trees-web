@@ -11,7 +11,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {query} from '@angular/animations';
 import {SearchService} from '../../services/search.service';
 import {delay} from 'rxjs-compat/operator/delay';
-import {EnvironmentService} from '../../services/environment.service';
+import {EnvironmentService} from '../../../shared/services/environment.service';
 
 @Component({
   selector: 'ut-tree-list',

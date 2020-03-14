@@ -13,7 +13,7 @@ import {TreeSpecies} from '../../../../entities/tree-species.entity';
 import {TreeService} from '../../../../services/tree.service';
 import {PhenologyObservationService} from '../../../../services/phenology/observation/phenology-observation.service';
 import {HttpErrorResponse} from '@angular/common/http';
-import {ApiError} from '../../../../entities/api-error.entity';
+import {ApiError} from '../../../../../shared/entities/api-error.entity';
 import {Tree} from '../../../../entities/tree.entity';
 import {BeaconFrontend} from '../../../../entities/beacon-frontend.entity';
 import {BeaconStatus} from '../../../../entities/beacon-status.entity';

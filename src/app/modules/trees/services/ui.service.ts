@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import {Log} from './log.service';
-import {EnvironmentService} from './environment.service';
+import {EnvironmentService} from '../../shared/services/environment.service';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
-import {AbstractService} from './abstract.service';
-import {ApiError} from '../entities/api-error.entity';
+import {AbstractService} from '../../shared/services/abstract.service';
+import {ApiError} from '../../shared/entities/api-error.entity';
 import {SystemStatistics} from '../entities/system-statistics.entity';
 import {MeasurementStatistics} from '../entities/measurement-statistics.entity';
 

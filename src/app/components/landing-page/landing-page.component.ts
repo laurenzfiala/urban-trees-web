@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, ElementRef, OnInit, ViewChild} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
 import * as $ from 'jquery';
 
 @Component({
@@ -77,7 +77,11 @@ export class LandingPageComponent implements OnInit, AfterViewInit {
     return new Date().getFullYear();
   }
 
-  public showSlide(slide: any): void {
+  public showSlide(slide: any, manualSwitch: boolean = false): void {
+
+    if (manualSwitch && this._runSlideCycle) {
+      this.runSlideCycle = true;
+    }
 
     for (let s of this.modules) {
       s.wasPreviouslyShown = s.isShown;

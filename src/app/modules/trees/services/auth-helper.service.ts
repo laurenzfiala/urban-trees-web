@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
 import {Log} from './log.service';
-import {EnvironmentService} from './environment.service';
-import {AbstractService} from './abstract.service';
-import {AuthService} from './auth.service';
-import {ActivatedRouteSnapshot, RouterStateSnapshot} from '@angular/router';
+import {EnvironmentService} from '../../shared/services/environment.service';
+import {AbstractService} from '../../shared/services/abstract.service';
+import {AuthService} from '../../shared/services/auth.service';
+import {ActivatedRouteSnapshot} from '@angular/router';
 import {AdminGuard} from '../components/admin/admin.guard';
 import {ProjectLoginGuard} from '../components/project-login/project-login.guard';
 

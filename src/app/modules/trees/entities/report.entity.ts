@@ -6,7 +6,7 @@
  */
 import {User} from './user.entity';
 import {Event} from './event.entity';
-import {EnvironmentService} from '../services/environment.service';
+import {EnvironmentService} from '../../shared/services/environment.service';
 import * as moment from 'moment';
 
 export class Report {

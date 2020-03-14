@@ -3,7 +3,7 @@ import {AbstractComponent} from '../abstract.component';
 import {TreeFrontend} from '../../entities/tree-frontend.entity';
 import {Log} from '../../services/log.service';
 import {BeaconFrontend} from '../../entities/beacon-frontend.entity';
-import {EnvironmentService} from '../../services/environment.service';
+import {EnvironmentService} from '../../../shared/services/environment.service';
 import {SearchService} from '../../services/search.service';
 import {SubscriptionManagerService} from '../../services/subscription-manager.service';
 import {LayoutConfig} from '../../config/layout.config';

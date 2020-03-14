@@ -1,0 +1,757 @@
+{
+	"app": {
+		"title": "Urban Trees",
+		"subtitle": "as climate messengers",
+    "date_format": "YYYY/MM/DD HH:mm",
+    "date_format_angular": "yyyy/MM/dd HH:mm",
+    "date_format_short": "MM/DD HH:mm",
+    "date_format_day_full": "YYYY/MM/DD",
+    "date_format_day": "MM/DD",
+    "date_format_time": "HH:mm"
+	},
+  "announcements": {
+    "close": "Close announcement"
+  },
+	"navigation": {
+    "accessibility": {
+      "title": "Accessibility shortcuts",
+      "more_items": "Show more menu items",
+      "less_items": "Show less menu items",
+      "go_to": {
+        "header": "Jump to navigation",
+        "content": "Jump to content",
+        "footer": "Jump to footer"
+      }
+    },
+		"home": "Home",
+		"phenology": "Phenology",
+		"tree_list": "Trees",
+		"measurements": "Measurements",
+		"statistics": "Statistics",
+		"admin": "Admin console",
+		"footer": {
+			"report": "Report a problem",
+			"imprint": "Imprint",
+			"home": "Home page",
+			"madeby": "Made with &#x2764; by the ",
+      "madeby_team": "Urban-Trees-Team",
+      "info_version": "Version",
+      "info_hash": "ID"
+		},
+    "messages": "Messages",
+    "settings": "Settings &amp; Language",
+    "login": "Log in",
+    "logout": "Log out",
+    "project_account_1": "Project-",
+    "project_account_2": "Account",
+    "back": "Back",
+    "links": {
+      "tree_list": "Trees",
+      "phen_obs": "Phenology observation",
+      "account": "Account",
+      "infopage": "Info page",
+      "log_in": "Sign in",
+      "log_out": "Sign out",
+      "change_password": "Change password",
+      "change_username": "Change username",
+      "measurements": "Beacon measurements",
+      "statistics": "Statistics"
+    }
+	},
+  "home": {
+    "choose": "Choose what to do",
+    "greeting": "Hello, {{username}}!",
+    "level_up": "You reached level {{level}}!",
+    "level": "Level",
+    "xp": "XP",
+    "next_level_difference": "more for level",
+    "score": {
+      "error": "Failed to load your score."
+    }
+  },
+	"phenology": {
+		"observation_note": {
+			"title": "Enter a tree observation",
+			"text": "It's easy to do and will not take you too long.",
+			"start_btn": "Start observation"
+		},
+		"observation": {
+			"navigation": {
+				"step1": "Tree",
+				"step2": "Observation",
+				"step3": "Documentation",
+				"step4": "Review",
+				"continue": "Continue",
+				"previous": "Previous",
+				"to": "to"
+			},
+			"step1": {
+          "trees_changed_alert": {
+          "title": "Attention!",
+          "text": "We recently changed some trees and their species, as well as their location. Please be careful when searching by number (#x)!"
+        },
+				"observation_date_label": "Observation time",
+				"tree_location": "at {{street}} in {{city.name}}",
+				"error_loading": {
+					"text": "Could not load tree data. Please try again later."
+				},
+				"tree_search_placeholder": "Enter Country, City, Street, Species or ID...",
+				"title": "Your tree",
+				"tree_not_found": "No tree found.",
+        "map_error_text": "Could not load map data. Please choose a tree below manually."
+      },
+			"step2": {
+        "nothing_to_observe": "There is nothing to observe set up for this tree. Should you suspect a mistake, please contact a system administrator.",
+				"help": {
+					"title": "Check the following objects and tick the most fitting image for each"
+				}
+			},
+			"type": {
+				"Bud": {
+					"name": "Bud",
+					"name_plural": "Buds",
+					"result": {
+						"Closed bud": "Closed Bud",
+						"Half-open bud": "Half-open bud",
+						"Open bud": "Open bud"
+					}
+				}
+			},
+			"step3": {
+				"title": "Documentation",
+				"observers_title": "Who is checking?",
+				"observers_placeholder": "All names",
+				"upload_photo_title": "Upload photo",
+				"upload_photo_placeholder": "Choose a photo of the tree",
+				"remark_title": "Add a remark",
+				"remark_placeholder": "Additional information",
+				"characters": "characters",
+				"help": {
+					"description": "You must enter your name and the naes of everyone observing with you and can optionally upload a picture of the tree if you want and add additional remarks.",
+					"toggle": "How does it work?"
+				},
+				"photo_type_invalid": "The photo must be of type PNG or JPEG.",
+				"photo_size_invalid": "The photo must not be larger than 5 MB."
+			},
+			"step4": {
+				"title": "Review your entries",
+				"section": {
+					"tree": "Tree",
+					"observations": "Observations"
+				},
+				"location": "Location",
+				"species": "Species",
+				"observation_time": "Date & Time of observation",
+				"submit_btn": "Submit this observation",
+				"back_btn": "Go back",
+        "submit_progress": "Submission progress",
+				"submitting_data": "Sending observation...",
+				"submitted_data": "Submitted observation!",
+				"submit_data": "Send observation",
+				"submit_file": "Send photo",
+				"submitted_file": "Submitted photo!",
+				"submit_failed_data": "Failed to submit observation!",
+				"submit_failed_file": "Failed to send photo!",
+				"status": {
+					"duplicate": "There is already an observation at the given time.",
+					"generic": "Please try submitting again in a few moments. If you refresh the page, your observation data is lost."
+				},
+				"submitting_file": "Sending photo...",
+				"success": {
+					"title": "Success",
+					"text": "Your observation has been successfully submitted.",
+					"btn": "Finish"
+				}
+			}
+		}
+	},
+  "tree_list": {
+    "cities": "Cities",
+    "species": "Species",
+    "trees": "Trees",
+    "observations": "Observations",
+    "beacons": "Beacons",
+    "datasets": "Datasets",
+    "temperature": "Temperature",
+    "humidity": "Humidity",
+    "max": "high",
+    "avg": "avg",
+    "min": "low",
+    "none_found": "No trees found",
+    "tree": {
+      "location": "{{street}}",
+      "link": "Check it out"
+    },
+    "error": "We could not load the tree list, please try again.",
+    "loading": "Loading tree list..."
+  },
+  "tree_view": {
+    "error": {
+      "title": "Error",
+      "text": "We could not load the given tree, please try again."
+    }
+  },
+  "user": {
+    "level_action": {
+      "INITIAL": "Account creation",
+      "BEACON_READOUT": "Beacon readout",
+      "PHENOLOGY_IMAGE_UPLOAD": "Phenology image uploaded",
+      "PHENOLOGY_OBSERVATION": "Phenology observation",
+      "UPGRADE_ACCOUNT": "Legacy account upgraded",
+      "ADMIN_THANKYOU": "Reward for helping (Thank you!)"
+    }
+  },
+  "login": {
+    "heading": "Your Project-Account",
+    "username_placeholder": "Username",
+    "password_placeholder": "Password",
+    "password_old_placeholder": "Current Password",
+    "password_new_placeholder": "New Password",
+    "password_new_confirm_placeholder": "New Password (confirm)",
+    "log_in": "Log in",
+    "logging_in": "Logging you in...",
+    "change_password": "Change password",
+    "changing_password": "Changing password...",
+    "status_connection_insecure": "You may not log in using an insecure connection",
+    "status_bad_credentials": "Username and password were not recognized",
+    "status_successful": "Logged in successfully",
+    "status_failed": "Login failed, please retry",
+    "status_expired": "Your login expired, please log in again",
+    "status_force_logout": "You have been logged out",
+    "status_force_credentials_confirm": "Please confirm your password to access the requested page",
+    "status_user_logout": "Logged out successfully",
+    "status_not_authenticated": "Please log in to view this page",
+    "status_insufficient_permissions": "You are not allowed to access the requested page",
+    "description": "Your personal project account enables you to enter phenology observations, access project-related news and much more.",
+    "disclaimer": "We don't store any personal data except those needed for scientific research clearly marked to be sent off for submission.<br/>No automated E-Mails are sent out at any time to any user.<br/>By logging in you agree to store your personal login information inside your browser.",
+    "reset_info": "Your new password must meet these requirements:<ul><li>Contains at least 1 lowercase letter (a-z)</li><li>Contains at least 1 UPPERCASE letter (A-Z)</li><li>Contains at least 1 number (0-9)</li><li>Contains at least 1 symbol (!§$%&/()=?\"'+#<>,..-*~)</li><li>Is at least 10 characters long</li></ul>",
+    "username_change_info": "Your new username must meet these requirements:<ul><li>Is at least 5 characters long</li><li>Is different to your current username</li><li>Does not already exist</li></ul>",
+    "already_logged_in": "You are already logged in.",
+    "username_new_placeholder": "New username",
+    "change_username": "Change username",
+    "changing_username": "Changing username...",
+    "username_changed": "Your username was successfully changed",
+    "username_change_failed": "Your username could not be changed",
+    "username_change_title": "Change your username",
+    "password_change_title": "Change your password",
+    "password_change_title_set": "Set your password",
+    "failed_attempts_info": "Your account will be locked for 5 minutes after 10 failed login attempts.",
+    "failed_attempts_amount": "Failed attempts",
+    "change_password_success": "Your password was successfully changed",
+    "change_password_failed": "Your password could not be changed, check if your old password is correct",
+    "change_password_failed_nooldpw": "Your password could not be changed, please contact an admin",
+    "log_in_again": "Log in to continue",
+    "go_to_login": "Go to login",
+    "learn_more": "Learn more"
+  },
+	"tree": {
+    "loading": "Loading tree...",
+    "summary": {
+      "title": "Information",
+      "text": "„Urban Trees as climate messengers“: in this project researchers and students, experts and teachers from Austria, Germany and Hungary collaborate. By monitoring, measuring and modelling phenological phases and microclimate data, we aim to answer the following research questions: How do urban trees affect urban climate? How does urban climate influence the trees? How can these trees affect our future?<br/><br/>The following visualisations show selected aspects of this research."
+    },
+    "through_year": {
+      "title": "Trees through the seasons",
+      "text": "This image set shows the leaf development of trees in spring and illustrates a central research objective in the project: We investigate the length of the vegetation period of different types of urban trees and the influence of urban heat island intensity. <b>City trees cool the city and make it liveable!</b>",
+      "update_month": "Information last updated in August 2019.",
+      "pictures_alt": {
+        "1": "Photo of tree taken on 18th of March. The tree has no leaves yet.",
+        "2": "Photo of tree taken on 21st of March.",
+        "3": "Photo of tree taken on 25th of March.",
+        "4": "Photo of tree taken on 27th of March.",
+        "5": "Photo of tree taken on 2nd of April. Many buds have already opened.",
+        "6": "Photo of tree taken on 5th of April. The tree has grown some larger leaves.",
+        "7": "Photo of tree taken on 8th of April. The tree has grown many larger leaves.",
+        "8": "Photo of tree taken on 11th of April. The tree crown now looks a lot more dense.",
+        "9": "Photo of tree taken on 14th of April. The tree crown looks even more dense.",
+        "10": "Photo of tree taken on 16th of April.",
+        "11": "Photo of tree taken on 20th of April.",
+        "12": "Photo of tree taken on 24th of April. The tree has fully developed its leaves."
+      }
+    },
+    "cooling_power": {
+      "title": "Cooling capacity of our examined trees",
+      "text": "The <b>highest</b> measured <b>cooling capacity</b> of our observed trees was <b>5.3 °C</b>.<div class=\"my-2\">To do that, we compared the temperatures of the reference-beacons in the sun to the beacons in the tree-crowns at each school, and looked at the differences between them.</div>",
+      "update_month": "Information last updated in March 2019."
+    },
+    "leaf_development": {
+      "title": "Leaf Development",
+      "text": "To illustrate the findings of our first year of observations, we have created a chart with audio commentary (only available in german). Press the Play-Button to start the commentary or press 'X' to see the chart.",
+      "update_month": "Information last updated in October 2018."
+    },
+		"species": {
+			"gingko biloba": "Ginkgo",
+			"quercus robur": "Common oak",
+			"platanus": "Platanus sp",
+			"tilia": "Lime",
+			"quercus": "Oak",
+			"carpinus betulus": "Common hornbeam",
+			"acer platanoides": "Norway maple",
+			"robinia pseudoacacia": "Black locust",
+			"platanus x acerifolia": "Plane",
+			"tilia platyphyllos": "Largeleaf lime",
+			"paulownia tomentosa": "Princesstree",
+			"acer campestre": "Field maple",
+			"fraxinus excelsior": "Common ash",
+			"tilia cordata": "Small-leaved lime",
+			"liriodendron tulipifera": "Tulip tree",
+			"acer": "Maple",
+			"aesculus x carnea": "Red horse-chestnut",
+			"betula": "Betula",
+			"fraxinus": "Fraxinus",
+			"sequoioideae": "Redwood",
+			"corylus colurna": "Turkish hazel",
+			"acer pseudoplatanus": "Sycamore maple",
+			"aesculus": "Chestnut",
+			"betula pendula": "Silver birch",
+			"juglans nigra": "Juglans nigra",
+			"juglans": "Juglans sp",
+      "fagus": "Beech",
+      "prunus cerasifera": "Cherry plum",
+      "castanea": "Castanea sp",
+      "platanus hispanica": "Plane",
+      "quercus rubra": "Northern red oak",
+      "juglans regia": "Common walnut",
+      "latin": {
+        "gingko biloba": "Ginkgo biloba",
+        "quercus robur": "Quercus Robur",
+        "platanus": "Platanus sp.",
+        "tilia": "Tilia sp.",
+        "quercus": "Quercus sp.",
+        "carpinus betulus": "Carpinus betulus",
+        "acer platanoides": "Acer platanoides",
+        "robinia pseudoacacia": "Robinia pseudoacacia",
+        "platanus x acerifolia": "Platanus x acerifolia",
+        "tilia platyphyllos": "Tilia platyphyllos",
+        "paulownia tomentosa": "Paulownia tomentosa",
+        "acer campestre": "Acer campestre",
+        "fraxinus excelsior": "Fraxinus excelsior",
+        "tilia cordata": "Tilia cordata",
+        "liriodendron tulipifera": "Liriodendron tulipifera",
+        "acer": "Acer sp.",
+        "aesculus x carnea": "Aesculus x carnea",
+        "betula": "Betula",
+        "fraxinus": "Fraxinus",
+        "sequoioideae": "Sequoioideae sp.",
+        "corylus colurna": "Corylus colurna",
+        "acer pseudoplatanus": "Acer pseudoplatanus",
+        "aesculus": "Aesculus sp.",
+        "betula pendula": "Betula pendula",
+        "juglans nigra": "Juglans nigra",
+        "juglans": "Juglans sp",
+        "fagus": "Fagus sp.",
+        "prunus cerasifera": "Prunus cerasifera",
+        "castanea": "Castanea sp",
+        "platanus hispanica": "Platanus hispanica",
+        "quercus rubra": "Quercus rubra",
+        "juglans regia": "Juglans regia"
+      }
+		},
+    "beacon": {
+      "details": {
+        "heading": "Beacon Data",
+        "range": "Data time range",
+        "maxdataentries": "Maximum datapoints",
+        "none_attached": "No beacons are attached to this tree.",
+        "status_locked": "This beacon can currently not be read out, because the connection credentials are unknown.",
+        "status_invalid_settings": "This beacon can currently not be read out, because incorrect configuration prevents readout.",
+        "status_initial": "This beacon was newly deployed to this location. It has not yet been read out.",
+        "no_beacon_found": "No beacon found"
+      },
+      "transfer": {
+        "success": "Beacon data successfully transferred!",
+        "failed": "Failed to get beacon data for this tree!",
+        "message": {
+          "title": "Thank you!",
+          "text": "You helped transfer {{amount}} datasets just now!"
+        }
+      },
+      "data": {
+        "error": "Could not load this beacons' data",
+        "missing": "Select a different timespan to display data",
+        "datapoints": "datasets",
+        "mode": {
+          "24h": "Last 24 hours",
+          "week": "Last week",
+          "temp_month_per_day": "Last month by day (temperature)",
+          "humidity_month_per_day": "Last month by day (humidity)"
+        },
+        "all_time": {
+          "control_label": "All time",
+          "info_popover": "Data below might be interpolated if too much data would be shown otherwise."
+        }
+      },
+      "chart": {
+        "xAxisLabel": "Time"
+      }
+    },
+    "audioimg": {
+      "stop": "Stop audio",
+      "play": "Play audio",
+      "vol_0": "Increase Volume (Current setting: muted)",
+      "vol_1": "Increase Volume (Current setting: quiet)",
+      "vol_2": "Increase Volume (Current setting: medium)",
+      "vol_3": "Mute Audio (Current setting: loud)",
+      "help": {
+        "controls": "Click to show controls"
+      },
+      "incompatible": "Your browser unfortunately does not support this audio format."
+    },
+    "admin": {
+      "title": "Admin-Tools",
+      "desc": "Shortcuts to the admin console",
+      "edit_link": "Edit tree"
+    }
+	},
+	"general": {
+		"retry": "Retry",
+		"error": "Error",
+		"imprint": "Imprint",
+    "input_annotation": "Search results update automatically while typing."
+	},
+  "map": {
+    "error_default_text": "Could not load map data. Please try again.",
+    "activator": "Click to use map",
+    "activator_touch": "Tap to use map",
+    "tree_assoc": "associated with tree"
+  },
+  "settings": {
+    "language": {
+      "title": "Language",
+      "desc":  "Choose which language to use for the entire site."
+    },
+    "one_time_token": {
+      "title": "Your Permissions PIN",
+      "desc": "This PIN can be entered on other people's accounts, so they get access to sharing phenology observations with you.",
+      "info": "Can only be used once and becomes invalid when entered incorrectly.",
+      "refresh": "Get a new permissions PIN"
+    },
+    "account": {
+      "title": "Manage Account",
+      "desc":  "You are logged in as {{username}}.",
+      "desc_2":  "Change your username or password here.",
+      "change_username":  "Change username",
+      "change_password":  "Change password"
+    },
+    "support": {
+      "title": "Request Support",
+      "desc":  "Request help from - or report problems to - the project team.",
+      "link":  "Request support"
+    },
+    "delete_account": {
+      "title": "Delete Account",
+      "desc": "If you want to delete your account once and for all, you can do that here.",
+      "warning": "This action can't be undone.",
+      "btn": "Delete Account",
+      "popover_title": "Delete Account?",
+      "popover_desc": "Deletion can't be undone.",
+      "popover_btn": "Delete account now",
+      "popover_btn_progress": "Deleting account",
+      "popover_btn_success": "Deleted successfully",
+      "popover_btn_failed": "Could not delete account"
+    },
+    "langs": {
+      "en-GB": "English",
+      "de-DE": "Deutsch"
+    }
+  },
+  "missing": {
+    "title": "Page not found",
+    "desc": "It seems you have been linked to a non-existent page. Use the links above to navigate."
+  },
+  "measurements": {
+    "no_beacon_found": "No beacon found.",
+    "temperature": {
+      "title": "Recorded Temperatures",
+      "error": "Could not load temperature data",
+      "max_temp": "Maximum Temperature",
+      "avg_temp": "Average Temperature",
+      "min_temp": "Minimum Temperature"
+    },
+    "humidity": {
+      "title": "Recorded Humidity",
+      "error": "Could not load humidity data",
+      "max_humi": "Maximum Humidity",
+      "avg_humi": "Average Humidity",
+      "min_humi": "Minimum Humidity"
+    },
+    "beacons": {
+      "title": "Beacon Data",
+      "desc": "Find single beacons and their data here.",
+      "error": "Could not load beacons",
+      "help": "Want to help collect data?",
+      "help_link": "Find out how to help",
+      "search_placeholder": "Enter beacon name..."
+    }
+  },
+  "statistics": {
+    "beaconreadouts": {
+      "title": "Beacon Readouts",
+      "desc": "Here you can see how often project participants read out our Bluetooth-Beacons every day. Every one of these readouts helps us a tremendous amount and is hugely appreciated!",
+      "error": "Could not load system statistics",
+      "help_link": "How can I help?",
+      "readouts_today": "Readouts today"
+    },
+    "phenologyobs": {
+      "title": "Phenology Observations",
+      "desc": "Here you can see how often project participants conducted a phenology observation. Every one of these observations takes about 10 minutes and helps us a lot!",
+      "error": "Could not load system statistics",
+      "help_link": "How can I help?",
+      "obs_today": "Observations today"
+    },
+    "data": {
+      "title": "What data is collected?",
+      "desc": "The following things are currently registered with our system.",
+      "error": "Could not load system statistics",
+      "cities": "Cities with trees",
+      "tree_species": "Tree Species",
+      "trees": "Trees",
+      "beacons": "Deployed beacons",
+      "beacon_readouts": "Beacon-Readouts"
+    },
+    "phenology": {
+      "title": "Phenology",
+      "desc": "We regularly observe trees' buds and check whether they are open, half-open or still closed. This gives us very valuable data to compare trees between different locations.",
+      "error": "Could not load system statistics",
+      "obs_trees": "Observed Trees (x buds, etc.)",
+      "obs_obj": "Observed Objects (buds, etc.)"
+    }
+  },
+  "imprint": {
+    "title": "Imprint",
+    "title_disclaimer": "Some of the information below is only available in german",
+    "partners": "Partners",
+    "license": "License",
+    "os_projects": "Open Source Projects",
+    "os_projects_text": "Following is a list of open source projects used to create this website."
+  },
+  "home": {
+    "title": "Welcome to&nbsp;<b>Urban Trees as climate messengers</b>!",
+    "desc": "You can use this site to enter phenology data for trees, read information and statistics about trees and beacons and gain experience points for helping us collect data!",
+    "title_user": "Welcome back to&nbsp;<b>Urban Trees</b>, {{username}}!",
+    "desc_user_1": "We really appreciate any ",
+    "desc_phenobs_link": "Phenology observations",
+    "desc_user_2": " or beacon readouts (using the <a class=\"link\" href=\"https://play.google.com/apps/internaltest/4699755394511268796\" target=\"_blank\">android app</a>). When logged in, you can earn experience points and advance your level by completing one of these activities.",
+    "user_score": {
+      "title": "Your Score",
+      "error": "Could not load your score"
+    },
+    "admin_console": {
+      "title": "Admin Console",
+      "desc": "Admins can add trees, beacons and announcements in the admin console.",
+      "link": "Go to admin console"
+    },
+    "project_intro": {
+      "title": "What we do",
+      "desc": "We monitor lots of trees with Bluetooth-beacons and by hand with the <span class=\"font-italic\">&raquo;Phenology observation&laquo;</span>. They are entered by interested students in three countries around europe.",
+      "error": "Could not load project statistics",
+      "cities": "Cities",
+      "trees": "Trees",
+      "obs": "Observations",
+      "beacons": "Beacons",
+      "beacon_datasets": "Beacon-Datasets",
+      "link": "View detailed statistics"
+    },
+    "more_info": {
+      "title": "More information",
+      "desc": "Find out more about the <span class=\"font-italic\">Urban Trees as climate messengers</span>-Project on our info-website with lots of additional project details.",
+      "link": "Visit now"
+    },
+    "csa_intro": "Participate now! You can now also enter phenology observations for your own trees as a group, school class or by yourself.",
+    "csa_intro_ref": "More information",
+    "csa": "Conduct your own phenology observation for your trees now!",
+    "csa_ref": "Create phenology observation"
+  },
+  "user_overview": {
+    "xp": "XP",
+    "level": "Level",
+    "desc_level_5+": "Wow, you've already earned {{xp}} XP!<br/>Great job! Thank you for helping us collect all this information.",
+    "desc_level_1-5": "You've earned {{xp}} XP!<br/>Thank you so much for helping us collect more data!",
+    "desc_level_0": "You have not yet earned any XP!<br/>Consider contributing and earning XP by reading out beacons and submitting phenology observations.",
+    "view_details": "View details",
+    "details": {
+      "title": "Score details",
+      "desc_level": "You are level {{level}} of {{maxlevel}}.",
+      "desc_new_level": "You have just reached level {{level}}!",
+      "desc_xp_needed": "{{nextLevelRemainingXp}} XP more needed for level {{nextLevel}}.",
+      "contributions": "Your latest contributions:"
+    }
+  },
+  "phen_obs": {
+    "title": "Phenology Observation",
+    "desc": "Enter a new phenology observation here. The five steps below can be completed in less than 5 minutes and give us valuable data about the selected tree.",
+    "finish_prev_steps_first": "Finish previous steps first.",
+    "error": "Could not load phenology observation.",
+    "step": "Step",
+    "step_1": {
+      "title": "Which tree do you observe?",
+      "loading": "Loading trees...",
+      "error": "Could not load trees",
+      "select_map": "Select on map",
+      "select_list": "or select in list"
+    },
+    "step_2": {
+      "title": "When?",
+      "obs_now": "Observing right now",
+      "obs_past": "Observation was done in the past"
+    },
+    "step_3": {
+      "title": "Observe the selected tree",
+      "no_obs_assoc": "No observations are associated with the selected tree",
+      "loading": "Loading observations...",
+      "obs_type_optional": "Optional",
+      "reset": "Reset",
+      "undo": "Undo last",
+      "undo_info_cursor": "You can also undo by right-clicking.",
+      "undo_info_touch": "You can also undo by long-pressing.",
+      "no_result_img": "No image available.",
+      "type": {
+        "Bud": {
+          "desc": "Select {{type.objects.length}} random {{type_name_plural_lc}} from your tree. For each {{type_name_lc}}, click the image that most closely resembles it once.",
+          "name": "bud",
+          "name_plural": "buds",
+          "result": {
+            "Closed bud": "Closed Bud",
+            "Half-open bud": "Half-open bud",
+            "Open bud": "Open bud",
+            "plural": {
+              "Closed bud": "Closed buds",
+              "Half-open bud": "Half-open buds",
+              "Open bud": "Open buds"
+            }
+          }
+        },
+        "Leaf": {
+          "desc": "Check whether your observed tree is <ol class=\"my-1\"><li>completely green</li><li>or started colouring and/or is losing the first leaves</li><li>or is 50% coloured and/or has 50% lost leaves</li><li>or is completely coloured or has no leaves</li></ol>Click the image that fits the coloring of the tree.",
+          "name": "leaf",
+          "name_plural": "leaves",
+          "result": {
+            "All green": "All green",
+            "Green and partly coloured": "Partly coloured or lost",
+            "At least half coloured or lost": "At least half coloured or lost",
+            "All coloured or lost": "All coloured or lost",
+            "plural": {
+              "All green": "All green",
+              "Green and partly coloured": "Partly coloured or lost",
+              "At least half coloured or lost": "At least half coloured or lost",
+              "All coloured or lost": "All coloured or lost"
+            }
+          }
+        }
+      }
+    },
+    "step_4": {
+      "title": "Upload a picture",
+      "desc": "You may optionally upload an image of the observed tree.",
+      "remove_image": "Remove image"
+    },
+    "step_5": {
+      "title": "Who observed?",
+      "alone": "You are observing alone",
+      "together": "You are observing together with",
+      "add_more": "Add more users",
+      "manual": "Enter all people involved with this observation.",
+      "manual_placeholder": "All names"
+    },
+    "send": {
+      "title": "Send",
+      "desc": "Once the above information has been sent, it can't be changed anymore. Please make sure it's correct before you send it. If you press discard, the form will be reset and you may start over.",
+      "reward": "Reward",
+      "reward_text": "Once you send this observation, you will receive <b>{{xp}} XP</b>.",
+      "reward_text_multiple_users": "Once you send this observation, every user will receive <b>{{xp}} XP</b>.",
+      "discard": "Discard",
+      "send": "Send Observation",
+      "in_progress": "Sending observation...",
+      "in_progress_img": "Uploading your observation image...",
+      "error": "Failed to send observation",
+      "error_duplicate": "There is already an observation at given time",
+      "error_img": "Failed to upload image",
+      "success_img": "Successfully sent observation and image",
+      "success": "Successfully sent observation"
+    }
+  },
+  "user_permissions": {
+    "list_title": "Users that already granted permission",
+    "list_desc": "These users have already given you permission to {{permission}} with them. Select one or ask someone new to give you permission.",
+    "title": "Give user {{username}} permission to",
+    "desc": "Let the other person enter their information below to",
+    "ppin_info_1": "You can find your Permissions PIN on the",
+    "ppin_info_2": "settings page",
+    "loading": "Loading",
+    "error": "Could not load users granting permission",
+    "request": "Give permission",
+    "requesting": "Validating",
+    "request_same_account": "You may not request permission for yourself.",
+    "request_error": "Username or password is wrong",
+    "request_link": "Ask someone new",
+    "list_link": "Back to list",
+    "user_selected": "Selected",
+    "user_deselected": "Deselected",
+    "username_placeholder": "Username",
+    "password_placeholder": "Permissions PIN",
+    "summary": {
+      "access": "{{username}} gets access to",
+      "permissions": "{{username}} gets permission to"
+    },
+    "permissions": {
+      "PHENOLOGY_OBSERVATION": {
+        "title": "share phenology observations",
+        "summary_access": "<ul><li>Your User ID</li><li>Your Username</li></ul>",
+        "summary_permissions": "<ul><li>Add you to their phenology observation</li><li>Share their phenology observation score with you</li></ul>"
+      }
+    }
+  },
+  "beacon_select": {
+    "none_found": "No beacons stored yet."
+  },
+  "report": {
+    "title": "What kind of problem do you need help with?",
+    "technical_problem": {
+      "link": "Technical problem",
+      "desc": "This includes problems with beacon readout issues, the android app and the website."
+    },
+    "other_problem": {
+      "link": "Other problem",
+      "desc": "This includes problems regarding how phenology observation is done, how manual beacon readout is done etc."
+    },
+    "report": {
+      "title": "Report technical issue",
+      "desc": "Enter your question or issue below.",
+      "discard_link": "Discard",
+      "send_link": "Send report",
+      "sending": "Sending report...",
+      "error": "Could not send report",
+      "success": "Successfully sent report"
+    },
+    "user_reports": {
+      "title": "Your reports",
+      "error": "Could no load your reports",
+      "desc": "Below you can see all your reports for technical issues, comments by the team and their resolution.",
+      "desc_annotation": "Resolved issues are only shown when they were active less than 3 months ago.",
+      "empty": "You have no reports",
+      "report": {
+        "title": "Report",
+        "resolved": "Resolved",
+        "inprogress": "In progress"
+      }
+    }
+  },
+  "beacon_list": {
+    "empty": "No beacons found",
+    "show_all": "Show all"
+  },
+  "notifications": {
+    "auth_timeout": {
+      "title": "Your access for this site has expired!",
+      "subtitle": "Log in here again before taking any other actions to avoid losing your progress.",
+      "success_title": "Login renewed!"
+    },
+    "level_up": {
+      "title": "Levelled up!",
+      "subtitle": "You are now level {{level}}"
+    }
+  },
+  "zoom": {
+    "close": "Close"
+  }
+}

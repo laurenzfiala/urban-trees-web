@@ -2,7 +2,7 @@ import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {UserService} from '../../services/user.service';
 import {UserAchievements} from '../../entities/user-achievement.entity';
 import {AbstractComponent} from '../abstract.component';
-import {AuthService} from '../../services/auth.service';
+import {AuthService} from '../../../shared/services/auth.service';
 import {UserRewardService} from '../../services/user-reward.service';
 
 @Component({

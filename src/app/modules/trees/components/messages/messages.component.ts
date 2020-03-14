@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import {Report} from '../../entities/report.entity';
 import {MessagesService} from '../../services/messages.service';
-import {AuthService} from '../../services/auth.service';
+import {AuthService} from '../../../shared/services/auth.service';
 import {AbstractComponent} from '../abstract.component';
 import {ReportFrontend} from '../../entities/report-frontend.entity';
 import {UserService} from '../../services/user.service';
 import {EventSeverity} from '../../entities/event.entity';
-import {EnvironmentService} from '../../services/environment.service';
+import {EnvironmentService} from '../../../shared/services/environment.service';
 import * as moment from 'moment';
 
 @Component({

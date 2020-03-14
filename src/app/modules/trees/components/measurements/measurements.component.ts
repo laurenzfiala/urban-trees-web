@@ -5,7 +5,7 @@ import {UIService} from '../../services/ui.service';
 import {BeaconFrontend} from '../../entities/beacon-frontend.entity';
 import {BeaconStatus} from '../../entities/beacon-status.entity';
 import {BeaconService} from '../../services/beacon.service';
-import {EnvironmentService} from '../../services/environment.service';
+import {EnvironmentService} from '../../../shared/services/environment.service';
 import {SearchService} from '../../services/search.service';
 
 @Component({

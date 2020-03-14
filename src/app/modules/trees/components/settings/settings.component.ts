@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
-import {EnvironmentService} from '../../services/environment.service';
+import {EnvironmentService} from '../../../shared/services/environment.service';
 import {User} from '../../entities/user.entity';
 import {AbstractComponent} from '../abstract.component';
 import {HttpErrorResponse} from '@angular/common/http';
-import {ApiError} from '../../entities/api-error.entity';
+import {ApiError} from '../../../shared/entities/api-error.entity';
 import {UserService} from '../../services/user.service';
-import {AuthService} from '../../services/auth.service';
+import {AuthService} from '../../../shared/services/auth.service';
 
 @Component({
   selector: 'ut-settings',

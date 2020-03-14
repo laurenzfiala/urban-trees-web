@@ -11,8 +11,8 @@ import {PhenologyDatasetFrontend} from '../../../entities/phenology-dataset-fron
 import {PhenologyObservationTypeFrontend} from '../../../entities/phenology-observation-type-frontend.entity';
 import {PhenologyObservationResult} from '../../../entities/phenology-observation-result.entity';
 import {PhenologyObservation} from '../../../entities/phenology-observation.entity';
-import {EnvironmentService} from '../../../services/environment.service';
-import {AuthService} from '../../../services/auth.service';
+import {EnvironmentService} from '../../../../shared/services/environment.service';
+import {AuthService} from '../../../../shared/services/auth.service';
 import {PhenologyObservationObject} from '../../../entities/phenology-observation-object.entity';
 import {UserIdentity} from '../../../entities/user-identity.entity';
 import {UserRewardService} from '../../../services/user-reward.service';

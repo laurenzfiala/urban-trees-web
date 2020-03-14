@@ -3,7 +3,7 @@ import {Log} from '../../services/log.service';
 import OlMap from 'ol/map';
 import OlView from 'ol/view';
 import VectorLayer from 'ol/layer/vector';
-import {EnvironmentService} from '../../services/environment.service';
+import {EnvironmentService} from '../../../shared/services/environment.service';
 import VectorTile from 'ol/layer/vectortile';
 import VectorTileSource from 'ol/source/vectortile';
 import MVT from 'ol/format/mvt';

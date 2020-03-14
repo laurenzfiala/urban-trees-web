@@ -1,19 +1,19 @@
 import {Injectable} from '@angular/core';
-import {Log} from './log.service';
+import {Log} from '../../trees/services/log.service';
 import {EnvironmentService} from './environment.service';
 import {HttpClient, HttpErrorResponse, HttpResponse} from '@angular/common/http';
 import {AbstractService} from './abstract.service';
-import {Login} from '../entities/login.entity';
+import {Login} from '../../trees/entities/login.entity';
 import {ApiError} from '../entities/api-error.entity';
 import {JwtHelperService} from '@auth0/angular-jwt';
-import {ActivatedRouteSnapshot, Router} from '@angular/router';
-import {LoginAccessReason} from '../components/project-login/logout-reason.enum';
-import {LoginStatus} from '../components/project-login/login-status.enum';
-import {JWTToken} from '../entities/jwt-token.entity';
-import {PasswordReset} from '../entities/password-reset.entity';
+import {Router} from '@angular/router';
+import {LoginAccessReason} from '../../trees/components/project-login/logout-reason.enum';
+import {LoginStatus} from '../../trees/components/project-login/login-status.enum';
+import {JWTToken} from '../../trees/entities/jwt-token.entity';
+import {PasswordReset} from '../../trees/entities/password-reset.entity';
 import {Observable, Subject} from 'rxjs';
-import {UserIdentity} from '../entities/user-identity.entity';
-import {UserPermissionRequest} from '../entities/user-permission-request.entity';
+import {UserIdentity} from '../../trees/entities/user-identity.entity';
+import {UserPermissionRequest} from '../../trees/entities/user-permission-request.entity';
 
 /**
  * Service for user authentication functionality.

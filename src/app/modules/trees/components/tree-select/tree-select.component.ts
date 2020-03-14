@@ -2,7 +2,7 @@ import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angula
 import {AbstractComponent} from '../abstract.component';
 import {Log} from '../../services/log.service';
 import {TreeFrontend} from '../../entities/tree-frontend.entity';
-import {EnvironmentService} from '../../services/environment.service';
+import {EnvironmentService} from '../../../shared/services/environment.service';
 import {SearchService} from '../../services/search.service';
 import {BreakpointObserver, BreakpointState} from '@angular/cdk/layout';
 import {SubscriptionManagerService} from '../../services/subscription-manager.service';

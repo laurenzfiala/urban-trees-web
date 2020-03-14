@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {Log} from '../../services/log.service';
-import {AuthService} from '../../services/auth.service';
+import {AuthService} from '../../../shared/services/auth.service';
 import {AbstractComponent} from '../abstract.component';
-import {EnvironmentService} from '../../services/environment.service';
+import {EnvironmentService} from '../../../shared/services/environment.service';
 
 @Component({
   selector: 'ut-project-username-change',

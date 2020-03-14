@@ -13,6 +13,8 @@ import {LayoutModule} from '@angular/cdk/layout';
 import {VERSION} from '../environments/version';
 import {LandingPageComponent} from './components/landing-page/landing-page.component';
 import {SharedModule} from './modules/shared/shared.module';
+import {AuthService} from './modules/shared/services/auth.service';
+import {EnvironmentService} from './modules/shared/services/environment.service';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, '/translations/', '.json?version=' + VERSION.version);
@@ -42,6 +44,11 @@ export function HttpLoaderFactory(http: HttpClient) {
         deps: [HttpClient]
       }
     })
+  ],
+  providers: [
+    // Services
+    AuthService,
+    EnvironmentService
   ],
   exports: [
     TranslateModule

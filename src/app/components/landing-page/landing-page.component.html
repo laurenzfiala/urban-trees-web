@@ -10,15 +10,14 @@
         </div>
         <div class="header-links">
           <a class="lp-link" routerLink="/home">Webapp</a>
-          <a class="lp-link" routerLink="/login">Login</a>
+          <a *noauth class="lp-link" routerLink="/login">Login</a>
+          <a *auth class="lp-link" routerLink="/project/phenology">Phenology</a>
         </div>
       </div>
 
       <div class="flex-grow-1 d-flex flex-column align-items-center justify-content-center">
 
-        <div class="title">
-          Der Baum als <span class="title-highlight">natürlicher</span> Klimaregulator
-        </div>
+        <div class="title" [innerHTML]="'title' | translate"></div>
 
       </div>
 
@@ -28,7 +27,7 @@
                class="intro-module"
                role="button"
                [ngClass]="{'active': module.isShown}"
-               (action)="showSlide(module)">
+               (action)="showSlide(module, true)">
             {{module.title}}
           </div>
         </div>
@@ -47,7 +46,7 @@
              [ngClass]="{'active': slide.isShown}"
              role="button"
              tabindex="0"
-             (action)="showSlide(slide)">
+             (action)="showSlide(slide, true)">
           {{slide.tabText}}
         </div>
       </div>

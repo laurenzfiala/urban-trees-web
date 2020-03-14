@@ -8,7 +8,7 @@ import {
   UrlTree
 } from '@angular/router';
 import {Log} from '../../services/log.service';
-import {AuthService} from '../../services/auth.service';
+import {AuthService} from '../../../shared/services/auth.service';
 import {Observable} from 'rxjs/observable';
 import {LoginAccessReason} from './logout-reason.enum';
 

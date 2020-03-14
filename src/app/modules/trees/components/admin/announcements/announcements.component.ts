@@ -5,7 +5,7 @@ import {AbstractComponent} from '../../abstract.component';
 import {BsModalRef} from 'ngx-bootstrap/modal';
 import {BsModalService} from 'ngx-bootstrap/modal';
 import {HttpErrorResponse} from '@angular/common/http';
-import {ApiError} from '../../../entities/api-error.entity';
+import {ApiError} from '../../../../shared/entities/api-error.entity';
 import {AdminService} from '../../../services/admin/admin.service';
 import * as moment from 'moment';
 

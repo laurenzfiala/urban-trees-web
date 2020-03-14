@@ -1,14 +1,14 @@
 import {Injectable, OnDestroy} from '@angular/core';
 import {Log} from './log.service';
-import {EnvironmentService} from './environment.service';
+import {EnvironmentService} from '../../shared/services/environment.service';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
-import {AbstractService} from './abstract.service';
-import {ApiError} from '../entities/api-error.entity';
+import {AbstractService} from '../../shared/services/abstract.service';
+import {ApiError} from '../../shared/entities/api-error.entity';
 import {UserAchievements} from '../entities/user-achievement.entity';
 import {UserData} from '../entities/user-data.entity';
 import {interval} from 'rxjs';
 import {SubscriptionManagerService} from './subscription-manager.service';
-import {AuthService} from './auth.service';
+import {AuthService} from '../../shared/services/auth.service';
 import {Report} from '../entities/report.entity';
 
 /**

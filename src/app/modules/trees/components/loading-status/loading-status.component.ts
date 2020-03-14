@@ -8,7 +8,7 @@ import {
   Output
 } from '@angular/core';
 import {AbstractComponent} from '../abstract.component';
-import {ApiError} from '../../entities/api-error.entity';
+import {ApiError} from '../../../shared/entities/api-error.entity';
 import {Observable} from 'rxjs';
 import {SubscriptionManagerService} from '../../services/subscription-manager.service';
 

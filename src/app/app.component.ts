@@ -17,7 +17,6 @@ export class AppComponent implements OnInit {
    */
   public static APP_NAME = 'Urban Trees';
 
-  // TODO rework this
   constructor(private translate: TranslateService,
               private router: Router) {
 
@@ -25,7 +24,6 @@ export class AppComponent implements OnInit {
     translate.setDefaultLang('en-GB');
 
     let userLang = window.navigator.language;
-
 
     let guessed;
     for (let lang of translate.getLangs()) {

@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {environment} from '../../../../environments/environment';
-import {BeaconLogSeverity} from '../entities/BeaconLogSeverity';
+import {BeaconLogSeverity} from '../../trees/entities/BeaconLogSeverity';
 
 /**
  * This service should be used to access all environment configurations, since
