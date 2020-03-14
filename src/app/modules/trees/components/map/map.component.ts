@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {Log} from '../../services/log.service';
+import {Log} from '../../../shared/services/log.service';
 import OlMap from 'ol/map';
 import OlView from 'ol/view';
 import VectorLayer from 'ol/layer/vector';

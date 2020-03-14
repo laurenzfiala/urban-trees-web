@@ -15,6 +15,7 @@ import {LandingPageComponent} from './components/landing-page/landing-page.compo
 import {SharedModule} from './modules/shared/shared.module';
 import {AuthService} from './modules/shared/services/auth.service';
 import {EnvironmentService} from './modules/shared/services/environment.service';
+import {TranslateInitService} from './modules/shared/services/translate-init.service';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, '/translations/', '.json?version=' + VERSION.version);
@@ -48,7 +49,8 @@ export function HttpLoaderFactory(http: HttpClient) {
   providers: [
     // Services
     AuthService,
-    EnvironmentService
+    EnvironmentService,
+    TranslateInitService
   ],
   exports: [
     TranslateModule

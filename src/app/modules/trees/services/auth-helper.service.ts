@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Log} from './log.service';
+import {Log} from '../../shared/services/log.service';
 import {EnvironmentService} from '../../shared/services/environment.service';
 import {AbstractService} from '../../shared/services/abstract.service';
 import {AuthService} from '../../shared/services/auth.service';

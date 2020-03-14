@@ -4,7 +4,7 @@ import {Observable} from 'rxjs/observable';
 import {_throw} from 'rxjs/observable/throw';
 import 'rxjs/add/operator/catch';
 import {Router, RouterStateSnapshot} from '@angular/router';
-import {Log} from '../services/log.service';
+import {Log} from '../../shared/services/log.service';
 import {AuthService} from '../../shared/services/auth.service';
 import {LoginAccessReason} from '../components/project-login/logout-reason.enum';
 import {EnvironmentService} from '../../shared/services/environment.service';

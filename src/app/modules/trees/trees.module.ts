@@ -80,6 +80,7 @@ import {SharedModule} from '../shared/shared.module';
 import {AuthService} from '../shared/services/auth.service';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {VERSION} from '../../../environments/version';
+import {TranslateInitService} from '../shared/services/translate-init.service';
 
 export function HttpLoaderFactory2(http: HttpClient) {
   return new TranslateHttpLoader(http, '/translations/trees/', '.json?version=' + VERSION.version);
@@ -185,6 +186,7 @@ export function HttpLoaderFactory2(http: HttpClient) {
     NotificationsService,
     AuthHelperService,
     UserRewardService,
+    TranslateInitService,
 
     // Guards
     ProjectLoginGuard,

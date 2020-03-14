@@ -3,7 +3,7 @@ import {PhenologyDatasetFrontend} from '../../../entities/phenology-dataset-fron
 import {Image} from '../../../entities/image.entity';
 import {AbstractService} from '../../../../shared/services/abstract.service';
 import {EnvironmentService} from '../../../../shared/services/environment.service';
-import {Log} from '../../log.service';
+import {Log} from '../../../../shared/services/log.service';
 import {PhenologyObservationTypeFrontend} from '../../../entities/phenology-observation-type-frontend.entity';
 import {ActivatedRoute, Router} from '@angular/router';
 import 'rxjs/add/operator/map';

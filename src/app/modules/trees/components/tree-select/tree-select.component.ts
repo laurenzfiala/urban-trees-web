@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {AbstractComponent} from '../abstract.component';
-import {Log} from '../../services/log.service';
+import {Log} from '../../../shared/services/log.service';
 import {TreeFrontend} from '../../entities/tree-frontend.entity';
 import {EnvironmentService} from '../../../shared/services/environment.service';
 import {SearchService} from '../../services/search.service';

@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {AbstractService} from '../../../shared/services/abstract.service';
-import {Log} from '../log.service';
+import {Log} from '../../../shared/services/log.service';
 import {EnvironmentService} from '../../../shared/services/environment.service';
 import {Tree} from '../../entities/tree.entity';
 import {ApiError} from '../../../shared/entities/api-error.entity';

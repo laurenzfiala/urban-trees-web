@@ -1,5 +1,5 @@
 import {Injectable, OnDestroy, OnInit} from '@angular/core';
-import {Log} from './log.service';
+import {Log} from '../../shared/services/log.service';
 import {EnvironmentService} from '../../shared/services/environment.service';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {AbstractService} from '../../shared/services/abstract.service';

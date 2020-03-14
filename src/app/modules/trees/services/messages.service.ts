@@ -2,7 +2,7 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {AbstractService} from '../../shared/services/abstract.service';
 import {EnvironmentService} from '../../shared/services/environment.service';
-import {Log} from './log.service';
+import {Log} from '../../shared/services/log.service';
 import 'rxjs/add/operator/map';
 import {ApiError} from '../../shared/entities/api-error.entity';
 import {Report} from '../entities/report.entity';

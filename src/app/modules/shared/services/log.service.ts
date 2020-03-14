@@ -1,7 +1,7 @@
 import {Type} from '@angular/core';
 import * as moment from 'moment';
 import {environment} from '../../../../environments/environment';
-import {LogLevel} from '../entities/log-level.entity';
+import {LogLevel} from '../../trees/entities/log-level.entity';
 
 /**
  * Logging class to be created by all components

@@ -4,7 +4,7 @@ import {Tree} from '../entities/tree.entity';
 import {ApiError} from '../../shared/entities/api-error.entity';
 import {EnvironmentService} from '../../shared/services/environment.service';
 import {AbstractService} from '../../shared/services/abstract.service';
-import {Log} from './log.service';
+import {Log} from '../../shared/services/log.service';
 import {BeaconData} from '../entities/beacon-data.entity';
 import * as moment from 'moment';
 import {City} from '../entities/city.entity';

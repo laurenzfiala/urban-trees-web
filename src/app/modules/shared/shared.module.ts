@@ -21,7 +21,7 @@ import {LangDirective} from './directives/lang.directive';
     NoAuthDirective,
     CheckDirective,
     ValueaccessorDirective,
-    LangDirective,
+    LangDirective
   ],
   imports: [
     CommonModule
@@ -35,7 +35,7 @@ import {LangDirective} from './directives/lang.directive';
     NoAuthDirective,
     CheckDirective,
     ValueaccessorDirective,
-    LangDirective,
+    LangDirective
   ]
 })
 export class SharedModule { }

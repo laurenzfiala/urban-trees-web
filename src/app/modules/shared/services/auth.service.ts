@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Log} from '../../trees/services/log.service';
+import {Log} from './log.service';
 import {EnvironmentService} from './environment.service';
 import {HttpClient, HttpErrorResponse, HttpResponse} from '@angular/common/http';
 import {AbstractService} from './abstract.service';

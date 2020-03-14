@@ -1,14 +1,14 @@
 {
-	"app": {
-		"title": "Urban Trees",
-		"subtitle": "as climate messengers",
+  "app": {
+    "title": "Urban Trees",
+    "subtitle": "as climate messengers",
     "date_format": "YYYY/MM/DD HH:mm",
     "date_format_angular": "yyyy/MM/dd HH:mm",
     "date_format_short": "MM/DD HH:mm",
     "date_format_day_full": "YYYY/MM/DD",
     "date_format_day": "MM/DD",
     "date_format_time": "HH:mm"
-	},
+  },
   "announcements": {
     "close": "Close announcement"
   },

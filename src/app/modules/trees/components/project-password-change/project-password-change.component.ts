@@ -2,7 +2,7 @@ import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
 import {PasswordReset} from '../../entities/password-reset.entity';
 import {AbstractComponent} from '../abstract.component';
 import {AuthService} from '../../../shared/services/auth.service';
-import {Log} from '../../services/log.service';
+import {Log} from '../../../shared/services/log.service';
 import {EnvironmentService} from '../../../shared/services/environment.service';
 import {LoginStatus} from '../project-login/login-status.enum';
 

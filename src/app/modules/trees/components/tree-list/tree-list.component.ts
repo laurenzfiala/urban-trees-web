@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {AbstractComponent} from '../abstract.component';
 import {Tree} from '../../entities/tree.entity';
 import {TreeFrontend} from '../../entities/tree-frontend.entity';
-import {Log} from '../../services/log.service';
+import {Log} from '../../../shared/services/log.service';
 import {TreeService} from '../../services/tree.service';
 import {TranslateService} from '@ngx-translate/core';
 import {City} from '../../entities/city.entity';
