@@ -1,0 +1,159 @@
+@import (reference) "../../../../../theme/variables";
+
+.transfer-status {
+  margin-top: -1.25rem;
+  padding: 2.25rem 1rem 1rem 1rem;
+  font-weight: bold;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  line-height: 1rem;
+
+  &.success {
+    background-color: @successBg;
+  }
+  &.warning {
+    background-color: @warningBg;
+  }
+  &.danger {
+    background-color: @dangerBg;
+  }
+
+  img {
+    height: 2.75rem;
+    margin-right: 0.5rem;
+  }
+
+  .note {
+    font-weight: normal;
+    font-size: 0.75rem;
+    color: @darkerGrey;
+  }
+}
+
+.image-placeholder {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  height: 16rem;
+  background-color: @medLightBgColor;
+  border-radius: @borderRadiusOuterNew;
+}
+
+.beacon-id {
+  display: inline-block;
+  padding: @statusPadding;
+  color: @statusBg;
+  font-weight: bold;
+}
+
+.beacon-description {
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+
+  height: 100%;
+  padding: @statusPadding;
+  border-radius: @borderRadiusNew;
+}
+
+.beacon-status {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+
+  display: flex;
+  height: 100%;
+  flex-direction: column;
+  justify-content: center;
+
+  padding: @statusPadding;
+  background-color: @bgColor;
+  border-radius: @borderRadiusNew;
+
+  &.bg-success,
+  &.bg-danger {
+    color: @white;
+  }
+}
+
+.transfer-message {
+  background-color: @successBg;
+  padding: 0.5rem 1rem;
+  margin-bottom: 1.5rem;
+  font-size: @fontSizeLarge;
+  color: darken(@successDark, 10%);
+  border-radius: @borderRadiusNew;
+  position: relative;
+  display: inline-block;
+
+  &:after {
+    content: "";
+    position: absolute;
+    left: calc(50% - 1rem);
+    bottom: -1rem;
+    border-top: solid @successBg 1rem;
+    border-left: solid transparent 1rem;
+    border-right: solid transparent 1rem;
+  }
+
+  > span {
+    font-size: @fontSizeBase;
+  }
+}
+
+.uc-container {
+  position: relative;
+  z-index: @ucZIndex;
+  padding: @gutter;
+
+  &.active {
+    background-color: @infoBg;
+  }
+
+  .uc-active-info,
+  .uc-info {
+    padding: @gutter 0;
+    background-color: @infoBg;
+    color: @infoDark;
+  }
+}
+
+.uc-toolbar-spacer {
+  height: 8rem;
+}
+
+.uc-toolbar {
+  position: absolute;
+  left: @gutter;
+  right: @gutter;
+  top: 0;
+
+  background-color: @medLightBgColor;
+
+  .uc-btn {
+    padding: (@gutter/2);
+    margin-right: @gutter;
+    width: 70px;
+
+    border: @linkBorder;
+    user-select: none;
+
+    .uc-btn-label {
+      font-size: @fontSizeSmall;
+      text-align: center;
+    }
+  }
+}
+
+.uc-new-section {
+  border: dashed @borderColor 3px;
+  padding: @gutter2x;
+  text-align: center;
+  color: @subtleTextColor;
+  font-size: @fontSizeMedium;
+  user-select: none;
+}
+

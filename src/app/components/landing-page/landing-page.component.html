@@ -1,0 +1,156 @@
+<div class="lp-root d-flex flex-column min-vh-100">
+
+  <div id="content" class="flex-grow-1">
+
+    <div class="intro-screen-container">
+
+      <div class="header">
+        <div>
+          <img class="header-icon" src="/assets/img/urbantrees_icon_small.png" />
+        </div>
+        <div class="header-links">
+          <a class="lp-link" routerLink="/home">Webapp</a>
+          <a *noauth class="lp-link" routerLink="/login">Login</a>
+          <a *auth class="lp-link" routerLink="/project/phenology">Phenology</a>
+        </div>
+      </div>
+
+      <div class="flex-grow-1 d-flex flex-column align-items-center justify-content-center">
+
+        <div class="title" [innerHTML]="'title' | translate"></div>
+
+      </div>
+
+      <div class="intro-modules-bar-wrapper">
+        <div class="intro-modules-bar lp-container">
+          <div *ngFor="let module of modules"
+               class="intro-module"
+               role="button"
+               [ngClass]="{'active': module.isShown}"
+               (action)="showSlide(module, true)">
+            {{module.title}}
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div #introModulesContentWrapper
+         class="intro-modules-content-wrapper"
+         (mouseover)="runSlideCycle = false"
+         (mouseout)="runSlideCycle = true">
+
+      <div class="intro-modules-content lp-container">
+        <div *ngFor="let slide of modules"
+             class="intro-module"
+             [ngClass]="{'active': slide.isShown}"
+             role="button"
+             tabindex="0"
+             (action)="showSlide(slide, true)">
+          {{slide.tabText}}
+        </div>
+      </div>
+
+    </div>
+
+    <div class="intro-modules-slideshow-wrapper lp-container mb-3"
+         (mouseover)="runSlideCycle = false"
+         (mouseout)="runSlideCycle = true">
+      <div class="intro-modules-slide invisible position-relative">
+        <img [src]="selectedSlide?.imageUrl" />
+        <div class="intro-modules-slide-description">{{selectedSlide?.imgDesc}}</div>
+      </div>
+      <div *ngFor="let slide of modules"
+           class="intro-modules-slide"
+           [ngClass]="{'show': slide.isShown, 'previously-shown': slide.wasPreviouslyShown}">
+        <img [src]="slide.imageUrl" />
+        <div class="intro-modules-slide-description">{{slide.imgDesc}}</div>
+      </div>
+    </div>
+
+    <div class="lp-container">
+      <section>
+        <img class="content-img float-right" src="/assets/landing-page/bg-main.jpg" />
+        <div class="lp-text-container">
+          <h1><div class="heading-text">What it's about</div></h1>
+          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+        </div>
+      </section>
+      <section>
+        <img class="content-img float-left" src="/assets/landing-page/bg-main.jpg" />
+        <div class="lp-text-container">
+          <h1><div class="heading-text">Data2Sensor</div></h1>
+          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+        </div>
+      </section>
+      <section>
+        <img class="content-img float-right" src="/assets/landing-page/bg-main.jpg" />
+        <div class="lp-text-container">
+          <h1><div class="heading-text">Sensor2App</div></h1>
+          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+        </div>
+      </section>
+      <section>
+        <img class="content-img float-left" src="/assets/landing-page/bg-main.jpg" />
+        <div class="lp-text-container">
+          <h1><div class="heading-text">App2Analyse</div></h1>
+          <p>
+            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+            Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+          </p>
+          <h2>How it works</h2>
+          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+        </div>
+      </section>
+    </div>
+
+  </div>
+
+  <div class="footer">
+    <div class="lp-text-container overflow-hidden">
+
+      <div class="footer-content my--2 mx--4">
+        <div class="my-2 mx-4">
+          &copy; Universität Salzburg {{currentYear()}}
+        </div>
+        <div class="my-2 mx-4">
+          <a class="link" routerLink="/imprint">Imprint</a><br/>
+          <a class="link" href="mailto:test@sbg.ac.at">Ask us a question</a>
+          <div class="mt-2">
+            Made with &#x2764; by the project team &amp; Laurenz Fiala.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

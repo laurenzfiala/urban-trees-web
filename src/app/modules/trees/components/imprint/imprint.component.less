@@ -1,0 +1,51 @@
+@import (reference) "../../../../../theme/theme.less";
+
+img.logo {
+  height: 65px;
+}
+
+.card {
+  //width: 18rem;
+}
+
+.card-img-top {
+  border-top-left-radius: @borderRadiusOuterNew;
+  border-top-right-radius: @borderRadiusOuterNew;
+}
+
+.no-link-style a {
+  text-decoration: none;
+  color: black;
+}
+
+@media (min-width: 34em) {
+  .card-columns {
+    -webkit-column-count: 2;
+    -moz-column-count: 2;
+    column-count: 2;
+  }
+}
+
+@media (min-width: 48em) {
+  .card-columns {
+    -webkit-column-count: 3;
+    -moz-column-count: 3;
+    column-count: 3;
+  }
+}
+
+@media (min-width: 62em) {
+  .card-columns {
+    -webkit-column-count: 4;
+    -moz-column-count: 4;
+    column-count: 4;
+  }
+}
+
+@media (min-width: 75em) {
+  .card-columns {
+    -webkit-column-count: 5;
+    -moz-column-count: 5;
+    column-count: 5;
+  }
+}

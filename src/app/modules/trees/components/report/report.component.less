@@ -1,0 +1,30 @@
+@import (reference) "../../../../../theme/variables";
+
+.disabled {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.reports-container {
+  margin: -@gutter;
+}
+
+.report {
+  background-color: @medLightBgColor;
+  padding: @gutter;
+  margin: @gutter;
+
+  .heading {
+    font-size: @fontSizeMedium;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: -@gutter -@gutter -(@gutter/2) -@gutter;
+    padding: @gutter;
+  }
+  .message {
+    font-style: italic;
+    color: @subtleTextColor;
+    margin-bottom: (@gutter/2);
+  }
+}

@@ -1,0 +1,144 @@
+<div class="content-cat">
+  <div class="container">
+
+    <div *noauth="true" class="mb-2">
+      <h1 class="content-cat-heading d-block" [innerHTML]="'home.title' | translate"></h1>
+      {{'home.desc' | translate}}
+    </div>
+
+    <div *auth="envService.security.rolesUser" class="mb-2">
+      <h1 class="content-cat-heading d-block" [innerHTML]="'home.title_user' | translate:{'username': getUsername()}"></h1>
+      <span [innerHTML]="'home.desc_user_1' | translate"></span>
+      <a class="link" routerLink="/phenology/observation/step">{{'home.desc_phenobs_link' | translate}}</a>
+      <span [innerHTML]="'home.desc_user_2' | translate"></span>
+    </div>
+
+    <!-- CSA -->
+    <ng-container *lang="'de-DE'">
+      <div *noauth class="my-2 alert alert-warning d-block">
+        <b>Citizen Science Award 2020</b>
+        <div>Mache jetzt mit! Ob Schulklasse oder Einzelperson, jede(r) kann Phänologiebeobachtungen für die eigenen Bäume eintragen.</div>
+        <a routerLink="/csa" class="link mt-1">Mehr dazu</a>
+      </div>
+
+      <div *auth class="my-2 alert alert-warning d-block">
+        <b>Citizen Science Award 2020</b>
+        <div>Führe jetzt selbst eine Phänologiebeobachtung bei deinen eingetragegen Bäumen durch!</div>
+        <a routerLink="/phenology" class="link mt-1">Phänologiebeobachtung erstellen</a>
+      </div>
+    </ng-container>
+
+    <div class="btn-img-toolbar">
+      <div class="d-flex flex-wrap">
+        <a class="btn-img trees" routerLink="/trees">
+          <div>
+            <i class="i i-md i-tree mr-2"></i>
+            {{'navigation.links.tree_list' | translate}}
+          </div>
+        </a>
+        <a *auth="[envService.security.rolesPhenObs]" class="btn-img phenology" routerLink="/phenology/observation/step">
+          <div>
+            <i class="i i-md i-leaf mr-2"></i>
+            {{'navigation.links.phen_obs' | translate}}
+          </div>
+        </a>
+        <a class="btn-img measurements" routerLink="/measurements">
+          <div>
+            <i class="i i-md i-beacon mr-2"></i>
+            {{'navigation.links.measurements' | translate}}
+          </div>
+        </a>
+        <a class="btn-img statistics" routerLink="/statistics">
+          <div>
+            <i class="i i-md i-statistics mr-2"></i>
+            {{'navigation.links.statistics' | translate}}
+          </div>
+        </a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<div *auth="[envService.security.rolesUser]"
+     class="content-cat content-cat-user">
+  <div class="container">
+    <h1 class="content-cat-heading mb-2">
+      <i *ngIf="hasStatus(StatusKey.USER_LEVEL_UP, StatusValue.LEVELLED_UP)" class="feature-pointer mr-1"></i>{{'home.user_score.title' | translate}}
+      <ut-loading-status
+        errorDescription="home.user_score.error"
+        [status]="getStatusObservable(StatusKey.USER_OVERVIEW)"
+        [error]="getStatusErrorObservable(StatusKey.USER_OVERVIEW)"></ut-loading-status>
+    </h1>
+    <ut-user-overview (levelUpOutput)="setStatus(StatusKey.USER_LEVEL_UP, StatusValue.LEVELLED_UP)"
+                      (status)="setStatus(StatusKey.USER_OVERVIEW, $event[0], $event[1])"></ut-user-overview>
+  </div>
+</div>
+
+<div *auth="[envService.security.rolesAdmin]"
+     class="content-cat">
+  <div class="container">
+    <h1 class="content-cat-heading">{{'home.admin_console.title' | translate}}</h1>
+    <div class="content-cat-text">
+      {{'home.admin_console.desc' | translate}}
+    </div>
+
+    <a class="content-cat-link" routerLink="/admin">
+      {{'home.admin_console.link' | translate}}
+    </a>
+  </div>
+</div>
+
+<div class="content-cat">
+  <div class="container">
+    <h1 class="content-cat-heading">
+      {{'home.project_intro.title' | translate}}
+      <ut-loading-status
+        errorDescription="home.project_intro.error"
+        [status]="getStatusObservable(StatusKey.STATISTICS)"
+        [error]="getStatusErrorObservable(StatusKey.STATISTICS)"></ut-loading-status>
+    </h1>
+    <div class="content-cat-text" [innerHTML]="'home.project_intro.desc' | translate"></div>
+
+    <div *ngIf="hasStatus(StatusKey.STATISTICS, StatusValue.SUCCESSFUL)"
+         class="content-cat-highlight-bar mt-2">
+      <div class="item">
+        <div class="big">{{statistics.cityAmount}}</div>
+        <div class="desc">{{'home.project_intro.cities' | translate}}</div>
+      </div>
+      <div class="item">
+        <div class="big">{{statistics.treeAmount}}</div>
+        <div class="desc">{{'home.project_intro.trees' | translate}}</div>
+      </div>
+      <div class="item">
+        <div class="big">{{statistics.phenologyObservationAmount}}</div>
+        <div class="desc">{{'home.project_intro.obs' | translate}}</div>
+      </div>
+      <div class="item">
+        <div class="big">{{statistics.beaconAmount}}</div>
+        <div class="desc">{{'home.project_intro.beacons' | translate}}</div>
+      </div>
+      <div class="item">
+        <div class="big">{{statistics.beaconDatasetAmount}}</div>
+        <div class="desc">{{'home.project_intro.beacon_datasets' | translate}}</div>
+      </div>
+    </div>
+
+    <a class="content-cat-link" routerLink="/statistics">
+      {{'home.project_intro.link' | translate}}
+    </a>
+
+  </div>
+</div>
+
+<div class="content-cat">
+  <div class="container">
+    <h1 class="content-cat-heading">{{'home.more_info.title' | translate}}</h1>
+    <div class="content-cat-text" [innerHTML]="'home.more_info.desc' | translate"></div>
+
+    <a class="content-cat-link" href="http://stadt-baum-klima.sbg.ac.at/" target="_blank">
+      {{'home.more_info.link' | translate}}
+    </a>
+
+  </div>
+</div>

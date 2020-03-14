@@ -27,29 +27,23 @@
       margin-left: -40px;
 
       border-radius: 50%;
-      border: solid #E9ECEF 6px;
-      border-top-color: #3395ff;
       width: 80px;
       height: 80px;
-      animation: loading-spin 3s linear infinite;
+      animation: load-start-animation 1s linear infinite;
+
+      background-image: url("/assets/img/urbantrees_icon_xsmall.jpg");
+      background-size: cover;
     }
 
-    @keyframes loading-spin {
+    @keyframes load-start-animation {
       0% {
-        border-top-color: #3395ff;
-      }
-      25% {
-        border-top-color: #009a00;
-      }
-      50% {
-        border-top-color: #3395ff;
+        box-shadow: 0 0 0 0 rgba(94, 198, 108, 0);
       }
       75% {
-        border-top-color: #009a00;
+        box-shadow: 0 0 0 15px rgba(94, 198, 108, 1);
       }
       100% {
-        border-top-color: #3395ff;
-        transform: rotate(1080deg);
+        box-shadow: 0 0 0 35px rgba(86, 178, 96, 0);
       }
     }
 

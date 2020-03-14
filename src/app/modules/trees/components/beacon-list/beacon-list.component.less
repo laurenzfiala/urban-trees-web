@@ -1,0 +1,203 @@
+@import (reference) "../../../../../theme/variables";
+
+.beacon-message {
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+}
+
+.beacon-warning {
+  .beacon-message;
+  color: @warningDark;
+
+  > .i {
+    background-image: url("/assets/img/icon/warning_yellow.svg");
+  }
+}
+
+.beacon-status {
+  margin-left: 0.5rem;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+  width: 1.5rem;
+  height: 1.5rem;
+
+  &.ok {
+    background-image: url("/assets/img/icon/special/check-badge.svg");
+  }
+
+  &.new {
+    background-image: url("/assets/img/icon/special/new-badge.svg");
+  }
+
+  &.error {
+    background-image: url("/assets/img/icon/special/cross-badge.svg");
+  }
+}
+
+.beacon-toolbar {
+  position: absolute;
+  right: 0;
+  top: 0;
+  height: 3rem;
+  display: flex;
+  align-items: center;
+
+  padding-left: 0.75rem;
+
+  &:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.25rem;
+    bottom: 0.25rem;
+    width: 1px;
+    border-left: 1px solid @lightBorderColor;
+  }
+}
+
+.beacon-settings table td:first-child{
+  width: 200px;
+}
+
+::ng-deep .popover {
+  width: 250px;
+}
+
+.beacon-info-wrapper {
+  background-color: @lightBgColor;
+  width: 100%;
+
+  .chart-wrapper {
+    padding-bottom: 4rem;
+
+    overflow-y: hidden;
+    overflow-x: auto;
+
+    > .chart-wrapper-inner {
+      min-width: 650px;
+      max-height: 20rem;
+    }
+  }
+}
+
+.list-entry {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  &.selected {
+    background-color: @lightBgColor;
+  }
+}
+
+::ng-deep .content-cat:nth-child(even) {
+  .beacon-info-wrapper,
+  .list-entry.selected {
+    background-color: @white;
+  }
+}
+
+.chart-tabs-container {
+  min-width: 600px;
+  padding-bottom: 2.5rem;
+}
+
+.pin {
+  font-family: 'Source Code Pro', Consolas, Arial, sans-serif;
+}
+
+.battery-popover-btn {
+  vertical-align: text-bottom;
+}
+
+.battery-popover-warning-text {
+  color: darken(@warning, 8%);
+}
+
+.remove-disabled {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+table.logs {
+  font-size: @fontSizeSmall;
+
+  td:first-child {
+    max-width: 6rem;
+  }
+
+  .log-severity {
+    color: @white;
+    border-radius: @borderRadius;
+    text-align: center;
+
+    &.level-error {
+      background-color: #df867c;
+    }
+    &.level-warn {
+      background-color: #dfbb69;
+    }
+    &.level-info {
+      background-color: #5b9bdf;
+    }
+    &.level-debug {
+      background-color: #a6c8df;
+    }
+    &.level-trace {
+      background-color: #c4d4df;
+    }
+  }
+}
+
+.outer-container {
+  margin: -@gutter;
+}
+
+// display/hide beacon selection elements based on device width
+.list-container > .dropdown {
+  display: none;
+}
+
+@media @xs {
+  .list-container {
+    > .list-entry:nth-child(n+3):not(.dropdown),
+    > .dropdown > .dropdown-menu > .list-entry:nth-child(-n+2) {
+      display: none;
+    }
+    > .list-entry:nth-child(n+3) + .dropdown {
+      display: flex;
+    }
+  }
+}
+@media @sm {
+  .list-container {
+    > .list-entry:nth-child(n+4):not(.dropdown),
+    > .dropdown > .dropdown-menu > .list-entry:nth-child(-n+3) {
+      display: none;
+    }
+    > .list-entry:nth-child(n+4) + .dropdown {
+      display: flex;
+    }
+  }
+}
+@media @md {
+  .list-container {
+    > .list-entry:nth-child(n+5):not(.dropdown),
+    > .dropdown > .dropdown-menu > .list-entry:nth-child(-n+4) {
+      display: none;
+    }
+    > .list-entry:nth-child(n+5) + .dropdown {
+      display: flex;
+    }
+  }
+}
+@media @lg {
+  .list-container {
+    > .list-entry:nth-child(n+6):not(.dropdown),
+    > .dropdown > .dropdown-menu > .list-entry:nth-child(-n+4) {
+      display: flex;
+    }
+  }
+}

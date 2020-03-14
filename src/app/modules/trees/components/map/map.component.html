@@ -1,0 +1,27 @@
+<div id="map" class="map has-status-overlay" (mousedown)="onMapMouseDown($event)" (mouseup)="onMapMouseUp($event)">
+  <div *ngIf="hasStatus(StatusKey.MAP, StatusValue.IN_PROGRESS)" class="status-overlay load"></div>
+  <div *ngIf="hasStatus(StatusKey.MAP, StatusValue.FAILED)" class="status-overlay">
+    <div class="status-content">
+      <div class="status-heading heading-danger">
+        {{'general.error' | translate}}
+      </div>
+      <div class="status-text">
+        {{errorText | translate}}
+      </div>
+      <div class="status-controls">
+        <button class="btn btn-light float-right" (click)="loadMap()" (keydown)="loadMap()">{{'general.retry' | translate}}</button>
+      </div>
+    </div>
+  </div>
+  <div class="osm-copyright">&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>
+    contributors
+  </div>
+  <div class="activator" [ngClass]="{'disabled': isMapEnabled || hasStatus(StatusKey.MAP, StatusValue.IN_PROGRESS)}" (click)="isMapEnabled = true" (mousedown)="$event.stopPropagation()" (mouseup)="$event.stopPropagation()">
+    <div class="d-has-cursor">
+      {{'map.activator' | translate}}
+    </div>
+    <div class="d-has-touch">
+      {{'map.activator_touch' | translate}}
+    </div>
+  </div>
+</div>
