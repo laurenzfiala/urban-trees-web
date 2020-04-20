@@ -231,6 +231,7 @@
     "changing_username": "Nutzername wird geändert...",
     "username_changed": "Dein Nutzername wurde erfolgreich geändert",
     "username_change_failed": "Dein Nutzername konnte nicht geändert werden",
+    "username_duplicate": "Der gewählte Nutzername ist schon vergeben",
     "username_change_title": "Nutzernamen ändern",
     "password_change_title": "Passwort ändern",
     "password_change_title_set": "Passwort setzen",

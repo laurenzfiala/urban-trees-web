@@ -57,6 +57,14 @@
   </div>
 
   <div
+    *ngIf="hasStatus(StatusKey.CHANGE_USERNAME, StatusValue.FAILED_DUPLICATE)"
+    class="col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto login-annotation-container login-annotation-danger">
+
+    {{'login.username_duplicate' | translate}}
+
+  </div>
+
+  <div
     *ngIf="hasStatus(StatusKey.CHANGE_USERNAME, StatusValue.SUCCESSFUL)"
     class="col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto login-annotation-container login-annotation-info center-icon">
 

@@ -4,6 +4,7 @@ import {PasswordReset} from '../../entities/password-reset.entity';
 import {AuthService} from '../../services/auth.service';
 import {AbstractComponent} from '../abstract.component';
 import {EnvironmentService} from '../../services/environment.service';
+import {ClientError} from '../../entities/client-error.entity';
 
 @Component({
   selector: 'ut-project-username-change',
@@ -42,8 +43,12 @@ export class UsernameChangeComponent extends AbstractComponent implements OnInit
     this.authService.changeUsername(this.newUsername, () => {
       UsernameChangeComponent.LOG.info('Successfully changed username');
       this.setStatus(StatusKey.CHANGE_USERNAME, StatusValue.SUCCESSFUL);
-    }, error => {
+    }, (error, apiError) => {
       UsernameChangeComponent.LOG.error('Failed to change username', error);
+      if (apiError && apiError.clientErrorCode === ClientError.USERNAME_DUPLICATE) {
+        this.setStatus(StatusKey.CHANGE_USERNAME, StatusValue.FAILED_DUPLICATE);
+        return;
+      }
       this.setStatus(StatusKey.CHANGE_USERNAME, StatusValue.FAILED);
     });
 
@@ -61,6 +66,7 @@ export enum StatusValue {
 
   IN_PROGRESS,
   SUCCESSFUL,
-  FAILED
+  FAILED,
+  FAILED_DUPLICATE
 
 }

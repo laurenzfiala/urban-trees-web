@@ -232,6 +232,7 @@
     "changing_username": "Changing username...",
     "username_changed": "Your username was successfully changed",
     "username_change_failed": "Your username could not be changed",
+    "username_duplicate": "The username you chose already exists",
     "username_change_title": "Change your username",
     "password_change_title": "Change your password",
     "password_change_title_set": "Set your password",

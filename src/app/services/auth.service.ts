@@ -6,7 +6,7 @@ import {AbstractService} from './abstract.service';
 import {Login} from '../entities/login.entity';
 import {ApiError} from '../entities/api-error.entity';
 import {JwtHelperService} from '@auth0/angular-jwt';
-import {ActivatedRouteSnapshot, Router} from '@angular/router';
+import {Router} from '@angular/router';
 import {LoginAccessReason} from '../components/project-login/logout-reason.enum';
 import {LoginStatus} from '../components/project-login/login-status.enum';
 import {JWTToken} from '../entities/jwt-token.entity';
