@@ -697,6 +697,14 @@
       }
     }
   },
+  "tree_select": {
+    "none_exist": "Keine Bäume gespeichert",
+    "none_found": "Keine Bäume gefunden"
+  },
+  "beacon_select": {
+    "none_exist": "Keine Beacons gespeichert",
+    "none_found": "Keine Beacons gefunden"
+  },
   "beacon_select": {
     "none_found": "Keine Beacons gespeichert."
   },

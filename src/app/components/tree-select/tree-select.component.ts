@@ -79,6 +79,10 @@ export class TreeSelectComponent extends AbstractComponent implements OnInit, On
     this.update(false);
   }
 
+  get availableTrees(): Array<TreeFrontend> {
+    return this.availableTreesInternal;
+  }
+
   /**
    * Whether to allow deselecting selected trees.
    */

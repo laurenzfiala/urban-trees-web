@@ -49,6 +49,22 @@
 
 </div>
 
+<div *ngIf="availableTrees?.length === 0"
+     class="status-img my-4">
+  <img src="/assets/img/icon/no_store.svg" />
+  <div>
+    {{'tree_select.none_exist' | translate}}
+  </div>
+</div>
+
+<div *ngIf="displayTrees?.length === 0"
+     class="status-img my-4">
+  <img src="/assets/img/icon/no_results.svg" />
+  <div>
+    {{'tree_select.none_found' | translate}}
+  </div>
+</div>
+
 <nav *ngIf="displayTreePagination">
   <ul class="pagination mt-2 mb-0">
     <li class="page-item">

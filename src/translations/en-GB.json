@@ -698,8 +698,13 @@
       }
     }
   },
+  "tree_select": {
+    "none_exist": "No beacons stored yet",
+    "none_found": "No trees found"
+  },
   "beacon_select": {
-    "none_found": "No beacons stored yet."
+    "none_exist": "No beacons stored yet",
+    "none_found": "No trees found"
   },
   "report": {
     "title": "What kind of problem do you need help with?",
