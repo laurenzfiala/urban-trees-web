@@ -175,6 +175,10 @@ export class MapComponent extends AbstractComponent implements OnInit {
     this.initMap();
     this.updateMapMarkers();
 
+    if (this.selectedMarker) {
+      this.centerMarker(this.selectedMarker);
+    }
+
   }
 
   /**
