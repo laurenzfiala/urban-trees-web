@@ -43,7 +43,7 @@
 
     <ul class="list-group mt-2">
       <li *ngFor="let u of displayUsers"
-          class="list-group-item user-container flex-wrap"
+          class="list-group-item user-container"
           [ngClass]="{'disabled': u.deleteStatus === StatusValue.SUCCESSFUL}">
 
         <div class="info-container">
