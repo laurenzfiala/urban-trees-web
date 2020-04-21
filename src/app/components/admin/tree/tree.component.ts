@@ -1,4 +1,4 @@
-import {Component, OnInit, TemplateRef} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit, TemplateRef} from '@angular/core';
 import {BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
 import {TreeService} from '../../../services/tree.service';
 import {AdminService} from '../../../services/admin/admin.service';
