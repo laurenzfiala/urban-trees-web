@@ -43,7 +43,7 @@ export class TreeSelectComponent extends AbstractComponent implements OnInit, On
       return;
     }
     this.selectedTreeInternal = value;
-    this.setDisplayTreesPaginated(this.availableTreesInternal);
+    this.update();
   }
 
   get selectedTree(): TreeFrontend {
@@ -75,8 +75,8 @@ export class TreeSelectComponent extends AbstractComponent implements OnInit, On
 
   @Input() set availableTrees(value: Array<TreeFrontend>) {
     this.availableTreesInternal = value;
-    this.setDisplayTreesPaginated(value);
     this.updateSelectedTree();
+    this.update(false);
   }
 
   /**
@@ -132,7 +132,7 @@ export class TreeSelectComponent extends AbstractComponent implements OnInit, On
         pageSize = 6;
       }
       this.pageSize = pageSize;
-      this.setTreeSearchInput(this.treeSearchInput, false);
+      this.update(false);
     }), TreeSelectComponent.SUBSCRIPTION_TAG);
 
   }
@@ -152,12 +152,7 @@ export class TreeSelectComponent extends AbstractComponent implements OnInit, On
     }
 
     this.currentDisplayPages = Math.ceil(trees.length / this.pageSize);
-
-    if (trees.length <= this.pageSize) {
-      this.displayTreePagination = false;
-    } else {
-      this.displayTreePagination = true;
-    }
+    this.displayTreePagination = trees.length > this.pageSize;
 
     let paginatedArray = new Array<Array<TreeFrontend>>();
 
@@ -168,7 +163,12 @@ export class TreeSelectComponent extends AbstractComponent implements OnInit, On
     }
 
     if (this.selectedTree) {
-      this.currentDisplayPage = Math.floor(trees.findIndex(value => value.id === this.selectedTree.id) / this.pageSize);
+      const selectedTreeIndex = trees.findIndex(value => value.id === this.selectedTree.id);
+      if (selectedTreeIndex === -1) {
+        this.currentDisplayPage = 0;
+      } else {
+        this.currentDisplayPage = Math.floor( selectedTreeIndex / this.pageSize);
+      }
     } else {
       this.currentDisplayPage = 0;
     }
@@ -178,14 +178,12 @@ export class TreeSelectComponent extends AbstractComponent implements OnInit, On
 
 
   /**
-   * Set tree search and filter displayed trees by input.
-   * @param {string} searchInput user's tree search input
+   * Update displayTrees by current filter.
    * @param {boolean} debounce (optional) whether to wait a few ms if a new input is given
    */
-  public setTreeSearchInput(searchInput: string, debounce: boolean = true): void {
+  public update(debounce: boolean = true): void {
 
-    this.treeSearchInput = searchInput;
-
+    const searchInput = this.treeSearchInput;
     if (!searchInput) {
       this.setDisplayTreesPaginated(this.availableTreesInternal);
       return;

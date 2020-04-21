@@ -1,7 +1,7 @@
 <div class="form-group mb-0">
   <input
     [ngModel]="treeSearchInput"
-    (ngModelChange)="setTreeSearchInput($event)"
+    (ngModelChange)="treeSearchInput = $event; update()"
     name="treeSearchInput"
     class="form-control form-control-lg search-input"
     [placeholder]="'phenology.observation.step1.tree_search_placeholder' | translate" />
