@@ -25,7 +25,7 @@ import {MessagesComponent} from './components/messages/messages.component';
 import {ReportComponent} from './components/report/report.component';
 import {AdminBeaconManageComponent} from './components/admin/beacon/manage/manage.component';
 import {HelpComponent} from './components/help/help.component';
-import {CsaComponent} from './components/csa/csa.component';
+import {ParticipateComponent} from './components/participate/participate.component';
 
 const routes: Routes = [
   {
@@ -39,7 +39,11 @@ const routes: Routes = [
   },
   {
     path: 'csa',
-    component: CsaComponent
+    redirectTo: 'participate'
+  },
+  {
+    path: 'participate',
+    component: ParticipateComponent
   },
   {
     path: 'missing',

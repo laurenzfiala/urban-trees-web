@@ -88,7 +88,7 @@ import {TabsModule} from 'ngx-bootstrap/tabs';
 import {TimepickerModule} from 'ngx-bootstrap/timepicker';
 import {TooltipModule} from 'ngx-bootstrap/tooltip';
 import {VERSION} from '../environments/version';
-import { CsaComponent } from './components/csa/csa.component';
+import { ParticipateComponent } from './components/participate/participate.component';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, '/translations/', '.json?version=' + VERSION.version);
@@ -150,7 +150,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     LowercasePipe,
     ReplacePipe,
     DecimalPlacesPipe,
-    CsaComponent
+    ParticipateComponent
   ],
   imports: [
     // Core
