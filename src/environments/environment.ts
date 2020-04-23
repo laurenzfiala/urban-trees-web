@@ -71,8 +71,13 @@ export const environment = {
 
     // Authentication
     login:                            '/login',
+
+    // Account
     changePassword:                   '/account/changepassword',
     changeUsername:                   '/account/changeusername',
+    usingOtp:                         '/account/otp',
+    activateOtp:                      '/account/otp/activate',
+    deactivateOtp:                    '/account/otp/deactivate',
     addUserPermission:                '/account/permission/request',
     usersGrantingPermission:          '/account/permission/granted/{permission}',
     loadPPIN:                         '/account/permission/pin'

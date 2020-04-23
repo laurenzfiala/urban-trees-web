@@ -260,6 +260,18 @@ class EnvironmentEndpoints {
     return this.prependCommonPath(this.context.changeUsername);
   }
 
+  get usingOtp() {
+    return this.prependCommonPath(this.context.usingOtp);
+  }
+
+  get activateOtp() {
+    return this.prependCommonPath(this.context.activateOtp);
+  }
+
+  get deactivateOtp() {
+    return this.prependCommonPath(this.context.deactivateOtp);
+  }
+
   get addUserPermission() {
     return this.prependCommonPath(this.context.addUserPermission);
   }

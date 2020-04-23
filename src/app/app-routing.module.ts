@@ -26,6 +26,7 @@ import {ReportComponent} from './components/report/report.component';
 import {AdminBeaconManageComponent} from './components/admin/beacon/manage/manage.component';
 import {HelpComponent} from './components/help/help.component';
 import {ParticipateComponent} from './components/participate/participate.component';
+import {OtpManageComponent} from './components/otp-manage/otp-manage.component';
 
 const routes: Routes = [
   {
@@ -92,6 +93,14 @@ const routes: Routes = [
   {
     path: 'account/changeusername',
     component: UsernameChangeComponent,
+    canActivate: [ProjectLoginGuard],
+    data: {
+      roles: environment.security.roles.user
+    }
+  },
+  {
+    path: 'account/2fa',
+    component: OtpManageComponent,
     canActivate: [ProjectLoginGuard],
     data: {
       roles: environment.security.roles.user

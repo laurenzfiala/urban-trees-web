@@ -13,6 +13,11 @@ import {LoginStatus} from './login-status.enum';
 })
 export class ProjectLoginComponent extends AbstractComponent implements OnInit, AfterViewInit {
 
+  /**
+   * Header key to check additional requirements for login.
+   */
+  public static HTTP_HEADER_AUTH_REQUIRES_KEY: string = 'Authentication-Requires';
+
   private static QUERY_PARAMS_LOGIN_REASON_KEY: string = 'reason';
 
   private static QUERY_PARAMS_REDIRECT_KEY: string = 'redirect';
@@ -60,8 +65,14 @@ export class ProjectLoginComponent extends AbstractComponent implements OnInit, 
    */
   public showDataDisclaimer: boolean = false;
 
+  /**
+   * Whether to show the OTP input or not.
+   */
+  public showOtp: boolean = false;
+
   public username: string;
   public password: string;
+  public otp: string;
 
   public consecutiveFailedLoginAttempts: number = 0;
 
@@ -118,7 +129,9 @@ export class ProjectLoginComponent extends AbstractComponent implements OnInit, 
   public login(): void {
 
     this.setStatus(StatusKey.LOGIN, StatusValue.IN_PROGRESS);
-    let loginEntity = new Login(this.username, this.password);
+
+    const otp = this.otp && this.otp.length > 0 ? this.otp.replace('-', '') : undefined;
+    let loginEntity = new Login(this.username, this.password, otp);
 
     this.authService.login(loginEntity, () => {
       this.setStatus(StatusKey.LOGIN, StatusValue.SUCCESSFUL);
@@ -133,6 +146,14 @@ export class ProjectLoginComponent extends AbstractComponent implements OnInit, 
       this.loggedin.emit();
     }, (error, apiError) => {
       this.consecutiveFailedLoginAttempts++;
+
+      let t = error.headers.get(ProjectLoginComponent.HTTP_HEADER_AUTH_REQUIRES_KEY);
+      if (t === 'OTP') {
+        this.showOtp = true;
+        this.setStatus(StatusKey.LOGIN, StatusValue.ENTER_OTP);
+        return;
+      }
+
       if (apiError.statusCode === 403) {
         this.setStatus(StatusKey.LOGIN, StatusValue.BAD_CREDENTIALS);
       } else {
@@ -183,6 +204,7 @@ export enum StatusValue {
   IN_PROGRESS,
   SUCCESSFUL,
   BAD_CREDENTIALS,
-  FAILED
+  FAILED,
+  ENTER_OTP
 
 }

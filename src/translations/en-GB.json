@@ -244,7 +244,32 @@
     "change_password_failed_nooldpw": "Your password could not be changed, please contact an admin",
     "log_in_again": "Log in to continue",
     "go_to_login": "Go to login",
-    "learn_more": "Learn more"
+    "learn_more": "Learn more",
+    "otp_placeholder": "Two-factor code",
+    "otp_info": "Please enter the two-factor code from your authenticator app."
+  },
+  "otp_manage": {
+    "checking_state": "Checking two-factor state",
+    "checking_state_failed": "Could not check two-factor state",
+    "state_info_enabled": "Two-Factor Authentication is ON",
+    "state_info_disabled": "Two-Factor Authentication is OFF",
+    "qr_scan_info": "Scan this QR-code using an Authenticator-App like <a class=\"link\" href=\"https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2\" target=\"_blank\">Google Authenticator</a> or <a class=\"link\" href=\"https://play.google.com/store/apps/details?id=org.fedorahosted.freeotp\" target=\"_blank\">FreeOTP</a>.",
+    "activate_title": "Activate Two-Factor Authentication",
+    "activate_btn": "Activate now",
+    "activating_btn": "Activating...",
+    "activated_btn": "Activated",
+    "recovery_codes_title": "Your recovery codes:",
+    "recovery_codes_info": "Make sure to store these recovery codes safely. If you lose access to your Authenticator-App, these allow you to log in. Each of the codes only works once.",
+    "deactivate_title": "Deactivate Two-Factor Authentication",
+    "deactivate_btn": "Deactivate now",
+    "deactivating_btn": "Deactivating...",
+    "deactivated_btn": "Deactivated",
+    "code_placeholder": "Two-factor code",
+    "activation_success_info": "Successfully activated",
+    "activation_error_info": "Code was incorrect, please try again",
+    "deactivation_success_info": "Successfully deactivated",
+    "deactivation_error_info": "Code was incorrect, please try again",
+    "go_to_home": "Go to home"
   },
 	"tree": {
     "loading": "Loading tree...",
@@ -431,9 +456,10 @@
     "account": {
       "title": "Manage Account",
       "desc":  "You are logged in as {{username}}.",
-      "desc_2":  "Change your username or password here.",
+      "desc_2":  "Change your username or password here or manage two-factor authentication.",
       "change_username":  "Change username",
-      "change_password":  "Change password"
+      "change_password":  "Change password",
+      "manage_2fa": "Two-Factor Authentication"
     },
     "support": {
       "title": "Request Support",

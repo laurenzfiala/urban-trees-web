@@ -6,8 +6,8 @@ import 'rxjs/add/operator/catch';
 import {Router, RouterStateSnapshot} from '@angular/router';
 import {Log} from '../services/log.service';
 import {AuthService} from '../services/auth.service';
-import {LoginAccessReason} from '../components/project-login/logout-reason.enum';
 import {EnvironmentService} from '../services/environment.service';
+import {ProjectLoginComponent} from '../components/project-login/project-login.component';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
@@ -40,7 +40,8 @@ export class AuthInterceptor implements HttpInterceptor {
     return next.handle(newRequest)
       .catch(error => {
 
-        if (error instanceof HttpErrorResponse && error.status === 403 && !this.isExcludedRoute(routerState)) {
+        const hasAuthRequirement = error.headers.get(ProjectLoginComponent.HTTP_HEADER_AUTH_REQUIRES_KEY);
+        if (error instanceof HttpErrorResponse && !hasAuthRequirement && error.status === 403 && !this.isExcludedRoute(routerState)) {
           AuthInterceptor.LOG.debug('Received unauthorized response from backend. Redirecting to login...');
           this.authService.redirectToLogin(this.authService.getLogOutReason(true), routerState.url);
         }

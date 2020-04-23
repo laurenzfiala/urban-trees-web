@@ -243,7 +243,32 @@
     "change_password_failed_nooldpw": "Passwort konnte nicht geändert werden, bitte frage einen Administrator um Hilfe",
     "log_in_again": "Neu anmelden, um fortzufahren",
     "go_to_login": "Zum Login",
-    "learn_more": "Mehr erfahren"
+    "learn_more": "Mehr erfahren",
+    "otp_placeholder": "Zwei-Faktor Code",
+    "otp_info": "Bitte trage den Code aus deiner Zwei-Faktor-Authentifizierungsapp ein."
+  },
+  "otp_manage": {
+    "checking_state": "Frage Zwei-Faktor Status ab...",
+    "checking_state_failed": "Konnte Status nicht abfragen",
+    "state_info_enabled": "Zwei-Faktor Authentifizierung ist EIN",
+    "state_info_disabled": "Zwei-Faktor Authentifizierung ist AUS",
+    "qr_scan_info": "Scanne den QR-Code mit einer Authenticator-App wie <a class=\"link\" href=\"https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2\" target=\"_blank\">Google Authenticator</a> oder <a class=\"link\" href=\"https://play.google.com/store/apps/details?id=org.fedorahosted.freeotp\" target=\"_blank\">FreeOTP</a>.",
+    "activate_title": "Zwei-Faktor Authentifizierung aktivieren",
+    "activate_btn": "Jetzt aktivieren",
+    "activating_btn": "Aktiviere...",
+    "activated_btn": "Aktiviert",
+    "recovery_codes_title": "Deine Wiederherstellungscodes:",
+    "recovery_codes_info": "Stelle sicher, dass Du diese Wiederherstellungscodes an einem sicheren Platz speicherst. Wenn Du die Zugang zu deiner Auth-App verlierst, kannst Du sie zum Einloggen nutzen. Jeder dieser Codes ist nur einmal gültig.",
+    "deactivate_title": "Zwei-Faktor Authentifizierung deaktivieren",
+    "deactivate_btn": "Jetzt aktivieren",
+    "deactivating_btn": "Deaktiviere...",
+    "deactivated_btn": "Deaktiviert",
+    "code_placeholder": "Zwei-Faktor Code",
+    "activation_success_info": "Erfolgreich aktiviert",
+    "activation_error_info": "Code war ungültig, bitte versuche es erneut",
+    "deactivation_success_info": "Erfolgreich deaktiviert",
+    "deactivation_error_info": "Code war ungültig, bitte versuche es erneut",
+    "go_to_home": "Go to home"
   },
 	"tree": {
     "loading": "Lade Baum...",
@@ -430,9 +455,10 @@
     "account": {
       "title": "Konto verwalten",
       "desc":  "Du bist als {{username}} angemeldet.",
-      "desc_2":  "Ändere Deinen Nutznamen oder Passwort hier.",
+      "desc_2":  "Ändere Deinen Nutznamen oder Dein Passwort hier oder bearbeite Einstellungen zur Zwei-Faktor Authentifizierung.",
       "change_username":  "Nutzername ändern",
-      "change_password":  "Passwort ändern"
+      "change_password":  "Passwort ändern",
+      "manage_2fa": "Zwei-Faktor Authentifizierung"
     },
     "support": {
       "title": "Hilfe anfordern",

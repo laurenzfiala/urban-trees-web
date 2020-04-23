@@ -88,7 +88,10 @@ import {TabsModule} from 'ngx-bootstrap/tabs';
 import {TimepickerModule} from 'ngx-bootstrap/timepicker';
 import {TooltipModule} from 'ngx-bootstrap/tooltip';
 import {VERSION} from '../environments/version';
-import { ParticipateComponent } from './components/participate/participate.component';
+import {ParticipateComponent} from './components/participate/participate.component';
+import { OtpManageComponent } from './components/otp-manage/otp-manage.component';
+import {AuthPipe} from './pipes/auth.pipe';
+import {OtpScratchCodePipe} from './pipes/otp-scratch-code.pipe';
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, '/translations/', '.json?version=' + VERSION.version);
@@ -133,6 +136,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     UserPermissionComponent,
     AnnouncementsComponent,
     NotificationsComponent,
+    ParticipateComponent,
+    OtpManageComponent,
 
     // Directives
     SpyDirective,
@@ -150,7 +155,8 @@ export function HttpLoaderFactory(http: HttpClient) {
     LowercasePipe,
     ReplacePipe,
     DecimalPlacesPipe,
-    ParticipateComponent
+    AuthPipe,
+    OtpScratchCodePipe
   ],
   imports: [
     // Core
