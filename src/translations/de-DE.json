@@ -40,7 +40,8 @@
       "info_hash": "ID"
 		},
     "messages": "Nachrichten",
-    "settings": "Einstellungen, Konto & Sprache",
+    "settings": "Spracheinstellungen",
+    "settings_logged_in": "Einstellungen, Konto & Sprache",
     "login": "Anmelden",
 		"logout": "Abmelden",
     "project_account_1": "Projekt-",
