@@ -258,7 +258,7 @@
     "activating_btn": "Aktiviere...",
     "activated_btn": "Aktiviert",
     "recovery_codes_title": "Deine Wiederherstellungscodes:",
-    "recovery_codes_info": "Stelle sicher, dass Du diese Wiederherstellungscodes an einem sicheren Platz speicherst. Wenn Du die Zugang zu deiner Auth-App verlierst, kannst Du sie zum Einloggen nutzen. Jeder dieser Codes ist nur einmal gültig.",
+    "recovery_codes_info": "Stelle sicher, dass Du diese Wiederherstellungscodes an einem sicheren Platz speicherst. Wenn Du den Zugang zu deiner Auth-App verlierst, kannst Du sie zum Einloggen nutzen. Jeder dieser Codes ist nur einmal gültig.",
     "deactivate_title": "Zwei-Faktor Authentifizierung deaktivieren",
     "deactivate_btn": "Jetzt aktivieren",
     "deactivating_btn": "Deaktiviere...",

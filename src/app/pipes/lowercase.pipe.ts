@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import {StringModificationPipe, StringModificationType} from "./strmod.pipe";
+import {StringModificationPipe, StringModificationType} from './strmod.pipe';
 
 @Pipe({name: 'lowercase'})
 export class LowercasePipe implements PipeTransform {
