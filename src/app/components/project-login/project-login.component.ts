@@ -145,8 +145,6 @@ export class ProjectLoginComponent extends AbstractComponent implements OnInit, 
       }
       this.loggedin.emit();
     }, (error, apiError) => {
-      this.consecutiveFailedLoginAttempts++;
-
       let t = error.headers.get(ProjectLoginComponent.HTTP_HEADER_AUTH_REQUIRES_KEY);
       if (t === 'OTP') {
         this.showOtp = true;
@@ -154,6 +152,7 @@ export class ProjectLoginComponent extends AbstractComponent implements OnInit, 
         return;
       }
 
+      this.consecutiveFailedLoginAttempts++;
       if (apiError.statusCode === 403) {
         this.setStatus(StatusKey.LOGIN, StatusValue.BAD_CREDENTIALS);
       } else {
