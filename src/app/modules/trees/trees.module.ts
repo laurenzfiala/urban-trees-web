@@ -78,15 +78,18 @@ import {AuthInterceptor} from '../shared/interceptors/auth.interceptor';
 import {SharedModule} from '../shared/shared.module';
 import {AuthService} from '../shared/services/auth.service';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
-import {VERSION} from '../../../environments/version';
 import {TranslateInitService} from '../shared/services/translate-init.service';
 import {ParticipateComponent} from './components/participate/participate.component';
 import { OtpManageComponent } from './components/otp-manage/otp-manage.component';
 import {AuthPipe} from './pipes/auth.pipe';
 import {OtpScratchCodePipe} from './pipes/otp-scratch-code.pipe';
+import {MultiTranslateHttpLoader} from '../shared/lib/multi-translate-http-loader';
 
-export function HttpLoaderFactory2(http: HttpClient) {
-  return new TranslateHttpLoader(http, '/translations/trees/', '.json?version=' + VERSION.version);
+export function TranslateFactory(http: HttpClient) {
+  return new MultiTranslateHttpLoader(http, [
+    {prefix: '/translations/trees/', suffix: '.json'},
+    {prefix: '/translations/', suffix: '.json'}
+    ]);
 }
 
 @NgModule({
@@ -164,7 +167,7 @@ export function HttpLoaderFactory2(http: HttpClient) {
     TranslateModule.forChild({
       loader: {
         provide: TranslateLoader,
-        useFactory: HttpLoaderFactory2,
+        useFactory: TranslateFactory,
         deps: [HttpClient]
       },
       isolate: true

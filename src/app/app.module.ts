@@ -17,7 +17,7 @@ import {AuthService} from './modules/shared/services/auth.service';
 import {EnvironmentService} from './modules/shared/services/environment.service';
 import {TranslateInitService} from './modules/shared/services/translate-init.service';
 
-export function HttpLoaderFactory(http: HttpClient) {
+export function TranslateFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, '/translations/', '.json?version=' + VERSION.version);
 }
 
@@ -41,7 +41,7 @@ export function HttpLoaderFactory(http: HttpClient) {
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
-        useFactory: HttpLoaderFactory,
+        useFactory: TranslateFactory,
         deps: [HttpClient]
       }
     })
