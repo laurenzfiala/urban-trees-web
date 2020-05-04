@@ -4,16 +4,18 @@
 
     <div class="intro-screen-container">
 
-      <div class="header">
+      <nav class="header">
         <div>
-          <img class="header-icon" src="/assets/img/urbantrees_icon_small.png" />
+          <a routerLink="/home" (action)="loadPage($event)">
+            <img class="header-icon" src="/assets/img/urbantrees_icon_small.png" />
+          </a>
         </div>
         <div class="header-links">
-          <a class="lp-link" routerLink="/home">Webapp</a>
-          <a *noauth class="lp-link" routerLink="/login">Login</a>
-          <a *auth class="lp-link" routerLink="/project/phenology">Phenology</a>
+          <a class="lp-link" routerLink="/home" (action)="loadPage($event)">Webapp</a>
+          <a *noauth class="lp-link" routerLink="/login" (action)="loadPage($event)">Login</a>
+          <a *auth class="lp-link" routerLink="/project/phenology" (action)="loadPage($event)">Phenology</a>
         </div>
-      </div>
+      </nav>
 
       <div class="flex-grow-1 d-flex flex-column align-items-center justify-content-center">
 

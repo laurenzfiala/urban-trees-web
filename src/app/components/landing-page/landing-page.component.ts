@@ -16,6 +16,8 @@ import * as $ from 'jquery';
 })
 export class LandingPageComponent implements OnInit, AfterViewInit {
 
+  public loading: boolean = false;
+
   private static CYCLE_INTERVAL_MS: number = 5000;
 
   @ViewChild('introModulesContentWrapper')
@@ -111,6 +113,11 @@ export class LandingPageComponent implements OnInit, AfterViewInit {
 
   get selectedSlide(): any {
     return this.modules.find(s => s.isShown);
+  }
+
+  public loadPage(event: any) {
+    const element = event.target;
+    element.classList.add('loading');
   }
 
 }

@@ -41,12 +41,33 @@
 
 a.lp-link {
   color: @white;
+  text-decoration: none;
 
-  &:hover {
+  &.loading {
     position: relative;
 
-    color: @medLightGrey;
-    text-decoration: none;
+    &:after {
+      content: "";
+
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 100%;
+      display: inline-block;
+      height: 2px;
+      margin-right: @headerLinksHPadding;
+      margin-bottom: calc(2.45rem - 2px);
+      margin-left: @headerLinksHPadding;
+
+      background-color: @headerLinkColor;
+      border-radius: 1px;
+
+      animation: header-link-loading 1s infinite linear;
+    }
+  }
+
+  &:not(.loading):hover {
+    position: relative;
 
     &:after {
       content: "";
@@ -447,6 +468,21 @@ section {
       margin-right: (@headerIconHMargin/2);
       margin-left: (@headerIconHMargin/2);
     }
+  }
+}
+
+@keyframes header-link-loading {
+  0% {
+    left: 0;
+    right: 100%;
+  }
+  50% {
+    left: 0;
+    right: 0;
+  }
+  100% {
+    left: 100%;
+    right: 0;
   }
 }
 
