@@ -1,4 +1,12 @@
-import {AfterViewInit, Component, ElementRef, OnInit, ViewChild, ViewEncapsulation} from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  OnInit,
+  ViewChild,
+  ViewEncapsulation
+} from '@angular/core';
 import * as $ from 'jquery';
 
 @Component({
@@ -46,7 +54,7 @@ export class LandingPageComponent implements OnInit, AfterViewInit {
     }
   ];
 
-  constructor() { }
+  constructor(private cdRef: ChangeDetectorRef) { }
 
   public ngOnInit(): void {
   }
@@ -92,6 +100,8 @@ export class LandingPageComponent implements OnInit, AfterViewInit {
     let slideContentWidth = scrollEl.find('.intro-module')[0].clientWidth;
     let scrollLeftTarget = slideContentWidth * this.currentSlideIndex() - (window.innerWidth - slideContentWidth) / 2;
     scrollEl.stop().animate({scrollLeft: scrollLeftTarget}, 500);
+
+    this.cdRef.detectChanges();
 
   }
 
