@@ -3,7 +3,6 @@ import {Log} from './log.service';
 import {EnvironmentService} from './environment.service';
 import {HttpClient, HttpErrorResponse, HttpResponse} from '@angular/common/http';
 import {AbstractService} from './abstract.service';
-import {Login} from '../entities/login.entity';
 import {ApiError} from '../entities/api-error.entity';
 import {JwtHelperService} from '@auth0/angular-jwt';
 import {Router} from '@angular/router';
@@ -14,6 +13,7 @@ import {PasswordReset} from '../entities/password-reset.entity';
 import {Observable, Subject} from 'rxjs';
 import {UserIdentity} from '../entities/user-identity.entity';
 import {UserPermissionRequest} from '../entities/user-permission-request.entity';
+import {AuthenticationToken} from '../entities/login.entity';
 
 /**
  * Service for user authentication functionality.
@@ -154,15 +154,15 @@ export class AuthService extends AbstractService {
   /**
    * Send login request to the backend and react on the response.
    * This includes saving the given authorization header to the local storage.
-   * @param {Login} loginEntity username, password
+   * @param {AuthenticationToken} authToken any valid authentication token
    * @param {() => void} successCallback called when login was successful
    * @param {(error: HttpErrorResponse, apiError?: ApiError) => void} errorCallback when login failed
    */
-  public login(loginEntity: Login,
+  public login(authToken: AuthenticationToken,
                successCallback: () => void,
                errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void): void {
 
-    this.http.post(this.envService.endpoints.login, loginEntity, {observe: 'response'})
+    this.http.post(this.envService.endpoints.login, authToken, {observe: 'response'})
       .subscribe((response: HttpResponse<any>) => {
         this.setJWTToken(response.headers.get(AuthService.HEADER_AUTH_KEY));
         AuthService.LOG.debug('Saved retrieved auth token to local storage.');
