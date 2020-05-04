@@ -14,7 +14,7 @@ import {SearchDescriptor} from '../entities/search-descriptor.entity';
 import {TranslateService} from '@ngx-translate/core';
 
 /**
- * SService used for searching object-members for values.
+ * Service used for searching object-members for values.
  *
  * @author Laurenz Fiala
  * @since 2019/08/30

@@ -18,9 +18,6 @@ import OlXYZ from 'ol/source/xyz';
 import OlTileLayer from 'ol/layer/tile';
 import {MapMarker} from '../../interfaces/map-marker.interface';
 import {MapMarkerDefault} from '../../entities/map-marker-default.entity';
-import VectorTileOptions = olx.source.VectorTileOptions;
-import TileEvent = ol.source.TileEvent;
-import Coordinate = ol.Coordinate;
 
 @Component({
   selector: 'ut-map',
@@ -175,6 +172,10 @@ export class MapComponent extends AbstractComponent implements OnInit {
     this.initMap();
     this.updateMapMarkers();
 
+    if (this.selectedMarker) {
+      this.centerMarker(this.selectedMarker);
+    }
+
   }
 
   /**
@@ -183,7 +184,7 @@ export class MapComponent extends AbstractComponent implements OnInit {
   private initMap() {
 
     let layer = new VectorTile({
-      source: new VectorTileSource(<VectorTileOptions>{
+      source: new VectorTileSource({
         format: new MVT(),
         url: this.environmentService.endpoints.mapHost + '/data/v3/{z}/{x}/{y}.pbf',
         projection: null
@@ -316,7 +317,7 @@ export class MapComponent extends AbstractComponent implements OnInit {
       return;
     }
 
-    let coords: Coordinate = this.map.getEventCoordinate(event);
+    let coords: any = this.map.getEventCoordinate(event);
     MapComponent.LOG.trace('Creating new map marker at: ' + coords);
     this.markers = [new MapMarkerDefault(coords[0], coords[1])];
     this.selectMarker(this.markers[0].getId());
@@ -366,7 +367,7 @@ export class MapComponent extends AbstractComponent implements OnInit {
    * Deconstructs the map and shows an error info.
    * @param {ol.source.TileEvent} tileEvent The event with affected tile info
    */
-  public onMapTileError(tileEvent: TileEvent) {
+  public onMapTileError(tileEvent: any) {
 
     if (this.map) {
       this.map.setTarget(null);

@@ -27,9 +27,11 @@ export class TreeSelectComponent extends AbstractComponent implements OnInit, On
   /**
    * Event emitter triggered upon (de-)selecting a new/different tree.
    * Deselecting emits null.
+   * Note: isAsync is used to update the parent and trigger another changedetection.
+   *       see https://stackoverflow.com/questions/44691745/angular-4-expressionchangedafterithasbeencheckederror
    */
   @Output()
-  public selectedTreeChange: EventEmitter<TreeFrontend> = new EventEmitter<TreeFrontend>();
+  public selectedTreeChange: EventEmitter<TreeFrontend> = new EventEmitter<TreeFrontend>(true);
 
   /**
    * Holds the currently selected tree.
@@ -37,8 +39,11 @@ export class TreeSelectComponent extends AbstractComponent implements OnInit, On
   private selectedTreeInternal: TreeFrontend;
 
   @Input() set selectedTree(value: TreeFrontend) {
+    if (!value || value.id === 0) {
+      return;
+    }
     this.selectedTreeInternal = value;
-    this.setDisplayTreesPaginated(this.availableTreesInternal);
+    this.update();
   }
 
   get selectedTree(): TreeFrontend {
@@ -49,8 +54,19 @@ export class TreeSelectComponent extends AbstractComponent implements OnInit, On
    * Wheter or not to preselect the first tree in the list.
    * Input "selectedTree" overrides this if it has an id != 0 and is non-falsy.
    */
-  @Input()
-  public preselectFirstTree: boolean = false;
+  public preselectFirstTreeInternal: boolean = false;
+
+  /**
+   * @see TreeSelectComponent.preselectFirstTreeInternal
+   */
+  @Input() set preselectFirstTree(value: boolean) {
+    this.preselectFirstTreeInternal = value;
+    this.updateSelectedTree();
+  }
+
+  get preselectFirstTree(): boolean {
+    return this.preselectFirstTreeInternal;
+  }
 
   /**
    * Once loaded, contains all trees available for observation.
@@ -59,12 +75,12 @@ export class TreeSelectComponent extends AbstractComponent implements OnInit, On
 
   @Input() set availableTrees(value: Array<TreeFrontend>) {
     this.availableTreesInternal = value;
-    this.setDisplayTreesPaginated(value);
-    if ((!this.selectedTree || this.selectedTree.id === 0) && this.preselectFirstTree && this.availableTreesInternal.length >= 1) {
-      this.toggleTree(this.availableTreesInternal[0].id);
-    } else if (this.selectedTree) {
-      this.toggleTree(this.selectedTree.id);
-    }
+    this.updateSelectedTree();
+    this.update(false);
+  }
+
+  get availableTrees(): Array<TreeFrontend> {
+    return this.availableTreesInternal;
   }
 
   /**
@@ -120,7 +136,7 @@ export class TreeSelectComponent extends AbstractComponent implements OnInit, On
         pageSize = 6;
       }
       this.pageSize = pageSize;
-      this.setTreeSearchInput(this.treeSearchInput, false);
+      this.update(false);
     }), TreeSelectComponent.SUBSCRIPTION_TAG);
 
   }
@@ -135,17 +151,12 @@ export class TreeSelectComponent extends AbstractComponent implements OnInit, On
    */
   private setDisplayTreesPaginated(trees: Array<TreeFrontend>) {
 
-    if (!this.availableTreesInternal) {
+    if (!this.availableTreesInternal || !this.pageSize) {
       return;
     }
 
     this.currentDisplayPages = Math.ceil(trees.length / this.pageSize);
-
-    if (trees.length <= this.pageSize) {
-      this.displayTreePagination = false;
-    } else {
-      this.displayTreePagination = true;
-    }
+    this.displayTreePagination = trees.length > this.pageSize;
 
     let paginatedArray = new Array<Array<TreeFrontend>>();
 
@@ -156,7 +167,12 @@ export class TreeSelectComponent extends AbstractComponent implements OnInit, On
     }
 
     if (this.selectedTree) {
-      this.currentDisplayPage = Math.floor( trees.findIndex(value => value.id === this.selectedTree.id) / this.pageSize);
+      const selectedTreeIndex = trees.findIndex(value => value.id === this.selectedTree.id);
+      if (selectedTreeIndex === -1) {
+        this.currentDisplayPage = 0;
+      } else {
+        this.currentDisplayPage = Math.floor( selectedTreeIndex / this.pageSize);
+      }
     } else {
       this.currentDisplayPage = 0;
     }
@@ -166,14 +182,12 @@ export class TreeSelectComponent extends AbstractComponent implements OnInit, On
 
 
   /**
-   * Set tree search and filter displayed trees by input.
-   * @param {string} searchInput user's tree search input
+   * Update displayTrees by current filter.
    * @param {boolean} debounce (optional) whether to wait a few ms if a new input is given
    */
-  public setTreeSearchInput(searchInput: string, debounce: boolean = true): void {
+  public update(debounce: boolean = true): void {
 
-    this.treeSearchInput = searchInput;
-
+    const searchInput = this.treeSearchInput;
     if (!searchInput) {
       this.setDisplayTreesPaginated(this.availableTreesInternal);
       return;
@@ -214,7 +228,7 @@ export class TreeSelectComponent extends AbstractComponent implements OnInit, On
    * Select or deselect a single tree to continue observation.
    * @param {number} treeId id of that tree
    */
-  public toggleTree(treeId: number) {
+  public toggleTree(treeId: number): void {
 
     if (this.availableTreesInternal === undefined) {
       return;
@@ -228,6 +242,20 @@ export class TreeSelectComponent extends AbstractComponent implements OnInit, On
     }
 
     this.selectedTreeChange.emit(this.selectedTree);
+
+  }
+
+  /**
+   * Updates the selected tree if the availableTrees array changes or
+   * preselectFirstTree is changed.
+   */
+  private updateSelectedTree(): void {
+
+    if ((!this.selectedTree || this.selectedTree.id === 0) && this.preselectFirstTree && this.availableTreesInternal.length >= 1) {
+      this.toggleTree(this.availableTreesInternal[0].id);
+    } else if (this.selectedTree) {
+      this.toggleTree(this.selectedTree.id);
+    }
 
   }
 

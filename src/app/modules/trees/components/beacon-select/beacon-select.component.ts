@@ -37,8 +37,19 @@ export class BeaconSelectComponent extends AbstractComponent implements OnInit, 
    * Wheter or not to preselect the first beacon in the list.
    * Input "selectedBeacon" overrides this if it has an id != 0 and is non-falsy.
    */
-  @Input()
-  public preselectFirstBeacon: boolean = false;
+  public preselectFirstBeaconInternal: boolean = false;
+
+  /**
+  * @see BeaconSelectComponent.preselectFirstBeaconInternal
+  */
+  @Input() set preselectFirstBeacon(value: boolean) {
+    this.preselectFirstBeaconInternal = value;
+    this.updateSelectedBeacon();
+  }
+
+  get preselectFirstBeacon(): boolean {
+    return this.preselectFirstBeaconInternal;
+  }
 
   /**
    * Once loaded, contains all trees available for observation.
@@ -47,12 +58,12 @@ export class BeaconSelectComponent extends AbstractComponent implements OnInit, 
 
   @Input() set availableBeacons(value: Array<BeaconFrontend>) {
     this.availableBeaconsInternal = value;
-    this.setDisplayBeaconsPaginated(value);
-    if ((!this.selectedBeacon || this.selectedBeacon.id === 0) && this.preselectFirstBeacon && this.availableBeaconsInternal.length >= 1) {
-      this.toggleSelect(this.availableBeaconsInternal[0].id);
-    } else if (this.selectedBeacon) {
-      this.toggleSelect(this.selectedBeacon.id);
-    }
+    this.updateSelectedBeacon();
+    this.update(false);
+  }
+
+  get availableBeacons(): Array<BeaconFrontend> {
+    return this.availableBeaconsInternal;
   }
 
   /**
@@ -108,7 +119,7 @@ export class BeaconSelectComponent extends AbstractComponent implements OnInit, 
         pageSize = 6;
       }
       this.pageSize = pageSize;
-      this.setSearchInput(this.searchInput, false);
+      this.update(false);
     }), BeaconSelectComponent.SUBSCRIPTION_TAG);
 
   }
@@ -123,17 +134,12 @@ export class BeaconSelectComponent extends AbstractComponent implements OnInit, 
    */
   private setDisplayBeaconsPaginated(beacons: Array<BeaconFrontend>) {
 
-    if (!this.availableBeaconsInternal) {
+    if (!this.availableBeaconsInternal || !this.pageSize) {
       return;
     }
 
     this.currentDisplayPages = Math.ceil(beacons.length / this.pageSize);
-
-    if (beacons.length <= this.pageSize) {
-      this.displayPagination = false;
-    } else {
-      this.displayPagination = true;
-    }
+    this.displayPagination = beacons.length > this.pageSize;
 
     let paginatedArray = new Array<Array<BeaconFrontend>>();
 
@@ -144,7 +150,12 @@ export class BeaconSelectComponent extends AbstractComponent implements OnInit, 
     }
 
     if (this.selectedBeacon) {
-      this.currentDisplayPage = Math.floor( beacons.findIndex(value => value.id === this.selectedBeacon.id) / this.pageSize);
+      const selectedIndex = beacons.findIndex(value => value.id === this.selectedBeacon.id);
+      if (selectedIndex === -1) {
+        this.currentDisplayPage = 0;
+      } else {
+        this.currentDisplayPage = Math.floor( selectedIndex / this.pageSize);
+      }
     } else {
       this.currentDisplayPage = 0;
     }
@@ -155,13 +166,11 @@ export class BeaconSelectComponent extends AbstractComponent implements OnInit, 
 
   /**
    * Set tree search and filter displayed trees by input.
-   * @param {string} searchInput user's tree search input
    * @param {boolean} debounce (optional) whether to wait a few ms if a new input is given
    */
-  public setSearchInput(searchInput: string, debounce: boolean = true): void {
+  public update(debounce: boolean = true): void {
 
-    this.searchInput = searchInput;
-
+    const searchInput = this.searchInput;
     if (!searchInput) {
       this.setDisplayBeaconsPaginated(this.availableBeaconsInternal);
       return;
@@ -216,6 +225,20 @@ export class BeaconSelectComponent extends AbstractComponent implements OnInit, 
     }
 
     this.selectedBeaconChange.emit(this.selectedBeacon);
+
+  }
+
+  /**
+   * Updates the selected beacon if the availableBeacons array changes or
+   * preselectFirstBeacon is changed.
+   */
+  private updateSelectedBeacon(): void {
+
+    if ((!this.selectedBeacon || this.selectedBeacon.id === 0) && this.preselectFirstBeacon && this.availableBeaconsInternal.length >= 1) {
+      this.toggleSelect(this.availableBeaconsInternal[0].id);
+    } else if (this.selectedBeacon) {
+      this.toggleSelect(this.selectedBeacon.id);
+    }
 
   }
 

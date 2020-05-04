@@ -9,6 +9,9 @@ import {NoAuthDirective} from './directives/noauth.directive';
 import {CheckDirective} from './directives/check.directive';
 import {ValueaccessorDirective} from './directives/valueaccessor.directive';
 import {LangDirective} from './directives/lang.directive';
+import {LayoutConfig} from '../trees/config/layout.config';
+import {HTTP_INTERCEPTORS} from '@angular/common/http';
+import {AuthInterceptor} from './interceptors/auth.interceptor';
 
 
 @NgModule({
@@ -36,6 +39,14 @@ import {LangDirective} from './directives/lang.directive';
     CheckDirective,
     ValueaccessorDirective,
     LangDirective
+  ],
+  providers: [
+    // Interceptors
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    }
   ]
 })
 export class SharedModule { }

@@ -9,7 +9,7 @@ export const environment = {
 
   webHost:                            'https://urban-tree-climate.sbg.ac.at',
   host:                               'https://urban-tree-climate.sbg.ac.at:8443',
-  mapHost:                            'http://141.201.106.39:80',
+  mapHost:                            'http://urban-tree-climate.sbg.ac.at:80',
 
   endpoints: {
     // Tree
@@ -71,8 +71,13 @@ export const environment = {
 
     // Authentication
     login:                            '/login',
+
+    // Account
     changePassword:                   '/account/changepassword',
     changeUsername:                   '/account/changeusername',
+    usingOtp:                         '/account/otp',
+    activateOtp:                      '/account/otp/activate',
+    deactivateOtp:                    '/account/otp/deactivate',
     addUserPermission:                '/account/permission/request',
     usersGrantingPermission:          '/account/permission/granted/{permission}',
     loadPPIN:                         '/account/permission/pin'

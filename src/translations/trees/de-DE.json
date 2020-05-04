@@ -1,18 +1,18 @@
 {
-	"app": {
-		"title": "Stadtbäume",
-		"subtitle": "als Klimabotschafter",
+  "app": {
+    "title": "Stadtbäume",
+    "subtitle": "als Klimabotschafter",
     "date_format": "DD.MM.YYYY HH:mm",
     "date_format_angular": "dd.MM.yyyy HH:mm",
     "date_format_short": "DD.MM. HH:mm",
     "date_format_day_full": "DD.MM.YYYY",
     "date_format_day": "DD.MM",
     "date_format_time": "HH:mm"
-	},
+  },
   "announcements": {
     "close": "Ankündigung schließen"
   },
-	"navigation": {
+  "navigation": {
     "accessibility": {
       "title": "Abkürzungen für Barrierefreiheit",
       "more_items": "Zeige mehr Menüeinträge an",
@@ -23,25 +23,27 @@
         "footer": "Zur Fußleiste springen"
       }
     },
-		"home": "Start",
-		"phenology": "Phänologie",
-		"tree_list": "Bäume",
+    "home": "Start",
+    "participate": "Mitmachen",
+    "phenology": "Phänologie",
+    "tree_list": "Bäume",
     "measurements": "Messdaten",
     "statistics": "Statistiken",
     "admin": "Administratorkonsole",
-		"footer": {
-			"report": "Problem melden",
-			"imprint": "Impressum",
-			"home": "Startseite",
+    "footer": {
+      "report": "Problem melden",
+      "imprint": "Impressum",
+      "home": "Startseite",
       "madeby": "Mit &#x2764; entwickelt vom ",
       "madeby_team": "Stadtbäume-Team",
       "info_version": "Version",
       "info_hash": "ID"
-		},
+    },
     "messages": "Nachrichten",
-    "settings": "Einstellungen &amp; Sprache",
+    "settings": "Spracheinstellungen",
+    "settings_logged_in": "Einstellungen, Konto & Sprache",
     "login": "Anmelden",
-		"logout": "Abmelden",
+    "logout": "Abmelden",
     "project_account_1": "Projekt-",
     "project_account_2": "Account",
     "back": "Zurück",
@@ -57,7 +59,7 @@
       "measurements": "Beacon Messdaten",
       "statistics": "Statistiken"
     }
-	},
+  },
   "home": {
     "choose": "Triff eine Auswahl",
     "greeting": "Hallo, {{username}}!",
@@ -68,102 +70,102 @@
     "xp": "XP",
     "next_level_difference": "mehr für Level"
   },
-	"phenology": {
-		"observation_note": {
-			"title": "Phänologiebeobachtung eintragen",
-			"text": "Es dauert nicht länger als 10 Minuten.",
-			"start_btn": "Beginnen"
-		},
-		"observation": {
-			"navigation": {
-				"step1": "Baum",
-				"step2": "Beobachtung",
-				"step3": "Dokumentation",
-				"step4": "Überprüfen",
-				"continue": "Weiter",
-				"previous": "Zurück",
-				"to": "zu"
-			},
-			"step1": {
+  "phenology": {
+    "observation_note": {
+      "title": "Phänologiebeobachtung eintragen",
+      "text": "Es dauert nicht länger als 10 Minuten.",
+      "start_btn": "Beginnen"
+    },
+    "observation": {
+      "navigation": {
+        "step1": "Baum",
+        "step2": "Beobachtung",
+        "step3": "Dokumentation",
+        "step4": "Überprüfen",
+        "continue": "Weiter",
+        "previous": "Zurück",
+        "to": "zu"
+      },
+      "step1": {
         "trees_changed_alert": {
           "title": "Achtung!",
           "text": "Wir haben vor Kurzem einige Bäume, Spezies als auch ihre Standorte geändert. Bitte sei vorsichtig beim Suchen mittels Nummer (#x)!"
         },
-				"observation_date_label": "Beobachtungszeitpunkt",
-				"tree_location": "in der {{street}} in {{city.name}}",
-				"error_loading": {
-					"text": "Baum-Informationen konnten nicht geladen werden, bitte versuche es später noch einmal."
-				},
-				"tree_search_placeholder": "Gib Land, Stadt, Straße, Spezies oder ID ein...",
-				"title": "Dein Baum",
-				"tree_not_found": "Keinen Baum gefunden.",
+        "observation_date_label": "Beobachtungszeitpunkt",
+        "tree_location": "in der {{street}} in {{city.name}}",
+        "error_loading": {
+          "text": "Baum-Informationen konnten nicht geladen werden, bitte versuche es später noch einmal."
+        },
+        "tree_search_placeholder": "Gib Land, Stadt, Straße, Spezies oder ID ein...",
+        "title": "Dein Baum",
+        "tree_not_found": "Keinen Baum gefunden.",
         "map_error_text": "Kartendaten konnten nicht geladen werden. Bitte wähle unten einen Baum manuell aus."
-			},
-			"step2": {
+      },
+      "step2": {
         "nothing_to_observe": "An diesem Baum gibt es zur Zeit nichts zu beobachten. Falls Du einen Fehler vermutest, wende dich bitte an einen Systemadministrator.",
-				"help": {
-					"title": "Sieh dir die folgenden Objekte an und markiere das am besten passende Bild"
-				}
-			},
-			"type": {
-				"Bud": {
-					"name": "Knospe",
-					"name_plural": "Knospen",
-					"result": {
-						"Closed bud": "Geschlossene Knospe",
-						"Half-open bud": "Halbgeschlossene Knospe",
-						"Open bud": "Geöffnete Knospe"
-					}
-				}
-			},
-			"step3": {
-				"title": "Dokumentation",
-				"observers_title": "Wer hat den Baum überprüft?",
-				"observers_placeholder": "Namen der Personen",
-				"upload_photo_title": "Foto hochladen",
-				"upload_photo_placeholder": "Ein Foto des Baumes aussuchen",
-				"remark_title": "Anmerkungen",
-				"remark_placeholder": "Zusätzliche Informationen",
-				"characters": "Zeichen",
-				"help": {
-					"description": "Du musst deinen und die Namen von allen angeben, die dir geholfen haben. Zustätzlich besteht die Möglichkeit ein Bild des Baumes hochzuladen und zusätzliche Anmerkungen einzutragen (optional).",
-					"toggle": "Was muss ich machen?"
-				},
-				"photo_type_invalid": "Das Foto muss im Format PNG oder JPEG hochgeladen werden.",
-				"photo_size_invalid": "Das Foto darf nicht größer als 5 MB sein."
-			},
-			"step4": {
-				"title": "Einträge Überprüfen",
-				"section": {
-					"tree": "Baum",
-					"observations": "Beobachtungen"
-				},
-				"location": "Standort",
-				"species": "Spezies",
-				"observation_time": "Datum & Zeit der Beobachtung",
-				"submit_btn": "Beobachtung abschicken",
-				"back_btn": "Schritt zurück",
+        "help": {
+          "title": "Sieh dir die folgenden Objekte an und markiere das am besten passende Bild"
+        }
+      },
+      "type": {
+        "Bud": {
+          "name": "Knospe",
+          "name_plural": "Knospen",
+          "result": {
+            "Closed bud": "Geschlossene Knospe",
+            "Half-open bud": "Halbgeschlossene Knospe",
+            "Open bud": "Geöffnete Knospe"
+          }
+        }
+      },
+      "step3": {
+        "title": "Dokumentation",
+        "observers_title": "Wer hat den Baum überprüft?",
+        "observers_placeholder": "Namen der Personen",
+        "upload_photo_title": "Foto hochladen",
+        "upload_photo_placeholder": "Ein Foto des Baumes aussuchen",
+        "remark_title": "Anmerkungen",
+        "remark_placeholder": "Zusätzliche Informationen",
+        "characters": "Zeichen",
+        "help": {
+          "description": "Du musst deinen und die Namen von allen angeben, die dir geholfen haben. Zustätzlich besteht die Möglichkeit ein Bild des Baumes hochzuladen und zusätzliche Anmerkungen einzutragen (optional).",
+          "toggle": "Was muss ich machen?"
+        },
+        "photo_type_invalid": "Das Foto muss im Format PNG oder JPEG hochgeladen werden.",
+        "photo_size_invalid": "Das Foto darf nicht größer als 5 MB sein."
+      },
+      "step4": {
+        "title": "Einträge Überprüfen",
+        "section": {
+          "tree": "Baum",
+          "observations": "Beobachtungen"
+        },
+        "location": "Standort",
+        "species": "Spezies",
+        "observation_time": "Datum & Zeit der Beobachtung",
+        "submit_btn": "Beobachtung abschicken",
+        "back_btn": "Schritt zurück",
         "submit_progress": "Sendefortschritt",
-				"submitting_data": "Daten werden abgeschickt...",
-				"submitted_data": "Daten gespeichert!",
-				"submit_data": "Daten abschicken",
-				"submit_file": "Foto abschicken",
-				"submitted_file": "Foto gespeichert!",
-				"submit_failed_data": "Senden der Daten fehlgeschlagen!",
-				"submit_failed_file": "Senden des Fotos fehlgeschlagen!",
-				"status": {
-					"duplicate": "Es existiert bereits eine Beobachtung zum angegebenen Zeitpunkt.",
-					"generic": "Bitte versuche es nochmals in ein paar Sekunden. Durch neu laden der Seite gehen die Daten verloren."
-				},
-				"submitting_file": "Foto wird abgeschickt...",
-				"success": {
-					"title": "Erfolgreich",
-					"text": "Deine Phänologiebeobachtung wurde erfasst.",
-					"btn": "Fertig"
-				}
-			}
-		}
-	},
+        "submitting_data": "Daten werden abgeschickt...",
+        "submitted_data": "Daten gespeichert!",
+        "submit_data": "Daten abschicken",
+        "submit_file": "Foto abschicken",
+        "submitted_file": "Foto gespeichert!",
+        "submit_failed_data": "Senden der Daten fehlgeschlagen!",
+        "submit_failed_file": "Senden des Fotos fehlgeschlagen!",
+        "status": {
+          "duplicate": "Es existiert bereits eine Beobachtung zum angegebenen Zeitpunkt.",
+          "generic": "Bitte versuche es nochmals in ein paar Sekunden. Durch neu laden der Seite gehen die Daten verloren."
+        },
+        "submitting_file": "Foto wird abgeschickt...",
+        "success": {
+          "title": "Erfolgreich",
+          "text": "Deine Phänologiebeobachtung wurde erfasst.",
+          "btn": "Fertig"
+        }
+      }
+    }
+  },
   "tree_list": {
     "cities": "Städte",
     "species": "Spezies",
@@ -231,6 +233,7 @@
     "changing_username": "Nutzername wird geändert...",
     "username_changed": "Dein Nutzername wurde erfolgreich geändert",
     "username_change_failed": "Dein Nutzername konnte nicht geändert werden",
+    "username_duplicate": "Der gewählte Nutzername ist schon vergeben",
     "username_change_title": "Nutzernamen ändern",
     "password_change_title": "Passwort ändern",
     "password_change_title_set": "Passwort setzen",
@@ -241,9 +244,34 @@
     "change_password_failed_nooldpw": "Passwort konnte nicht geändert werden, bitte frage einen Administrator um Hilfe",
     "log_in_again": "Neu anmelden, um fortzufahren",
     "go_to_login": "Zum Login",
-    "learn_more": "Mehr erfahren"
+    "learn_more": "Mehr erfahren",
+    "otp_placeholder": "Zwei-Faktor Code",
+    "otp_info": "Bitte trage den Code aus deiner Zwei-Faktor-Authentifizierungsapp ein."
   },
-	"tree": {
+  "otp_manage": {
+    "checking_state": "Frage Zwei-Faktor Status ab...",
+    "checking_state_failed": "Konnte Status nicht abfragen",
+    "state_info_enabled": "Zwei-Faktor Authentifizierung ist EIN",
+    "state_info_disabled": "Zwei-Faktor Authentifizierung ist AUS",
+    "qr_scan_info": "Scanne den QR-Code mit einer Authenticator-App wie <a class=\"link\" href=\"https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2\" target=\"_blank\">Google Authenticator</a> oder <a class=\"link\" href=\"https://play.google.com/store/apps/details?id=org.fedorahosted.freeotp\" target=\"_blank\">FreeOTP</a>.",
+    "activate_title": "Zwei-Faktor Authentifizierung aktivieren",
+    "activate_btn": "Jetzt aktivieren",
+    "activating_btn": "Aktiviere...",
+    "activated_btn": "Aktiviert",
+    "recovery_codes_title": "Deine Wiederherstellungscodes:",
+    "recovery_codes_info": "Stelle sicher, dass Du diese Wiederherstellungscodes an einem sicheren Platz speicherst. Wenn Du den Zugang zu deiner Auth-App verlierst, kannst Du sie zum Einloggen nutzen. Jeder dieser Codes ist nur einmal gültig.",
+    "deactivate_title": "Zwei-Faktor Authentifizierung deaktivieren",
+    "deactivate_btn": "Jetzt aktivieren",
+    "deactivating_btn": "Deaktiviere...",
+    "deactivated_btn": "Deaktiviert",
+    "code_placeholder": "Zwei-Faktor Code",
+    "activation_success_info": "Erfolgreich aktiviert",
+    "activation_error_info": "Code war ungültig, bitte versuche es erneut",
+    "deactivation_success_info": "Erfolgreich deaktiviert",
+    "deactivation_error_info": "Code war ungültig, bitte versuche es erneut",
+    "go_to_home": "Go to home"
+  },
+  "tree": {
     "loading": "Lade Baum...",
     "summary": {
       "title": "Information",
@@ -278,27 +306,27 @@
       "text": "Wir haben zur Veranschaulichung der Ergebnisse unseres ersten Aufzeichnungsjahres diese Grafik mit Audiokommentar erstellt. Klicke auf den Abspielen-Button, um den Kommentar anzuhören.",
       "update_month": "Information zuletzt im Oktober 2018 aktualisiert."
     },
-		"species": {
-			"gingko biloba": "Ginkgo",
-			"quercus robur": "Stieleiche",
-			"platanus": "Platanus sp",
-			"tilia": "Linde",
-			"quercus": "Eiche",
-			"carpinus betulus": "Hainbuche",
-			"acer platanoides": "Spitzahorn",
-			"robinia pseudoacacia": "Gewöhnliche Robinie",
-			"platanus x acerifolia": "Platane",
-			"tilia platyphyllos": "Sommerlinde",
-			"paulownia tomentosa": "Blauglockenbaum",
-			"acer campestre": "Feldahorn",
-			"fraxinus excelsior": "Gemeine Esche",
-			"tilia cordata": "Winterlinde",
-			"liriodendron tulipifera": "Tulpenbaum",
-			"acer": "Ahorn",
-			"aesculus x carnea": "Rotblühende Rosskastanie",
-			"betula": "Betula",
-			"fraxinus": "Fraxinus",
-			"sequoioideae": "Mammutbaum",
+    "species": {
+      "gingko biloba": "Ginkgo",
+      "quercus robur": "Stieleiche",
+      "platanus": "Platanus sp",
+      "tilia": "Linde",
+      "quercus": "Eiche",
+      "carpinus betulus": "Hainbuche",
+      "acer platanoides": "Spitzahorn",
+      "robinia pseudoacacia": "Gewöhnliche Robinie",
+      "platanus x acerifolia": "Platane",
+      "tilia platyphyllos": "Sommerlinde",
+      "paulownia tomentosa": "Blauglockenbaum",
+      "acer campestre": "Feldahorn",
+      "fraxinus excelsior": "Gemeine Esche",
+      "tilia cordata": "Winterlinde",
+      "liriodendron tulipifera": "Tulpenbaum",
+      "acer": "Ahorn",
+      "aesculus x carnea": "Rotblühende Rosskastanie",
+      "betula": "Betula",
+      "fraxinus": "Fraxinus",
+      "sequoioideae": "Mammutbaum",
       "corylus colurna": "Baum-Hasel",
       "acer pseudoplatanus": "Bergahorn",
       "aesculus": "Kastanie",
@@ -345,7 +373,7 @@
         "quercus rubra": "Quercus rubra",
         "juglans regia": "Juglans regia"
       }
-		},
+    },
     "beacon": {
       "details": {
         "heading": "Beacon-Daten",
@@ -401,13 +429,13 @@
       "desc": "Abkürzungen zur Adminkonsole",
       "edit_link": "Baum konfigurieren"
     }
-	},
-	"general": {
-		"retry": "Nochmals versuchen",
-		"error": "Fehler",
-		"imprint": "Impressum",
+  },
+  "general": {
+    "retry": "Nochmals versuchen",
+    "error": "Fehler",
+    "imprint": "Impressum",
     "input_annotation": "Suchergebnisse werden automatisch während der Eingabe aktualisiert."
-	},
+  },
   "map": {
     "error_default_text": "Kartendaten konnten nicht geladen werden. Bitte versuche es erneut.",
     "activator": "Klicken, um die Karte zu nutzen",
@@ -428,9 +456,10 @@
     "account": {
       "title": "Konto verwalten",
       "desc":  "Du bist als {{username}} angemeldet.",
-      "desc_2":  "Ändere Deinen Nutznamen oder Passwort hier.",
+      "desc_2":  "Ändere Deinen Nutznamen oder Dein Passwort hier oder bearbeite Einstellungen zur Zwei-Faktor Authentifizierung.",
       "change_username":  "Nutzername ändern",
-      "change_password":  "Passwort ändern"
+      "change_password":  "Passwort ändern",
+      "manage_2fa": "Zwei-Faktor Authentifizierung"
     },
     "support": {
       "title": "Hilfe anfordern",
@@ -555,11 +584,7 @@
       "title": "Mehr Informationen",
       "desc": "Finde mehr über das <span class=\"font-italic\">Stadtbäume als Klimabotschafter</span>-Projekt auf unserer Info-Website heraus.",
       "link": "Jetzt besuchen"
-    },
-    "csa_intro": "Mache jetzt mit! Ob Schulklasse oder Einzelperson, jede(r) kann Phänologiebeobachtungen für die eigenen Bäume eintragen.",
-    "csa_intro_ref": "Mehr dazu",
-    "csa": "Führe jetzt selbst eine Phänologiebeobachtung bei deinen eingetragegen Bäumen durch!",
-    "csa_ref": "Phänologiebeobachtung erstellen"
+    }
   },
   "user_overview": {
     "xp": "XP",
@@ -699,6 +724,14 @@
         "summary_permissions": "<ul><li>Dich zu Phänologiebeobachtungen hinzuzufügen</li><li>Mit Dir Phänologiebeobachtungen zu teilen</li></ul>"
       }
     }
+  },
+  "tree_select": {
+    "none_exist": "Keine Bäume gespeichert",
+    "none_found": "Keine Bäume gefunden"
+  },
+  "beacon_select": {
+    "none_exist": "Keine Beacons gespeichert",
+    "none_found": "Keine Beacons gefunden"
   },
   "beacon_select": {
     "none_found": "Keine Beacons gespeichert."

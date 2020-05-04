@@ -58,8 +58,8 @@
             "browserTarget": "urban-trees-web:build"
           },
           "configurations": {
-            "prod": {
-              "browserTarget": "urban-trees-web:build:prod"
+            "production": {
+              "browserTarget": "urban-trees-web:build:production"
             }
           }
         },

@@ -41,6 +41,17 @@
           <div class="fp">{{'login.password_placeholder' | translate}}</div>
           <input #passwordInput type="password" class="form-control" name="password" [(ngModel)]="this.password" required>
         </div>
+        <div *ngIf="showOtp"
+             class="form-group fp-group">
+          <div class="fp">{{'login.otp_placeholder' | translate}}</div>
+          <input type="text" class="form-control code" name="otp" [(ngModel)]="this.otp" maxlength="11" required>
+          <div class="otp-info mt-2">
+            <i class="i i-xs i-dark i-info mr-2 flex-shrink-0"></i>
+            <div class="flex-grow-1">
+              {{'login.otp_info' | translate}}
+            </div>
+          </div>
+        </div>
         <button type="submit" class="btn btn-block btn-primary" [attr.disabled]="hasStatus(StatusKey.LOGIN, StatusValue.IN_PROGRESS) ? true : null">
           <span *ngIf="!hasStatus(StatusKey.LOGIN, StatusValue.IN_PROGRESS)">
             {{'login.log_in' | translate}}

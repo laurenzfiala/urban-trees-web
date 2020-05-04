@@ -1,0 +1,199 @@
+<div class="container-fluid mt-2 mt-lg-5 mb-5">
+
+  <div *ngIf="hasStatus(StatusKey.CHECK_STATE, StatusValue.IN_PROGRESS)"
+       class="d-flex justify-content-center align-items-center my-4">
+    <i class="i i-black i-spin i-load mr-2"></i>
+    {{'otp_manage.checking_state' | translate}}
+  </div>
+
+  <div *ngIf="hasStatus(StatusKey.CHECK_STATE, StatusValue.FAILED)"
+       class="d-flex justify-content-center align-items-center text-danger my-4">
+    <i class="i i-warning-danger mr-2"></i>
+    {{'otp_manage.checking_state_failed' | translate}}
+  </div>
+
+  <ng-container *ngIf="hasStatus(StatusKey.CHECK_STATE, StatusValue.SUCCESSFUL)">
+
+    <div class="col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto p-0">
+      <div *ngIf="isActive" class="otp-status alert alert-success justify-content-between m-0">
+        <i class="i i-shield-active-success flex-shrink-0 mr-3"></i>
+        <div>
+          {{'otp_manage.state_info_enabled' | translate}}
+        </div>
+      </div>
+
+      <div *ngIf="!isActive" class="otp-status alert alert-dark justify-content-between m-0">
+        <i class="i i-dark i-shield-inactive flex-shrink-0 mr-3"></i>
+        <div>
+          {{'otp_manage.state_info_disabled' | translate}}
+        </div>
+      </div>
+    </div>
+
+    <!-- ACTIVATION -->
+    <div *ngIf="isActivateFlow"
+         class="col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto login-container">
+
+      <h4 class="mb-3">
+        {{'otp_manage.activate_title' | translate}}
+        <span class="text-sm text-subtle">
+          &ndash; {{username()}}
+        </span>
+      </h4>
+
+      <!-- ACTIVATION PAGE 1 -->
+      <ng-container *ngIf="!hasStatus(StatusKey.ACTIVATE, StatusValue.SUCCESSFUL)">
+
+        <div class="text-center mb-2">
+          <img class="qr-code bg-light p-2" [src]="activationLink() | auth | async" />
+        </div>
+
+        <div class="alert alert-info text-sm mb-2">
+          <div [innerHTML]="'otp_manage.qr_scan_info' | translate"></div>
+        </div>
+
+        <form #form="ngForm"
+              (ngSubmit)="form.valid && activate()"
+              class="validate-on-dirty validate-on-submit fp-bg-medlight"
+              [ngClass]="{'submitted': form.submitted}">
+          <fieldset>
+            <div class="form-group fp-group">
+              <div class="fp">{{'otp_manage.code_placeholder' | translate}}</div>
+              <input type="text"
+                     class="form-control code"
+                     name="otpActivate"
+                     [(ngModel)]="this.otp"
+                     maxlength="6"
+                     required>
+            </div>
+            <button type="submit" class="btn btn-block btn-primary" [attr.disabled]="hasAnyStatus(StatusKey.ACTIVATE, StatusValue.IN_PROGRESS, StatusValue.SUCCESSFUL) ? true : null">
+              <span *ngIf="!hasAnyStatus(StatusKey.ACTIVATE, StatusValue.IN_PROGRESS, StatusValue.SUCCESSFUL)">
+                {{'otp_manage.activate_btn' | translate}}
+              </span>
+              <span *ngIf="hasStatus(StatusKey.ACTIVATE, StatusValue.IN_PROGRESS)">
+                <i class="i i-sm i-spin i-load float-left"></i>
+                {{'otp_manage.activating_btn' | translate}}
+              </span>
+              <span *ngIf="hasStatus(StatusKey.ACTIVATE, StatusValue.SUCCESSFUL)">
+                {{'otp_manage.activated_btn' | translate}}
+              </span>
+            </button>
+          </fieldset>
+
+        </form>
+
+      </ng-container>
+
+      <!-- ACTIVATION PAGE 2 -->
+      <ng-container *ngIf="hasStatus(StatusKey.ACTIVATE, StatusValue.SUCCESSFUL)">
+
+        <div class="mb-2">
+          <div class="mb-2">{{'otp_manage.recovery_codes_title' | translate}}</div>
+          <div class="flex-column justify-content-center text-code text-lg my--1">
+            <div *ngFor="let scratchCode of scratchCodes"
+                 class="text-center bg-light p-2 my-1">{{scratchCode | otpScratchCode}}</div>
+          </div>
+        </div>
+
+        <div class="alert alert-warning text-sm mb-2">
+          <i class="i i-warning-warning flex-shrink-0 mr-3"></i>
+          <div>{{'otp_manage.recovery_codes_info' | translate}}</div>
+        </div>
+
+      </ng-container>
+
+
+    </div>
+
+    <!-- DEACTIVATION -->
+    <div *ngIf="!isActivateFlow"
+         class="col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto login-container">
+
+      <h4 class="mb-3">
+        {{'otp_manage.deactivate_title' | translate}}
+        <span class="text-sm text-subtle">
+          &ndash; {{username()}}
+        </span>
+      </h4>
+
+      <form #form="ngForm"
+            (ngSubmit)="form.valid && deactivate()"
+            class="validate-on-dirty validate-on-submit fp-bg-medlight"
+            [ngClass]="{'submitted': form.submitted}">
+        <fieldset>
+          <div class="form-group fp-group">
+            <div class="fp">{{'otp_manage.code_placeholder' | translate}}</div>
+            <input type="text"
+                   class="form-control code"
+                   name="otpDeactivate"
+                   [(ngModel)]="this.otp"
+                   maxlength="11"
+                   [autofocus]="true"
+                   required>
+          </div>
+          <button type="submit" class="btn btn-block btn-primary" [attr.disabled]="hasAnyStatus(StatusKey.DEACTIVATE, StatusValue.IN_PROGRESS, StatusValue.SUCCESSFUL) ? true : null">
+            <span *ngIf="!hasAnyStatus(StatusKey.DEACTIVATE, StatusValue.IN_PROGRESS, StatusValue.SUCCESSFUL)">
+              {{'otp_manage.deactivate_btn' | translate}}
+            </span>
+            <span *ngIf="hasStatus(StatusKey.DEACTIVATE, StatusValue.IN_PROGRESS)">
+              <i class="i i-sm i-spin i-load float-left"></i>
+              {{'otp_manage.deactivating_btn' | translate}}
+            </span>
+            <span *ngIf="hasStatus(StatusKey.DEACTIVATE, StatusValue.SUCCESSFUL)">
+              {{'otp_manage.deactivated_btn' | translate}}
+            </span>
+          </button>
+        </fieldset>
+
+      </form>
+
+    </div>
+
+  </ng-container>
+
+  <div *ngIf="hasStatus(StatusKey.ACTIVATE, StatusValue.SUCCESSFUL)"
+             class="col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto login-annotation-container centered login-annotation-success">
+
+    <div class="d-flex align-items-center justify-content-between flex-grow-1">
+      {{'otp_manage.activation_success_info' | translate}}
+
+      <button class="btn btn-sm btn-success float-right" routerLink="/home">
+        <i class="i i-arrow-right i-sm mr-2 float-left"></i>
+        {{'otp_manage.go_to_home' | translate}}
+      </button>
+    </div>
+
+  </div>
+
+  <div
+    *ngIf="hasStatus(StatusKey.ACTIVATE, StatusValue.FAILED)"
+    class="col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto login-annotation-container login-annotation-danger">
+
+    {{'otp_manage.activation_error_info' | translate}}
+
+  </div>
+
+  <div *ngIf="hasStatus(StatusKey.DEACTIVATE, StatusValue.SUCCESSFUL)"
+       class="col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto login-annotation-container centered login-annotation-success">
+
+    <div class="d-flex align-items-center justify-content-between flex-grow-1">
+      {{'otp_manage.deactivation_success_info' | translate}}
+
+      <button class="btn btn-sm btn-success float-right" routerLink="/home">
+        <i class="i i-arrow-right i-sm mr-2 float-left"></i>
+        {{'otp_manage.go_to_home' | translate}}
+      </button>
+    </div>
+
+  </div>
+
+  <div
+    *ngIf="hasStatus(StatusKey.DEACTIVATE, StatusValue.FAILED)"
+    class="col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto login-annotation-container login-annotation-danger">
+
+    {{'otp_manage.deactivation_error_info' | translate}}
+
+  </div>
+
+</div>
+

@@ -51,7 +51,8 @@
                class="nav-link pointer"
                (click)="false"
                role="button"
-               href>
+               href
+               [title]="'navigation.accessibility.' + (navLinksDropdown.isOpen ? 'less' : 'more') + '_items' | translate">
               <i class="i i-xxs i-dark i-dots align-middle"></i>
               <span *ngIf="!navLinksDropdown.isOpen" class="sr-only">{{'navigation.accessibility.more_items' | translate}}</span>
               <span *ngIf="navLinksDropdown.isOpen" class="sr-only">{{'navigation.accessibility.less_items' | translate}}</span>
@@ -71,7 +72,8 @@
           <a *ngIf="userdata"
              routerLink="/admin/report"
              routerLinkActive="active"
-             class="nav-link nav-reports d-flex align-items-center">
+             class="nav-link nav-reports d-flex align-items-center"
+             [title]="'navigation.messages' | translate">
             <div *ngIf="userdata?.newMessagesAmount > 0"
                  class="nav-badge mr-1"
                  aria-hidden="true">
@@ -84,7 +86,8 @@
           <li class="nav-item pointer">
           <a routerLink="/settings"
              routerLinkActive="active"
-             class="nav-link nav-settings d-flex align-items-center">
+             class="nav-link nav-settings d-flex align-items-center"
+             [title]="'navigation.settings' + (isLoggedIn() ? '_logged_in' : '') | translate">
             <i class="i i-cog i-dark" aria-hidden="true"></i>
             <span class="sr-only">{{'navigation.settings' | translate}}</span>
           </a>
@@ -93,7 +96,8 @@
               class="nav-item pointer">
           <a (action)="logout()"
              class="nav-link d-flex align-items-center"
-             tabindex="0">
+             tabindex="0"
+             [title]="'navigation.logout' | translate">
             <i class="i i-logout i-dark" aria-hidden="true"></i>
             <span class="sr-only">{{'navigation.logout' | translate}}</span>
           </a>
@@ -102,7 +106,8 @@
               class="nav-item pointer">
             <a routerLink="/login"
                class="nav-link d-flex align-items-center"
-               tabindex="0">
+               tabindex="0"
+               [title]="'navigation.login' | translate">
               <i class="i i-login i-dark" aria-hidden="true"></i>
               <span class="sr-only">{{'navigation.login' | translate}}</span>
             </a>
@@ -116,9 +121,8 @@
 <ng-template #navContent>
   <li class="nav-item"
       routerLinkActive="active">
-    <a class="nav-link link-container" routerLink="/csa">
-      <div class="link d-sm-none">CSA</div>
-      <div class="link d-none d-sm-inline">Citizen Science Award</div>
+    <a class="nav-link link-container" routerLink="/participate">
+      <div class="link">{{'navigation.participate' | translate}}</div>
     </a>
   </li>
   <li class="nav-item"

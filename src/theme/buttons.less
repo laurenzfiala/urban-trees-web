@@ -133,6 +133,10 @@ a.link-btn:not([href]):not([tabindex]) {
 
   user-select: none;
 
+  .link-container:hover &,
+  .link-container:active &,
+  .link-container:focus &,
+  .link-container.active &,
   &:hover,
   &:active,
   &.active,
@@ -167,6 +171,8 @@ a.link-btn:not([href]):not([tabindex]) {
     color: lighten(@dangerDark, 15%) !important;
     border-color: lighten(@dangerDark, 15%) !important;
 
+    .link-container:hover &,
+    .link-container:active &,
     &:hover,
     &:focus {
       color: @dangerDark !important;
@@ -178,6 +184,8 @@ a.link-btn:not([href]):not([tabindex]) {
     color: lighten(@primaryColor, 15%) !important;
     border-color: lighten(@primaryColor, 15%) !important;
 
+    .link-container:hover &,
+    .link-container:active &,
     &:hover,
     &:focus {
       color: @primaryColor !important;
@@ -197,6 +205,8 @@ a.link-btn:not([href]):not([tabindex]) {
       }
     }
 
+    .link-container:hover &,
+    .link-container:active &,
     &:hover,
     &:focus {
       color: @successDark !important;
@@ -208,6 +218,8 @@ a.link-btn:not([href]):not([tabindex]) {
     color: lighten(@warningDark, 15%) !important;
     border-color: lighten(@warningDark, 15%) !important;
 
+    .link-container:hover &,
+    .link-container:active &,
     &:hover,
     &:focus {
       color: @warningDark !important;

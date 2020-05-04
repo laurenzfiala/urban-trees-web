@@ -43,7 +43,7 @@
 
     <ul class="list-group mt-2">
       <li *ngFor="let u of displayUsers"
-          class="list-group-item user-container flex-wrap"
+          class="list-group-item user-container"
           [ngClass]="{'disabled': u.deleteStatus === StatusValue.SUCCESSFUL}">
 
         <div class="info-container">
@@ -160,6 +160,17 @@
         <div>
           Account inactivated
           <div class="info-annotation text-subtle">Admin set this account to be inactive. User is not allowed to log in.</div>
+        </div>
+      </div>
+      <div *ngIf="u.usingOtp" class="info-item">
+        <i class="i i-sm i-shield-active-success mr-2"></i>
+        Using 2FA
+      </div>
+      <div *ngIf="!u.usingOtp" class="info-item">
+        <i class="i i-sm i-shield-inactive-subtle mr-2"></i>
+        <div>
+          Not using 2FA
+          <div class="info-annotation text-subtle">User has not enabled two-factor login.</div>
         </div>
       </div>
       <div *ngIf="u.nonLocked" class="info-item">

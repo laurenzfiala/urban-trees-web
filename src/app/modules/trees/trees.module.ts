@@ -43,7 +43,6 @@ import {CapitalizationPipe} from './pipes/capitalize.pipe';
 import {LowercasePipe} from './pipes/lowercase.pipe';
 import {ReplacePipe} from './pipes/replace.pipe';
 import {DecimalPlacesPipe} from './pipes/decimal-places.pipe';
-import {CsaComponent} from './components/csa/csa.component';
 import {FormsModule} from '@angular/forms';
 import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule} from '@angular/common/http';
 import {LayoutModule} from '@angular/cdk/layout';
@@ -75,12 +74,16 @@ import {UserRewardService} from './services/user-reward.service';
 import {ProjectLoginGuard} from './components/project-login/project-login.guard';
 import {AdminGuard} from './components/admin/admin.guard';
 import {LayoutConfig} from './config/layout.config';
-import {AuthInterceptor} from './interceptors/auth.interceptor';
+import {AuthInterceptor} from '../shared/interceptors/auth.interceptor';
 import {SharedModule} from '../shared/shared.module';
 import {AuthService} from '../shared/services/auth.service';
 import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {VERSION} from '../../../environments/version';
 import {TranslateInitService} from '../shared/services/translate-init.service';
+import {ParticipateComponent} from './components/participate/participate.component';
+import { OtpManageComponent } from './components/otp-manage/otp-manage.component';
+import {AuthPipe} from './pipes/auth.pipe';
+import {OtpScratchCodePipe} from './pipes/otp-scratch-code.pipe';
 
 export function HttpLoaderFactory2(http: HttpClient) {
   return new TranslateHttpLoader(http, '/translations/trees/', '.json?version=' + VERSION.version);
@@ -125,6 +128,8 @@ export function HttpLoaderFactory2(http: HttpClient) {
     UserPermissionComponent,
     AnnouncementsComponent,
     NotificationsComponent,
+    ParticipateComponent,
+    OtpManageComponent,
 
     // Pipes
     StringModificationPipe,
@@ -132,7 +137,8 @@ export function HttpLoaderFactory2(http: HttpClient) {
     LowercasePipe,
     ReplacePipe,
     DecimalPlacesPipe,
-    CsaComponent,
+    AuthPipe,
+    OtpScratchCodePipe
   ],
   imports: [
     // Core

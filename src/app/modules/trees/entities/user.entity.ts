@@ -18,6 +18,7 @@ export class User {
   public lastLoginAttemptDate: Date;
   public lastLoginDate: Date;
   public roles: Array<Role>;
+  public usingOtp: boolean;
 
   public deleteStatus: number;
   public secureLoginLink: string;
@@ -30,7 +31,8 @@ export class User {
               failedloginAttempts?: number,
               lastLoginAttemptDate?: string,
               lastLoginDate?: string,
-              roles?: Array<Role>) {
+              roles?: Array<Role>,
+              usingOtp?: boolean) {
     this.id = id;
     this.username = username;
     this.active = active;
@@ -44,6 +46,7 @@ export class User {
       this.lastLoginDate = moment.utc(lastLoginDate, 'YYYY-MM-DD[T]HH-mm-ss').toDate();
     }
     this.roles = roles;
+    this.usingOtp = usingOtp;
   }
 
   public static fromObject(o: any): User {
@@ -57,7 +60,8 @@ export class User {
       o.failedloginAttempts,
       o.lastLoginAttemptDate,
       o.lastLoginDate,
-      o.roles && o.roles.map(r => Role.fromObject(r))
+      o.roles && o.roles.map(r => Role.fromObject(r)),
+      o.usingOtp
     );
 
   }

@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'ut-csa',
-  templateUrl: './csa.component.html',
-  styleUrls: ['./csa.component.less']
+  templateUrl: './participate.component.html',
+  styleUrls: ['./participate.component.less']
 })
-export class CsaComponent implements OnInit {
+export class ParticipateComponent implements OnInit {
 
   constructor() { }
 

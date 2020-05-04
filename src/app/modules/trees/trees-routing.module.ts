@@ -3,7 +3,6 @@ import {RouterModule, Routes} from '@angular/router';
 
 import {TreesComponent} from './trees.component';
 import {HomeComponent} from './components/home/home.component';
-import {CsaComponent} from './components/csa/csa.component';
 import {MissingComponent} from './components/missing/missing.component';
 import {ImprintComponent} from './components/imprint/imprint.component';
 import {SettingsComponent} from './components/settings/settings.component';
@@ -28,6 +27,8 @@ import {MessagesComponent} from './components/messages/messages.component';
 import {ReportComponent} from './components/report/report.component';
 import {ObservationComponent} from './components/phenology/observation/observation.component';
 import {HelpComponent} from './components/help/help.component';
+import {ParticipateComponent} from './components/participate/participate.component';
+import {OtpManageComponent} from './components/otp-manage/otp-manage.component';
 
 const routes: Routes = [
   {
@@ -39,8 +40,8 @@ const routes: Routes = [
         component: HomeComponent
       },
       {
-        path: 'csa',
-        component: CsaComponent
+        path: 'participate',
+        component: ParticipateComponent
       },
       {
         path: 'missing',
@@ -89,6 +90,14 @@ const routes: Routes = [
       {
         path: 'account/changeusername',
         component: UsernameChangeComponent,
+        canActivate: [ProjectLoginGuard],
+        data: {
+          roles: environment.security.roles.user
+        }
+      },
+      {
+        path: 'account/2fa',
+        component: OtpManageComponent,
         canActivate: [ProjectLoginGuard],
         data: {
           roles: environment.security.roles.user

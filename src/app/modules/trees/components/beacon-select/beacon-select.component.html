@@ -1,7 +1,7 @@
 <div class="form-group mb-0">
   <input
     [ngModel]="searchInput"
-    (ngModelChange)="setSearchInput($event)"
+    (ngModelChange)="searchInput = $event; update()"
     name="treeSearchInput"
     class="form-control form-control-lg search-input"
     [placeholder]="'phenology.observation.step1.tree_search_placeholder' | translate" />
@@ -39,7 +39,7 @@
           </div>
         </div>
         <div *ngIf="selectedBeacon?.id !== beacon.id" class="d-flex flex-row align-items-center justify-content-end mt-1">
-          <div class="link">
+          <div class="link link-btn">
             Select
           </div>
         </div>
@@ -48,6 +48,22 @@
     </div>
   </div>
 
+</div>
+
+<div *ngIf="availableBeacons?.length === 0"
+     class="status-img my-4">
+  <img src="/assets/img/icon/no_store.svg" />
+  <div>
+    {{'beacon_select.none_exist' | translate}}
+  </div>
+</div>
+
+<div *ngIf="displayBeacons?.length === 0"
+     class="status-img my-4">
+  <img src="/assets/img/icon/no_results.svg" />
+  <div>
+    {{'beacon_select.none_found' | translate}}
+  </div>
 </div>
 
 <nav *ngIf="displayPagination">

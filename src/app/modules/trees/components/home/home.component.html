@@ -13,21 +13,6 @@
       <span [innerHTML]="'home.desc_user_2' | translate"></span>
     </div>
 
-    <!-- CSA -->
-    <ng-container *lang="'de-DE'">
-      <div *noauth class="my-2 alert alert-warning d-block">
-        <b>Citizen Science Award 2020</b>
-        <div>Mache jetzt mit! Ob Schulklasse oder Einzelperson, jede(r) kann Phänologiebeobachtungen für die eigenen Bäume eintragen.</div>
-        <a routerLink="/csa" class="link mt-1">Mehr dazu</a>
-      </div>
-
-      <div *auth class="my-2 alert alert-warning d-block">
-        <b>Citizen Science Award 2020</b>
-        <div>Führe jetzt selbst eine Phänologiebeobachtung bei deinen eingetragegen Bäumen durch!</div>
-        <a routerLink="/phenology" class="link mt-1">Phänologiebeobachtung erstellen</a>
-      </div>
-    </ng-container>
-
     <div class="btn-img-toolbar">
       <div class="d-flex flex-wrap">
         <a class="btn-img trees" routerLink="/trees">

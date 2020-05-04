@@ -12,7 +12,7 @@
   "announcements": {
     "close": "Close announcement"
   },
-	"navigation": {
+  "navigation": {
     "accessibility": {
       "title": "Accessibility shortcuts",
       "more_items": "Show more menu items",
@@ -23,23 +23,25 @@
         "footer": "Jump to footer"
       }
     },
-		"home": "Home",
-		"phenology": "Phenology",
-		"tree_list": "Trees",
-		"measurements": "Measurements",
-		"statistics": "Statistics",
-		"admin": "Admin console",
-		"footer": {
-			"report": "Report a problem",
-			"imprint": "Imprint",
-			"home": "Home page",
-			"madeby": "Made with &#x2764; by the ",
+    "home": "Home",
+    "participate": "Participate",
+    "phenology": "Phenology",
+    "tree_list": "Trees",
+    "measurements": "Measurements",
+    "statistics": "Statistics",
+    "admin": "Admin console",
+    "footer": {
+      "report": "Report a problem",
+      "imprint": "Imprint",
+      "home": "Home page",
+      "madeby": "Made with &#x2764; by the",
       "madeby_team": "Urban-Trees-Team",
       "info_version": "Version",
       "info_hash": "ID"
-		},
+    },
     "messages": "Messages",
-    "settings": "Settings &amp; Language",
+    "settings": "Language settings",
+    "settings_logged_in": "Settings, Account & Language",
     "login": "Log in",
     "logout": "Log out",
     "project_account_1": "Project-",
@@ -57,7 +59,7 @@
       "measurements": "Beacon measurements",
       "statistics": "Statistics"
     }
-	},
+  },
   "home": {
     "choose": "Choose what to do",
     "greeting": "Hello, {{username}}!",
@@ -69,102 +71,102 @@
       "error": "Failed to load your score."
     }
   },
-	"phenology": {
-		"observation_note": {
-			"title": "Enter a tree observation",
-			"text": "It's easy to do and will not take you too long.",
-			"start_btn": "Start observation"
-		},
-		"observation": {
-			"navigation": {
-				"step1": "Tree",
-				"step2": "Observation",
-				"step3": "Documentation",
-				"step4": "Review",
-				"continue": "Continue",
-				"previous": "Previous",
-				"to": "to"
-			},
-			"step1": {
-          "trees_changed_alert": {
+  "phenology": {
+    "observation_note": {
+      "title": "Enter a tree observation",
+      "text": "It's easy to do and will not take you too long.",
+      "start_btn": "Start observation"
+    },
+    "observation": {
+      "navigation": {
+        "step1": "Tree",
+        "step2": "Observation",
+        "step3": "Documentation",
+        "step4": "Review",
+        "continue": "Continue",
+        "previous": "Previous",
+        "to": "to"
+      },
+      "step1": {
+        "trees_changed_alert": {
           "title": "Attention!",
           "text": "We recently changed some trees and their species, as well as their location. Please be careful when searching by number (#x)!"
         },
-				"observation_date_label": "Observation time",
-				"tree_location": "at {{street}} in {{city.name}}",
-				"error_loading": {
-					"text": "Could not load tree data. Please try again later."
-				},
-				"tree_search_placeholder": "Enter Country, City, Street, Species or ID...",
-				"title": "Your tree",
-				"tree_not_found": "No tree found.",
+        "observation_date_label": "Observation time",
+        "tree_location": "at {{street}} in {{city.name}}",
+        "error_loading": {
+          "text": "Could not load tree data. Please try again later."
+        },
+        "tree_search_placeholder": "Enter Country, City, Street, Species or ID...",
+        "title": "Your tree",
+        "tree_not_found": "No tree found.",
         "map_error_text": "Could not load map data. Please choose a tree below manually."
       },
-			"step2": {
+      "step2": {
         "nothing_to_observe": "There is nothing to observe set up for this tree. Should you suspect a mistake, please contact a system administrator.",
-				"help": {
-					"title": "Check the following objects and tick the most fitting image for each"
-				}
-			},
-			"type": {
-				"Bud": {
-					"name": "Bud",
-					"name_plural": "Buds",
-					"result": {
-						"Closed bud": "Closed Bud",
-						"Half-open bud": "Half-open bud",
-						"Open bud": "Open bud"
-					}
-				}
-			},
-			"step3": {
-				"title": "Documentation",
-				"observers_title": "Who is checking?",
-				"observers_placeholder": "All names",
-				"upload_photo_title": "Upload photo",
-				"upload_photo_placeholder": "Choose a photo of the tree",
-				"remark_title": "Add a remark",
-				"remark_placeholder": "Additional information",
-				"characters": "characters",
-				"help": {
-					"description": "You must enter your name and the naes of everyone observing with you and can optionally upload a picture of the tree if you want and add additional remarks.",
-					"toggle": "How does it work?"
-				},
-				"photo_type_invalid": "The photo must be of type PNG or JPEG.",
-				"photo_size_invalid": "The photo must not be larger than 5 MB."
-			},
-			"step4": {
-				"title": "Review your entries",
-				"section": {
-					"tree": "Tree",
-					"observations": "Observations"
-				},
-				"location": "Location",
-				"species": "Species",
-				"observation_time": "Date & Time of observation",
-				"submit_btn": "Submit this observation",
-				"back_btn": "Go back",
+        "help": {
+          "title": "Check the following objects and tick the most fitting image for each"
+        }
+      },
+      "type": {
+        "Bud": {
+          "name": "Bud",
+          "name_plural": "Buds",
+          "result": {
+            "Closed bud": "Closed Bud",
+            "Half-open bud": "Half-open bud",
+            "Open bud": "Open bud"
+          }
+        }
+      },
+      "step3": {
+        "title": "Documentation",
+        "observers_title": "Who is checking?",
+        "observers_placeholder": "All names",
+        "upload_photo_title": "Upload photo",
+        "upload_photo_placeholder": "Choose a photo of the tree",
+        "remark_title": "Add a remark",
+        "remark_placeholder": "Additional information",
+        "characters": "characters",
+        "help": {
+          "description": "You must enter your name and the naes of everyone observing with you and can optionally upload a picture of the tree if you want and add additional remarks.",
+          "toggle": "How does it work?"
+        },
+        "photo_type_invalid": "The photo must be of type PNG or JPEG.",
+        "photo_size_invalid": "The photo must not be larger than 5 MB."
+      },
+      "step4": {
+        "title": "Review your entries",
+        "section": {
+          "tree": "Tree",
+          "observations": "Observations"
+        },
+        "location": "Location",
+        "species": "Species",
+        "observation_time": "Date & Time of observation",
+        "submit_btn": "Submit this observation",
+        "back_btn": "Go back",
         "submit_progress": "Submission progress",
-				"submitting_data": "Sending observation...",
-				"submitted_data": "Submitted observation!",
-				"submit_data": "Send observation",
-				"submit_file": "Send photo",
-				"submitted_file": "Submitted photo!",
-				"submit_failed_data": "Failed to submit observation!",
-				"submit_failed_file": "Failed to send photo!",
-				"status": {
-					"duplicate": "There is already an observation at the given time.",
-					"generic": "Please try submitting again in a few moments. If you refresh the page, your observation data is lost."
-				},
-				"submitting_file": "Sending photo...",
-				"success": {
-					"title": "Success",
-					"text": "Your observation has been successfully submitted.",
-					"btn": "Finish"
-				}
-			}
-		}
-	},
+        "submitting_data": "Sending observation...",
+        "submitted_data": "Submitted observation!",
+        "submit_data": "Send observation",
+        "submit_file": "Send photo",
+        "submitted_file": "Submitted photo!",
+        "submit_failed_data": "Failed to submit observation!",
+        "submit_failed_file": "Failed to send photo!",
+        "status": {
+          "duplicate": "There is already an observation at the given time.",
+          "generic": "Please try submitting again in a few moments. If you refresh the page, your observation data is lost."
+        },
+        "submitting_file": "Sending photo...",
+        "success": {
+          "title": "Success",
+          "text": "Your observation has been successfully submitted.",
+          "btn": "Finish"
+        }
+      }
+    }
+  },
   "tree_list": {
     "cities": "Cities",
     "species": "Species",
@@ -232,6 +234,7 @@
     "changing_username": "Changing username...",
     "username_changed": "Your username was successfully changed",
     "username_change_failed": "Your username could not be changed",
+    "username_duplicate": "The username you chose already exists",
     "username_change_title": "Change your username",
     "password_change_title": "Change your password",
     "password_change_title_set": "Set your password",
@@ -242,9 +245,34 @@
     "change_password_failed_nooldpw": "Your password could not be changed, please contact an admin",
     "log_in_again": "Log in to continue",
     "go_to_login": "Go to login",
-    "learn_more": "Learn more"
+    "learn_more": "Learn more",
+    "otp_placeholder": "Two-factor code",
+    "otp_info": "Please enter the two-factor code from your authenticator app."
   },
-	"tree": {
+  "otp_manage": {
+    "checking_state": "Checking two-factor state",
+    "checking_state_failed": "Could not check two-factor state",
+    "state_info_enabled": "Two-Factor Authentication is ON",
+    "state_info_disabled": "Two-Factor Authentication is OFF",
+    "qr_scan_info": "Scan this QR-code using an Authenticator-App like <a class=\"link\" href=\"https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2\" target=\"_blank\">Google Authenticator</a> or <a class=\"link\" href=\"https://play.google.com/store/apps/details?id=org.fedorahosted.freeotp\" target=\"_blank\">FreeOTP</a>.",
+    "activate_title": "Activate Two-Factor Authentication",
+    "activate_btn": "Activate now",
+    "activating_btn": "Activating...",
+    "activated_btn": "Activated",
+    "recovery_codes_title": "Your recovery codes:",
+    "recovery_codes_info": "Make sure to store these recovery codes safely. If you lose access to your Authenticator-App, these allow you to log in. Each of the codes only works once.",
+    "deactivate_title": "Deactivate Two-Factor Authentication",
+    "deactivate_btn": "Deactivate now",
+    "deactivating_btn": "Deactivating...",
+    "deactivated_btn": "Deactivated",
+    "code_placeholder": "Two-factor code",
+    "activation_success_info": "Successfully activated",
+    "activation_error_info": "Code was incorrect, please try again",
+    "deactivation_success_info": "Successfully deactivated",
+    "deactivation_error_info": "Code was incorrect, please try again",
+    "go_to_home": "Go to home"
+  },
+  "tree": {
     "loading": "Loading tree...",
     "summary": {
       "title": "Information",
@@ -279,33 +307,33 @@
       "text": "To illustrate the findings of our first year of observations, we have created a chart with audio commentary (only available in german). Press the Play-Button to start the commentary or press 'X' to see the chart.",
       "update_month": "Information last updated in October 2018."
     },
-		"species": {
-			"gingko biloba": "Ginkgo",
-			"quercus robur": "Common oak",
-			"platanus": "Platanus sp",
-			"tilia": "Lime",
-			"quercus": "Oak",
-			"carpinus betulus": "Common hornbeam",
-			"acer platanoides": "Norway maple",
-			"robinia pseudoacacia": "Black locust",
-			"platanus x acerifolia": "Plane",
-			"tilia platyphyllos": "Largeleaf lime",
-			"paulownia tomentosa": "Princesstree",
-			"acer campestre": "Field maple",
-			"fraxinus excelsior": "Common ash",
-			"tilia cordata": "Small-leaved lime",
-			"liriodendron tulipifera": "Tulip tree",
-			"acer": "Maple",
-			"aesculus x carnea": "Red horse-chestnut",
-			"betula": "Betula",
-			"fraxinus": "Fraxinus",
-			"sequoioideae": "Redwood",
-			"corylus colurna": "Turkish hazel",
-			"acer pseudoplatanus": "Sycamore maple",
-			"aesculus": "Chestnut",
-			"betula pendula": "Silver birch",
-			"juglans nigra": "Juglans nigra",
-			"juglans": "Juglans sp",
+    "species": {
+      "gingko biloba": "Ginkgo",
+      "quercus robur": "Common oak",
+      "platanus": "Platanus sp",
+      "tilia": "Lime",
+      "quercus": "Oak",
+      "carpinus betulus": "Common hornbeam",
+      "acer platanoides": "Norway maple",
+      "robinia pseudoacacia": "Black locust",
+      "platanus x acerifolia": "Plane",
+      "tilia platyphyllos": "Largeleaf lime",
+      "paulownia tomentosa": "Princesstree",
+      "acer campestre": "Field maple",
+      "fraxinus excelsior": "Common ash",
+      "tilia cordata": "Small-leaved lime",
+      "liriodendron tulipifera": "Tulip tree",
+      "acer": "Maple",
+      "aesculus x carnea": "Red horse-chestnut",
+      "betula": "Betula",
+      "fraxinus": "Fraxinus",
+      "sequoioideae": "Redwood",
+      "corylus colurna": "Turkish hazel",
+      "acer pseudoplatanus": "Sycamore maple",
+      "aesculus": "Chestnut",
+      "betula pendula": "Silver birch",
+      "juglans nigra": "Juglans nigra",
+      "juglans": "Juglans sp",
       "fagus": "Beech",
       "prunus cerasifera": "Cherry plum",
       "castanea": "Castanea sp",
@@ -346,7 +374,7 @@
         "quercus rubra": "Quercus rubra",
         "juglans regia": "Juglans regia"
       }
-		},
+    },
     "beacon": {
       "details": {
         "heading": "Beacon Data",
@@ -402,13 +430,13 @@
       "desc": "Shortcuts to the admin console",
       "edit_link": "Edit tree"
     }
-	},
-	"general": {
-		"retry": "Retry",
-		"error": "Error",
-		"imprint": "Imprint",
+  },
+  "general": {
+    "retry": "Retry",
+    "error": "Error",
+    "imprint": "Imprint",
     "input_annotation": "Search results update automatically while typing."
-	},
+  },
   "map": {
     "error_default_text": "Could not load map data. Please try again.",
     "activator": "Click to use map",
@@ -429,9 +457,10 @@
     "account": {
       "title": "Manage Account",
       "desc":  "You are logged in as {{username}}.",
-      "desc_2":  "Change your username or password here.",
+      "desc_2":  "Change your username or password here or manage two-factor authentication.",
       "change_username":  "Change username",
-      "change_password":  "Change password"
+      "change_password":  "Change password",
+      "manage_2fa": "Two-Factor Authentication"
     },
     "support": {
       "title": "Request Support",
@@ -556,11 +585,7 @@
       "title": "More information",
       "desc": "Find out more about the <span class=\"font-italic\">Urban Trees as climate messengers</span>-Project on our info-website with lots of additional project details.",
       "link": "Visit now"
-    },
-    "csa_intro": "Participate now! You can now also enter phenology observations for your own trees as a group, school class or by yourself.",
-    "csa_intro_ref": "More information",
-    "csa": "Conduct your own phenology observation for your trees now!",
-    "csa_ref": "Create phenology observation"
+    }
   },
   "user_overview": {
     "xp": "XP",
@@ -701,8 +726,13 @@
       }
     }
   },
+  "tree_select": {
+    "none_exist": "No beacons stored yet",
+    "none_found": "No trees found"
+  },
   "beacon_select": {
-    "none_found": "No beacons stored yet."
+    "none_exist": "No beacons stored yet",
+    "none_found": "No trees found"
   },
   "report": {
     "title": "What kind of problem do you need help with?",
