@@ -76,6 +76,7 @@
 
         <ut-loading-status
           errorDescription="tree.beacon.data.error"
+          [statusValues]="StatusValue"
           [status]="getStatusObservable(StatusKey.BEACON_DATA)"
           [error]="getStatusErrorObservable(StatusKey.BEACON_DATA)"></ut-loading-status>
 

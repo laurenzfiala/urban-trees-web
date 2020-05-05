@@ -1,10 +1,10 @@
 import {AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {AuthService} from '../../../shared/services/auth.service';
-import {Login} from '../../entities/login.entity';
 import {AbstractComponent} from '../abstract.component';
-import {ActivatedRoute, Router, UrlTree} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {LoginAccessReason} from './logout-reason.enum';
 import {LoginStatus} from './login-status.enum';
+import {UserAuthenticationToken, UserOtpAuthenticationToken} from '../../entities/auth-token.entity';
 
 @Component({
   selector: 'ut-project-login',
@@ -130,8 +130,13 @@ export class ProjectLoginComponent extends AbstractComponent implements OnInit, 
 
     this.setStatus(StatusKey.LOGIN, StatusValue.IN_PROGRESS);
 
-    const otp = this.otp && this.otp.length > 0 ? this.otp.replace('-', '') : undefined;
-    let loginEntity = new Login(this.username, this.password, otp);
+    let loginEntity;
+    if (this.otp && this.otp.length > 0) {
+      const otp = this.otp.replace('-', '');
+      loginEntity = new UserOtpAuthenticationToken(this.username, this.password, otp);
+    } else {
+      loginEntity = new UserAuthenticationToken(this.username, this.password);
+    }
 
     this.authService.login(loginEntity, () => {
       this.setStatus(StatusKey.LOGIN, StatusValue.SUCCESSFUL);

@@ -4,6 +4,7 @@
       {{'measurements.temperature.title' | translate}}
       <ut-loading-status
         errorDescription="measurements.temperature.error"
+        [statusValues]="StatusValue"
         [status]="getStatusObservable(StatusKey.STATISTICS)"
         [error]="getStatusErrorObservable(StatusKey.STATISTICS)"></ut-loading-status>
     </h1>
@@ -42,6 +43,7 @@
       {{'measurements.humidity.title' | translate}}
       <ut-loading-status
         errorDescription="measurements.humidity.error"
+        [statusValues]="StatusValue"
         [status]="getStatusObservable(StatusKey.STATISTICS)"
         [error]="getStatusErrorObservable(StatusKey.STATISTICS)"
         (retry)="loadStatistics()"></ut-loading-status>
@@ -81,6 +83,7 @@
       {{'measurements.beacons.title' | translate}}
       <ut-loading-status
         errorDescription="measurements.beacons.error"
+        [statusValues]="StatusValue"
         [status]="getStatusObservable(StatusKey.BEACONS)"
         [error]="getStatusErrorObservable(StatusKey.BEACONS)"></ut-loading-status>
     </h1>

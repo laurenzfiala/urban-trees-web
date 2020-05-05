@@ -4,6 +4,7 @@
       {{'statistics.beaconreadouts.title' | translate}}
       <ut-loading-status
         errorDescription="statistics.beaconreadouts.error"
+        [statusValues]="StatusValue"
         [status]="getStatusObservable(StatusKey.STATISTICS)"
         [error]="getStatusErrorObservable(StatusKey.STATISTICS)"></ut-loading-status>
     </h1>
@@ -39,6 +40,7 @@
       {{'statistics.phenologyobs.title' | translate}}
       <ut-loading-status
         errorDescription="statistics.phenologyobs.error"
+        [statusValues]="StatusValue"
         [status]="getStatusObservable(StatusKey.STATISTICS)"
         [error]="getStatusErrorObservable(StatusKey.STATISTICS)"></ut-loading-status>
     </h1>
@@ -74,6 +76,7 @@
       {{'statistics.data.title' | translate}}
       <ut-loading-status
         errorDescription="statistics.data.error"
+        [statusValues]="StatusValue"
         [status]="getStatusObservable(StatusKey.STATISTICS)"
         [error]="getStatusErrorObservable(StatusKey.STATISTICS)"></ut-loading-status>
     </h1>
@@ -114,6 +117,7 @@
       {{'statistics.phenology.title' | translate}}
       <ut-loading-status
         errorDescription="statistics.phenology.error"
+        [statusValues]="StatusValue"
         [status]="getStatusObservable(StatusKey.STATISTICS)"
         [error]="getStatusErrorObservable(StatusKey.STATISTICS)"></ut-loading-status>
     </h1>

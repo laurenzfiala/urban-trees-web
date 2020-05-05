@@ -42,6 +42,13 @@ export class LoadingStatusComponent extends AbstractComponent implements OnInit,
   @Input()
   public errorDescription: string;
 
+  /**
+   * Holds the status value enum object that is used by the
+   * external component. This is used for correct lookup of statuses.
+   */
+  @Input()
+  public statusValues: any;
+
   @Input()
   private status: Observable<number>;
 
@@ -57,20 +64,9 @@ export class LoadingStatusComponent extends AbstractComponent implements OnInit,
 
   public ngOnInit() {
 
+    this.update(0);
     this.subs.register(this.status.subscribe(value => {
-      switch (value) {
-        case 0:
-          this.setStatus(StatusKey.EXTERNAL_STATUS, StatusValue.IN_PROGRESS);
-          break;
-        case 1:
-          this.setStatus(StatusKey.EXTERNAL_STATUS, StatusValue.SUCCESSFUL);
-          break;
-        case 2:
-          this.setStatus(StatusKey.EXTERNAL_STATUS, StatusValue.FAILED);
-          break;
-        default:
-          this.setStatus(StatusKey.EXTERNAL_STATUS, StatusValue.UNDEFINED);
-      }
+      this.update(value);
     }), LoadingStatusComponent.SUBSCRIPTION_TAG);
 
     this.subs.register(this.error.subscribe(value => {
@@ -79,6 +75,34 @@ export class LoadingStatusComponent extends AbstractComponent implements OnInit,
       }
       this.internalError = value;
     }), LoadingStatusComponent.SUBSCRIPTION_TAG);
+
+  }
+
+  /**
+   * Update the internal status for the given external one.
+   * Uses the given statusValues to determine the status.
+   * @param statusEnumValue external enum value
+   * @see statusValues
+   */
+  private update(statusEnumValue: number): void {
+
+    const inProgressValue: number = this.statusValues['IN_PROGRESS'];
+    const successfulValue: number = this.statusValues['SUCCESSFUL'];
+    const failedValue: number = this.statusValues['FAILED'];
+
+    switch (statusEnumValue) {
+      case inProgressValue:
+        this.setStatus(StatusKey.EXTERNAL_STATUS, StatusValue.IN_PROGRESS);
+        break;
+      case successfulValue:
+        this.setStatus(StatusKey.EXTERNAL_STATUS, StatusValue.SUCCESSFUL);
+        break;
+      case failedValue:
+        this.setStatus(StatusKey.EXTERNAL_STATUS, StatusValue.FAILED);
+        break;
+      default:
+        this.setStatus(StatusKey.EXTERNAL_STATUS, StatusValue.UNDEFINED);
+    }
 
   }
 

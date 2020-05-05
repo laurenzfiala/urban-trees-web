@@ -7,6 +7,8 @@ import {HttpErrorResponse} from '@angular/common/http';
 import {ApiError} from '../../shared/entities/api-error.entity';
 import {TranslateService} from '@ngx-translate/core';
 import {AuthService} from '../../shared/services/auth.service';
+import {filter} from 'rxjs/operators';
+import {LoginStatus} from '../components/project-login/login-status.enum';
 
 /**
  * Provides logic for levelling, etc.
@@ -19,11 +21,11 @@ import {AuthService} from '../../shared/services/auth.service';
 })
 export class UserRewardService {
 
-
   /**
    * Highest reachable level.
    */
   public maxLevel: number = 15;
+
   public maxLevelXp: number;
   public nextLevel: number;
   public nextLevelXp: number;
@@ -36,7 +38,17 @@ export class UserRewardService {
               private translateService: TranslateService,
               private notificationsService: NotificationsService,
               private authService: AuthService) {
+
+    // reset this service whenever the user is logged out
+    this.authService.onStateChanged()
+      .pipe(filter(value => value === LoginStatus.NOT_AUTHENTICATED))
+      .subscribe(value => {
+      this.reset();
+    });
+
+    this.reset();
     this.loadAchievements();
+
   }
 
   public loadAchievements(successCallback?: (achievements: UserAchievements) => void,
@@ -57,6 +69,22 @@ export class UserRewardService {
         errorCallback(error, apiError);
       }
     });
+
+  }
+
+  /**
+   * Reset the reward service and remove all
+   * previously stored data.
+   */
+  private reset(): void {
+
+    this.maxLevelXp = undefined;
+    this.nextLevel = undefined;
+    this.nextLevelXp = undefined;
+    this.nextLevelRemainingXp = undefined;
+    this.level = undefined;
+    this.levelXp = 0;
+    this.achievements = undefined;
 
   }
 

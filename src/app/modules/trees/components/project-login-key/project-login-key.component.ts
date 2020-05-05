@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import {AuthService} from '../../../shared/services/auth.service';
-import {Login} from '../../entities/login.entity';
 import {AbstractComponent} from '../abstract.component';
 import {ActivatedRoute, Router} from '@angular/router';
+import {TokenAuthenticationToken} from '../../entities/auth-token.entity';
 
 @Component({
   selector: 'ut-project-login-key',
@@ -30,7 +30,7 @@ export class ProjectLoginKeyComponent extends AbstractComponent implements OnIni
 
       const token: string = params[ProjectLoginKeyComponent.PATH_PARAMS_TOKEN];
 
-      let loginEntity = new Login(undefined, undefined, token);
+      let loginEntity = new TokenAuthenticationToken(token);
 
       this.authService.login(loginEntity, () => {
         this.setStatus(StatusKey.LOGIN, StatusValue.SUCCESSFUL);

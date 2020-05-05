@@ -3,7 +3,6 @@ import {Log} from './log.service';
 import {EnvironmentService} from './environment.service';
 import {HttpClient, HttpErrorResponse, HttpResponse} from '@angular/common/http';
 import {AbstractService} from './abstract.service';
-import {Login} from '../../trees/entities/login.entity';
 import {ApiError} from '../entities/api-error.entity';
 import {JwtHelperService} from '@auth0/angular-jwt';
 import {Router} from '@angular/router';
@@ -14,6 +13,7 @@ import {PasswordReset} from '../../trees/entities/password-reset.entity';
 import {Observable, Subject} from 'rxjs';
 import {UserIdentity} from '../../trees/entities/user-identity.entity';
 import {UserPermissionRequest} from '../../trees/entities/user-permission-request.entity';
+import {AuthenticationToken} from '../../trees/entities/auth-token.entity';
 
 /**
  * Service for user authentication functionality.
@@ -39,8 +39,10 @@ export class AuthService extends AbstractService {
 
   private jwtHelper: JwtHelperService = new JwtHelperService();
 
-  // TODO
-  public stateChangedSubject: Subject<boolean> = new Subject<boolean>();
+  /**
+   * Emits when the authentication state changes.
+   */
+  public stateChangedSubject: Subject<LoginStatus> = new Subject<LoginStatus>();
 
   /**
    * Cached permissions PIN is stored here.
@@ -154,15 +156,15 @@ export class AuthService extends AbstractService {
   /**
    * Send login request to the backend and react on the response.
    * This includes saving the given authorization header to the local storage.
-   * @param {Login} loginEntity username, password
+   * @param {AuthenticationToken} authToken any valid authentication token
    * @param {() => void} successCallback called when login was successful
    * @param {(error: HttpErrorResponse, apiError?: ApiError) => void} errorCallback when login failed
    */
-  public login(loginEntity: Login,
+  public login(authToken: AuthenticationToken,
                successCallback: () => void,
                errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void): void {
 
-    this.http.post(this.envService.endpoints.login, loginEntity, {observe: 'response'})
+    this.http.post(this.envService.endpoints.login, authToken, {observe: 'response'})
       .subscribe((response: HttpResponse<any>) => {
         this.setJWTToken(response.headers.get(AuthService.HEADER_AUTH_KEY));
         AuthService.LOG.debug('Saved retrieved auth token to local storage.');
@@ -326,6 +328,7 @@ export class AuthService extends AbstractService {
 
   /**
    * Check the users' login status.
+   * Note: Also deletes the authentication token if it has become invalid.
    * @returns {LoginStatus} if logged in and using which method
    */
   public getLogInStatus(): LoginStatus {
@@ -453,11 +456,19 @@ export class AuthService extends AbstractService {
     return this.ppin;
   }
 
+  /**
+   * Emit an event to make subcribers aware
+   * of authentication changes.
+   */
   private stateChanged(): void {
-    this.stateChangedSubject.next();
+    this.stateChangedSubject.next(this.getLogInStatus());
   }
 
-  public onStateChanged(): Observable<boolean> {
+  /**
+   * Get the observable for authentication state
+   * changes.
+   */
+  public onStateChanged(): Observable<LoginStatus> {
     return this.stateChangedSubject.asObservable();
   }
 

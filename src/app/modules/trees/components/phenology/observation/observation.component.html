@@ -194,8 +194,8 @@
                        [cssvar]="{name: '--result-amount', value: type.results.length}">
 
                     <div class="obs-res"
-                         (action)="addObservationResult(collapse, type, result)"
-                         (contextmenu)="undoObservationResult(type, result); $event.preventDefault()"
+                         (action)="onObservationResultAction($event, collapse, type, result)"
+                         (contextmenu)="onObservationResultContextMenu($event, type, result); $event.preventDefault()"
                          role="button"
                          tabindex="0">
                       <div class="obs-res-counter mx--1">
@@ -230,7 +230,7 @@
                        [cssvar]="{name: '--result-amount', value: type.results.length}">
 
                     <div class="obs-res"
-                         (action)="type.userObservations = []; addObservationResult(collapse, type, result)"
+                         (action)="type.userObservations = []; onObservationResultAction($event, collapse, type, result)"
                          role="button"
                          tabindex="0">
                       <div class="obs-res-counter mx--1">

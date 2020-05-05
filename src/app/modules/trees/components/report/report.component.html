@@ -85,6 +85,7 @@
       {{'report.user_reports.title' | translate}}
       <ut-loading-status
         errorDescription="report.user_reports.error"
+        [statusValues]="StatusValue"
         [status]="getStatusObservable(StatusKey.LOAD_REPORTS)"
         [error]="getStatusErrorObservable(StatusKey.LOAD_REPORTS)"></ut-loading-status>
     </h1>
