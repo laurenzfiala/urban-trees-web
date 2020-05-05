@@ -52,7 +52,7 @@ export class UserOverviewComponent extends AbstractComponent implements OnInit {
     this.setStatus(StatusKey.ACHIEVEMENTS_LOADING, StatusValue.IN_PROGRESS);
     this.status.emit([this.getStatus(StatusKey.ACHIEVEMENTS_LOADING), this.getStatusError(StatusKey.ACHIEVEMENTS_LOADING)]);
     this.rewardService.loadAchievements((achievements: UserAchievements) => {
-      if (this.hasRecentLevelUp() ) {
+      if (this.hasRecentLevelUp()) {
         this.levelUp = true;
         this.levelUpOutput.emit(this.level);
       }

@@ -39,7 +39,7 @@ export class UserService extends AbstractService implements OnDestroy {
   }
 
   /**
-   * TODO
+   * Load current achievement data for the logged-in user.
    * @param successCallback
    * @param errorCallback
    */

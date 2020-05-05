@@ -13,7 +13,7 @@ import {PasswordReset} from '../entities/password-reset.entity';
 import {Observable, Subject} from 'rxjs';
 import {UserIdentity} from '../entities/user-identity.entity';
 import {UserPermissionRequest} from '../entities/user-permission-request.entity';
-import {AuthenticationToken} from '../entities/login.entity';
+import {AuthenticationToken} from '../entities/auth-token.entity';
 
 /**
  * Service for user authentication functionality.
@@ -39,8 +39,10 @@ export class AuthService extends AbstractService {
 
   private jwtHelper: JwtHelperService = new JwtHelperService();
 
-  // TODO
-  public stateChangedSubject: Subject<boolean> = new Subject<boolean>();
+  /**
+   * Emits when the authentication state changes.
+   */
+  public stateChangedSubject: Subject<LoginStatus> = new Subject<LoginStatus>();
 
   /**
    * Cached permissions PIN is stored here.
@@ -326,6 +328,7 @@ export class AuthService extends AbstractService {
 
   /**
    * Check the users' login status.
+   * Note: Also deletes the authentication token if it has become invalid.
    * @returns {LoginStatus} if logged in and using which method
    */
   public getLogInStatus(): LoginStatus {
@@ -453,11 +456,19 @@ export class AuthService extends AbstractService {
     return this.ppin;
   }
 
+  /**
+   * Emit an event to make subcribers aware
+   * of authentication changes.
+   */
   private stateChanged(): void {
-    this.stateChangedSubject.next();
+    this.stateChangedSubject.next(this.getLogInStatus());
   }
 
-  public onStateChanged(): Observable<boolean> {
+  /**
+   * Get the observable for authentication state
+   * changes.
+   */
+  public onStateChanged(): Observable<LoginStatus> {
     return this.stateChangedSubject.asObservable();
   }
 
