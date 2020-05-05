@@ -252,9 +252,45 @@ export class ObservationComponent extends AbstractComponent implements OnInit, O
   }
 
   /**
+   * Invoked when an observation result is clicked (or otherwise activated).
+   * Adds observation(s) to the observation.
+   * If the shift-key is pressed when this method is invoked,
+   * all remaining results will be filled with the given object.
+   * @see addObservationResult
+   */
+  public onObservationResultAction(event: any,
+                                   collapseElement: any,
+                                   type: PhenologyObservationTypeFrontend,
+                                   result: PhenologyObservationResult): void {
+
+    if (event instanceof MouseEvent && event.shiftKey) {
+      for (let i = type.userObservations.length; i < type.objects.length; i++) {
+        this.addObservationResult(collapseElement, type, result);
+      }
+    } else {
+      this.addObservationResult(collapseElement, type, result);
+    }
+
+  }
+
+  /**
+   * Invoked when an observation result is right-clicked (or the context menu is otherwise opened).
+   * @param event assoc event
+   * @param type observation type on which the action occurred
+   * @param result observation result on which the action occurred
+   */
+  public onObservationResultContextMenu(event: any,
+                                        type: PhenologyObservationTypeFrontend,
+                                        result: PhenologyObservationResult): void {
+
+    this.undoObservationResult(type, result);
+
+  }
+
+  /**
    * Add a single observation result to this observation.
    */
-  public addObservationResult(collapseElement: any,
+  private addObservationResult(collapseElement: any,
                               type: PhenologyObservationTypeFrontend,
                               result: PhenologyObservationResult,
                               object?: PhenologyObservationObject): void {
@@ -317,8 +353,15 @@ export class ObservationComponent extends AbstractComponent implements OnInit, O
       return;
     }
     if (all) {
-      type.userObservations = [];
-      type.done = false;
+      if (result) {
+        if (type.userObservations.some(obs => obs.result === result)) {
+          type.done = false;
+        }
+        type.userObservations = type.userObservations.filter(obs => obs.result === result);
+      } else {
+        type.userObservations = [];
+        type.done = false;
+      }
     } else {
       if (result) {
         let i = 0, r;

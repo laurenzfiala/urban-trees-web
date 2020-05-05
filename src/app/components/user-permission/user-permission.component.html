@@ -4,6 +4,7 @@
     showStatusOutside=true
     loadingDescription="user_permissions.loading"
     errorDescription="user_permissions.error"
+    [statusValues]="StatusValue"
     [status]="getStatusObservable(StatusKey.GRANT_USERS)"
     [error]="getStatusErrorObservable(StatusKey.GRANT_USERS)"></ut-loading-status>
 

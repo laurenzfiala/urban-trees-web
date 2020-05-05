@@ -52,6 +52,7 @@
       <i *ngIf="hasStatus(StatusKey.USER_LEVEL_UP, StatusValue.LEVELLED_UP)" class="feature-pointer mr-1"></i>{{'home.user_score.title' | translate}}
       <ut-loading-status
         errorDescription="home.user_score.error"
+        [statusValues]="StatusValue"
         [status]="getStatusObservable(StatusKey.USER_OVERVIEW)"
         [error]="getStatusErrorObservable(StatusKey.USER_OVERVIEW)"></ut-loading-status>
     </h1>
@@ -80,6 +81,7 @@
       {{'home.project_intro.title' | translate}}
       <ut-loading-status
         errorDescription="home.project_intro.error"
+        [statusValues]="StatusValue"
         [status]="getStatusObservable(StatusKey.STATISTICS)"
         [error]="getStatusErrorObservable(StatusKey.STATISTICS)"></ut-loading-status>
     </h1>
