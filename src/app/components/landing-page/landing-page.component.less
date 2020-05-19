@@ -164,6 +164,21 @@ section {
   .content-img {
     width: 100%;
   }
+  section {
+    display: flex;
+    flex-direction: column-reverse;
+
+    margin-bottom: 0;
+
+    .content-img {
+
+      &.float-left,
+      &.float-right {
+        margin-right: 0;
+        margin-left: 0;
+      }
+    }
+  }
 }
 @media @md {
   .content-img {
