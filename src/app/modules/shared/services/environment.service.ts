@@ -561,6 +561,51 @@ class EnvironmentEndpoints {
 
   }
 
+  public loadContent(contentId: string): string {
+
+    let replacements: any[] = [
+      { placeholder: 'contentId', replacement: contentId }
+    ];
+
+    return this.prependCommonPath(
+      this.replaceParams(
+        this.context.loadContent,
+        replacements
+      )
+    );
+
+  }
+
+  public saveContent(contentId: string): string {
+
+    let replacements: any[] = [
+      { placeholder: 'contentId', replacement: contentId }
+    ];
+
+    return this.prependCommonPath(
+      this.replaceParams(
+        this.context.saveContent,
+        replacements
+      )
+    );
+
+  }
+
+  public saveContent(contentId: string): string {
+
+    let replacements: any[] = [
+      { placeholder: 'contentId', replacement: contentId }
+    ];
+
+    return this.prependCommonPath(
+      this.replaceParams(
+        this.context.saveContent,
+        replacements
+      )
+    );
+
+  }
+
 }
 
 class Security {

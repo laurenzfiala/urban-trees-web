@@ -80,7 +80,12 @@ export const environment = {
     deactivateOtp:                    '/account/otp/deactivate',
     addUserPermission:                '/account/permission/request',
     usersGrantingPermission:          '/account/permission/granted/{permission}',
-    loadPPIN:                         '/account/permission/pin'
+    loadPPIN:                         '/account/permission/pin',
+
+    // CMS
+    content:                          '/cms/{contentId}',
+    contentDraft:                     '/cms/{contentId}/draft',
+    contentHistory:                   '/cms/{contentId}/history'
   },
 
   searchDebounceMs:                   200,

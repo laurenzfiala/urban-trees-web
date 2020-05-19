@@ -1,9 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, ComponentFactoryResolver, OnInit} from '@angular/core';
 import {EnvironmentService} from '../../../shared/services/environment.service';
 import {AuthService} from '../../../shared/services/auth.service';
 import {AbstractComponent} from '../abstract.component';
 import {SystemStatistics} from '../../entities/system-statistics.entity';
 import {UIService} from '../../services/ui.service';
+import {RenderService} from '../../../cms/services/render.service';
 
 @Component({
   selector: 'ut-home',
