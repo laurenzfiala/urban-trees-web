@@ -7,7 +7,7 @@
 @headerIconHMargin: @gutter2x;
 @headerLinksSpacing: 0;
 @headerLinksHPadding: @gutter2x;
-@headerLinkColor: #61aa6b;
+@headerLinkColor: #ffffff;//#61aa6b;
 @headerLinkHoverColor: darken(@headerLinkColor, 10%);
 @titleFontSize: 2.5rem;
 @titleColor: @white;
@@ -433,6 +433,45 @@ section {
 
   > img {
     width: 100%;
+  }
+}
+
+.intro-modules-slide-indicator-wrapper {
+  display: flex;
+  flex-direction: row;
+
+  position: absolute;
+  right: @gutter2x;
+  bottom: @gutter2x;
+  z-index: 3;
+
+  margin: -@gutter;
+
+  > .intro-modules-slide-indicator {
+    padding: @gutter;
+
+    cursor: pointer;
+
+    &:after {
+      content: "";
+
+      display: block;
+      width: 20px;
+      height: 20px;
+
+      background-color: @white;
+      border-radius: 50%;
+      opacity: 0.5;
+
+      transition: opacity @btnAnimDuration;
+    }
+
+    &:hover,
+    &.active {
+      &:after {
+        opacity: 0.85;
+      }
+    }
   }
 }
 

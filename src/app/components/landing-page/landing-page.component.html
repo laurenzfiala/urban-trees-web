@@ -7,7 +7,7 @@
       <nav class="header">
         <div>
           <a routerLink="/home" (action)="loadPage($event)">
-            <img class="header-icon" src="/assets/img/urbantrees_icon_small.png" />
+            <img class="header-icon" src="/assets/landing-page/logo.png" />
           </a>
         </div>
         <div class="header-links">
@@ -67,6 +67,15 @@
            [ngClass]="{'show': slide.isShown, 'previously-shown': slide.wasPreviouslyShown}">
         <img [src]="slide.imageUrl" />
         <div class="intro-modules-slide-description">{{slide.imgDesc}}</div>
+      </div>
+      <div class="intro-modules-slide-indicator-wrapper">
+        <div *ngFor="let slide of modules"
+             class="intro-modules-slide-indicator"
+             [ngClass]="{'active': slide.isShown}"
+             role="button"
+             tabindex="0"
+             (action)="showSlide(slide, true)">
+        </div>
       </div>
     </div>
 
