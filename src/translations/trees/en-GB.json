@@ -548,7 +548,7 @@
     "title": "Welcome to&nbsp;<b>Cool Trees &amp; Sensors</b>!",
     "desc": "You can use this site to enter phenology data for trees, read information and statistics about trees and beacons and gain experience points for helping us collect data!",
     "to_landing_page": "Visit the start-page",
-    "title_user": "Welcome back to&nbsp;<b>COBS</b>, {{username}}!",
+    "title_user": "Welcome back to&nbsp;<b>Cool Trees &amp; Sensors</b>, {{username}}!",
     "desc_user_1": "We really appreciate any ",
     "desc_phenobs_link": "Phenology observations",
     "desc_user_2": " or beacon readouts (using the <a class=\"link\" href=\"https://play.google.com/apps/internaltest/4699755394511268796\" target=\"_blank\">android app</a>). When logged in, you can earn experience points and advance your level by completing one of these activities.",
