@@ -51,7 +51,7 @@
 
     </div>
 
-    <div class="intro-slideshow-wrapper lp-container mb-3"
+    <div class="intro-slideshow-wrapper mb-3"
          (mouseover)="runSlideCycle = false"
          (mouseout)="runSlideCycle = true">
       <div class="intro-slide invisible position-relative">
@@ -62,7 +62,9 @@
            class="intro-slide"
            [ngClass]="{'show': slide.isShown, 'previously-shown': slide.wasPreviouslyShown}"
            [ngStyle]="{'background-color': slide.bgColor}">
-        <img [src]="slide.imageUrl" />
+        <div class="img-container">
+          <img [src]="slide.imageUrl" />
+        </div>
         <div class="intro-slide-description">{{slide?.imgDesc}}</div>
       </div>
     </div>
@@ -73,10 +75,15 @@
       <h1 class="mb-3">Projektverlauf</h1>
       <h2 class="timeline-highlight"><div>Kick-Off Treffen</div></h2>
       <section class="timeline">
-          <h1>Experimentiertage</h1>
-          Wir begrüßen euch als Jungforscher*innen im Projekt und laden euch zum Experimentieren ein. Ihr
-          lernt, wie Bäume kühlen, ihr programmiert einen Messsensor und erfährt, wie dieser misst und wie man die Daten
-          analysiert.
+        <div class="img-flex">
+          <div>
+            <h1>Experimentiertage</h1>
+            Wir begrüßen euch als Jungforscher*innen im Projekt und laden euch zum Experimentieren ein. Ihr
+            lernt, wie Bäume kühlen, ihr programmiert einen Messsensor und erfährt, wie dieser misst und wie man die Daten
+            analysiert.
+          </div>
+          <img src="/assets/landing-page/timeline/experimentieren.jpg" class="img-sm" />
+        </div>
       </section>
       <section class="timeline">
         <h1>Innovative Berufe kennenlernen</h1>
@@ -86,13 +93,19 @@
       </section>
       <section class="timeline">
         <h1>Data2Sensor</h1>
+
         Sensoren sind heute die Grundlage für das Messen von Temperaturen und CO₂. Im Workshop "Data2Sensor" lernst
-        du, einfache Sensoren in einem Stronkreis einzubauen und zu programmieren, damit du Daten aufnehmen kannst.
+        du, einfache Sensoren in einen Stromkreis einzubauen und zu programmieren, damit du Daten aufnehmen kannst.
       </section>
       <section class="timeline">
-        <h1>Sensor2App</h1>
-        Bäume beeinflussen das Klima und kühlen unsere Umwelt. Wie sie das machen und wie du diese Prozesse
-        untersuchen nud dazu Daten erheben kannst, lernst du im Sensor2App Workshop.
+        <div class="img-flex">
+          <div>
+            <h1>Sensor2App</h1>
+            Bäume beeinflussen das Klima und kühlen unsere Umwelt. Wie sie das machen und wie du diese Prozesse
+            untersuchen nud dazu Daten erheben kannst, lernst du im Sensor2App Workshop.
+          </div>
+          <img src="/assets/landing-page/timeline/messen.jpg" class="img-sm" />
+        </div>
       </section>
       <section class="timeline">
         <h1>App2Analyse</h1>
@@ -114,7 +127,7 @@
           die Thematik „Baum als Klimaregulator“ und „Sensorik” verwenden.
         </p>
         Weitere Informationen zu Projektzuschüssen können beim Projektleiter angefragt werden:
-        <table class="mt-2 table">
+        <table class="mt-2 table table-sm table-responsive-sm">
           <tr>
             <td>Projektleitung</td>
             <td>Alexander Strahl</td>
@@ -133,7 +146,7 @@
     </div>
 
     <div class="lp-container-sm mt-5">
-      <h1 class="text-center mb-3">Das Projekt bietet</h1>
+      <h1 class="text-center mb-3">Das Projekt bietet:</h1>
       <section>
         <div class="container-highlight">
           <h1>Schüler*innen</h1>
@@ -169,10 +182,39 @@
       </section>
     </div>
 
+    <div class="lp-text-container mt-5">
+      <section>
+          <h1 class="text-center mb-3">Projektpartner*innen</h1>
+
+          <h2>Wissenschaftliche Partner*innen</h2>
+          <ul class="list">
+            <li>Universität Salzburg, Didaktik der Physik und Fachbereiche Mathematik, Geographie &amp; Geologie</li>
+            <li>Pädagogische Hochschule Salzburg Stefan Zweig, Institut für Didaktik, Unterrichts- &amp; Schulentwicklung</li>
+          </ul>
+
+          <h2>Schulische Bildungseinrichtungen</h2>
+          <ul class="list">
+            <li>Naturpark Volksschule Zederhaus</li>
+            <li>Praxisvolksschule der PH Salzburg</li>
+            <li>Volksschule Bergheim</li>
+            <li>Neue Mittelschule Bergheim</li>
+            <li>NMS Praxisschule der PH Salzburg</li>
+            <li>Volksschule Salzburg der Franziskanerinnen von Vöklabruck</li>
+          </ul>
+
+          <h2>Unternehmensparter*innen</h2>
+          <ul class="list">
+            <li>SIGMATEK - Komplette Automatisierungssysteme</li>
+            <li>Sony DADC Europe Limited</li>
+            <li>ZAMG - Zentralanstalt für Meteorologie &amp; Geodynamik</li>
+          </ul>
+      </section>
+    </div>
+
   </div>
 
   <div class="footer">
-    <div class="lp-text-container overflow-hidden">
+    <div class="lp-text-container">
 
       <div class="footer-content my--2 mx--4">
         <div class="d-flex flex-column my-1 mx-4">

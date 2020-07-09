@@ -1,6 +1,7 @@
 @import (reference) "../../../theme/variables";
 
 @lpBgColor: @white;
+@lpBoxShadow: 0 4px 6px -6px rgba(0, 0, 0, 0.65);
 
 @headerLinkFontSize: 1.1rem;
 @headerHeight: 6rem;
@@ -74,7 +75,7 @@ a.lp-link {
         margin-left: 0.5em;
         margin-bottom: -3px;
 
-        background-image: url("/assets/landing-page/chevron-right.svg");
+        background-image: url("/assets/landing-page/icons/chevron-right.svg");
         background-size: cover;
         background-position: center bottom;
 
@@ -87,10 +88,12 @@ a.lp-link {
 h1 {
   font-weight: lighter;
   font-size: @fontSizeExtraLarge;
+  word-break: break-word;
 }
 
 h2 {
   font-size: @fontSizeMedium;
+  word-break: break-word;
 }
 
 section {
@@ -187,7 +190,7 @@ section {
 
   background-image: url("/assets/landing-page/bg-main.jpg");
   background-size: cover;
-  background-position: bottom center;
+  background-position: top center;
 }
 
 .title-container {
@@ -299,7 +302,7 @@ section {
 
 @media @xs, @sm {
   .intro-tabs-content .intro-tab {
-    width: 200px;
+    max-width: 75vw;
     padding: @gutter;
 
     font-size: @fontSizeBase;
@@ -335,7 +338,7 @@ section {
   padding: @gutter2x;
 
   background-color: @bgColor;
-  box-shadow: 0 4px 6px -6px rgba(0, 0, 0, 0.65);
+  box-shadow: @lpBoxShadow;
 }
 
 .intro-slideshow-wrapper {
@@ -367,7 +370,11 @@ section {
     animation: intro-modules-slide-show 0.5s;
   }
 
-  > img {
+  .img-container {
+    max-width: 1800px;
+  }
+
+  img {
     max-width: 100%;
     max-height: 65vh;
 
@@ -390,6 +397,7 @@ section {
   padding-bottom: (@gutter*4);
 
   background-color: @footerBgColor;
+  overflow: hidden;
 
   .logo {
     height: 50px;
@@ -443,6 +451,30 @@ section {
   section:nth-child(4n+4) &:before {
     background-color: @secondaryColorHighlight;
   }
+}
+
+.img-flex {
+  display: flex;
+  flex-direction: row;
+
+  margin: -@gutter;
+
+  > * {
+    margin: @gutter;
+  }
+}
+
+@media @xs, @sm, @md {
+  .img-flex {
+    flex-direction: column;
+  }
+}
+
+.img-sm {
+  height: 10rem;
+  max-width: 100%;
+
+  box-shadow: @lpBoxShadow;
 }
 
 .timeline-highlight {

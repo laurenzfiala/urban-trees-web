@@ -109,8 +109,12 @@ export class LandingPageComponent implements OnInit, AfterViewInit {
     }
     slide.isShown = true;
     let scrollEl = $(this.introTabsContentWrapper.nativeElement);
-    let slideContentWidth = scrollEl.find('.intro-tab')[0].clientWidth;
-    let scrollLeftTarget = slideContentWidth * this.currentSlideIndex() - (window.innerWidth - slideContentWidth) / 2;
+    const slideTabWidth = scrollEl.find('.intro-tab')[this.currentSlideIndex()].clientWidth;
+    let slideTabTargetOffset = 0;
+    for (let tab of scrollEl.find('.intro-tab').slice(0, this.currentSlideIndex())) {
+      slideTabTargetOffset += tab.clientWidth;
+    }
+    let scrollLeftTarget = slideTabTargetOffset - (window.innerWidth - slideTabWidth) / 2;
     scrollEl.stop().animate({scrollLeft: scrollLeftTarget}, 500);
 
     this.cdRef.detectChanges();
