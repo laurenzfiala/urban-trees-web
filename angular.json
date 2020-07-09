@@ -37,7 +37,9 @@
             "allowedCommonJsDependencies": [
               "jquery",
               "rxjs",
-              "rxjs-compat"
+              "rxjs-compat",
+              "pbf",
+              "rbush"
             ]
           },
           "configurations": {

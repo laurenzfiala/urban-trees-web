@@ -7,7 +7,7 @@
       <nav class="header">
         <div>
           <a routerLink="/home" (action)="loadPage($event)">
-            <img class="header-icon" src="/assets/landing-page/logo.png" />
+            <img class="header-icon" src="/assets/landing-page/logo.svg" />
           </a>
         </div>
         <div class="header-links">
@@ -17,101 +17,154 @@
         </div>
       </nav>
 
-      <div class="flex-grow-1 d-flex flex-column align-items-center justify-content-center">
+      <div class="title-container">
 
         <div class="title" [innerHTML]="'title' | translate"></div>
+        <div class="subtitle">
+          Forschendes Lernen mit Natur &amp; Technik
+        </div>
 
       </div>
 
-      <div class="intro-modules-bar-wrapper">
-        <div class="intro-modules-bar lp-container">
-          <div *ngFor="let module of modules"
-               class="intro-module"
+      <div class="flex-grow-1"></div>
+
+      <div #introTabsContentWrapper
+           class="intro-tabs-wrapper"
+           (mouseover)="runSlideCycle = false"
+           (mouseout)="runSlideCycle = true">
+
+        <div class="intro-tabs-content lp-container">
+          <div *ngFor="let slide of modules"
+               class="intro-tab"
+               [ngClass]="{'active': slide.isShown}"
+               [ngStyle]="{'background-color': slide.bgColor}"
+               [cssvar]="{name: '--bg-color', value: slide.bgColor}"
                role="button"
-               [ngClass]="{'active': module.isShown}"
-               (action)="showSlide(module, true)">
-            {{module.title}}
+               tabindex="0"
+               (action)="showSlide(slide, true)">
+            <img class="intro-tab-icon" [src]="slide.iconUrl" />
+            {{slide.title}}
           </div>
         </div>
+
       </div>
 
     </div>
 
-    <div #introModulesContentWrapper
-         class="intro-modules-content-wrapper"
+    <div class="intro-slideshow-wrapper lp-container mb-3"
          (mouseover)="runSlideCycle = false"
          (mouseout)="runSlideCycle = true">
-
-      <div class="intro-modules-content lp-container">
-        <div *ngFor="let slide of modules"
-             class="intro-module"
-             [ngClass]="{'active': slide.isShown}"
-             role="button"
-             tabindex="0"
-             (action)="showSlide(slide, true)">
-          {{slide.tabText}}
-        </div>
-      </div>
-
-    </div>
-
-    <div class="intro-modules-slideshow-wrapper lp-container mb-3"
-         (mouseover)="runSlideCycle = false"
-         (mouseout)="runSlideCycle = true">
-      <div class="intro-modules-slide invisible position-relative">
+      <div class="intro-slide invisible position-relative">
         <img [src]="selectedSlide?.imageUrl" />
-        <div class="intro-modules-slide-description">{{selectedSlide?.imgDesc}}</div>
+        <div class="intro-slide-description">{{selectedSlide?.imgDesc}}</div>
       </div>
       <div *ngFor="let slide of modules"
-           class="intro-modules-slide"
-           [ngClass]="{'show': slide.isShown, 'previously-shown': slide.wasPreviouslyShown}">
+           class="intro-slide"
+           [ngClass]="{'show': slide.isShown, 'previously-shown': slide.wasPreviouslyShown}"
+           [ngStyle]="{'background-color': slide.bgColor}">
         <img [src]="slide.imageUrl" />
-        <div class="intro-modules-slide-description">{{slide.imgDesc}}</div>
-      </div>
-      <div class="intro-modules-slide-indicator-wrapper">
-        <div *ngFor="let slide of modules"
-             class="intro-modules-slide-indicator"
-             [ngClass]="{'active': slide.isShown}"
-             role="button"
-             tabindex="0"
-             (action)="showSlide(slide, true)">
-        </div>
+        <div class="intro-slide-description">{{slide?.imgDesc}}</div>
       </div>
     </div>
 
-    <div class="lp-container">
+
+
+    <div class="lp-text-container timeline-container mt-5">
+      <h1 class="mb-3">Projektverlauf</h1>
+      <h2 class="timeline-highlight"><div>Kick-Off Treffen</div></h2>
+      <section class="timeline">
+          <h1>Experimentiertage</h1>
+          Wir begrüßen euch als Jungforscher*innen im Projekt und laden euch zum Experimentieren ein. Ihr
+          lernt, wie Bäume kühlen, ihr programmiert einen Messsensor und erfährt, wie dieser misst und wie man die Daten
+          analysiert.
+      </section>
+      <section class="timeline">
+        <h1>Innovative Berufe kennenlernen</h1>
+        Bei Betriebsexkursionen erhältst du Einblicke in unsere
+        Projektpertnerunternehmen und die Universität, dabei lernst du interessante Persönlichkeiten, Role Models und
+        deren beruflichen Werdegang in Natur und Technik kennen.
+      </section>
+      <section class="timeline">
+        <h1>Data2Sensor</h1>
+        Sensoren sind heute die Grundlage für das Messen von Temperaturen und CO₂. Im Workshop "Data2Sensor" lernst
+        du, einfache Sensoren in einem Stronkreis einzubauen und zu programmieren, damit du Daten aufnehmen kannst.
+      </section>
+      <section class="timeline">
+        <h1>Sensor2App</h1>
+        Bäume beeinflussen das Klima und kühlen unsere Umwelt. Wie sie das machen und wie du diese Prozesse
+        untersuchen nud dazu Daten erheben kannst, lernst du im Sensor2App Workshop.
+      </section>
+      <section class="timeline">
+        <h1>App2Analyse</h1>
+        Im Anschluss jeder Datenerhebung steht ein wichtiger Schritt: die Auswertung und grafische Darstellung der
+        Daten. Im Workshop "App2Analyse" lernst du, wie du die aufgenommenen Daten weiterverarbeiten kannst.
+      </section>
+      <section class="timeline">
+        <h1>Mint &amp; Greet-Karrieretag</h1>
+        Bei dem Mint &amp; Greet-Karrieretag erhältst du Einblicke in unsere
+        Projektpertnerunternehmen und die Universität, dabei lernst du interessante Persönlichkeiten, Role Models und
+        deren beruflichen Werdegang in Natur und Technik kennen.
+      </section>
+      <section class="timeline">
+        <h1>Kooperationszuschüsse für nicht am Projekt beteiligte Schulen</h1>
+        <p>
+          Im Projekt werden Arbeits- und Begleitmaterialien für eine digitale Methodenbox sowie einen
+          Experimentierkoffer „Tool Kits für CO₂l Kids“ erstellt. Jede Kooperationszuschuss-Schule kann diese für den
+          individuellen Einsatz im Unterricht erhalten und zum Beispiel als Basis für eigene innovative Ideen rund um
+          die Thematik „Baum als Klimaregulator“ und „Sensorik” verwenden.
+        </p>
+        Weitere Informationen zu Projektzuschüssen können beim Projektleiter angefragt werden:
+        <table class="mt-2 table">
+          <tr>
+            <td>Projektleitung</td>
+            <td>Alexander Strahl</td>
+          </tr>
+          <tr>
+            <td>Telefonnummer</td>
+            <td>+43 (0) 662 / 8044-7314 oder +43 (0) 662 / 8044-7324</td>
+          </tr>
+          <tr>
+            <td>E-Mail</td>
+            <td>alexander.strahl@sbg.ac.at</td>
+          </tr>
+        </table>
+      </section>
+      <h2 class="timeline-highlight end"><div>Projektende</div></h2>
+    </div>
+
+    <div class="lp-container-sm mt-5">
+      <h1 class="text-center mb-3">Das Projekt bietet</h1>
       <section>
-        <img class="content-img float-right" src="/assets/landing-page/bg-main.jpg" />
-        <div class="lp-text-container">
-          <h1><div class="heading-text">Was passiert im Projekt?</div></h1>
-          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
-          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
-          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
-          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
-          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
-          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
-          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
-          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
-          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
-          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
-          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
-          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+        <div class="container-highlight">
+          <h1>Schüler*innen</h1>
+          Schüler*innen können selbstständig forschend tätig werden und erste Einblicke in Natur und Technik erhalten.
         </div>
       </section>
       <section>
-        <img class="content-img float-left" src="/assets/landing-page/bg-main.jpg" />
-        <div class="lp-text-container">
-          <h1><div class="heading-text">Kooperationszuschüsse</div></h1>
-          - Experimentierkoffer
-          - eigene service-seite für lehrpersonen zum download etc für lehrmaterialien
+        <div class="container-highlight">
+          <h1>Lehrpersonen</h1>
+          Für beteiligte Projektschulen und Kooperationszuschüsse bietet das Projekt:
+          <ul class="feature-list mt-2 mx--3 mb--3">
+            <li>
+              <img src="/assets/landing-page/icons/mappe.svg" />
+              Forscher*innen Mappe
+            </li>
+            <li>
+              <img src="/assets/landing-page/icons/box.svg" />
+              Digitale Methodenbox
+            </li>
+            <li>
+              <img src="/assets/landing-page/icons/experiment.svg" />
+              Experimentierkoffer
+            </li>
+          </ul>
         </div>
       </section>
       <section>
-        <img class="content-img float-right" src="/assets/landing-page/bg-main.jpg" />
-        <div class="lp-text-container">
-          <h1><div class="heading-text">Projekt- und Lernziele</div></h1>
-          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
-          Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+        <div class="container-highlight">
+          <h1>Unternehmenspartner*innen</h1>
+          Unternehmenspartner*innen wird die Möglickeit geboten, im Rahmen von Betriebsexkursionen und
+          einem MINT &amp; Greet-Karrieretag innovative Berufe vorzustellen.
         </div>
       </section>
     </div>
@@ -122,14 +175,61 @@
     <div class="lp-text-container overflow-hidden">
 
       <div class="footer-content my--2 mx--4">
-        <div class="my-2 mx-4">
-          &copy; Universität Salzburg {{currentYear()}}
+        <div class="d-flex flex-column my-1 mx-4">
+          <div class="my-1">&copy; Universität Salzburg {{currentYear()}}</div>
+          <div class="d-flex flex-row align-items-center flex-wrap mx--1">
+            <a href="https://www.uni-salzburg.at" target="_blank" class="m-1">
+              <img class="logo" src="/assets/img/logos/PLUS_logo.svg">
+            </a>
+            <a href="https://www.ffg.at/" target="_blank" class="m-1">
+              <img class="logo" src="/assets/img/logos/FFG_logo.svg">
+            </a>
+          </div>
         </div>
         <div class="my-2 mx-4">
           <a class="link" routerLink="/imprint">Imprint</a><br/>
           <a class="link" href="mailto:test@sbg.ac.at">Ask us a question</a>
           <div class="mt-2">
             Made with &#x2764; by the project team &amp; Laurenz Fiala.
+          </div>
+
+          <div class="footer-attribution">
+            <div>
+              Icons erstellt von
+              <a href="https://www.flaticon.com/de/autoren/iconixar"
+                 title="iconixar"
+                 class="link"
+                 target="_blank">iconixar</a>
+              von
+              <a href="https://www.flaticon.com/de/"
+                 title="Flaticon"
+                 class="link"
+                 target="_blank">www.flaticon.com</a>
+            </div>
+            <div>
+              Icons erstellt von
+              <a href="https://www.flaticon.com/de/autoren/eucalyp"
+                 title="Eucalyp"
+                 class="link"
+                 target="_blank">Eucalyp</a>
+              von
+              <a href="https://www.flaticon.com/de/"
+                 title="Flaticon"
+                 class="link"
+                 target="_blank">www.flaticon.com</a>
+            </div>
+            <div>
+              Icons erstellt von
+              <a href="https://www.flaticon.com/de/autoren/freepik"
+                 title="Freepik"
+                 class="link"
+                 target="_blank">Freepik</a>
+              von
+              <a href="https://www.flaticon.com/de/"
+                 title="Flaticon"
+                 class="link"
+                 target="_blank">www.flaticon.com</a>
+            </div>
           </div>
         </div>
       </div>
