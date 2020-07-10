@@ -59,7 +59,11 @@ export class OtpManageComponent extends AbstractComponent implements OnInit {
       this.setStatus(StatusKey.ACTIVATE, StatusValue.SUCCESSFUL);
     }, (error, apiError) => {
       this.otp = undefined;
-      this.setStatus(StatusKey.ACTIVATE, StatusValue.FAILED);
+      if (error.status === 0) {
+        this.setStatus(StatusKey.ACTIVATE, StatusValue.FAILED_CONNECTION);
+      } else {
+        this.setStatus(StatusKey.ACTIVATE, StatusValue.FAILED);
+      }
     });
 
   }
@@ -75,7 +79,11 @@ export class OtpManageComponent extends AbstractComponent implements OnInit {
       this.setStatus(StatusKey.DEACTIVATE, StatusValue.SUCCESSFUL);
     }, (error, apiError) => {
       this.otp = undefined;
-      this.setStatus(StatusKey.DEACTIVATE, StatusValue.FAILED);
+      if (error.status === 0) {
+        this.setStatus(StatusKey.DEACTIVATE, StatusValue.FAILED_CONNECTION);
+      } else {
+        this.setStatus(StatusKey.DEACTIVATE, StatusValue.FAILED);
+      }
     });
 
   }
@@ -103,5 +111,5 @@ export enum StatusValue {
   IN_PROGRESS = 0,
   SUCCESSFUL = 1,
   FAILED = 2,
-
+  FAILED_CONNECTION = 3
 }

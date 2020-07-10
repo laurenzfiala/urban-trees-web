@@ -258,8 +258,10 @@
     "code_placeholder": "Zwei-Faktor Code",
     "activation_success_info": "Erfolgreich aktiviert",
     "activation_error_info": "Code war ungültig, bitte versuche es erneut",
+    "activation_connection_error_info": "Server konnte nicht erreicht werden, bitte versuche es später nocheinmal",
     "deactivation_success_info": "Erfolgreich deaktiviert",
     "deactivation_error_info": "Code war ungültig, bitte versuche es erneut",
+    "deactivation_connection_error_info": "Server konnte nicht erreicht werden, bitte versuche es später nocheinmal",
     "go_to_home": "Go to home"
   },
   "tree": {
