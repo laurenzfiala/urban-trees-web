@@ -13,6 +13,7 @@
         "footer": "Jump to footer"
       }
     },
+    "landing_page": "Start",
     "home": "Home",
     "participate": "Participate",
     "phenology": "Phenology",
@@ -547,7 +548,6 @@
   "home": {
     "title": "Welcome to&nbsp;<b>Cool Trees &amp; Sensors</b>!",
     "desc": "You can use this site to enter phenology data for trees, read information and statistics about trees and beacons and gain experience points for helping us collect data!",
-    "to_landing_page": "Visit the start-page",
     "title_user": "Welcome back to&nbsp;<b>Cool Trees &amp; Sensors</b>, {{username}}!",
     "desc_user_1": "We really appreciate any ",
     "desc_phenobs_link": "Phenology observations",

@@ -96,8 +96,9 @@ h2 {
   word-break: break-word;
 }
 
-section {
-  margin-bottom: @gutter2x;
+section,
+hr {
+  margin-top: (@gutter2x*2);
 }
 
 .content-img {
@@ -191,6 +192,10 @@ section {
   background-image: url("/assets/landing-page/bg-main.jpg");
   background-size: cover;
   background-position: top center;
+}
+
+.test img {
+  width: 100%;
 }
 
 .title-container {
@@ -406,7 +411,6 @@ section {
 
 .timeline-container {
   > h1 {
-    padding: @gutter (@gutter2x*2);
     text-align: center;
   }
 
@@ -438,18 +442,6 @@ section {
     background-position: left top,
                          left bottom;
     background-repeat: no-repeat;
-  }
-
-  section:nth-child(4n+2) &:before {
-    background-color: @primaryColorHighlight;
-  }
-
-  section:nth-child(4n+3) &:before {
-    background-color: @secondaryColor;
-  }
-
-  section:nth-child(4n+4) &:before {
-    background-color: @secondaryColorHighlight;
   }
 }
 

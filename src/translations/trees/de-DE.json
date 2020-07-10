@@ -13,6 +13,7 @@
         "footer": "Zur Fußleiste springen"
       }
     },
+    "landing_page": "Start",
     "home": "Start",
     "participate": "Mitmachen",
     "phenology": "Phänologie",
@@ -546,7 +547,6 @@
   "home": {
     "title": "Willkommen bei&nbsp;<b>Coole Bäume &amp; Sensoren</b>!",
     "desc": "Du kannst diese Website benutzen, um Phänologiedaten zu Bäumen einzutragen, Informationen und Statistiken über die Bäume und Beacons anzusehen und um Punkte durch Mithelfen zu erhalten!",
-    "to_landing_page": "Zur Startseite",
     "title_user": "Willkommen zurück bei&nbsp;<b>Coole Bäume &amp; Sensoren</b>, {{username}}!",
     "desc_user_1": "Wir freuen uns über jede ",
     "desc_phenobs_link": "Phänologiebeobachtung",
