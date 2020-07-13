@@ -60,7 +60,7 @@ export class LandingPageComponent implements OnInit, AfterViewInit {
     {
       iconUrl: '/assets/landing-page/icons/analysieren.svg',
       title: 'Analysieren',
-      imageUrl: '/assets/landing-page/intro-slides/analysieren.jpg',
+      imageUrl: '/assets/landing-page/intro-slides/analysieren_2.jpg',
       bgColor: '#079725',
       imgDesc: 'Wir analysieren die gemessenen Daten.'
     }
