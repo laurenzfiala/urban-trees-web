@@ -15,6 +15,7 @@
       <div *ngFor="let beacon of beacons | slice:0:getLimit(); let i = index"
            (action)="selectedBeaconIndex = i; loadBeaconData()"
            [ngClass]="{'mr-0 selected': selectedBeaconIndex === i, 'mr-2': selectedBeaconIndex !== i}"
+           [title]="'Beacon ' + beacon.deviceId"
            class="list-entry link-container text-nowrap p-2"
            role="button"
            tabindex="0">

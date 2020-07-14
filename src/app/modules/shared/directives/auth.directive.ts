@@ -50,9 +50,13 @@ export class AuthDirective implements OnInit, OnDestroy {
 
     // if user roles are accepted by the service, or we accept logged in users if no grant roles are required
     if (this.authService.isUserRoleAccessGranted(this.grantRoles) || (this.authService.isLoggedIn() && !this.grantRoles)) {
-      this.viewContainer.createEmbeddedView(this.templateRef);
+      if (this.templateRef) {
+        this.viewContainer.createEmbeddedView(this.templateRef);
+      }
     } else {
-      this.viewContainer.createEmbeddedView(this.templateRefElse);
+      if (this.templateRefElse) {
+        this.viewContainer.createEmbeddedView(this.templateRefElse);
+      }
     }
 
   }

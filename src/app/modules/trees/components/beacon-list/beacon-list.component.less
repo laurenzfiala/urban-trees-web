@@ -82,6 +82,10 @@
   }
 }
 
+.list-container {
+  max-width: 100%;
+}
+
 .list-entry {
   display: flex;
   flex-direction: row;
@@ -89,6 +93,12 @@
 
   &.selected {
     background-color: @lightBgColor;
+  }
+
+  &,
+  .link {
+    text-overflow: ellipsis;
+    overflow: hidden;
   }
 }
 
