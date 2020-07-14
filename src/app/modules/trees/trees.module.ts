@@ -84,6 +84,7 @@ import { OtpManageComponent } from './components/otp-manage/otp-manage.component
 import {AuthPipe} from './pipes/auth.pipe';
 import {OtpScratchCodePipe} from './pipes/otp-scratch-code.pipe';
 import {MultiTranslateHttpLoader} from '../shared/lib/multi-translate-http-loader';
+import { BeacontransferComponent } from './components/beacontransfer/beacontransfer.component';
 
 export function TranslateFactory(http: HttpClient) {
   return new MultiTranslateHttpLoader(http, [
@@ -141,7 +142,8 @@ export function TranslateFactory(http: HttpClient) {
     ReplacePipe,
     DecimalPlacesPipe,
     AuthPipe,
-    OtpScratchCodePipe
+    OtpScratchCodePipe,
+    BeacontransferComponent
   ],
   imports: [
     // Core

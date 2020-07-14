@@ -144,7 +144,7 @@
             {{selectedBeacon.status}}
             <div *ngIf="selectedBeacon.status === 'LOCKED' || selectedBeacon.status === 'INVALID_SETTINGS'"
                  class="d-flex align-items-center mt-2 text-sm text-danger">
-              <i class="i i-sm i-special i-warning-danger mr-2"></i>
+              <i class="i i-sm i-special i-warning-danger flex-shrink-0 mr-2"></i>
               <div *ngIf="selectedBeacon.status === 'LOCKED'">
                 This beacon has a PIN that is not equal to the one shown below and can't be accessed.
               </div>

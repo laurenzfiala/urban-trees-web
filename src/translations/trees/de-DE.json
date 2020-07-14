@@ -183,6 +183,18 @@
       "text": "Wir konnten den Baum nicht laden, bitte versuche es erneut."
     }
   },
+  "beacontransfer_view": {
+    "success": "Beacon-Daten erfolgreich übertragen!",
+    "failed": "Der Beacon für diesen Baum konnte nicht ausgelesen werden!",
+    "message": {
+      "title": "Danke!",
+      "text": "{{amount}} Datensätze wurden soeben durch Deine Hilfe erfasst!"
+    },
+    "error": {
+      "title": "Fehler",
+      "text": "Wir konnten den Beacon nicht laden, bitte versuche es erneut."
+    }
+  },
   "user": {
     "level_action": {
       "INITIAL": "Account erstellt",
@@ -377,14 +389,6 @@
         "status_invalid_settings": "Dieser Beacon kann derzeit nicht ausgelesen werden, weil er falsch konfiguriert wurde, was das Auslesen verhindert.",
         "status_initial": "Dieser Beacon wurde neu hinzugefügt. Er wurde noch nicht ausgelesen.",
         "no_beacon_found": "Keinen Beacon gefunden"
-      },
-      "transfer": {
-        "success": "Beacon-Daten erfolgreich übertragen!",
-        "failed": "Der Beacon für diesen Baum konnte nicht ausgelesen werden!",
-        "message": {
-          "title": "Danke!",
-          "text": "{{amount}} Datensätze wurden soeben durch Deine Hilfe erfasst!"
-        }
       },
       "data": {
         "error": "Die Aufzeichnungsdaten für diesen Beacon konnten nicht geladen werden",

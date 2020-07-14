@@ -18,13 +18,11 @@ export class AuthDirective implements OnInit, OnDestroy {
   @Input('auth')
   private grantRoles: string[];
 
+  @Input('authElse')
+  private templateRefElse: TemplateRef<any>;
+
   @Input('authCheckChanges')
   private authCheckChanges: boolean = true;
-
-  /**
-   * Rarely content may be added multiple times, which we prevent with this switch.
-   */
-  private isRemoved: boolean = true;
 
   private authServiceOnStateChanged: Subscription;
 
@@ -48,17 +46,13 @@ export class AuthDirective implements OnInit, OnDestroy {
 
   private do(): void {
 
+    this.viewContainer.clear();
+
     // if user roles are accepted by the service, or we accept logged in users if no grant roles are required
     if (this.authService.isUserRoleAccessGranted(this.grantRoles) || (this.authService.isLoggedIn() && !this.grantRoles)) {
-      if (this.isRemoved) {
-        this.viewContainer.createEmbeddedView(this.templateRef);
-      }
-      this.isRemoved = false;
+      this.viewContainer.createEmbeddedView(this.templateRef);
     } else {
-      if (!this.isRemoved) {
-        this.viewContainer.clear();
-      }
-      this.isRemoved = true;
+      this.viewContainer.createEmbeddedView(this.templateRefElse);
     }
 
   }

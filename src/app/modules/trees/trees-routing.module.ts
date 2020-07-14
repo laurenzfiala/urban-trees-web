@@ -29,6 +29,7 @@ import {ObservationComponent} from './components/phenology/observation/observati
 import {HelpComponent} from './components/help/help.component';
 import {ParticipateComponent} from './components/participate/participate.component';
 import {OtpManageComponent} from './components/otp-manage/otp-manage.component';
+import {BeacontransferComponent} from './components/beacontransfer/beacontransfer.component';
 
 const routes: Routes = [
   {
@@ -65,11 +66,15 @@ const routes: Routes = [
       },
       {
         path: 'trees',
-        component: TreeListComponent,
+        component: TreeListComponent
       },
       {
         path: 'tree/:treeId',
-        component: TreeComponent,
+        component: TreeComponent
+      },
+      {
+        path: 'beacontransfer/:beaconId/:transferStatus',
+        component: BeacontransferComponent
       },
       {
         path: 'login',

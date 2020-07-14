@@ -184,6 +184,18 @@
       "text": "We could not load the given tree, please try again."
     }
   },
+  "beacontransfer_view": {
+    "success": "Beacon data successfully transferred!",
+    "failed": "Could not receive data from beacon!",
+    "message": {
+      "title": "Thank you!",
+      "text": "You helped transfer {{amount}} datasets just now!"
+    },
+    "error": {
+      "title": "Error",
+      "text": "We could not load the given beacon, please try again."
+    }
+  },
   "user": {
     "level_action": {
       "INITIAL": "Account creation",
@@ -378,14 +390,6 @@
         "status_invalid_settings": "This beacon can currently not be read out, because incorrect configuration prevents readout.",
         "status_initial": "This beacon was newly deployed to this location. It has not yet been read out.",
         "no_beacon_found": "No beacon found"
-      },
-      "transfer": {
-        "success": "Beacon data successfully transferred!",
-        "failed": "Failed to get beacon data for this tree!",
-        "message": {
-          "title": "Thank you!",
-          "text": "You helped transfer {{amount}} datasets just now!"
-        }
       },
       "data": {
         "error": "Could not load this beacons' data",
