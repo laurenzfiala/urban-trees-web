@@ -157,7 +157,7 @@
         </tr>
       </table>
 
-      <div class="mt-3 d-flex justify-content-end">
+      <div class="mt-3 d-flex justify-content-end flex-wrap m--1">
 
         <ng-template #removeBeaconConfirm>
           <div class="mb-1">
@@ -181,27 +181,27 @@
             Successfully removed!
           </div>
         </ng-template>
-        <div *ngIf="selectedBeacon.logs.length === 0 && selectedBeacon.logLoadingStatus === StatusValue.IN_PROGRESS" class="beacon-message text-sm mr-4">
+        <div *ngIf="selectedBeacon.logs.length === 0 && selectedBeacon.logLoadingStatus === StatusValue.IN_PROGRESS" class="beacon-message text-sm m-1">
           <i class="i i-sm i-spin i-dark i-load mr-2"></i>
           Loading beacon logs...
         </div>
-        <div *ngIf="selectedBeacon.logs.length === 0 && selectedBeacon.logLoadingStatus === StatusValue.FAILED" class="beacon-warning text-sm mr-4">
+        <div *ngIf="selectedBeacon.logs.length === 0 && selectedBeacon.logLoadingStatus === StatusValue.FAILED" class="beacon-warning text-sm m-1">
           <i class="i i-sm mr-2"></i>
           Could not load beacon logs
         </div>
         <button *ngIf="!selectedBeacon.isLogsShown"
                 (click)="selectedBeacon.isLogsShown = true; loadBeaconLogsInitial(selectedBeacon)"
-                class="btn btn-sm btn-outline-dark d-flex text-center mr-2">
+                class="btn btn-sm btn-outline-dark d-flex text-center m-1">
           <i class="i i-xs i-dark i-log mr-1"></i>
           Show logs
         </button>
         <button *ngIf="selectedBeacon.isLogsShown"
                 (click)="selectedBeacon.isLogsShown = false;"
-                class="btn btn-sm btn-outline-dark d-flex text-center mr-2">
+                class="btn btn-sm btn-outline-dark d-flex text-center m-1">
           <i class="i i-xs i-dark i-log mr-1"></i>
           Hide logs
         </button>
-        <div dropdown class="btn-group mr-2">
+        <div dropdown class="btn-group m-1">
           <button dropdownToggle type="button" class="btn btn-sm btn-outline-dark dropdown-toggle">
             <i class="i i-xs i-dark i-warning mr-1 float-left"></i>
             Log Level: {{selectedMinLogSeverity}}
@@ -212,13 +212,13 @@
             </a>
           </div>
         </div>
-        <button class="btn btn-sm btn-outline-dark d-flex text-center mr-2"
+        <button class="btn btn-sm btn-outline-dark d-flex text-center m-1"
                 [routerLink]="['/admin/beacon/manage']"
                 [queryParams]="{'beacon': selectedBeacon.deviceId}">
           <i class="i i-xs i-dark i-edit mr-1"></i>
           Edit beacon
         </button>
-        <button class="btn btn-sm btn-outline-danger d-flex text-center"
+        <button class="btn btn-sm btn-outline-danger d-flex text-center m-1"
                 [ngClass]="{'remove-disabled': selectedBeacon.deleteStatus === StatusValue.SUCCESSFUL}"
                 [popover]="removeBeaconConfirm"
                 outsideClick=true>
