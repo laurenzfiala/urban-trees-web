@@ -1,10 +1,8 @@
 @import (reference) "../../../theme/variables";
 @import (reference) "landing-page.component";
 
-.link {
-  color: @primaryColor;
-}
-
+button,
+input[type="button"],
 .link-btn {
   padding: @gutter;
 
@@ -15,7 +13,7 @@
   &:hover,
   &:focus {
     color: @white !important;
-    background-color: lighten(@primaryColor, 3%);
-    border-color: @primaryColor;
+    background-color: lighten(@primaryColor, 5%);
+    border-color: @primaryColor !important;
   }
 }
