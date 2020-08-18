@@ -12,7 +12,7 @@ import * as $ from 'jquery';
 @Component({
   selector: 'ut-landing-page',
   templateUrl: './landing-page.component.html',
-  styleUrls: ['./landing-page.component.less']
+  styleUrls: ['./landing-page.component.less', 'landing-page-framework.component.less']
 })
 export class LandingPageComponent implements OnInit, AfterViewInit {
 

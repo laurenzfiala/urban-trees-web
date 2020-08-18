@@ -99,6 +99,7 @@ h2 {
 section,
 hr {
   margin-top: (@gutter2x*2);
+  margin-bottom: @gutter;
 }
 
 .content-img {
@@ -457,6 +458,7 @@ hr {
 .img-flex {
   display: flex;
   flex-direction: row;
+  align-items: flex-start;
 
   margin: -@gutter;
 
@@ -586,6 +588,11 @@ hr {
       margin-left: (@headerIconHMargin/2);
     }
   }
+}
+
+.urbantrees-retrospective-icon {
+  width: 200px;
+  min-width: 100px;
 }
 
 @keyframes header-link-loading {

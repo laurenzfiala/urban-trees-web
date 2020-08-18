@@ -1,0 +1,21 @@
+@import (reference) "../../../theme/variables";
+@import (reference) "landing-page.component";
+
+.link {
+  color: @primaryColor;
+}
+
+.link-btn {
+  padding: @gutter;
+
+  color: @white;
+  background-color: @primaryColor;
+  border-color: darken(@primaryColor, 5%);
+
+  &:hover,
+  &:focus {
+    color: @white !important;
+    background-color: lighten(@primaryColor, 3%);
+    border-color: @primaryColor;
+  }
+}
