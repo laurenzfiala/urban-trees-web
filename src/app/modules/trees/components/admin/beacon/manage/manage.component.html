@@ -158,7 +158,13 @@
 
             <div class="form-row mb-2">
               <div class="col">
-                <input *ngIf="beacon" id="beaconDeviceId" class="form-control" type="text" name="beaconDeviceId" [(ngModel)]="beacon.deviceId" />
+                <input *ngIf="beacon"
+                       id="beaconDeviceId"
+                       class="form-control"
+                       type="text"
+                       name="beaconDeviceId"
+                       maxlength="10"
+                       [(ngModel)]="beacon.deviceId" />
               </div>
             </div>
 

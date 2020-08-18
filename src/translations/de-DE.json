@@ -1,7 +1,6 @@
 {
   "app": {
-    "title": "Stadtbäume",
-    "subtitle": "als Klimabotschafter",
+    "title": "Coole Bäume & Sensoren",
     "date_format": "DD.MM.YYYY HH:mm",
     "date_format_angular": "dd.MM.yyyy HH:mm",
     "date_format_short": "DD.MM. HH:mm",
@@ -9,5 +8,5 @@
     "date_format_day": "DD.MM",
     "date_format_time": "HH:mm"
   },
-  "title": "Der Baum als <span class=\"title-highlight\">natürlicher</span> Klimaregulator"
+  "title": "<span class=\"title-highlight\">CO₂</span>OLE BÄUME & SENSOREN"
 }

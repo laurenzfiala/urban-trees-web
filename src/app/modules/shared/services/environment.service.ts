@@ -364,6 +364,19 @@ class EnvironmentEndpoints {
     return this.prependCommonPath(this.context.loadBeacons);
   }
 
+  public loadBeacon(beaconId: number) {
+    let replacements: any[] = [
+      { placeholder: 'beaconId', replacement: beaconId }
+    ];
+
+    return this.prependCommonPath(
+      this.replaceParams(
+        this.context.loadBeacon,
+        replacements
+      )
+    );
+  }
+
   public loadBeaconLogs(beaconId: number, minSeverity: BeaconLogSeverity, offset: number, maxLogs: number): string {
 
     let url = this.context.loadBeaconLogs;

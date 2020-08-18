@@ -14,28 +14,13 @@ export class TreeComponent extends AbstractComponent implements OnInit {
 
   private static PATH_PARAMS_TREE_ID = 'treeId';
 
-  private static QUERY_PARAMS_APP_TRANSFER_STATUS = 'readout';
-  private static QUERY_PARAMS_APP_TRANSFER_AMOUNT = 'readoutAmount';
-  private static QUERY_PARAMS_BEACON_PRESELECT = 'beacon';
-
   public StatusKey = StatusKey;
   public StatusValue = StatusValue;
 
+  /**
+   * Tree to display.
+   */
   public tree: Tree;
-
-  /**
-   * This is populated via the query params by the app and used
-   * to give the user feedback regarding beacon data transfer.
-   * @see QUERY_PARAMS_APP_TRANSFER_AMOUNT
-   */
-  public appTransferAmount: number;
-
-  /**
-   * This is populated via the query params by the app and used
-   * to preselect a beacon by deviceId.
-   * @see QUERY_PARAMS_BEACON_PRESELECT
-   */
-  public beaconDeviceIdPreselect: string;
 
   constructor(private route: ActivatedRoute,
               private treeService: TreeService,
@@ -56,28 +41,6 @@ export class TreeComponent extends AbstractComponent implements OnInit {
         this.loadTree(treeIdVal);
       } else {
         this.setStatus(StatusKey.TREE_VALIDATION, StatusValue.FAILED);
-      }
-
-    });
-
-    this.route.queryParams.subscribe((params: any) => {
-
-      const appTransferStatusVal: AppTransferStatusParam = params[TreeComponent.QUERY_PARAMS_APP_TRANSFER_STATUS];
-
-      if (appTransferStatusVal === AppTransferStatusParam.SUCCESSFUL) {
-        this.setStatus(StatusKey.APP_TRANSFER_STATUS, StatusValue.SUCCESSFUL);
-      } else if (appTransferStatusVal === AppTransferStatusParam.FAILED) {
-        this.setStatus(StatusKey.APP_TRANSFER_STATUS, StatusValue.FAILED);
-      }
-
-      const appTransferAmountVal: number = params[TreeComponent.QUERY_PARAMS_APP_TRANSFER_AMOUNT];
-      if (appTransferAmountVal) {
-        this.appTransferAmount = appTransferAmountVal;
-      }
-
-      const beaconPreselectVal: AppTransferStatusParam = params[TreeComponent.QUERY_PARAMS_BEACON_PRESELECT];
-      if (beaconPreselectVal) {
-        this.beaconDeviceIdPreselect = beaconPreselectVal;
       }
 
     });
@@ -112,12 +75,5 @@ export enum StatusValue {
   IN_PROGRESS,
   SUCCESSFUL,
   FAILED = -1
-
-}
-
-export enum AppTransferStatusParam {
-
-  SUCCESSFUL = 'successful',
-  FAILED = 'failed'
 
 }

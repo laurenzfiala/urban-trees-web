@@ -12,16 +12,16 @@ import * as $ from 'jquery';
 @Component({
   selector: 'ut-landing-page',
   templateUrl: './landing-page.component.html',
-  styleUrls: ['./landing-page.component.less']
+  styleUrls: ['./landing-page.component.less', 'landing-page-framework.component.less']
 })
 export class LandingPageComponent implements OnInit, AfterViewInit {
 
-  public loading: boolean = false;
-
   private static CYCLE_INTERVAL_MS: number = 5000;
 
-  @ViewChild('introModulesContentWrapper')
-  public introModulesContentWrapper: ElementRef;
+  public loading: boolean = false;
+
+  @ViewChild('introTabsContentWrapper')
+  public introTabsContentWrapper: ElementRef;
 
   public _runSlideCycle: boolean = false;
   private cycleIntervalId: number;
@@ -37,22 +37,32 @@ export class LandingPageComponent implements OnInit, AfterViewInit {
 
   public modules: any = [
     {
-      title: 'Data2Sensor',
-      imageUrl: '/assets/landing-page/modules/module1.jpg',
-      tabText: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.',
-      imgDesc: 'This should describe what\'s going on in the picture.'
+      iconUrl: '/assets/landing-page/icons/experimentieren.svg',
+      title: 'Experimentieren',
+      imageUrl: '/assets/landing-page/intro-slides/experimentieren.jpg',
+      bgColor: '#18628D',
+      imgDesc: 'Wir führen spannende Experimente durch.'
     },
     {
-      title: 'Sensor2App',
-      imageUrl: '/assets/landing-page/modules/module2.jpg',
-      tabText: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.',
-      imgDesc: 'This should describe what\'s going on in the picture. (2)'
+      iconUrl: '/assets/landing-page/icons/programmieren.svg',
+      title: 'Programmieren',
+      imageUrl: '/assets/landing-page/intro-slides/programmieren.jpg',
+      bgColor: '#14A3A2',
+      imgDesc: 'Wir programmieren Schaltkreise & Sensoren.'
     },
     {
-      title: 'App2Analyse',
-      imageUrl: '/assets/landing-page/modules/module3.jpg',
-      tabText: 'Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.',
-      imgDesc: 'This should describe what\'s going on in the picture. (3)'
+      iconUrl: '/assets/landing-page/icons/messen.svg',
+      title: 'Messen',
+      imageUrl: '/assets/landing-page/intro-slides/messen.jpg',
+      bgColor: '#0E9960',
+      imgDesc: 'Wir messen Temperatur & CO₂-Gehalt der Luft.'
+    },
+    {
+      iconUrl: '/assets/landing-page/icons/analysieren.svg',
+      title: 'Analysieren',
+      imageUrl: '/assets/landing-page/intro-slides/analysieren_2.jpg',
+      bgColor: '#079725',
+      imgDesc: 'Wir analysieren die gemessenen Daten.'
     }
   ];
 
@@ -98,9 +108,13 @@ export class LandingPageComponent implements OnInit, AfterViewInit {
       s.isShown = false;
     }
     slide.isShown = true;
-    let scrollEl = $(this.introModulesContentWrapper.nativeElement);
-    let slideContentWidth = scrollEl.find('.intro-module')[0].clientWidth;
-    let scrollLeftTarget = slideContentWidth * this.currentSlideIndex() - (window.innerWidth - slideContentWidth) / 2;
+    let scrollEl = $(this.introTabsContentWrapper.nativeElement);
+    const slideTabWidth = scrollEl.find('.intro-tab')[this.currentSlideIndex()].clientWidth;
+    let slideTabTargetOffset = 0;
+    for (let tab of scrollEl.find('.intro-tab').slice(0, this.currentSlideIndex())) {
+      slideTabTargetOffset += tab.clientWidth;
+    }
+    let scrollLeftTarget = slideTabTargetOffset - (window.innerWidth - slideTabWidth) / 2;
     scrollEl.stop().animate({scrollLeft: scrollLeftTarget}, 500);
 
     this.cdRef.detectChanges();

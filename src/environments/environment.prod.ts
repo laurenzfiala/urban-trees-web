@@ -20,6 +20,7 @@ export const environment = {
     cities:                           '/tree/cities',
     species:                          '/tree/species',
     loadBeacons:                      '/beacon',
+    loadBeacon:                       '/beacon/{beaconId}',
     beaconData:                       '/beacon/{beaconId}/data',
     beaconDataTimespan:               '/beacon/{beaconId}/data?timespanMin={timespanMin}&timespanMax={timespanMax}',
     beaconDataTimespanMin:            '/beacon/{beaconId}/data?timespanMin={timespanMin}',

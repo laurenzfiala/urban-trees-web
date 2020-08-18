@@ -1,7 +1,6 @@
 {
   "app": {
-    "title": "Urban Trees",
-    "subtitle": "as climate messengers",
+    "title": "Cool Trees & Sensors",
     "date_format": "YYYY/MM/DD HH:mm",
     "date_format_angular": "yyyy/MM/dd HH:mm",
     "date_format_short": "MM/DD HH:mm",
@@ -9,5 +8,5 @@
     "date_format_day": "MM/DD",
     "date_format_time": "HH:mm"
   },
-  "title": "Trees as <span class=\"title-highlight\">natural</span> climate regulators"
+  "title": "<span class=\"title-highlight\">CO₂</span>OLE BÄUME & SENSOREN"
 }

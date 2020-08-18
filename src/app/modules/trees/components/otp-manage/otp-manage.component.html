@@ -173,6 +173,14 @@
 
   </div>
 
+  <div
+    *ngIf="hasStatus(StatusKey.ACTIVATE, StatusValue.FAILED_CONNECTION)"
+    class="col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto login-annotation-container login-annotation-danger">
+
+    {{'otp_manage.activation_connection_error_info' | translate}}
+
+  </div>
+
   <div *ngIf="hasStatus(StatusKey.DEACTIVATE, StatusValue.SUCCESSFUL)"
        class="col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto login-annotation-container centered login-annotation-success">
 
@@ -192,6 +200,14 @@
     class="col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto login-annotation-container login-annotation-danger">
 
     {{'otp_manage.deactivation_error_info' | translate}}
+
+  </div>
+
+  <div
+    *ngIf="hasStatus(StatusKey.DEACTIVATE, StatusValue.FAILED_CONNECTION)"
+    class="col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto login-annotation-container login-annotation-danger">
+
+    {{'otp_manage.deactivation_connection_error_info' | translate}}
 
   </div>
 

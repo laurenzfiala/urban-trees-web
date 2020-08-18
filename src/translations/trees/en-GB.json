@@ -13,6 +13,7 @@
         "footer": "Jump to footer"
       }
     },
+    "landing_page": "Start",
     "home": "Home",
     "participate": "Participate",
     "phenology": "Phenology",
@@ -24,7 +25,7 @@
       "report": "Report a problem",
       "imprint": "Imprint",
       "home": "Home page",
-      "madeby": "Made with &#x2764; by the",
+      "madeby": "Made with &#x2764; by the ",
       "madeby_team": "Urban-Trees-Team",
       "info_version": "Version",
       "info_hash": "ID"
@@ -183,6 +184,18 @@
       "text": "We could not load the given tree, please try again."
     }
   },
+  "beacontransfer_view": {
+    "success": "Beacon data successfully transferred!",
+    "failed": "Could not receive data from beacon!",
+    "message": {
+      "title": "Thank you!",
+      "text": "You helped transfer {{amount}} datasets just now!"
+    },
+    "error": {
+      "title": "Error",
+      "text": "We could not load the given beacon, please try again."
+    }
+  },
   "user": {
     "level_action": {
       "INITIAL": "Account creation",
@@ -258,8 +271,10 @@
     "code_placeholder": "Two-factor code",
     "activation_success_info": "Successfully activated",
     "activation_error_info": "Code was incorrect, please try again",
+    "activation_connection_error_info": "Could not reach server, please try again later",
     "deactivation_success_info": "Successfully deactivated",
     "deactivation_error_info": "Code was incorrect, please try again",
+    "deactivation_connection_error_info": "Could not reach server, please try again later",
     "go_to_home": "Go to home"
   },
   "tree": {
@@ -375,14 +390,6 @@
         "status_invalid_settings": "This beacon can currently not be read out, because incorrect configuration prevents readout.",
         "status_initial": "This beacon was newly deployed to this location. It has not yet been read out.",
         "no_beacon_found": "No beacon found"
-      },
-      "transfer": {
-        "success": "Beacon data successfully transferred!",
-        "failed": "Failed to get beacon data for this tree!",
-        "message": {
-          "title": "Thank you!",
-          "text": "You helped transfer {{amount}} datasets just now!"
-        }
       },
       "data": {
         "error": "Could not load this beacons' data",
@@ -539,15 +546,16 @@
   "imprint": {
     "title": "Imprint",
     "title_disclaimer": "Some of the information below is only available in german",
+    "partners_coming_soon": "The other project partners will be added soon.",
     "partners": "Partners",
     "license": "License",
     "os_projects": "Open Source Projects",
     "os_projects_text": "Following is a list of open source projects used to create this website."
   },
   "home": {
-    "title": "Welcome to&nbsp;<b>Urban Trees as climate messengers</b>!",
+    "title": "Welcome to&nbsp;<b>Cool Trees &amp; Sensors</b>!",
     "desc": "You can use this site to enter phenology data for trees, read information and statistics about trees and beacons and gain experience points for helping us collect data!",
-    "title_user": "Welcome back to&nbsp;<b>Urban Trees</b>, {{username}}!",
+    "title_user": "Welcome back to&nbsp;<b>Cool Trees &amp; Sensors</b>, {{username}}!",
     "desc_user_1": "We really appreciate any ",
     "desc_phenobs_link": "Phenology observations",
     "desc_user_2": " or beacon readouts (using the <a class=\"link\" href=\"https://play.google.com/apps/internaltest/4699755394511268796\" target=\"_blank\">android app</a>). When logged in, you can earn experience points and advance your level by completing one of these activities.",

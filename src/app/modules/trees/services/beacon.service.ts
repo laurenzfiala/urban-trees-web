@@ -30,6 +30,31 @@ export class BeaconService extends AbstractService {
     super();
   }
 
+  /**
+   * Load a single Beacon.
+   * @param {(trees: Array<BeaconFrontend>) => void} successCallback Called upon success
+   * @param {(error: any) => void} errorCallback Called upon exception
+   */
+  public loadBeacon(beaconId: number,
+                    successCallback: (beaconDatasets: BeaconFrontend) => void,
+                    errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void) {
+
+    const url = this.envService.endpoints.loadBeacon(beaconId);
+    BeaconService.LOG.debug('Loading beacon ' + beaconId + ' from ' + url + ' ...');
+
+    this.http.get<BeaconFrontend>(url)
+      .timeout(this.envService.defaultTimeout)
+      .map(b => BeaconFrontend.fromObject(b))
+      .subscribe((result: BeaconFrontend) => {
+        successCallback(result);
+      }, (e: any) => {
+        BeaconService.LOG.error('Could not load beacon: ' + e.message, e);
+        if (errorCallback) {
+          errorCallback(e, this.safeApiError(e));
+        }
+      });
+
+  }
 
   /**
    * Load all available Beacons.

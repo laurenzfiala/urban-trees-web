@@ -1,0 +1,26 @@
+@import (reference) "../../../../../theme/variables";
+
+.transfer-message {
+  background-color: @successBg;
+  padding: 0.5rem 1rem;
+  margin-bottom: 1.5rem;
+  font-size: @fontSizeLarge;
+  color: @successDark;
+  border-radius: @borderRadiusNew;
+  position: relative;
+  display: inline-block;
+
+  &:after {
+    content: "";
+    position: absolute;
+    left: calc(50% - 1rem);
+    bottom: -1rem;
+    border-top: solid @successBg 1rem;
+    border-left: solid transparent 1rem;
+    border-right: solid transparent 1rem;
+  }
+
+  > span {
+    font-size: @fontSizeBase;
+  }
+}

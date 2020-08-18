@@ -35,10 +35,10 @@
     <nav class="navbar navbar-expand navbar-light navbar-bg pl-0">
         <a id="firstHeaderLink"
            class="navbar-brand"
-           routerLink="/home"
+           routerLink="/"
            routerLinkActive="active">
           <div class="d-inline-block align-top nav-brand-icon">
-            <span class="sr-only">{{'navigation.home' | translate}}</span>
+            <span class="sr-only">{{'navigation.landing_page' | translate}}</span>
           </div>
         </a>
 
@@ -119,6 +119,12 @@
 
 <!-- Content of NAV & dropdown -->
 <ng-template #navContent>
+  <li class="nav-item"
+      routerLinkActive="active">
+    <a class="nav-link link-container" routerLink="/home">
+      <div class="link">{{'navigation.home' | translate}}</div>
+    </a>
+  </li>
   <li class="nav-item"
       routerLinkActive="active">
     <a class="nav-link link-container" routerLink="/participate">

@@ -13,6 +13,7 @@
         "footer": "Zur Fußleiste springen"
       }
     },
+    "landing_page": "Start",
     "home": "Start",
     "participate": "Mitmachen",
     "phenology": "Phänologie",
@@ -182,6 +183,18 @@
       "text": "Wir konnten den Baum nicht laden, bitte versuche es erneut."
     }
   },
+  "beacontransfer_view": {
+    "success": "Beacon-Daten erfolgreich übertragen!",
+    "failed": "Der Beacon für diesen Baum konnte nicht ausgelesen werden!",
+    "message": {
+      "title": "Danke!",
+      "text": "{{amount}} Datensätze wurden soeben durch Deine Hilfe erfasst!"
+    },
+    "error": {
+      "title": "Fehler",
+      "text": "Wir konnten den Beacon nicht laden, bitte versuche es erneut."
+    }
+  },
   "user": {
     "level_action": {
       "INITIAL": "Account erstellt",
@@ -257,8 +270,10 @@
     "code_placeholder": "Zwei-Faktor Code",
     "activation_success_info": "Erfolgreich aktiviert",
     "activation_error_info": "Code war ungültig, bitte versuche es erneut",
+    "activation_connection_error_info": "Server konnte nicht erreicht werden, bitte versuche es später nocheinmal",
     "deactivation_success_info": "Erfolgreich deaktiviert",
     "deactivation_error_info": "Code war ungültig, bitte versuche es erneut",
+    "deactivation_connection_error_info": "Server konnte nicht erreicht werden, bitte versuche es später nocheinmal",
     "go_to_home": "Go to home"
   },
   "tree": {
@@ -374,14 +389,6 @@
         "status_invalid_settings": "Dieser Beacon kann derzeit nicht ausgelesen werden, weil er falsch konfiguriert wurde, was das Auslesen verhindert.",
         "status_initial": "Dieser Beacon wurde neu hinzugefügt. Er wurde noch nicht ausgelesen.",
         "no_beacon_found": "Keinen Beacon gefunden"
-      },
-      "transfer": {
-        "success": "Beacon-Daten erfolgreich übertragen!",
-        "failed": "Der Beacon für diesen Baum konnte nicht ausgelesen werden!",
-        "message": {
-          "title": "Danke!",
-          "text": "{{amount}} Datensätze wurden soeben durch Deine Hilfe erfasst!"
-        }
       },
       "data": {
         "error": "Die Aufzeichnungsdaten für diesen Beacon konnten nicht geladen werden",
@@ -539,14 +546,15 @@
     "title": "Impressum",
     "title_disclaimer": "Some of the information below is only available in german",
     "partners": "Partner",
+    "partners_coming_soon": "Bald werden die restlichen Projektpartner*innen hinzugefügt.",
     "license": "Lizenz",
     "os_projects": "Open-Source Projekte",
     "os_projects_text": "Nachfolgend eine Liste der in dieser App benutzten Open-Source Projekte."
   },
   "home": {
-    "title": "Willkommen bei&nbsp;<b>Stadtbäume als Klimabotschafter</b>!",
+    "title": "Willkommen bei&nbsp;<b>Coole Bäume &amp; Sensoren</b>!",
     "desc": "Du kannst diese Website benutzen, um Phänologiedaten zu Bäumen einzutragen, Informationen und Statistiken über die Bäume und Beacons anzusehen und um Punkte durch Mithelfen zu erhalten!",
-    "title_user": "Willkommen zurück bei&nbsp;<b>Stadtbäume als Klimabotschafter</b>, {{username}}!",
+    "title_user": "Willkommen zurück bei&nbsp;<b>Coole Bäume &amp; Sensoren</b>, {{username}}!",
     "desc_user_1": "Wir freuen uns über jede ",
     "desc_phenobs_link": "Phänologiebeobachtung",
     "desc_user_2": " oder Beacon-Auslesungen (mit der <a class=\"link\" href=\"https://play.google.com/apps/internaltest/4699755394511268796\" target=\"_blank\">Android App</a>). Wenn Du währenddessen eingeloggt bist, erhältst du Erfahrungspunkte, die deinen Platz auf der Bestenliste verbessern.",
