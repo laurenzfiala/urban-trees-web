@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {Content} from '../entities/content.entity';
-import {CmsComponent} from '../interfaces/cms-component.inerface';
+import {CmsComponent} from '../interfaces/cms-component.interface';
+import {SerializedCmsComponent} from '../entities/serialized-cms-component.entity';
 
 /**
  * Handles serialization and deserialization of cms content
@@ -19,11 +20,12 @@ export class SerializationService {
   constructor() { }
 
   public serializeContent(components: Array<CmsComponent>): string {
-    const serializedComponents: Array<string> = new Array<string>();
-    components.forEach(component => serializedComponents.push(component.serialize()));
+    const serializedComponents = new Array<SerializedCmsComponent>();
+    components.forEach(component => {
+      serializedComponents.push(new SerializedCmsComponent(component.getComponentName(), component.serialize()));
+    });
 
-    const content: Content = new Content(SerializationService.VERSION_CODE);
-    content.setComponents(components);
+    const content: Content = new Content(SerializationService.VERSION_CODE, serializedComponents);
 
     return JSON.stringify(content);
   }
@@ -40,14 +42,6 @@ export class SerializationService {
    * Operates on the given object.
    */
   private upgradeContent(givenContent: Content): void {
-  }
-
-  public serializeComponentState(object: any): any {
-    return JSON.stringify(object);
-  }
-
-  public deserializeComponentState(serialized: string): any {
-    return JSON.parse(serialized);
   }
 
 }

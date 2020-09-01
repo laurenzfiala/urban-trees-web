@@ -1,6 +1,6 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {SerializationService} from '../../services/serialization.service';
-import {CmsComponent} from '../../interfaces/cms-component.inerface';
+import {CmsComponent} from '../../interfaces/cms-component.interface';
 
 @Component({
   selector: 'ut-cms-text',
@@ -17,17 +17,19 @@ export class TextComponent implements OnInit, CmsComponent {
   public ngOnInit(): void {
   }
 
-  public deserialize(serialized: string): void {
-    const state = this.serializationService.deserializeComponentState(serialized);
+  public deserialize(serialized: any): void {
+    const state = serialized;
     this.text = state.text;
   }
 
-  public serialize(): string {
-    return this.serializationService.serializeComponentState(
-      {
-        text: this.text
-      }
-    );
+  public serialize(): any {
+    return {
+      text: this.text
+    };
+  }
+
+  public getComponentName(): string {
+    return this.constructor.name;
   }
 
 }
