@@ -14,6 +14,7 @@ import {CmsComponent} from '../../interfaces/cms-component.interface';
 import {SerializationService} from '../../services/serialization.service';
 import {ContentService} from '../../services/content.service';
 import {Content} from '../../entities/content.entity';
+import {Toolbar, ToolbarBtn, ToolbarDropdown, ToolbarElement} from '../../entities/toolbar.entity';
 
 @Component({
   selector: 'ut-cms-content',
@@ -29,11 +30,15 @@ export class ContentComponent implements OnInit, AfterViewInit {
     ]
   );
 
+  public ToolBarBtn = ToolbarBtn;
+
   @Input('contentId')
   private contentId: string;
 
   @ViewChild('contentSlot', {read: ViewContainerRef})
   public contentSlot: ViewContainerRef;
+
+  public toolbar: Toolbar;
 
   private content: Content;
 
@@ -50,6 +55,7 @@ export class ContentComponent implements OnInit, AfterViewInit {
     /*this.contentService.loadContent(this.contentId, content => {
       this.content = content;
     });*/
+    this.toolbar = new Toolbar();
     this.content = Content.fromObject({
       version: 1,
       components: [
@@ -73,13 +79,26 @@ export class ContentComponent implements OnInit, AfterViewInit {
   public ngAfterViewInit(): void {
 
     this.contentSlot.clear();
-    for (let component of this.content.getComponents()) {
-      const componentFactory = this.resolver.resolveComponentFactory(ContentComponent.componentMapping.get(component.getName()));
+    for (let serializedCmp of this.content.getComponents()) {
+      const componentFactory = this.resolver.resolveComponentFactory(ContentComponent.componentMapping.get(serializedCmp.getName()));
       const componentRef = this.contentSlot.createComponent(componentFactory);
-      (<CmsComponent> componentRef.instance).deserialize(component.getData());
+      const component = <CmsComponent> componentRef.instance;
+
+      component.deserialize(serializedCmp.getData());
+      this.toolbar.register(component);
+      this.toolbar.update(component);
+
       this.cdRef.detectChanges();
     }
 
+  }
+
+  public isToolbarBtn(el: ToolbarElement): el is ToolbarBtn {
+    return el instanceof ToolbarBtn;
+  }
+
+  public isToolbarDropdown(el: ToolbarElement): el is ToolbarDropdown {
+    return el instanceof ToolbarDropdown;
   }
 
 }

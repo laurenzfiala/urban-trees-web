@@ -1,10 +1,10 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
 import {HTTP_INTERCEPTORS} from '@angular/common/http';
 import {AuthInterceptor} from '../shared/interceptors/auth.interceptor';
-import { TextComponent } from './components/text/text.component';
+import {TextComponent} from './components/text/text.component';
 import {TranslateModule} from '@ngx-translate/core';
-import { ContentComponent } from './components/content/content.component';
+import {ContentComponent} from './components/content/content.component';
 import {ForNDirective} from './directives/for-n.directive';
 
 

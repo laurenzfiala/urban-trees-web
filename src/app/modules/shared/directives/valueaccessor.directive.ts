@@ -1,14 +1,4 @@
-import {
-  Directive,
-  ElementRef,
-  EventEmitter,
-  HostBinding,
-  Input,
-  OnChanges,
-  Output,
-  Renderer2,
-  SimpleChanges
-} from '@angular/core';
+import {Directive, ElementRef, EventEmitter, Input, Output, Renderer2} from '@angular/core';
 import {NG_VALUE_ACCESSOR} from '@angular/forms';
 
 @Directive({

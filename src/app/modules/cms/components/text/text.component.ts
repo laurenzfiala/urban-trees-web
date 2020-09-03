@@ -1,6 +1,7 @@
 import {Component, Input, OnInit} from '@angular/core';
 import {SerializationService} from '../../services/serialization.service';
 import {CmsComponent} from '../../interfaces/cms-component.interface';
+import {ToolbarBtn, ToolbarDropdown, ToolbarElement, ToolbarSection} from '../../entities/toolbar.entity';
 
 @Component({
   selector: 'ut-cms-text',
@@ -30,6 +31,23 @@ export class TextComponent implements OnInit, CmsComponent {
 
   public getComponentName(): string {
     return this.constructor.name;
+  }
+
+  getToolbarSection(): ToolbarSection<ToolbarBtn> {
+    return new ToolbarSection<ToolbarBtn>(
+      new ToolbarBtn('Test name', 'Test description', '/assets/img/icon/dark/edit.svg')
+    );
+  }
+
+  getToolbarContextual(): ToolbarSection<ToolbarElement> {
+    return new ToolbarSection<ToolbarElement>(
+      new ToolbarDropdown('Test name', '1', new Map<string, any>(
+        [
+          ['1', 'Value 1'],
+          ['2', 'Value 2']
+        ]
+      ))
+    );
   }
 
 }

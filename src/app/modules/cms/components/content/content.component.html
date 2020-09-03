@@ -1,1 +1,22 @@
+<div class="toolbar">
+  <div *ngFor="let section of toolbar.getContextual()" class="toolbar-section">
+    <ng-container *ngFor="let element of section.getElements()">
+
+      <!--<ng-container *ngIf="cast<ToolbarBtn>(element)">
+        <button>{{cast<ToolbarBtn>(element).getName();}}</button>
+      </ng-container>-->
+      <div *ngIf="isToolbarBtn(element); let btn = element" ng>{{btn.getName()}}</div>
+      <div *ngIf="isToolbarDropdown(element)">dropdown</div>
+
+    </ng-container>
+  </div>
+  <div *ngFor="let section of toolbar.getComponents()" class="toolbar-section">
+    <ng-container *ngFor="let element of section.getElements()">
+
+      <div>{{isToolbarBtn(element)}}</div>
+
+    </ng-container>
+  </div>
+</div>
+
 <ng-template #contentSlot></ng-template>
