@@ -29,25 +29,48 @@ export class TextComponent implements OnInit, CmsComponent {
     };
   }
 
-  public getComponentName(): string {
+  public getName(): string {
     return this.constructor.name;
   }
 
   getToolbarSection(): ToolbarSection<ToolbarBtn> {
     return new ToolbarSection<ToolbarBtn>(
-      new ToolbarBtn('Test name', 'Test description', '/assets/img/icon/dark/edit.svg')
+      new ToolbarBtn(
+        'New text passage',
+        'Add a new text passage to the content',
+        '/assets/img/icon/dark/cms-cmp-text.svg'
+      )
     );
   }
 
   getToolbarContextual(): ToolbarSection<ToolbarElement> {
     return new ToolbarSection<ToolbarElement>(
+      new ToolbarBtn(
+        'Toggle bold text',
+        'Toggle bold font for the selected text',
+        '/assets/img/icon/dark/font-bold.svg'
+      ),
+      new ToolbarBtn(
+        'Toggle italic text',
+        'Toggle italic font for the selected text',
+        '/assets/img/icon/dark/font-italic.svg'
+      ),
       new ToolbarDropdown('Test name', '1', new Map<string, any>(
         [
-          ['1', 'Value 1'],
-          ['2', 'Value 2']
+          ['Text body', 'Value 1'],
+          ['Heading', 'Value 2'],
+          ['Sub-Heading', 'Value 3']
         ]
       ))
     );
   }
+
+  /*
+  new ToolbarBtn(
+        'New image',
+        'Add a new image to the content',
+        '/assets/img/icon/dark/cms-cmp-image.svg'
+      )
+   */
 
 }

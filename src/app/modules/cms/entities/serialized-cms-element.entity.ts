@@ -1,11 +1,8 @@
-import {Type} from '@angular/core';
-import {TextComponent} from '../components/text/text.component';
-
 /**
- * Holds meta-information on a single component
+ * Holds meta-information on a single content-element (layout/component)
  * and its serialized data/content.
  */
-export class SerializedCmsComponent {
+export class SerializedCmsContent {
 
   private name: string;
   private data: any;
@@ -24,13 +21,13 @@ export class SerializedCmsComponent {
     return this.data;
   }
 
-  public static fromObject(o: any): SerializedCmsComponent {
+  public static fromObject(o: any): SerializedCmsContent {
 
     if (!o) {
       return null;
     }
 
-    return new SerializedCmsComponent(
+    return new SerializedCmsContent(
       o.name,
       o.data
     );
