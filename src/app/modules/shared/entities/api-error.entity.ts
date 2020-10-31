@@ -4,6 +4,8 @@
  * @author Laurenz Fiala
  * @since 2018/03/03
  */
+import {HttpErrorResponse} from '@angular/common/http';
+
 export class ApiError {
 
   /**
@@ -33,6 +35,12 @@ export class ApiError {
    */
   public clientErrorCode: number;
 
+  /**
+   * The original http error received from a request.
+   * This may no be populated and therefore undefined.
+   */
+  public rawHttpError: HttpErrorResponse;
+
   constructor(status?: string, timestamp?: string, message?: string, clientErrorCode?: number) {
     this.status = status;
     this.timestamp = timestamp;
@@ -40,6 +48,11 @@ export class ApiError {
     if (clientErrorCode) {
       this.clientErrorCode = clientErrorCode;
     }
+  }
+
+  public withRawHttpError(rawHttpError: HttpErrorResponse): ApiError {
+    this.rawHttpError = rawHttpError;
+    return this;
   }
 
   public withStatusCode(statusCode: number): ApiError {

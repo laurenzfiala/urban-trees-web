@@ -1,32 +1,28 @@
 import {CmsComponent} from '../interfaces/cms-component.interface';
 
 /**
- * A slot for a component inside
- * a CMS layout.
+ * Wraps around an object and makes it replaceable even if its immutable.
  *
  * @author Laurenz Fiala
- * @since 2020/10/03
+ * @since 2020/10/15
  */
-export class CmsLayoutSlot {
+export class MutableWrapper<T> {
 
   /**
-   * Name of slot.
+   * The mutable object to hold.
    */
-  private _name: string;
+  public value: T;
 
-  /**
-   * The component inside the slot.
-   * Undefined if not filled.
-   */
-  public component: CmsComponent;
-
-  constructor(name: string, component?: CmsComponent) {
-    this._name = name;
-    this.component = component;
+  constructor(value?: T) {
+    this.value = value;
   }
 
-  get name() {
-    return this._name;
+  public get(): T {
+    return this.value;
+  }
+
+  public set(value: T): void {
+    this.value = value;
   }
 
 }

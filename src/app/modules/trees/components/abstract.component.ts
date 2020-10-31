@@ -21,7 +21,7 @@ export abstract class AbstractComponent extends AbstractStatusComponent {
    * @param {number} y y-coordinate in px
    */
   protected scrollTo(x: number, y: number): void {
-    window.scroll(0, 0);
+    window.scroll(x, y);
   }
 
 }

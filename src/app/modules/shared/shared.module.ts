@@ -10,6 +10,7 @@ import {ValueaccessorDirective} from './directives/valueaccessor.directive';
 import {LangDirective} from './directives/lang.directive';
 import {HTTP_INTERCEPTORS} from '@angular/common/http';
 import {AuthInterceptor} from './interceptors/auth.interceptor';
+import {CastDirective} from './directives/cast.directive';
 
 
 @NgModule({
@@ -22,7 +23,8 @@ import {AuthInterceptor} from './interceptors/auth.interceptor';
     NoAuthDirective,
     CheckDirective,
     ValueaccessorDirective,
-    LangDirective
+    LangDirective,
+    CastDirective
   ],
   imports: [
     CommonModule
@@ -36,7 +38,8 @@ import {AuthInterceptor} from './interceptors/auth.interceptor';
     NoAuthDirective,
     CheckDirective,
     ValueaccessorDirective,
-    LangDirective
+    LangDirective,
+    CastDirective
   ],
   providers: [
     // Interceptors

@@ -1,139 +1,129 @@
-import {Observable, Subject} from 'rxjs';
 import {CmsComponent} from '../interfaces/cms-component.interface';
+import {CmsLayout} from '../interfaces/cms-layout.interface';
+import {CmsLayoutSlot} from './layout-slot.entity';
+import {CmsValidationResult} from './cms-validation-result.entities';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  ComponentFactoryResolver,
+  Directive,
+  OnDestroy,
+  OnInit,
+  ViewContainerRef
+} from '@angular/core';
+import {SerializedCmsElement} from './serialized-cms-element.entity';
+import {ToolbarService} from '../services/toolbar.service';
+import {ContentService} from '../services/content.service';
+import {CmsElement} from '../interfaces/cms-element.interface';
+import {AbstractComponent} from '../../trees/components/abstract.component';
+import {Observable, Subject} from 'rxjs';
+import {ElementType} from '../enums/cms-element-type.enum';
+import {ViewMode} from '../enums/cms-layout-view-mode.enum';
 
 /**
- * Holds all elements to show inside the toolbar.
+ * Abstract CMS layout with important logic and helpers for layouts.
+ *
+ * @author Laurenz Fiala
+ * @since 2020/10/10
  */
-export class Toolbar {
+@Directive()
+// tslint:disable-next-line:directive-class-suffix
+export abstract class AbstractCmsLayout
+  extends AbstractComponent
+  implements CmsLayout, OnInit, AfterViewInit, OnDestroy {
 
-  private components: Map<string, ToolbarSection<ToolbarBtn>> = new Map<string, ToolbarSection<ToolbarBtn>>();
-  private contextual: Map<string, ToolbarSection<ToolbarElement>> = new Map<string, ToolbarSection<ToolbarElement>>();
+  protected abstract contentService: ContentService;
+  protected abstract toolbar: ToolbarService;
+  protected abstract cdRef: ChangeDetectorRef;
+  protected abstract resolver: ComponentFactoryResolver;
+
+  private _onAfterViewInit = new Subject<void>();
+  private onChangedSubject: Subject<CmsLayout>;
+
+  constructor() {
+    super();
+    this.onChangedSubject = new Subject<CmsLayout>();
+  }
+
+  public ngOnInit() {
+    this.toolbar.register(this);
+  }
 
   /**
-   * Register the given component's static toolbar section
-   * (used to create new components).
-   * @param component component to register
+   * Resolves all queued-up promises for
+   * filling layout slots.
    */
-  public register(component: CmsComponent) {
-    this.components.set(component.getName(), component.getToolbarSection());
+  public ngAfterViewInit() {
+    this._onAfterViewInit.complete();
+  }
+
+  public ngOnDestroy() {
+    this.toolbar.deregister(this);
+  }
+
+  protected async onAfterViewInit(): Promise<void> {
+    return this._onAfterViewInit.toPromise();
   }
 
   /**
-   * Update the given component's contextual toolbar section
-   * (used for component-internal actions).
-   * @param component component's contextual toolbar to update
+   * Update this component and children using the component's ChangeDetectorRef.
    */
-  public update(component: CmsComponent) {
-    this.contextual.set(component.getName(), component.getToolbarContextual());
+  protected update(): void {
+    this.cdRef.detectChanges();
   }
 
-  public getComponents(): Array<ToolbarSection<ToolbarBtn>> {
-    return Array.from(this.components.values());
+  /**
+   * Fill the given slot with a new instance of serializedElement.
+   * @param serializedElement SerializedCmsElement (can be falsy)
+   * @param slotPromise Template location to fill (promise). TODO doc
+   * @param clear default = true; set to false to append to slot-ViewContainerRef
+   * @return The (future) initialized CmsComponent instance.
+   */
+  protected async fillSlot(serializedElement: SerializedCmsElement,
+                           slotGetter: () => ViewContainerRef,
+                           clear: boolean = true): Promise<CmsElement> {
+
+    if (!serializedElement) {
+      return null;
+    }
+
+    await this.onAfterViewInit();
+
+    const slot = slotGetter();
+    if (clear) {
+      slot.clear();
+    }
+    const elementType = this.contentService.getElement(serializedElement.getName());
+    const componentFactory = this.resolver.resolveComponentFactory(elementType);
+    const componentRef = slot.createComponent(componentFactory);
+    const element = <CmsElement> componentRef.instance;
+
+    this.contentService.elementAdd(element);
+    element.deserialize(serializedElement.getData());
+
+    return Promise.resolve(element);
+
   }
 
-  public getContextual(): Array<ToolbarSection<ToolbarElement>> {
-    return Array.from(this.contextual.values());
+  public getElementType(): ElementType {
+    return ElementType.LAYOUT;
   }
 
-}
-
-/**
- * A group of toolbar elements belonging to a component.
- */
-export class ToolbarSection<T extends ToolbarElement> {
-
-  private elements: Array<T>;
-
-  constructor(...elements: Array<T>) {
-    this.elements = elements;
+  public changed(): void {
+    this.onChangedSubject.next(this);
   }
 
-  public getElements(): Array<T> {
-    return this.elements;
+  public onChanged(): Observable<CmsLayout> {
+    return this.onChangedSubject.asObservable();
   }
 
-}
-
-/**
- * A single (abstract) element in a toolbar section.
- * This may be a ToolbarBtn or something similar, like an input etc.
- */
-export abstract class ToolbarElement {
-
-  private description: string;
-
-  constructor(description: string) {
-    this.description = description;
-  }
-
-  public getDescription(): string {
-    return this.description;
-  }
-
-}
-
-/**
- * A single button to display in the toolbar
- * with an associated action handled by the corresponding component.
- */
-export class ToolbarBtn extends ToolbarElement {
-
-  private name: string;
-  private iconPath: string;
-  private actionSubject: Subject<any>;
-
-  constructor(name: string,
-              description: string,
-              iconPath: string) {
-    super(description);
-    this.name = name;
-    this.iconPath = iconPath;
-  }
-
-  public getName(): string {
-    return this.name;
-  }
-
-  public getIconPath(): string {
-    return this.iconPath;
-  }
-
-  public getActionObservable(): Observable<any> {
-    return this.actionSubject.asObservable();
-  }
-
-  public onAction() {
-    this.actionSubject.next();
-  }
-
-}
-
-/**
- * A single dropdown to display in the toolbar.
- * Action is triggered when the value changes.
- */
-export class ToolbarDropdown extends ToolbarElement {
-
-  public selectedKey: string;
-  private options: Map<string, any> = new Map<string, any>();
-  private changedSubject: Subject<any>;
-
-  constructor(description: string, selectedKey: string, options: Map<string, any>) {
-    super(description);
-    this.selectedKey = selectedKey;
-    this.options = options;
-  }
-
-  public getOptions(): Map<string, any> {
-    return this.options;
-  }
-
-  public getChangedObservable(): Observable<any> {
-    return this.changedSubject.asObservable();
-  }
-
-  public onChanged() {
-    this.changedSubject.next(this.options.get(this.selectedKey));
-  }
+  // --- CmsElement / CmsLayout ---
+  onElementAdd(slot: CmsLayoutSlot, component: CmsComponent): void {}
+  onElementRemove(component: CmsComponent): void {}
+  abstract getName(): string;
+  abstract serialize(): any;
+  abstract deserialize(data: any): void;
+  abstract validate(): Array<CmsValidationResult>;
+  abstract view(mode: ViewMode): void;
 
 }

@@ -3,16 +3,20 @@ import {CmsElement} from '../interfaces/cms-element.interface';
 import {ToolbarBtn, ToolbarSection} from './toolbar.entity';
 
 /**
- * TODO
+ * CMS element map that holds the mapping from element names
+ * to their static descriptors.
+ *
+ * @author Laurenz Fiala
+ * @since 2020/10/14
  */
 export class CmsElementMap<T extends CmsElement> {
 
   /**
-   * TODO
+   * Map holds element descriptors.
    */
-  private elements = new Map<string, CmsElementDescriptor>();
+  private elements: Map<string, CmsElementDescriptor>;
 
-  constructor(elements?: Map<string, CmsElementDescriptor>) {
+  constructor(elements: Map<string, CmsElementDescriptor> = new Map<string, CmsElementDescriptor>()) {
     this.elements = elements;
   }
 
@@ -27,6 +31,10 @@ export class CmsElementMap<T extends CmsElement> {
 
   public getAll(): Map<string, CmsElementDescriptor> {
     return this.elements;
+  }
+
+  public getAllNames(): Array<string> {
+    return [...this.elements.keys()];
   }
 
   public getAllTypes(): Array<Type<unknown>> {
@@ -70,7 +78,7 @@ export class CmsElementDescriptor {
    */
   private _toolbarSection: ToolbarSection<ToolbarBtn>;
 
-  constructor(type: Type<unknown>, toolbarSection: ToolbarSection<ToolbarBtn>) {
+  constructor(type?: Type<unknown>, toolbarSection?: ToolbarSection<ToolbarBtn>) {
     this._type = type;
     this._toolbarSection = toolbarSection;
   }
@@ -96,16 +104,20 @@ export class CmsElementDescriptor {
 /**
  * TODO
  */
-export class CmsElDescBuilder {
+export class EDBuilder {
 
   private descriptor: CmsElementDescriptor;
 
-  public type(value: Type<unknown>): CmsElDescBuilder {
+  constructor() {
+    this.descriptor = new CmsElementDescriptor();
+  }
+
+  public type(value: Type<unknown>): EDBuilder {
     this.descriptor.type = value;
     return this;
   }
 
-  public toolbarBtn(name: string, description: string, iconPath: string): CmsElDescBuilder {
+  public toolbarBtn(name: string, description: string, iconPath: string): EDBuilder {
     this.descriptor.toolbarSection = new ToolbarSection<ToolbarBtn>(
       new ToolbarBtn(
         name,
@@ -120,8 +132,8 @@ export class CmsElDescBuilder {
     return this.descriptor;
   }
 
-  public static new(): CmsElDescBuilder {
-    return new CmsElDescBuilder();
+  public static new(): EDBuilder {
+    return new EDBuilder();
   }
 
 }

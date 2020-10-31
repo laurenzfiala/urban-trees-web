@@ -59,18 +59,4 @@ export class SubscriptionManagerService {
 
   }
 
-  /**
-   * Unsubscribe from and clear all subscriptions.
-   */
-  public clear() {
-
-    this.subscriptions.forEach((subs: Array<Subscription>) => {
-      subs.forEach((sub: Subscription, index: number) => {
-        sub.unsubscribe();
-      });
-    });
-    this.subscriptions.clear();
-
-  }
-
 }

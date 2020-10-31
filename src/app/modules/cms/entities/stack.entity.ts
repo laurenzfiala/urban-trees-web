@@ -1,74 +1,100 @@
-import {CmsComponent} from '../interfaces/cms-component.interface';
-import {CmsValidationResult} from './cms-validation-result.entities';
-import {Directive, OnDestroy, OnInit} from '@angular/core';
-import {AbstractComponent} from '../../trees/components/abstract.component';
-import {ToolbarElement, ToolbarSection} from './toolbar.entity';
-import {Observable, Subject} from 'rxjs';
-import {ElementType} from '../enums/cms-element-type.enum';
-import {ToolbarService} from '../services/toolbar.service';
-
 /**
- * Abstract CMS component with important logic and helpers for components.
- *
- * Note: this is declared a directive, because Angular, for some reason, wants classes that
- *       implement their interfaces to be Angular components or directives.
- *       see https://github.com/angular/angular/issues/35367#issuecomment-585136872
+ * Simple stack impelementation.
  *
  * @author Laurenz Fiala
- * @since 2020/10/10
+ * @since 2020/10/29
  */
-@Directive()
-// tslint:disable-next-line:directive-class-suffix
-export abstract class AbstractCmsComponent
-  extends AbstractComponent
-  implements CmsComponent, OnInit, OnDestroy {
+export class Stack<T> {
 
-  private onFocusSubject: Subject<CmsComponent>;
-  private onFocusOutSubject: Subject<CmsComponent>;
-  private onChangedSubject: Subject<CmsComponent>;
+  /**
+   * Elements for internal use are sotred in this array.
+   */
+  private elements: Array<T>;
 
-  protected toolbar: ToolbarService;
+  /**
+   * Current size of the stack.
+   */
+  private _size: number;
 
-  public ngOnInit() {
-    this.onFocusSubject = new Subject<CmsComponent>();
-    this.onFocusOutSubject = new Subject<CmsComponent>();
-    this.onChangedSubject = new Subject<CmsComponent>();
-    this.toolbar.register(this);
+  /**
+   * Maximum size of this stack.
+   * If maxSize is exceeded, the oldest entries rotate out (are deleted).
+   * -1 => no limit.
+   */
+  private maxSize: number;
+
+  /**
+   * Create a new stack, optionally with a maximum size.
+   * @param maxSize if maxSize is exceeded, the oldest entries rotate out (are deleted).
+   */
+  constructor(maxSize: number = -1) {
+    this.elements = new Array<T>();
+    this._size = 0;
+    this.maxSize = maxSize;
   }
 
-  public ngOnDestroy() {
-    this.toolbar.deregister(this);
+  /**
+   * Returns the newest element from the stack.
+   * If the stack is empty, returns undefined.
+   */
+  public push(...elements: Array<T>): void {
+    if (this.maxSize >= 0) {
+      const overflow = this._size + elements.length - this.maxSize;
+      if (overflow > 0) {
+        this.elements = this.elements.slice(overflow);
+        this._size -= overflow;
+      }
+    }
+    this.elements.push(...elements);
+    this._size += elements.length;
   }
 
-  public focus(): void {
-    this.onFocusSubject.next(this);
+  /**
+   * Returns the newest element from the stack.
+   * If the stack is empty, returns undefined.
+   */
+  public peek(): T | undefined {
+    if (this.isEmpty()) {
+      return undefined;
+    }
+    return this.elements[this._size - 1];
   }
 
-  public onFocus(): Observable<CmsComponent> {
-    return this.onFocusSubject;
+  /**
+   * Returns the newest element from the stack and removes it.
+   * If the stack is empty, returns undefined.
+   */
+  public pop(): T | undefined {
+    if (this.isEmpty()) {
+      return undefined;
+    }
+    return this.elements[--this._size];
   }
 
-  public focusOut(): void {
-    this.onFocusOutSubject.next(this);
+  /**
+   * Find and return a matching element. Search starts with #peek()
+   * and looks though the stack from newest to oldest elements.
+   * @param test testing function: return true to match the given element; false to look further.
+   * @return T or null if no element matched.
+   */
+  public find(test: (element: T) => (boolean)): T {
+
+    for (let i = this._size - 1; i >= 0; i--) {
+      const el = this.elements[i];
+      if (test(el)) {
+        return el;
+      }
+    }
+    return null;
+
   }
 
-  public onFocusOut(): Observable<CmsComponent> {
-    return this.onFocusOutSubject.asObservable();
+  public size(): number {
+    return this._size;
   }
 
-  public onChanged(): Observable<CmsComponent> {
-    return this.onChangedSubject.asObservable();
+  public isEmpty(): boolean {
+    return this._size === 0;
   }
-
-  public getElementType(): ElementType {
-    return ElementType.COMPONENT;
-  }
-
-  // --- CmsElement / CmsComponent ---
-  abstract serialize(): any;
-  abstract deserialize(data: any): void;
-  abstract getName(): string;
-  abstract validate(): Array<CmsValidationResult>;
-  abstract getToolbarContextual(): ToolbarSection<ToolbarElement>;
 
 }

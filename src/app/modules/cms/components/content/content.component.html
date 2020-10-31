@@ -1,22 +1,81 @@
-<div class="toolbar">
-  <div *ngFor="let section of toolbar.getContextual()" class="toolbar-section">
-    <ng-container *ngFor="let element of section.getElements()">
+<div class="content-wrapper">
 
-      <!--<ng-container *ngIf="cast<ToolbarBtn>(element)">
-        <button>{{cast<ToolbarBtn>(element).getName();}}</button>
-      </ng-container>-->
-      <div *ngIf="isToolbarBtn(element); let btn = element" ng>{{btn.getName()}}</div>
-      <div *ngIf="isToolbarDropdown(element)">dropdown</div>
+  <div class="toolbar-wrapper">
 
-    </ng-container>
+    <div class="toolbar justify-content-between flex-wrap-reverse">
+      <div class="toolbar-group">
+        <button
+          class="primary"
+          [tooltip]="'toolbar.publish_tooltip' + (canUserPublish() ? '' : '_review') | translate"
+          container="body">
+          {{'toolbar.publish' | translate}}
+        </button>
+      </div>
+      <div class="d-flex flex-row justify-content-end flex-grow-1">
+        <div class="toolbar-align align-items-center save-status px-2">
+          <ng-container *ngIf="hasStatus(StatusKey.SAVE, StatusValue.SUCCESSFUL)">
+            {{'toolbar.save.last_saved_moments_ago' | translate}}
+            <!-- TODO -->
+          </ng-container>
+          <ng-container *ngIf="hasStatus(StatusKey.SAVE, StatusValue.IN_PROGRESS)">
+            {{'toolbar.save.in_progress' | translate}} <i class="i i-xs ml-1 i-dark i-save"></i>
+          </ng-container>
+          <ng-container *ngIf="hasStatus(StatusKey.SAVE, StatusValue.FAILED)">
+            <span class="text-danger">{{'toolbar.save.failed' | translate}}</span> <i class="ml-1  flex-shrink-0 i i-xxs i-warning-danger"></i>
+          </ng-container>
+        </div>
+        <div class="toolbar-separator"></div>
+        <div class="toolbar-align toolbar-close"
+             role="button"
+             tabindex="-1"
+             [tooltip]="'toolbar.close' | translate"
+             container="body">
+          <i class="i i-sm i-dark i-cross"></i>
+        </div>
+      </div>
+    </div>
+
+    <div class="toolbar">
+      <div *ngFor="let element of toolbar.getContextual()?.elements; let i = index" class="toolbar-section contextual">
+
+        <div *ngIf="i > 0" class="toolbar-separator sm"></div>
+        <div *cast="{in: element, castTo: ToolbarBtn}; let btn = out">
+          <button
+            (action)="btn.onAction()"
+            [tooltip]="btn.description">
+            <img [src]="btn.iconPath" />
+          </button>
+        </div>
+        <select *cast="{in: element, castTo: ToolbarDropdown}; let dropdown = out"
+                [(ngModel)]="dropdown.selectedKey">
+          <option *ngFor="let option of dropdown.options | keyvalue">
+            {{option.key}}
+          </option>
+        </select>
+
+      </div>
+      <div *ngIf="toolbar.getContextual()" class="toolbar-separator"></div>
+      <div *ngFor="let section of toolbar.getComponents(); let i = index" class="toolbar-section">
+
+        <div *ngIf="i > 0" class="toolbar-separator"></div>
+        <ng-container *ngFor="let btn of section.elements; let i = index">
+          <div *ngIf="i > 0" class="toolbar-separator sm"></div>
+          <button
+            (action)="btn.onAction()"
+            [tooltip]="btn.description">
+            <img [src]="btn.iconPath" />
+          </button>
+        </ng-container>
+
+      </div>
+    </div>
+
   </div>
-  <div *ngFor="let section of toolbar.getComponents()" class="toolbar-section">
-    <ng-container *ngFor="let element of section.getElements()">
 
-      <div>{{isToolbarBtn(element)}}</div>
+  <ng-template #contentSlot></ng-template>
 
-    </ng-container>
+  <div class="cms-drop-zone">
+    Add something here
   </div>
+
 </div>
-
-<ng-template #contentSlot></ng-template>

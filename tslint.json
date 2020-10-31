@@ -132,7 +132,14 @@
     "no-output-rename": true,
     "use-lifecycle-interface": true,
     "use-pipe-transform-interface": true,
-    "component-class-suffix": true,
+    /*
+     component-class-suffix
+
+     Note: this SHOULD be done, but it makes cms module hard to navigate,
+           so I decided to disable this for now (at least until TSLint -> ESLint migration is done).
+           See https://github.com/palantir/tslint/issues/4534
+     */
+    "component-class-suffix": false,
     "directive-class-suffix": true
   }
 }

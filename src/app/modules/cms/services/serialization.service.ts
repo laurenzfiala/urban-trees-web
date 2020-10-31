@@ -1,7 +1,7 @@
-import { Injectable } from '@angular/core';
-import {Content} from '../entities/content.entity';
-import {CmsComponent} from '../interfaces/cms-component.interface';
-import {SerializedCmsComponent} from '../entities/serialized-cms-component.entity';
+import {Injectable} from '@angular/core';
+import {SerializedCmsContent} from '../entities/serialized-cms-content.entity';
+import {CmsElement} from '../interfaces/cms-element.interface';
+import {SerializedCmsElement} from '../entities/serialized-cms-element.entity';
 
 /**
  * Handles serialization and deserialization of cms content
@@ -19,29 +19,51 @@ export class SerializationService {
 
   constructor() { }
 
-  public serializeContent(components: Array<CmsComponent>): string {
-    const serializedComponents = new Array<SerializedCmsComponent>();
-    components.forEach(component => {
-      serializedComponents.push(new SerializedCmsComponent(component.getComponentName(), component.serialize()));
+  /**
+   * Serializes the given CMS element(s), null-safe.
+   * @param elements to serialize
+   * @return serialized elements
+   */
+  public serializeElement(...elements: Array<CmsElement>): Array<SerializedCmsElement> {
+
+    const serializedElements = new Array<SerializedCmsElement>();
+    elements.forEach(element => {
+      if (!element) {
+        return;
+      }
+      serializedElements.push(new SerializedCmsElement(element.getName(), this.serializeElement(element)));
     });
 
-    const content: Content = new Content(SerializationService.VERSION_CODE, serializedComponents);
+    return serializedElements;
 
-    return JSON.stringify(content);
   }
 
-  public deserializeContent(serialized: string): Content {
-    const content: Content = JSON.parse(serialized);
-    this.upgradeContent(content);
+  /**
+   * TODO
+   * @param serializedElement
+   */
+  public deserializeElement(untypedSerializedElement: any): SerializedCmsElement {
+    return SerializedCmsElement.fromObject(untypedSerializedElement);
+  }
 
-    return content;
+  /**
+   * TODO
+   * @param serializedElements
+   */
+  public serializeContent(...serializedElements: Array<CmsElement>): SerializedCmsContent {
+    return new SerializedCmsContent(
+      SerializationService.VERSION_CODE,
+      undefined, // TODO
+      undefined, // TODO
+      this.serializeElement(...serializedElements)
+    );
   }
 
   /**
    * Upgrades the given content to the newest version code (#VERSION_CODE).
    * Operates on the given object.
    */
-  private upgradeContent(givenContent: Content): void {
+  private upgradeContent(givenContent: SerializedCmsContent): void {
   }
 
 }

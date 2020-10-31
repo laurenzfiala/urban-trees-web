@@ -1,10 +1,17 @@
-import {Component, ComponentFactoryResolver, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {EnvironmentService} from '../../../shared/services/environment.service';
 import {AuthService} from '../../../shared/services/auth.service';
 import {AbstractComponent} from '../abstract.component';
 import {SystemStatistics} from '../../entities/system-statistics.entity';
 import {UIService} from '../../services/ui.service';
-import {RenderService} from '../../../cms/services/render.service';
+import {
+  CmsComponentConfig,
+  CmsContentConfig,
+  CmsLayoutConfig,
+  CmsLayoutSlotConfig
+} from '../../../cms/entities/content-config.entity';
+import {TextComponent} from '../../../cms/cms-components/text/text.component';
+import {BlockLayout} from '../../../cms/cms-layouts/block-layout/block-layout.component';
 
 @Component({
   selector: 'ut-home',
@@ -20,6 +27,19 @@ export class HomeComponent extends AbstractComponent implements OnInit {
    * Statistics regarding the system overall.
    */
   public statistics: SystemStatistics;
+
+  public testContentConfig: CmsContentConfig = new CmsContentConfig(
+    [new CmsLayoutConfig(
+      BlockLayout,
+      [
+        new CmsLayoutSlotConfig(
+          'all',
+          'all'
+        )
+      ]
+    )],
+    [new CmsComponentConfig(TextComponent)]
+  );
 
   constructor(private uiService: UIService,
               private authService: AuthService,

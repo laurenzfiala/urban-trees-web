@@ -1,33 +1,23 @@
-import {Directive, ElementRef, Input, OnDestroy, OnInit, TemplateRef, ViewContainerRef} from '@angular/core';
+import {Directive, ElementRef, Input, OnDestroy, OnInit, TemplateRef, Type, ViewContainerRef} from '@angular/core';
 import {AuthService} from '../services/auth.service';
 import {Subscription} from 'rxjs';
+import {ToolbarDropdown} from '../../cms/entities/toolbar.entity';
 
 /**
- * Conditional directive to hide elements
- * which are only supposed to be seen by
- * privileged users.
+ * Conditional directive to TODO
  *
  * @author Laurenz Fiala
- * @since 2018/07/05
+ * @since 2020/09/25
  */
 @Directive({
-  selector: '[auth]'
+  selector: '[cast]'
 })
-export class AuthDirective implements OnInit, OnDestroy {
+export class CastDirective implements OnInit {
 
-  @Input('auth')
-  private grantRoles: string[];
-
-  @Input('authElse')
-  private templateRefElse: TemplateRef<any>;
-
-  @Input('authCheckChanges')
-  private authCheckChanges: boolean = true;
-
-  private authServiceOnStateChanged: Subscription;
+  @Input('cast')
+  private options: { in: any, castTo: Type<any> };
 
   constructor(
-    private authService: AuthService,
     private element: ElementRef,
     private templateRef: TemplateRef<any>,
     private viewContainer: ViewContainerRef
@@ -36,11 +26,6 @@ export class AuthDirective implements OnInit, OnDestroy {
   public ngOnInit(): void {
 
     this.do();
-    if (this.authCheckChanges) {
-      this.authServiceOnStateChanged = this.authService.onStateChanged().subscribe(value => {
-        this.do();
-      });
-    }
 
   }
 
@@ -48,24 +33,11 @@ export class AuthDirective implements OnInit, OnDestroy {
 
     this.viewContainer.clear();
 
-    // if user roles are accepted by the service, or we accept logged in users if no grant roles are required
-    if (this.authService.isUserRoleAccessGranted(this.grantRoles) || (this.authService.isLoggedIn() && !this.grantRoles)) {
-      if (this.templateRef) {
-        let vr = this.viewContainer.createEmbeddedView(this.templateRef);
-        vr.context.abc = '';
-      }
+    if (this.options.in instanceof this.options.castTo) {
+      const viewRef = this.viewContainer.createEmbeddedView(this.templateRef);
+      viewRef.context.out = this.options.in;
     } else {
-      if (this.templateRefElse) {
-        this.viewContainer.createEmbeddedView(this.templateRefElse);
-      }
-    }
-
-  }
-
-  public ngOnDestroy(): void {
-
-    if (this.authServiceOnStateChanged) {
-      this.authServiceOnStateChanged.unsubscribe();
+      this.viewContainer.clear();
     }
 
   }

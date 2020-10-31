@@ -84,11 +84,13 @@ export const environment = {
     loadPPIN:                         '/account/permission/pin',
 
     // CMS
-    content:                          '/cms/{contentId}',
-    contentDraft:                     '/cms/{contentId}/draft',
-    contentHistory:                   '/cms/{contentId}/history'
+    loadContent:                      '/cms/{contentId}',
+    saveContent:                      '/cms/{contentId}',
+    loadContentDraft:                 '/cms/{contentId}/draft',
+    loadContentHistory:               '/cms/{contentId}/history'
   },
 
+  contentSaveDebounceMs:              30_000,
   searchDebounceMs:                   200,
 
   defaultTimeout:                     30000,

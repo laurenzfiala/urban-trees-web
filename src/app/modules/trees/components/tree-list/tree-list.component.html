@@ -1,4 +1,4 @@
-<div class="content-cat">
+<section class="content-cat">
   <div class="container map-wrapper">
     <ut-map
       [markers]="availableTrees"
@@ -6,9 +6,9 @@
       (selectedMarkerChange)="selectTreeOnMap($event)"
       errorText="phenology.observation.step1.map_error_text"></ut-map>
   </div>
-</div>
+</section>
 
-<div class="content-cat">
+<section class="content-cat">
   <div class="container">
     <input
       [ngModel]="treeSearchInput"
@@ -19,22 +19,22 @@
       {{'general.input_annotation' | translate}}
     </div>
   </div>
-</div>
+</section>
 
 <div *ngIf="hasAnyStatusKey([StatusKey.TREES, StatusKey.CITIES], StatusValue.IN_PROGRESS)"
-     class="pt-3 d-flex flex-row align-items-center justify-content-center">
+     class="py-4 d-flex flex-row align-items-center justify-content-center">
   <i class="i i-sm i-black i-spin i-load mr-1"></i>
   {{'tree_list.loading' | translate}}
 </div>
 
 <div *ngIf="hasStatus(StatusKey.TREES, StatusValue.SUCCESSFUL) && hasStatus(StatusKey.CITIES, StatusValue.SUCCESSFUL) && cities?.length === 0"
-     class="pt-3 d-flex flex-row align-items-center justify-content-center text-warning">
+     class="py-4 d-flex flex-row align-items-center justify-content-center text-warning">
   <i class="i i-sm i-warning-warning mr-1"></i>
   {{'tree_list.none_found' | translate}}
 </div>
 
-<div *ngFor="let city of cities"
-     class="content-cat">
+<section *ngFor="let city of cities"
+         class="content-cat">
   <div class="container">
 
     <h1 class="content-cat-heading mb-2">
@@ -79,7 +79,7 @@
     </div>
 
   </div>
-</div>
+</section>
 
 <div *ngIf="displayTrees?.length === 0"
      class="status-img my-4">

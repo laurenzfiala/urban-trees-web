@@ -1,21 +1,22 @@
 import {Component, Input, OnInit} from '@angular/core';
-import {SerializationService} from '../../services/serialization.service';
 import {CmsComponent} from '../../interfaces/cms-component.interface';
 import {ToolbarBtn, ToolbarDropdown, ToolbarElement, ToolbarSection} from '../../entities/toolbar.entity';
+import {CmsValidationResult} from '../../entities/cms-validation-result.entities';
+import {AbstractCmsComponent} from '../../entities/abstract-cms-component.entity';
+import {ToolbarService} from '../../services/toolbar.service';
 
 @Component({
   selector: 'ut-cms-text',
   templateUrl: './text.component.html',
   styleUrls: ['./text.component.less']
 })
-export class TextComponent implements OnInit, CmsComponent {
+export class TextComponent extends AbstractCmsComponent {
 
   @Input()
   public text: string;
 
-  constructor(private serializationService: SerializationService) { }
-
-  public ngOnInit(): void {
+  constructor(protected toolbar: ToolbarService) {
+    super();
   }
 
   public deserialize(serialized: any): void {
@@ -31,16 +32,6 @@ export class TextComponent implements OnInit, CmsComponent {
 
   public getName(): string {
     return this.constructor.name;
-  }
-
-  getToolbarSection(): ToolbarSection<ToolbarBtn> {
-    return new ToolbarSection<ToolbarBtn>(
-      new ToolbarBtn(
-        'New text passage',
-        'Add a new text passage to the content',
-        '/assets/img/icon/dark/cms-cmp-text.svg'
-      )
-    );
   }
 
   getToolbarContextual(): ToolbarSection<ToolbarElement> {
@@ -65,12 +56,7 @@ export class TextComponent implements OnInit, CmsComponent {
     );
   }
 
-  /*
-  new ToolbarBtn(
-        'New image',
-        'Add a new image to the content',
-        '/assets/img/icon/dark/cms-cmp-image.svg'
-      )
-   */
-
+  validate(): Array<CmsValidationResult> {
+    throw new Error('Method not implemented.'); // TODO
+  }
 }

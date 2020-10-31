@@ -1,71 +1,82 @@
 import {CmsComponent} from '../interfaces/cms-component.interface';
-import {CmsLayout} from '../interfaces/cms-layout.interface';
-import {CmsLayoutSlot} from './layout-slot.entity';
 import {CmsValidationResult} from './cms-validation-result.entities';
-import {ViewMode} from '../enums/cms-layout-view-mode.entity';
-import {ChangeDetectorRef, ComponentFactoryResolver, ViewContainerRef} from '@angular/core';
-import {SerializedCmsElement} from './serialized-cms-element.entity';
-import {ToolbarService} from '../services/toolbar.service';
-import {ContentService} from '../services/content.service';
-import {CmsElement} from '../interfaces/cms-element.interface';
+import {Directive, OnDestroy, OnInit} from '@angular/core';
 import {AbstractComponent} from '../../trees/components/abstract.component';
+import {ToolbarElement, ToolbarSection} from './toolbar.entity';
+import {Observable, Subject} from 'rxjs';
+import {ElementType} from '../enums/cms-element-type.enum';
+import {ToolbarService} from '../services/toolbar.service';
 
 /**
- * Abstract CMS layout with important logic and helpers for layouts.
+ * Abstract CMS component with important logic and helpers for components.
+ *
+ * Note: this is declared a directive, because Angular, for some reason, wants classes that
+ *       implement their interfaces to be Angular components or directives.
+ *       see https://github.com/angular/angular/issues/35367#issuecomment-585136872
  *
  * @author Laurenz Fiala
  * @since 2020/10/10
  */
-export abstract class AbstractCmsLayout extends AbstractComponent implements CmsLayout {
+@Directive()
+// tslint:disable-next-line:directive-class-suffix
+export abstract class AbstractCmsComponent
+  extends AbstractComponent
+  implements CmsComponent, OnInit, OnDestroy {
 
-  protected abstract contentService: ContentService;
-  protected abstract toolbar: ToolbarService;
-  protected abstract cdRef: ChangeDetectorRef;
-  protected abstract resolver: ComponentFactoryResolver;
+  private onFocusSubject: Subject<CmsComponent>;
+  private onFocusOutSubject: Subject<CmsComponent>;
+  private onChangedSubject: Subject<CmsComponent>;
 
-  /**
-   * Update this component and children using the component's ChangeDetectorRef.
-   */
-  protected update(): void {
-    this.cdRef.detectChanges();
+  protected toolbar: ToolbarService;
+
+  constructor() {
+    super();
+    this.onFocusSubject = new Subject<CmsComponent>();
+    this.onFocusOutSubject = new Subject<CmsComponent>();
+    this.onChangedSubject = new Subject<CmsComponent>();
   }
 
-  /**
-   * Fill the given slot with a new instance of serializedElement.
-   * @param serializedElement SerializedCmsElement
-   * @param slot Template location to fill.
-   * @param clear default = true; set to false to append to slot-ViewContainerRef
-   * @return The just-initialized CmsComponent instance.
-   */
-  protected fillSlot(serializedElement: SerializedCmsElement,
-                     slot: ViewContainerRef,
-                     clear: boolean = true): CmsElement {
-
-    if (clear) {
-      slot.clear();
-    }
-    const elementType = this.contentService.getElement(serializedElement.getName());
-    const componentFactory = this.resolver.resolveComponentFactory(elementType);
-    const componentRef = slot.createComponent(componentFactory);
-    const element = <CmsElement> componentRef.instance;
-
-    element.deserialize(serializedElement.getData());
-
-    // NOTE: for now this is assumed correct and intentional.
-    this.toolbar.register(<CmsComponent> element);
-    this.toolbar.update(<CmsComponent> element);
-
-    return element;
-
+  public ngOnInit() {
+    this.toolbar.register(this);
   }
 
-  // --- CmsLayout ---
+  public ngOnDestroy() {
+    this.toolbar.deregister(this);
+  }
+
+  public focus(): void {
+    this.onFocusSubject.next(this);
+  }
+
+  public onFocus(): Observable<CmsComponent> {
+    return this.onFocusSubject.asObservable();
+  }
+
+  public focusOut(): void {
+    this.onFocusOutSubject.next(this);
+  }
+
+  public onFocusOut(): Observable<CmsComponent> {
+    return this.onFocusOutSubject.asObservable();
+  }
+
+  public changed(): void {
+    this.onChangedSubject.next(this);
+  }
+
+  public onChanged(): Observable<CmsComponent> {
+    return this.onChangedSubject.asObservable();
+  }
+
+  public getElementType(): ElementType {
+    return ElementType.COMPONENT;
+  }
+
+  // --- CmsElement / CmsComponent ---
+  abstract serialize(): any;
   abstract deserialize(data: any): void;
   abstract getName(): string;
-  abstract onComponentAdd(slot: CmsLayoutSlot, component: CmsComponent): void;
-  abstract onComponentRemove(component: CmsComponent): void;
-  abstract serialize(): any;
   abstract validate(): Array<CmsValidationResult>;
-  abstract view(mode: ViewMode): void;
+  abstract getToolbarContextual(): ToolbarSection<ToolbarElement>;
 
 }

@@ -1,33 +1,11 @@
 /**
  * Serves as the base interface for all CMS components.
  */
-import {ToolbarBtn, ToolbarElement, ToolbarSection} from '../entities/toolbar.entity';
+import {ToolbarElement, ToolbarSection} from '../entities/toolbar.entity';
+import {CmsElement} from './cms-element.interface';
+import {Observable} from 'rxjs';
 
-export interface CmsComponent {
-
-  /**
-   * Apply the given serialized data to this
-   * component-instance.
-   * @param serialized the serialized object from #serialize.
-   */
-  deserialize(serialized: any): void;
-
-  /**
-   * Serializes the current CMS component to an object
-   * for persistence.
-   */
-  serialize(): any;
-
-  /**
-   * Return the name of this component.
-   */
-  getComponentName(): string;
-
-  /**
-   * Returns the main toolbar buttons that can be used to create new instance(s)
-   * of the component and are shown in the toolbar.
-   */
-  getToolbarSection(): ToolbarSection<ToolbarBtn>;
+export interface CmsComponent extends CmsElement {
 
   /**
    * Return the current contextual toolbar section for this component.
@@ -35,5 +13,17 @@ export interface CmsComponent {
    * only when the component emits its changed event (TODO).
    */
   getToolbarContextual(): ToolbarSection<ToolbarElement>;
+
+  /**
+   * The returned observable is triggered every time
+   * the component was focussed.
+   */
+  onFocus(): Observable<CmsComponent>;
+
+  /**
+   * The returned observable is triggered every time
+   * the component lost focus.
+   */
+  onFocusOut(): Observable<CmsComponent>;
 
 }

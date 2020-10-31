@@ -1,12 +1,4 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  ComponentFactoryResolver,
-  OnDestroy,
-  OnInit,
-  ViewChild,
-  ViewContainerRef
-} from '@angular/core';
+import {ChangeDetectorRef, Component, ComponentFactoryResolver, ViewChild, ViewContainerRef} from '@angular/core';
 import {CmsComponent} from '../../interfaces/cms-component.interface';
 import {CmsLayoutSlot} from '../../entities/layout-slot.entity';
 import {CmsValidationResult} from '../../entities/cms-validation-result.entities';
@@ -19,19 +11,26 @@ import {MutableWrapper} from '../../entities/mutable-wrapper.entity';
 import {ViewMode} from '../../enums/cms-layout-view-mode.enum';
 
 @Component({
-  selector: 'ut-cms-block-layout',
-  templateUrl: './block-layout.component.html',
-  styleUrls: ['./block-layout.component.less']
+  selector: 'ut-cms-two-column-layout',
+  templateUrl: './two-column-layout.component.html',
+  styleUrls: ['./two-column-layout.component.less']
 })
-export class BlockLayout extends AbstractCmsLayout {
+export class TwoColumnLayout extends AbstractCmsLayout {
 
   // --- SLOTS ---
-  public static SLOT_MAIN: string = 'main';
+  public static SLOT_LEFT: string = 'left';
+  public static SLOT_RIGHT: string = 'right';
 
-  // -> SLOT_MAIN
-  @ViewChild('slotMain', {read: ViewContainerRef})
-  public slotMain: ViewContainerRef;
-  private slotMainElement: MutableWrapper<CmsElement> = new MutableWrapper<CmsElement>();
+  // -> SLOT_LEFT
+  @ViewChild('slotLeft', {read: ViewContainerRef})
+  public slotLeft: ViewContainerRef;
+  private slotLeftElement: MutableWrapper<CmsElement> = new MutableWrapper<CmsElement>();
+  // <-
+
+  // -> SLOT_RIGHT
+  @ViewChild('slotRight', {read: ViewContainerRef})
+  public slotRight: ViewContainerRef;
+  private slotRightElement: MutableWrapper<CmsElement> = new MutableWrapper<CmsElement>();
   // <-
 
   constructor(private serializationService: SerializationService,
@@ -44,24 +43,21 @@ export class BlockLayout extends AbstractCmsLayout {
 
   public serialize(): any {
     return {
-      slot: this.serializationService.serializeElement(this.slotMainElement.get())
+      slotLeft: this.serializationService.serializeElement(this.slotLeftElement.get()),
+      slotRight: this.serializationService.serializeElement(this.slotRightElement.get())
     };
   }
 
   public async deserialize(data: any): Promise<void> {
-    const sCmp = this.serializationService.deserializeElement(data.slot);
-    this.slotMainElement.set(await this.fillSlot(sCmp, () => this.slotMain));
+    const slotLeftCmp = this.serializationService.deserializeElement(data.slotLeft);
+    this.slotLeftElement.set(await this.fillSlot(slotLeftCmp, () => this.slotLeft));
+    const slotRightCmp = this.serializationService.deserializeElement(data.slotRight);
+    this.slotRightElement.set(await this.fillSlot(slotRightCmp, () => this.slotRight));
     this.update();
   }
 
   public getName(): string {
     return this.constructor.name;
-  }
-
-  onComponentAdd(slot: CmsLayoutSlot, component: CmsComponent): void {
-  }
-
-  onComponentRemove(component: CmsComponent): void {
   }
 
   validate(): Array<CmsValidationResult> {

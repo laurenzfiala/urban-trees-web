@@ -1,39 +1,31 @@
 /**
  * Serves as the base interface for all CMS components.
  */
-import {ToolbarBtn, ToolbarElement, ToolbarSection} from '../entities/toolbar.entity';
+import {CmsComponent} from './cms-component.interface';
+import {CmsLayoutSlot} from '../entities/layout-slot.entity';
+import {CmsElement} from './cms-element.interface';
+import {ViewMode} from '../enums/cms-layout-view-mode.enum';
 
-export interface CmsComponent {
-
-  /**
-   * Apply the given serialized data to this
-   * component-instance.
-   * @param serialized the serialized object from #serialize.
-   */
-  deserialize(serialized: any): void;
+export interface CmsLayout extends CmsElement {
 
   /**
-   * Serializes the current CMS component to an object
-   * for persistence.
+   * Set the view mode this element should be in.
+   * @param mode mode to display.
    */
-  serialize(): any;
+  view(mode: ViewMode): void;
 
   /**
-   * Return the name of this component.
+   * TODO
+   * @param component
    */
-  getComponentName(): string;
+  onElementAdd(slot: CmsLayoutSlot, component: CmsComponent): void;
 
   /**
-   * Returns the main toolbar buttons that can be used to create new instance(s)
-   * of the component and are shown in the toolbar.
+   * TODO
+   * @param component
    */
-  getToolbarSection(): ToolbarSection<ToolbarBtn>;
-
-  /**
-   * Return the current contextual toolbar section for this component.
-   * This is only displayed when the given component is focused, and updated
-   * only when the component emits its changed event (TODO).
-   */
-  getToolbarContextual(): ToolbarSection<ToolbarElement>;
+  onElementRemove(component: CmsComponent): void;
 
 }
+
+

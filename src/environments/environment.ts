@@ -5,11 +5,11 @@ import {LogLevel} from '../app/modules/trees/entities/log-level.entity';
  */
 export const environment = {
 
-  production:                       false,
+  production:                         false,
 
-  webHost:                          'http://localhost:4200',
-  host:                             'http://localhost:80',
-  mapHost:                          'http://localhost:8081',
+  webHost:                            'http://localhost:4200',
+  host:                               'http://localhost:80',
+  mapHost:                            'http://localhost:8081',
 
   endpoints: {
     // Tree
@@ -90,6 +90,7 @@ export const environment = {
     loadContentHistory:               '/cms/{contentId}/history'
   },
 
+  contentSaveDebounceMs:              30_000,
   searchDebounceMs:                   200,
 
   defaultTimeout:                     30000,

@@ -1,34 +1,69 @@
-import {Component, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
-import {CmsLayout} from '../../interfaces/cms-layout.interface';
+import {
+  ChangeDetectorRef,
+  Component,
+  ComponentFactoryResolver,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+  ViewContainerRef
+} from '@angular/core';
+import {CmsComponent} from '../../interfaces/cms-component.interface';
+import {CmsLayoutSlot} from '../../entities/layout-slot.entity';
+import {CmsValidationResult} from '../../entities/cms-validation-result.entities';
+import {SerializationService} from '../../services/serialization.service';
+import {AbstractCmsLayout} from '../../entities/abstract-cms-layout.entity';
+import {ToolbarService} from '../../services/toolbar.service';
+import {CmsElement} from '../../interfaces/cms-element.interface';
+import {ContentService} from '../../services/content.service';
+import {MutableWrapper} from '../../entities/mutable-wrapper.entity';
+import {ViewMode} from '../../enums/cms-layout-view-mode.enum';
 
 @Component({
-  selector: 'ut-cms-text',
-  templateUrl: './text.component.html',
-  styleUrls: ['./text.component.less']
+  selector: 'ut-cms-block-layout',
+  templateUrl: './block-layout.component.html',
+  styleUrls: ['./block-layout.component.less']
 })
-export class LayoutBlockComponent implements OnInit, CmsLayout {
+export class BlockLayout extends AbstractCmsLayout {
 
-  @ViewChild('slot', {read: ViewContainerRef})
-  public slot: ViewContainerRef;
+  // --- SLOTS ---
+  public static SLOT_MAIN: string = 'slot';
 
-  constructor() { }
+  // -> SLOT_MAIN
+  @ViewChild('slotMain', {read: ViewContainerRef})
+  public slotMain: ViewContainerRef;
+  private slotMainElement: MutableWrapper<CmsElement> = new MutableWrapper<CmsElement>();
+  // <-
 
-  public ngOnInit(): void {
-  }
-
-  public deserialize(serialized: any): void {
-    const state = serialized;
-    this.text = state.text;
+  constructor(private serializationService: SerializationService,
+              protected contentService: ContentService,
+              protected toolbar: ToolbarService,
+              protected cdRef: ChangeDetectorRef,
+              protected resolver: ComponentFactoryResolver) {
+    super();
   }
 
   public serialize(): any {
     return {
-      text: this.text
+      slot: this.serializationService.serializeElement(this.slotMainElement.get())
     };
+  }
+
+  public async deserialize(data: any): Promise<void> {
+    const sCmp = this.serializationService.deserializeElement(data.slot);
+    this.slotMainElement.set(await this.fillSlot(sCmp, () => this.slotMain));
+    this.update();
   }
 
   public getName(): string {
     return this.constructor.name;
+  }
+
+  validate(): Array<CmsValidationResult> {
+    return undefined;
+  }
+
+  view(mode: ViewMode): void {
+
   }
 
 }

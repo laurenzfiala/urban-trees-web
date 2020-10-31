@@ -56,7 +56,7 @@ import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
 import {CollapseModule} from 'ngx-bootstrap/collapse';
 import {TabsModule} from 'ngx-bootstrap/tabs';
 import {NgxChartsModule} from '@swimlane/ngx-charts';
-import {TranslateLoader, TranslateModule, TranslateService} from '@ngx-translate/core';
+import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {EnvironmentService} from '../shared/services/environment.service';
 import {SubscriptionManagerService} from './services/subscription-manager.service';
 import {AnnouncementService} from './services/announcement.service';
@@ -77,7 +77,6 @@ import {LayoutConfig} from './config/layout.config';
 import {AuthInterceptor} from '../shared/interceptors/auth.interceptor';
 import {SharedModule} from '../shared/shared.module';
 import {AuthService} from '../shared/services/auth.service';
-import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {TranslateInitService} from '../shared/services/translate-init.service';
 import {ParticipateComponent} from './components/participate/participate.component';
 import { OtpManageComponent } from './components/otp-manage/otp-manage.component';
@@ -89,6 +88,7 @@ import { BeacontransferComponent } from './components/beacontransfer/beacontrans
 
 export function TranslateFactory(http: HttpClient) {
   return new MultiTranslateHttpLoader(http, [
+    {prefix: '/translations/cms/', suffix: '.json'},
     {prefix: '/translations/trees/', suffix: '.json'},
     {prefix: '/translations/', suffix: '.json'}
     ]);
@@ -185,6 +185,7 @@ export function TranslateFactory(http: HttpClient) {
     AuthService,
     EnvironmentService,
     SubscriptionManagerService,
+    TranslateInitService,
 
     // Component-Services
     AnnouncementService,
@@ -199,7 +200,6 @@ export function TranslateFactory(http: HttpClient) {
     NotificationsService,
     AuthHelperService,
     UserRewardService,
-    TranslateInitService,
 
     // Guards
     ProjectLoginGuard,
@@ -214,6 +214,9 @@ export function TranslateFactory(http: HttpClient) {
       useClass: AuthInterceptor,
       multi: true
     }
+  ],
+  exports: [
+    TranslateModule
   ]
 })
 export class TreesModule { }

@@ -111,7 +111,7 @@ export class UserService extends AbstractService implements OnDestroy {
   private startUserDataRefresh(): void {
 
     this.authService.onStateChanged().subscribe(value => {
-      if (this.authService.isUserAnonymous()) {
+      if (this.authService.isUserAnonymous() || this.authService.isTempChangePasswordAuth()) {
         this.cachedUserData = undefined;
         this.subs.unsubscribe(UserService.SUBSCRIPTION_TAG);
       }

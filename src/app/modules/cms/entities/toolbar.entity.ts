@@ -2,54 +2,14 @@ import {Observable, Subject} from 'rxjs';
 import {CmsComponent} from '../interfaces/cms-component.interface';
 
 /**
- * Holds all elements to show inside the toolbar.
- */
-export class Toolbar {
-
-  private components: Map<string, ToolbarSection<ToolbarBtn>> = new Map<string, ToolbarSection<ToolbarBtn>>();
-  private contextual: Map<string, ToolbarSection<ToolbarElement>> = new Map<string, ToolbarSection<ToolbarElement>>();
-
-  /**
-   * Register the given component's static toolbar section
-   * (used to create new components).
-   * @param component component to register
-   */
-  public register(component: CmsComponent) {
-    this.components.set(component.getComponentName(), component.getToolbarSection());
-  }
-
-  /**
-   * Update the given component's contextual toolbar section
-   * (used for component-internal actions).
-   * @param component component's contextual toolbar to update
-   */
-  public update(component: CmsComponent) {
-    this.contextual.set(component.getComponentName(), component.getToolbarContextual());
-  }
-
-  public getComponents(): Array<ToolbarSection<ToolbarBtn>> {
-    return Array.from(this.components.values());
-  }
-
-  public getContextual(): Array<ToolbarSection<ToolbarElement>> {
-    return Array.from(this.contextual.values());
-  }
-
-}
-
-/**
  * A group of toolbar elements belonging to a component.
  */
 export class ToolbarSection<T extends ToolbarElement> {
 
-  private elements: Array<T>;
+  public readonly elements: Array<T>;
 
   constructor(...elements: Array<T>) {
     this.elements = elements;
-  }
-
-  public getElements(): Array<T> {
-    return this.elements;
   }
 
 }
@@ -60,14 +20,10 @@ export class ToolbarSection<T extends ToolbarElement> {
  */
 export abstract class ToolbarElement {
 
-  private description: string;
+  public readonly description: string;
 
   constructor(description: string) {
     this.description = description;
-  }
-
-  public getDescription(): string {
-    return this.description;
   }
 
 }
@@ -78,9 +34,9 @@ export abstract class ToolbarElement {
  */
 export class ToolbarBtn extends ToolbarElement {
 
-  private name: string;
-  private iconPath: string;
-  private actionSubject: Subject<any>;
+  public readonly name: string;
+  public readonly iconPath: string;
+  public readonly actionSubject: Subject<any>;
 
   constructor(name: string,
               description: string,
@@ -90,15 +46,7 @@ export class ToolbarBtn extends ToolbarElement {
     this.iconPath = iconPath;
   }
 
-  public getName(): string {
-    return this.name;
-  }
-
-  public getIconPath(): string {
-    return this.iconPath;
-  }
-
-  public getActionObservable(): Observable<any> {
+  public actionObservable(): Observable<any> {
     return this.actionSubject.asObservable();
   }
 
@@ -114,22 +62,22 @@ export class ToolbarBtn extends ToolbarElement {
  */
 export class ToolbarDropdown extends ToolbarElement {
 
-  public currentValue: string;
-  private values: Map<string, any> = new Map<string, any>();
-  private changedSubject: Subject<any>;
+  public readonly selectedKey: string;
+  private readonly options: Map<string, any> = new Map<string, any>();
+  private readonly changedSubject: Subject<any>;
 
-  constructor(description: string, currentValue: string, values: Map<string, any>) {
+  constructor(description: string, selectedKey: string, options: Map<string, any>) {
     super(description);
-    this.currentValue = currentValue;
-    this.values = values;
+    this.selectedKey = selectedKey;
+    this.options = options;
   }
 
-  public getChangedObservable(): Observable<any> {
+  public changedObservable(): Observable<any> {
     return this.changedSubject.asObservable();
   }
 
   public onChanged() {
-    this.changedSubject.next(this.values.get(this.currentValue));
+    this.changedSubject.next(this.options.get(this.selectedKey));
   }
 
 }

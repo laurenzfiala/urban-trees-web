@@ -52,9 +52,6 @@ export function TranslateFactory(http: HttpClient) {
     EnvironmentService,
     TranslateInitService
   ],
-  exports: [
-    TranslateModule
-  ],
   bootstrap: [AppComponent]
 })
 export class AppModule {

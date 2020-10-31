@@ -27,22 +27,6 @@ export class Log {
   }
 
   /**
-   * Creates a new logger instance for the given type.
-   * @param {Type<any>} type
-   * @returns {Log}
-   */
-  public static newInstance(type: Type<any>): Log {
-    return new Log(type.name);
-  }
-
-  /**
-   * Returns a date string formatted using Log#DATE_FORMAT for the current time.
-   */
-  private static shortTimeNow(): string {
-    return moment().format(Log.DATE_FORMAT);
-  }
-
-  /**
    * Prepend the standard logging information before every message line in the console.
    * @param {LogLevel} level log level to display
    * @param outputs the messages to write to the console.
@@ -64,10 +48,10 @@ export class Log {
    * @param {string} message Message to display
    * @param logObject (optional) object to display
    */
-  private log(level: LogLevel, message: string, logObject?: any) {
+  private log(level: LogLevel, message: string, logObject?: any): string {
 
     if (environment.log.level > level) {
-      return;
+      return null;
     }
 
     message = this.prepend(level, message);
@@ -98,6 +82,8 @@ export class Log {
         break;
 
     }
+
+    return message;
 
   }
 
@@ -144,6 +130,31 @@ export class Log {
    */
   public error(message: string, logObject?: any) {
     return this.log(LogLevel.ERROR, message, logObject);
+  }
+
+  /**
+   * Log with LogLevel#ERROR level and then throw an Error.
+   * @param {string} message Message to log to the console.
+   * @param logObject (optional) object to log to the console.
+   */
+  public errorAndThrow(message: string, logObject?: any) {
+    throw new Error(this.log(LogLevel.ERROR, message, logObject));
+  }
+
+  /**
+   * Creates a new logger instance for the given type.
+   * @param {Type<any>} type
+   * @returns {Log}
+   */
+  public static newInstance(type: Type<any>): Log {
+    return new Log(type.name);
+  }
+
+  /**
+   * Returns a date string formatted using Log#DATE_FORMAT for the current time.
+   */
+  private static shortTimeNow(): string {
+    return moment().format(Log.DATE_FORMAT);
   }
 
 }

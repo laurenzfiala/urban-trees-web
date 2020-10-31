@@ -18,7 +18,14 @@
             "tsConfig": "src/tsconfig.app.json",
             "polyfills": "src/polyfills.ts",
             "assets": [
-              "src/assets",
+              {
+                "glob": "**",
+                "input": "src/assets",
+                "ignore": [
+                  "raw/**"
+                ],
+                "output": "/assets/"
+              },
               "src/translations",
               "src/favicon.ico",
               "src/.htaccess"
