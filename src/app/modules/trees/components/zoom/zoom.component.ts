@@ -77,6 +77,7 @@ export class ZoomComponent implements OnInit {
     }
     this.isShown = true;
     this.opening.emit();
+    document.body.style.overflowY = 'hidden';
     this.delay(300).then(value => {
       this.opened.emit();
     });
@@ -89,6 +90,7 @@ export class ZoomComponent implements OnInit {
     this.isShown = false;
     this.isClosing = true;
     this.closing.emit();
+    document.body.style.overflowY = 'auto';
     this.delay(300).then(value => {
       this.isClosing = false;
       this.closed.emit();
