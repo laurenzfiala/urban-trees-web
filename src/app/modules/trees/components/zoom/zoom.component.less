@@ -1,155 +1,193 @@
 @import (reference) "../../../../../theme/variables";
 
-@controlsBgColor: rgba(100, 100, 100, 0.5);
-@controlsHeight: 45px;
+@fullscreenBtnBgColor: @primaryColor;
+@fullscreenBtnDimensions: 30px;
 
 .wrapper {
   position: relative;
   display: inline-block;
 
-  cursor: pointer;
-
   .expand {
-    position: absolute;
-    right: @gutter;
-    bottom: @gutter;
-    width: 1.5rem;
-    height: 1.5rem;
-
-    background-image: url("/assets/img/icon/special/fullscreen.svg");
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: contain;
-
-    opacity: 0.4;
-
-    transition: opacity 200ms;
+    display: none;
   }
 
-  &:hover .expand {
-    opacity: 0.8;
+  &.handle-open {
+    cursor: pointer;
+
+    .fullscreen-btn {
+      position: absolute;
+      right: @gutter;
+      bottom: @gutter;
+      width: @fullscreenBtnDimensions;
+      height: @fullscreenBtnDimensions;
+
+      display: block;
+      background-image: url("/assets/img/icon/special/fullscreen.svg");
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: 50%;
+      background-color: @fullscreenBtnBgColor;
+      border-radius: 50%;
+      box-shadow: none;
+
+      opacity: 0.4;
+
+      transition: opacity @transitionDurationS,
+                  box-shadow @transitionDurationM;
+    }
+
+    &:hover .fullscreen-btn {
+      box-shadow: @boxShadow;
+      opacity: 1;
+    }
   }
 }
 
-.fullscreen-wrapper {
+@m2BorderRadius: @borderRadiusSecondary;
+@m2HeadingColors: #555555, #666666;
+@m2HeadingShadows: 0 1px 0 rgba(0, 0, 0, 0.1), 0 1px 0 rgba(0, 0, 0, 0.075);
+@m2HeadingSizes: 1.5rem, @fontSizeMedium;
+@m2CloseHeight: 2.5rem;
+@m2ControlsDimension: 2rem;
+
+.modal2-bg {
   position: fixed;
-  left: 0;
   top: 0;
   right: 0;
   bottom: 0;
-  z-index: @zoomZIndex;
+  left: 0;
+  z-index: @modalZIndex;
 
-  display: none;
+  display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  overflow: hidden;
 
-  background-color: rgba(0, 0, 0, 0.75);
+  background-color: rgba(0, 0, 0, 0);
+  opacity: 0;
+  pointer-events: none;
+  backdrop-filter: blur(0px);
+  transition: backdrop-filter @transitionDurationM,
+              background-color @transitionDurationM,
+              opacity @transitionDurationM;
 
-  &.show,
-  &.closing {
-    display: flex;
-  }
-
-  animation: i-open 300ms;
-
-  &.closing {
-    animation: i-close 300ms;
-  }
-
-  &:hover {
-    .slide-next,
-    .slide-previous {
-      opacity: 1;
-    }
-  }
-
-  .fullscreen-content-wrapper {
-    max-height: calc(100vh - (@gutter2x*2));
-    max-width: calc(100vw - (@gutter2x*2) - 5rem);
-
-    overflow: hidden;
-  }
-
-  .fullscreen-close {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 2rem;
-    height: 2rem;
-
-    margin: @gutter;
-
-    background-image: url("/assets/img/icon/light/close.svg");
-    background-position: center;
-    background-size: contain;
-
-    cursor: pointer;
-  }
-
-  .slide-next,
-  .slide-previous {
-    position: absolute;
-    top: calc(50% - (@controlsHeight/2));
-
-    width: 60px;
-    height: @controlsHeight;
-
-    opacity: 0;
-
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: contain;
-    background-color: @controlsBgColor;
-
-    cursor: pointer;
-
-    transition: opacity 250ms;
-  }
-
-  .slide-previous {
-    left: 0;
-    background-image: url("/assets/img/icon/light/arrow-left.svg");
-  }
-
-  .slide-next {
-    right: 0;
-    background-image: url("/assets/img/icon/light/arrow-right.svg");
+  &.show {
+    background-color: rgba(0, 0, 0, 0.15);
+    opacity: 1;
+    pointer-events: all;
+    backdrop-filter: blur(20px);
   }
 }
 
-@media (pointer: coarse) {
-  .fullscreen-wrapper {
-    .slide-next,
-    .slide-previous {
-      opacity: 1;
-    }
+.modal2-wrapper {
+  margin-top: -@m2CloseHeight;
+}
+
+.modal2-close {
+  height: @m2CloseHeight;
+
+  background-image: url("/assets/img/icon/light/cross.svg");
+  background-size: contain;
+  background-position: center right;
+  background-repeat: no-repeat;
+
+  cursor: pointer;
+  opacity: 0.5;
+  transition: opacity @transitionDurationS;
+
+  &:hover,
+  &:focus {
+    opacity: 1;
   }
 }
 
-@keyframes i-open
-{
-  0%   {transform: translateY(25px); opacity: 0;}
-  100% {transform: translateY(0); opacity: 1;}
+.modal2-container {
+  position: relative;
+
+  overflow: hidden;
+  background-color: fade(@white, 75%);
+  border-radius: @m2BorderRadius;
+  box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.15);
 }
 
-@keyframes i-close
-{
-  0%   {transform: translateY(0); opacity: 1;}
-  100% {transform: translateY(25px); opacity: 0;}
-}
-
-::ng-deep .fullscreen-content {
+.modal2-controls {
   position: absolute;
   bottom: 0;
-  left: 0;
-  right: 0;
-  top: 0;
+  width: 50%;
+  height: 100%;
 
-  margin: auto;
-  max-height: calc(100vh - (@gutter2x*2));
-  max-width: calc(100vw - (@gutter2x*2) - 5rem);
+  background-size: @m2ControlsDimension;
+  background-repeat: no-repeat;
+  background-position-y: calc(100% - @gutter);
+  cursor: pointer;
+  opacity: 0.4;
 
-  background-color: @white;
-  box-shadow: @boxShadowZoom;
+  transition: opacity @transitionDurationS;
+
+  &:focus,
+  &:hover {
+    opacity: 1;
+  }
+
+  &.view-previous {
+    left: 0;
+
+    background-image: url("/assets/img/icon/special/fullscreen-previous.svg");
+    background-position-x: @gutter;
+  }
+
+  &.view-next {
+    right: 0;
+
+    background-image: url("/assets/img/icon/special/fullscreen-next.svg");
+    background-position-x: calc(100% - @gutter);
+  }
 }
+
+.modal2-content-wrapper {
+  position: relative;
+
+  padding-right: @gutter2x;
+  padding-left: @gutter2x;
+  overflow: auto;
+
+  &.mode-img {
+    padding-right: 0;
+    padding-left: 0;
+
+    .modal2-content {
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+  }
+}
+
+.modal2-content {
+  padding-top: @gutter*3;
+  padding-bottom: @gutter*3;
+}
+
+.modal2-content-wrapper,
+::ng-deep .modal2-content-wrapper.mode-img .modal2-content img {
+  min-width: 25vw;
+  max-width: calc(100vw - @gutter2x);
+  max-height: calc(100vh - @gutter2x * 4);
+}
+
+// modal content heading-styles
+.loop(@i) when (@i <= length(@m2HeadingColors)) {
+  @color: extract(@m2HeadingColors, @i);
+  @size: extract(@m2HeadingSizes, @i);
+  @shadow: extract(@m2HeadingShadows, @i);
+
+  ::ng-deep .modal2-content h@{i} {
+    color: @color;
+    font-size: @size;
+    text-shadow: @shadow;
+  }
+
+  .loop((@i + 1));
+}
+
+.loop(1);
