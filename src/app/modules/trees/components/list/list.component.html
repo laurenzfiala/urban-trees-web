@@ -1,0 +1,58 @@
+<div class="list-wrapper">
+  <div *ngIf="!hasStatus(StatusKey.EXTERNAL_STATUS, StatusValue.SUCCESSFUL) || this.isEmpty()"
+       class="list"
+       [ngClass]="{'loading': hasStatus(StatusKey.EXTERNAL_STATUS, StatusValue.IN_PROGRESS),
+                   'failed': hasStatus(StatusKey.EXTERNAL_STATUS, StatusValue.FAILED),
+                   'empty': hasStatus(StatusKey.EXTERNAL_STATUS, StatusValue.SUCCESSFUL) && isEmpty()}">
+
+    <div *forN="{start: 1, end: 5}" class="list-item-wrapper">
+      <div class="list-item"></div>
+    </div>
+
+    <div *ngIf="hasStatus(StatusKey.EXTERNAL_STATUS, StatusValue.FAILED)" class="overlay-center">
+      <div>
+        <i class="i i-xs i-warning-danger mr-2"></i>
+        {{errorDescription | translate}}
+      </div>
+    </div>
+
+    <div *ngIf="hasStatus(StatusKey.EXTERNAL_STATUS, StatusValue.SUCCESSFUL) && isEmpty()" class="overlay-center">
+      <div>
+        {{'list.empty' | translate}}
+      </div>
+    </div>
+
+  </div>
+
+  <div #listScrollEl
+       *ngIf="hasStatus(StatusKey.EXTERNAL_STATUS, StatusValue.SUCCESSFUL) && !isEmpty()"
+       class="list"
+       (scroll)="updateScrollBtns()">
+
+    <ng-container *ngIf="itemCategories">
+      <ng-container *ngFor="let category of itemCategories | mapEntries">
+        <div class="list-category-title">
+          {{category.key | translate}}
+        </div>
+
+        <ng-template *ngFor="let item of category.value"
+                     [ngTemplateOutlet]="itemTemplate"
+                     [ngTemplateOutletContext]="{context: item}"></ng-template>
+
+      </ng-container>
+    </ng-container>
+
+    <ng-template *ngFor="let item of items"
+                 [ngTemplateOutlet]="itemTemplate"
+                 [ngTemplateOutletContext]="{context: item}"></ng-template>
+
+  </div>
+
+  <div class="list-scroll-btn scroll-btn-left"
+       [ngClass]="{'show': scrollBtns?.left}"
+       (click)="scrollList('left')"></div>
+  <div class="list-scroll-btn scroll-btn-right"
+       [ngClass]="{'show': scrollBtns?.right}"
+       (click)="scrollList('right')"></div>
+
+</div>

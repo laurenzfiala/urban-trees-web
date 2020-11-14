@@ -12,6 +12,7 @@ import {LangDirective} from './directives/lang.directive';
 import {LayoutConfig} from '../trees/config/layout.config';
 import {HTTP_INTERCEPTORS} from '@angular/common/http';
 import {AuthInterceptor} from './interceptors/auth.interceptor';
+import {ForNDirective} from './directives/for-n.directive';
 
 
 @NgModule({
@@ -24,7 +25,8 @@ import {AuthInterceptor} from './interceptors/auth.interceptor';
     NoAuthDirective,
     CheckDirective,
     ValueaccessorDirective,
-    LangDirective
+    LangDirective,
+    ForNDirective
   ],
   imports: [
     CommonModule
@@ -38,7 +40,8 @@ import {AuthInterceptor} from './interceptors/auth.interceptor';
     NoAuthDirective,
     CheckDirective,
     ValueaccessorDirective,
-    LangDirective
+    LangDirective,
+    ForNDirective
   ],
   providers: [
     // Interceptors

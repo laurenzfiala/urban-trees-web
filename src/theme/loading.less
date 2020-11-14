@@ -1,0 +1,15 @@
+
+.loading-bg(@color) {
+  background: linear-gradient(to right, fade(@color, 0%), fade(@color, 100%), fade(@color, 0%));
+  background-size: 200% 100%;
+  animation: -anim-loading 2s infinite linear;
+}
+
+@keyframes -anim-loading {
+  0% {
+    background-position-x: 100%;
+  }
+  100% {
+    background-position-x: -100%;
+  }
+}

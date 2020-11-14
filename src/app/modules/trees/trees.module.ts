@@ -82,7 +82,9 @@ import {AuthPipe} from './pipes/auth.pipe';
 import {OtpScratchCodePipe} from './pipes/otp-scratch-code.pipe';
 import {MultiTranslateHttpLoader} from '../shared/lib/multi-translate-http-loader';
 import { BeacontransferComponent } from './components/beacontransfer/beacontransfer.component';
-import { UserProfileComponent } from './components/user-profile/user-profile.component';
+import {UserProgressComponent} from './components/user-progress/user-progress.component';
+import { ListComponent } from './components/list/list.component';
+import {MapEntriesPipe} from './pipes/map-entries.pipe';
 
 export function TranslateFactory(http: HttpClient) {
   return new MultiTranslateHttpLoader(http, [
@@ -130,6 +132,7 @@ export function TranslateFactory(http: HttpClient) {
     AnnouncementsComponent,
     NotificationsComponent,
     OtpManageComponent,
+    ListComponent,
 
     // Pipes
     StringModificationPipe,
@@ -140,7 +143,8 @@ export function TranslateFactory(http: HttpClient) {
     AuthPipe,
     OtpScratchCodePipe,
     BeacontransferComponent,
-    UserProfileComponent
+    UserProgressComponent,
+    MapEntriesPipe
   ],
   imports: [
     // Core

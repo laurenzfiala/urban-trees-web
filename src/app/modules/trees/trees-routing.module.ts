@@ -37,7 +37,11 @@ const routes: Routes = [
     children: [
       {
         path: 'home',
-        component: HomeComponent
+        component: HomeComponent,
+        canActivate: [ProjectLoginGuard],
+        data: {
+          roles: environment.security.roles.user
+        }
       },
       {
         path: 'missing',

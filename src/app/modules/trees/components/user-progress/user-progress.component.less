@@ -1,0 +1,329 @@
+@import (reference) "../../../../../theme/variables";
+@import (reference) "../../../../../theme/loading";
+
+@avatarWidth: 200px, 100px;
+@progressStrokeWidth: 10px, 10px;
+@progressRadius: 100px, 50px; // Note: make sure this correlates to the values of r/cx/cy in html
+@progressCircumference: extract(@progressRadius, 1) * 2 * pi(), extract(@progressRadius, 2) * 2 * pi();
+
+.root {
+  --level-progress: 0;
+}
+
+.avatar,
+.avatar-inner {
+  border-radius: 50%;
+}
+
+.avatar {
+  position: relative;
+
+  width: extract(@avatarWidth, 1);
+  height: extract(@avatarWidth, 1);
+  flex-shrink: 0;
+
+  cursor: pointer;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  box-shadow: 0 5px 15px -5px rgba(0, 0, 0, 0.25),
+  0 0 0 extract(@progressStrokeWidth, 1) rgba(255, 255, 255, 0.1) inset;
+  transition: @transitionDurationM box-shadow;
+
+  &:focus,
+  &:hover {
+    box-shadow: 0 5px 25px -10px rgba(0, 0, 0, 0.5),
+    0 0 0 extract(@progressStrokeWidth, 1) rgba(255, 255, 255, 0.25) inset;
+
+    .avatar-inner .level-display {
+      opacity: 1;
+    }
+  }
+
+  &.sm {
+    width: extract(@avatarWidth, 2);
+    height: extract(@avatarWidth, 2);
+
+    pointer-events: none;
+    box-shadow: 0 5px 25px -10px rgba(0, 0, 0, 0.5),
+                0 0 0 extract(@progressStrokeWidth, 2) rgba(255, 255, 255, 0.25) inset;
+
+    .avatar-inner {
+      border-width: extract(@progressStrokeWidth, 2);
+    }
+
+    .level-progress {
+      width: extract(@avatarWidth, 2);
+      height: extract(@avatarWidth, 2);
+
+      .progress-circle {
+        stroke-dashoffset: calc((1 - var(--level-progress)) * extract(@progressCircumference, 2));
+        stroke-dasharray: extract(@progressCircumference, 2) extract(@progressCircumference, 2);
+        stroke-width: extract(@progressStrokeWidth, 2);
+      }
+    }
+  }
+
+  &.loading {
+    .loading-bg(@grey);
+
+    * {
+      display: none;
+    }
+  }
+
+  &.failed {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+.avatar-inner {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+
+  user-select: none;
+
+  .level-display {
+    opacity: 0;
+
+    transition: @transitionDurationM opacity;
+    animation: 2.5s i-level-display;
+  }
+}
+
+/*
+Adapted from source: https://css-tricks.com/building-progress-ring-quickly/
+ */
+.level-progress {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+
+  width: extract(@avatarWidth, 1);
+  height: extract(@avatarWidth, 1);
+
+  pointer-events: none;
+
+  .progress-circle {
+    animation: -anim-progress-circle 1s forwards;
+    transition: stroke-dashoffset 1s;
+    transform: rotate(-90deg);
+    transform-origin: 50% 50%;
+
+    stroke: @darkBgColor;
+    stroke-dasharray: extract(@progressCircumference, 1) extract(@progressCircumference, 1);
+    stroke-width: extract(@progressStrokeWidth, 1);
+    stroke-linecap: round;
+    fill: transparent;
+
+    @keyframes -anim-progress-circle {
+      0% {
+        stroke-dashoffset: extract(@progressCircumference, 1);
+      }
+      100% {
+        stroke-dashoffset: calc((1 - var(--level-progress)) * extract(@progressCircumference, 1));
+      }
+    }
+  }
+}
+
+@levelColors: rgb(83, 134, 215), rgb(216, 226, 239),
+rgb(66, 168, 193), rgb(213, 235, 239),
+rgb(69, 191, 163), rgb(218, 243, 238),
+rgb(51, 195, 82), rgb(216, 239, 220),
+rgb(92, 183, 42), rgb(230, 243, 222);
+
+.loop(@i) when (@i <= (length(@levelColors) / 2)) {
+  @levelColor: extract(@levelColors, @i*2-1);
+  @levelBgColor: extract(@levelColors, @i*2);
+  @isNotLastLevel: boolean(@i * 2 < length(@levelColors));
+  @nextLevelColor: if(@isNotLastLevel, extract(@levelColors, (@i+1)*2-1), @levelColor);
+
+  .level-@{i} {
+
+    .avatar {
+      background-color: @levelBgColor;
+      background-image: url("/assets/img/level/@{i}.svg");
+
+      .level-progress .progress-circle {
+        stroke: @levelColor;
+      }
+    }
+
+    &.level-tier {
+      color: @levelColor !important;
+
+      &:before,
+      &:after {
+        background: linear-gradient(to bottom, @levelColor, @nextLevelColor);
+      }
+    }
+
+
+    ::ng-deep .level-text {
+      color: @levelColor;
+    }
+
+  }
+
+  .loop(@i + 1);
+}
+
+.loop(1);
+
+.level-display {
+  text-align: center;
+
+  color: @white;
+  text-shadow: 0 1px 0px rgba(0, 0, 0, 0.35);
+
+  .sm {
+    font-size: @fontSizeSmall;
+  }
+
+  .lg {
+    font-size: 2.5rem;
+    line-height: 1;
+  }
+}
+
+@keyframes i-level-display {
+  0%, 80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.table-xp {
+
+  tr:nth-child(2) {
+    opacity: 0.5;
+  }
+
+  tr:nth-child(3) {
+    opacity: 0.25;
+  }
+
+  td:first-child {
+    padding-right: @gutter2x;
+    color: @subtleTextColor;
+  }
+}
+
+.details-title {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  .avatar {
+    box-shadow: none;
+  }
+
+  @media @xs, @sm {
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+}
+
+.level-tiers {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+
+  padding-top: @gutter;
+  padding-bottom: @gutter;
+
+  .level-tier {
+    position: relative;
+
+    display: flex;
+    flex-direction: row;
+
+    text-shadow: 0 1px 0 fade(@white, 50%);
+
+    &:before {
+      content: "";
+      display: block;
+
+      width: 1em;
+      min-height: 3em;
+      margin-right: @gutter;
+      opacity: 0.5;
+    }
+
+    &:after {
+      position: absolute;
+      top: 0;
+      left: 0;
+
+      content: "";
+      display: block;
+
+      width: 1em;
+      height: 0;
+    }
+
+    &.reached {
+      font-weight: bold;
+
+      &:after {
+        min-height: 1em;
+        height: 100%;
+      }
+    }
+
+    &.current:after {
+      height: calc(var(--level-progress) * 100%);
+
+      border-bottom-left-radius: 0.5em;
+      border-bottom-right-radius: 0.5em;
+    }
+
+    &:first-child {
+
+      &:before,
+      &:after {
+        border-top-left-radius: 0.5em;
+        border-top-right-radius: 0.5em;
+      }
+    }
+
+    &:last-child {
+
+      &:before,
+      &:after {
+        border-bottom-left-radius: 0.5em;
+        border-bottom-right-radius: 0.5em;
+      }
+    }
+
+    &:last-child {
+      margin-bottom: -@gutter;
+
+      &:before {
+        min-height: 1em;
+      }
+
+      &:before,
+      &:after {
+        max-height: 1em;
+      }
+    }
+  }
+}

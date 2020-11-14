@@ -31,6 +31,7 @@ export const environment = {
     phenologySpec:                    '/tree/{treeId}/phenology/spec',
     phenologyDatasetSubmission:       '/tree/{treeId}/phenology',
     phenologyDatasetImageSubmission:  '/user/phenology/observation/{phenologyId}/image',
+    phenologyHistory:                 '/user/{userId}/phenology',
 
     // UI
     phenologyObservationResultImg:    '/ui/phenology/observation/result/{treeSpeciesId}/{resultId}/img',
@@ -107,6 +108,8 @@ export const environment = {
 
     roles: {
       user:                             ['ROLE_USER'],
+      treeEditor:                       ['ROLE_TREE_EDITOR'],
+      diary:                            ['ROLE_DIARY'],
       phenObs:                          ['ROLE_PHENOBS'],
       admin:                            ['ROLE_ADMIN'],
       tempChangePassword:               'ROLE_TEMP_CHANGE_PASSWORD'

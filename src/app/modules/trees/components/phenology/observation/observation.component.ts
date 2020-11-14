@@ -16,6 +16,7 @@ import {AuthService} from '../../../../shared/services/auth.service';
 import {PhenologyObservationObject} from '../../../entities/phenology-observation-object.entity';
 import {UserIdentity} from '../../../entities/user-identity.entity';
 import {UserRewardService} from '../../../services/user-reward.service';
+import {ActivatedRoute, Router, RouterStateSnapshot} from '@angular/router';
 
 @Component({
   selector: 'ut-observation',
@@ -28,6 +29,11 @@ export class ObservationComponent extends AbstractComponent implements OnInit, O
   private static SUBSCRIPTION_TAG: string = 'observation-cmp';
   private static PHENOBS_XP: number = 200;
   private static PHENOBS_IMG_XP: number = 150;
+
+  /**
+   * Query param to preselect a tree.
+   */
+  private static QUERY_PARAMS_SELECTED_TREE = 'tree';
 
   public StatusKey = StatusKey;
   public StatusValue = StatusValue;
@@ -82,16 +88,26 @@ export class ObservationComponent extends AbstractComponent implements OnInit, O
               private treeService: TreeService,
               public rewardService: UserRewardService,
               public authService: AuthService,
+              private route: ActivatedRoute,
               public envService: EnvironmentService) {
     super();
   }
 
   public ngOnInit() {
-    this.load();
+
+    this.subs.register(this.route.queryParams.subscribe((params: any) => {
+
+      const selectTreeIdVal = Number(params[ObservationComponent.QUERY_PARAMS_SELECTED_TREE]);
+      this.load(selectTreeIdVal);
+
+    }), ObservationComponent.SUBSCRIPTION_TAG);
+
     this.subs.register(this.authService.onStateChanged().subscribe(value => {
       this.onDiscard();
     }), ObservationComponent.SUBSCRIPTION_TAG);
+
     this.checkProgress();
+
   }
 
   public ngOnDestroy() {
@@ -103,14 +119,19 @@ export class ObservationComponent extends AbstractComponent implements OnInit, O
   /**
    * Load available trees and initialize the map.
    */
-  private load() {
+  private load(selectTree?: number) {
 
     this.loadTrees(() => {
 
-      let alreadySelected = this.observationService.selectedTree;
-      if (alreadySelected) {
-        this.selectTree(TreeFrontend.fromTree(alreadySelected));
+      if (selectTree) {
+        this.selectTree(this.availableTrees.find((t: TreeFrontend) => t.id === selectTree));
+      } else {
+        let alreadySelected = this.observationService.selectedTree;
+        if (alreadySelected) {
+          this.selectTree(TreeFrontend.fromTree(alreadySelected));
+        }
       }
+
 
     });
 

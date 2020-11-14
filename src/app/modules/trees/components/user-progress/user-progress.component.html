@@ -1,0 +1,106 @@
+<div *ngIf="hasStatus(StatusKey.ACHIEVEMENTS_LOADING, StatusValue.IN_PROGRESS)"
+     class="avatar loading">
+</div>
+
+<div *ngIf="hasStatus(StatusKey.ACHIEVEMENTS_LOADING, StatusValue.FAILED)"
+     class="avatar failed"
+     [tooltip]="'user_progress.error' | translate"
+     (action)="this.loadAchievements()">
+  <i class="i i-xl i-warning-danger"></i>
+</div>
+
+<div *ngIf="hasStatus(StatusKey.ACHIEVEMENTS_LOADING, StatusValue.SUCCESSFUL)"
+     class="root"
+     [ngClass]="'level-' + level"
+     [cssvar]="{name: '--level-progress', value: !achievements ? 0 : (nextLevelXp === levelXp ? 1 : (achievements.xp - levelXp) / (nextLevelXp - levelXp))}">
+  <ut-zoom #zoom
+           [content]="progressCircular"
+           [fullscreenContent]="modalContent"
+           [managedOpen]="false">
+  </ut-zoom>
+
+  <ng-template #progressCircular>
+    <div class="avatar"
+         tabindex="0"
+         (action)="zoom.open()"
+         [tooltip]="'user_progress.open_details' | translate">
+
+      <div class="avatar-inner">
+        <div *ngIf="level !== maxLevel" class="level-display">
+          <div class="lg">{{nextLevelRemainingXp}} XP</div>
+          <div class="sm">{{'user_progress.overview_reach_next_level' | translate:{level: level + 1} }}</div>
+        </div>
+        <div *ngIf="level === maxLevel" class="level-display">
+          <div class="lg">{{achievements.xp}}</div>
+          <div class="sm">{{'user_progress.overview_xp_earned' | translate }}</div>
+        </div>
+      </div>
+
+      <svg class="level-progress">
+        <circle class="progress-circle" r="95" cx="100" cy="100"/>
+      </svg>
+
+    </div>
+  </ng-template>
+
+  <ng-template #modalContent>
+    <div class="details-title my--2">
+      <div class="avatar sm no-progress m-2">
+      </div>
+
+      <div class="m-2">
+        <h1 [innerHTML]="'user_progress.details.title' | translate:{tier: 'user_progress.tiers.' + level | translate}"></h1>
+      </div>
+
+    </div>
+
+    <div class="mt-4">
+      <h2>{{'user_progress.details.progress_title' | translate}}</h2>
+      <div class="level-tiers">
+        <ng-container *forN="{start: 1, end: maxLevel}; let i = index">
+          <ng-container *ngTemplateOutlet="levelTier;context:{currentLevel: level, displayLevel: i}"></ng-container>
+        </ng-container>
+      </div>
+    </div>
+
+    <div class="mt-4">
+      <h2>{{'user_progress.details.contribs_title' | translate}}</h2>
+      <div *ngIf="hasStatus(StatusKey.ACHIEVEMENTS_LOADING, StatusValue.SUCCESSFUL)"
+           class="d-flex flex-row align-items-stretch justify-content-between">
+
+        <div class="d-flex flex-row align-items-end">
+          <table class="table-xp">
+            <tr *ngFor="let l of achievements.xpHistory.slice(0, 3); let i = index">
+              <td class="text-nowrap">
+                + {{l.xp - (i < achievements.xpHistory.length-1 ? achievements.xpHistory[i+1].xp : 0)}} {{'user_overview.xp' | translate}}
+              </td>
+              <td>
+                {{'user.level_action.' + l.action | translate}}
+              </td>
+            </tr>
+          </table>
+        </div>
+
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template #levelTier let-currentLevel="currentLevel" let-displayLevel="displayLevel">
+    <div class="level-tier"
+         [ngClass]="['level-' + displayLevel,
+                     currentLevel >= displayLevel ? 'reached' : '',
+                     currentLevel === displayLevel ? 'current' : '']">
+      <div class="mt--1">
+        {{'user_progress.tiers.' + displayLevel | translate}}
+        <div *ngIf="currentLevel + 1 === displayLevel"
+             class="text-xs font-weight-normal">
+          {{'user_progress.level_xp_remaining' | translate:{xp: nextLevelRemainingXp} }}
+        </div>
+        <div *ngIf="currentLevel === displayLevel && currentLevel === maxLevel"
+             class="text-xs font-weight-normal">
+          {{'user_progress.level_xp_earned' | translate:{xp: achievements.xp} }}
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</div>

@@ -14,21 +14,18 @@
       }
     },
     "landing_page": "Start",
-    "home": "Start",
+    "home": "Meine Forschung",
     "participate": "Mitmachen",
     "phenology": "Phänologie",
     "tree_list": "Bäume",
     "measurements": "Messdaten",
     "statistics": "Statistiken",
-    "admin": "Administratorkonsole",
+    "admin": "Adminkonsole",
     "footer": {
       "report": "Problem melden",
       "imprint": "Impressum",
-      "home": "Startseite",
-      "madeby": "Mit &#x2764; entwickelt vom ",
-      "madeby_team": "Stadtbäume-Team",
-      "info_version": "Version",
-      "info_hash": "ID"
+      "madeby": "Entwickelt vom ",
+      "madeby_team": "CO₂BS-Team"
     },
     "messages": "Nachrichten",
     "settings": "Spracheinstellungen",
@@ -554,34 +551,22 @@
   "home": {
     "title": "Willkommen bei&nbsp;<b>Coole Bäume &amp; Sensoren</b>!",
     "desc": "Du kannst diese Website benutzen, um Phänologiedaten zu Bäumen einzutragen, Informationen und Statistiken über die Bäume und Beacons anzusehen und um Punkte durch Mithelfen zu erhalten!",
-    "title_user": "Willkommen zurück bei&nbsp;<b>Coole Bäume &amp; Sensoren</b>, {{username}}!",
-    "desc_user_1": "Wir freuen uns über jede ",
-    "desc_phenobs_link": "Phänologiebeobachtung",
-    "desc_user_2": " oder Beacon-Auslesungen (mit der <a class=\"link\" href=\"https://play.google.com/apps/internaltest/4699755394511268796\" target=\"_blank\">Android App</a>). Wenn Du währenddessen eingeloggt bist, erhältst du Erfahrungspunkte, die deinen Platz auf der Bestenliste verbessern.",
-    "user_score": {
-      "title": "Dein Punktestand",
-      "error": "Punktestand konnte nicht geladen werden"
+    "title_user": "Willkommen zurück, {{username}}!",
+    "desc_user": "Mehr Informationen und Neuigkeiten zum Projekt kannst Du auf der Startseite finden. Bei Fragen oder Anregungen, wende Dich an <a href=\"mailto:co2bs.ffg@sbg.ac.at\" class=\"link\">co2bs.ffg@sbg.ac.at</a>. Wir wünschen viel Spaß beim Forschen!",
+    "action_settings": "Kontoeinstellungen",
+    "action_logout": "Abmelden",
+    "cms_history": {
+      "title": "Deine Baum-Einträge",
+      "error": "Deine Baum-Einträge konnten nicht geladen werden."
     },
-    "admin_console": {
-      "title": "Administratorkonsole",
-      "desc": "Admins können Bäume, Beacons und Ankündigungen in der Konsole hinzufügen.",
-      "link": "Zur Administratorkonsole"
+    "phenobs_history": {
+      "title": "Deine Phänologiebeobachtungen",
+      "error": "Deine Beobachtungen konnten nicht geladen werden."
     },
-    "project_intro": {
-      "title": "Was wir machen",
-      "desc": "Wir beobachten viele Bäume mit Bluetooth-Beacons, welche automatisch Temperaturdaten und Luftfeuchtigkeit aufzeichnen. Außerdem beobachten wir die Bäume auf ihre Blattentfaltung, diese Informationen werden von teilnehmenden Schüler_innen hier eingetragen.",
-      "error": "Projektstatistiken konnten nicht geladen werden",
-      "cities": "Städte",
-      "trees": "Bäume",
-      "obs": "Phänologiebeobachtungen",
-      "beacons": "Beacons",
-      "beacon_datasets": "Beacon-Datensätze",
-      "link": "Mehr Statististken anzeigen"
-    },
-    "more_info": {
-      "title": "Mehr Informationen",
-      "desc": "Finde mehr über das <span class=\"font-italic\">Stadtbäume als Klimabotschafter</span>-Projekt auf unserer Info-Website heraus.",
-      "link": "Jetzt besuchen"
+    "diary": {
+      "title": "Dein Forschungstagebuch",
+      "text": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
+      "action": "Forschungstagebuch"
     }
   },
   "user_overview": {
@@ -601,7 +586,7 @@
   },
   "phen_obs": {
     "title": "Phänologiebeobachtung",
-    "desc": "Tage hier eine neue Phänologiebeobachtung ein. Die fünf Schritte weiter unten können in unter fünf Minuten abgeschlossen werden.",
+    "desc": "Trage hier eine neue Phänologiebeobachtung ein. Die fünf Schritte weiter unten können in unter fünf Minuten abgeschlossen werden.",
     "finish_prev_steps_first": "Schließe vorhergehende Schritte zuerst ab.",
     "error": "Phänologiebeobachtung konnte nicht geladen werden.",
     "step": "Schritt",
@@ -782,6 +767,51 @@
     }
   },
   "zoom": {
-    "close": "Schließen"
+    "close": "Schließen",
+    "previous": "Vorige Ansicht",
+    "next": "Nächste Ansicht"
+  },
+  "user_progress": {
+    "tiers": {
+      "1": "Bauminteressierte(r)",
+      "2": "Baumbeobachter*in",
+      "3": "Baumfreund*in",
+      "4": "Baumbegeisterte(r)",
+      "5": "Baumforscher*in"
+    },
+    "details": {
+      "title": "Du bist ein(e) <span class=\"level-text\">{{tier}}</span>!",
+      "progress_title": "Dein Fortschritt",
+      "contribs_title": "Deine letzten Beiträge"
+    },
+    "error": "Ladevorgang fehlgeschlagen. Klicken um erneut zu versuchen.",
+    "open_details": "Mehr anzeigen",
+    "overview_reach_next_level": "bis Level {{level}}",
+    "overview_xp_earned": "XP verdient",
+    "level_xp_remaining": "noch {{xp}} XP",
+    "level_xp_earned": "{{xp}} XP verdient"
+  },
+  "cms": {
+    "content": {
+      "status": {
+        "draft": "Entwurf",
+        "approving": "Wird veröffentlicht",
+        "published": "Veröffentlicht"
+      }
+    }
+  },
+  "time": {
+    "category": {
+      "unknown": "Unbekannt",
+      "today": "Heute",
+      "yesterday": "Gestern",
+      "this_week": "Diese Woche",
+      "this_month": "Dieses Monat",
+      "last_month": "Letztes Monat",
+      "more_than_5_years_ago": "Vor 5+ Jahren"
+    }
+  },
+  "list": {
+    "empty": "Es wurden keine Einträge gefunden"
   }
 }

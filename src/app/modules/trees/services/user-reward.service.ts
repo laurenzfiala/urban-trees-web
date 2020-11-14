@@ -24,7 +24,7 @@ export class UserRewardService {
   /**
    * Highest reachable level.
    */
-  public maxLevel: number = 15;
+  public maxLevel: number = 5;
 
   public maxLevelXp: number;
   public nextLevel: number;
@@ -120,10 +120,10 @@ export class UserRewardService {
   public calcLevel(xp: number): number {
 
     let i;
-    for (i = 100; xp >= i; i += 100) {
+    for (i = 1000; xp >= i; i += 1000) {
       xp -= i;
     }
-    return i / 100;
+    return i / 1000;
 
   }
 
@@ -131,7 +131,7 @@ export class UserRewardService {
 
     let xp = 0;
     for (let i = 0; i < level; i++) {
-      xp += i * 100;
+      xp += i * 1000;
     }
     return xp;
 

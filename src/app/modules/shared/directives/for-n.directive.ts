@@ -13,11 +13,26 @@ import {Directive, ElementRef, Input, TemplateRef, ViewContainerRef} from '@angu
 export class ForNDirective {
 
   @Input('forN')
-  set forN(n: number) {
+  set forN(n: number | {start, end}) {
+
+    let start = 0;
+    let end;
+    if (typeof n === 'number') {
+      end = n - 1;
+    } else if (typeof n === 'object') {
+      if (n.start) {
+        start = n.start;
+      }
+      if (n.end) {
+        end = n.end;
+      }
+    } else {
+      throw new Error('Invalid argument for forN directive.');
+    }
 
     this.viewContainer.clear();
-    for (let i = 0; i < n; i++) {
-      this.viewContainer.createEmbeddedView(this.templateRef, {index: i}, i);
+    for (let i = 0; i <= end - start; i++) {
+      this.viewContainer.createEmbeddedView(this.templateRef, {index: i + start}, i);
     }
 
   }

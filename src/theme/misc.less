@@ -126,7 +126,7 @@ textarea.form-control:focus,
 
 // default content elements
 .content-cat {
-  padding: @gutter2x 0;
+  padding: (@gutter*3) 0;
 
   &:nth-child(even) {
     background-color: @lightBgColor;
@@ -137,10 +137,11 @@ textarea.form-control:focus,
   display: flex;
   flex-direction: row;
   align-items: center;
+  flex-shrink: 0;
   font-size: @fontSizeLarge;
   color: @darkerGrey;
   margin-top: -(@fontSizeLarge/3);
-  margin-bottom: (@gutter - (@fontSizeLarge/3));
+  margin-bottom: (@gutter*1.5 - (@fontSizeLarge/3));
 
   .i:first-child {
     margin-right: (@gutter/2);
@@ -353,6 +354,11 @@ a.link {
 
 .content-cat-link {
   margin-top: @gutter;
+
+  &.link-container {
+    padding: 0;
+    border-bottom: 0;
+  }
 }
 
 .content-cat-highlight-bar {
@@ -550,5 +556,25 @@ ul.list {
     margin-left: -@gutter2x;
     padding-right: @gutter2x;
     color: @subtleTextColor;
+  }
+}
+
+.responsive-float {
+  margin: -@gutter;
+
+  @media @xs {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  > * {
+    margin: @gutter;
+  }
+
+  .float-right,
+  .float-left {
+    flex-shrink: 0;
   }
 }

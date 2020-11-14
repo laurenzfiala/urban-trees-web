@@ -1,0 +1,224 @@
+@import (reference) "../../../../../theme/variables";
+@import (reference) "../../../../../theme/loading";
+
+@listModeBtnDimensions:     1rem;
+@listItemBgColor:           @medLightGrey;
+@listScrollBtnWidth:        4rem;
+@listScrollBtnArrowHeight:  40px;
+@listPlaceholderHeight:     100px;
+
+.list-wrapper {
+  position: relative;
+
+  @media @touchDevice {
+    overflow-x: auto;
+  }
+}
+
+.list {
+  display: flex;
+  flex-direction: row;
+
+  scroll-behavior: smooth;
+  overflow: hidden;
+
+  @media @touchDevice {
+    overflow-x: auto;
+  }
+
+  &.loading,
+  &.empty,
+  &.failed {
+    min-height: @listPlaceholderHeight;
+
+    pointer-events: none;
+  }
+
+  &.loading {
+    overflow-x: hidden;
+
+    .list-item {
+      .loading-bg(@listItemBgColor);
+    }
+  }
+
+  &.empty {
+    color: @subtleTextColor;
+
+    .overlay-center {
+      display: flex;
+
+      > * {
+        background-color: fade(@grey, 50%);
+      }
+    }
+  }
+
+  &.failed {
+    color: @danger;
+
+    .overlay-center {
+      display: flex;
+
+      > * {
+        background-color: fade(@dangerBg, 50%);
+      }
+    }
+  }
+
+  .overlay-center {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    padding: @gutter;
+
+    > * {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+
+      padding: @gutter/2 @gutter;
+    }
+  }
+}
+
+.list-scroll-btn {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+
+  width: @listScrollBtnWidth;
+
+  background-size: @listScrollBtnArrowHeight, contain;
+  background-repeat: no-repeat, no-repeat;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity @transitionDurationS,
+              background-position @transitionDurationS;
+
+  &.show {
+    pointer-events: auto;
+    opacity: 1;
+  }
+
+  &.scroll-btn-right {
+    right: 0;
+
+    background-image: url("/assets/img/icon/dark/chevron-right.svg"),
+                      linear-gradient(to right, fade(@lightBgColor, 0%), fade(@lightBgColor, 100%));
+    background-position: center, right;
+
+    &:hover {
+      background-position: 85%, right;
+    }
+  }
+
+  &.scroll-btn-left {
+    left: 0;
+
+    background-image: url("/assets/img/icon/dark/chevron-left.svg"),
+                      linear-gradient(to left, fade(@lightBgColor, 0%), fade(@lightBgColor, 100%));
+    background-position: center, left;
+
+    &:hover {
+      background-position: 15%, right;
+    }
+  }
+
+  @media @touchDevice {
+    display: none;
+  }
+}
+
+::ng-deep .content-cat:nth-child(odd) {
+  .list-scroll-btn {
+    &.scroll-btn-right {
+      background-image: url("/assets/img/icon/dark/chevron-right.svg"),
+                        linear-gradient(to right, fade(@white, 0%), fade(@white, 100%));
+    }
+
+    &.scroll-btn-left {
+      background-image: url("/assets/img/icon/dark/chevron-left.svg"),
+                        linear-gradient(to left, fade(@white, 0%), fade(@white, 100%));
+    }
+  }
+}
+
+.list-item-wrapper {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: stretch;
+
+  min-width: 150px;
+  margin: @gutter/2;
+  flex-shrink: 0;
+
+  @media @xs, @sm {
+    width: 50%;
+  }
+  @media @md {
+    width: 33.333%;
+  }
+  @media @lg {
+    width: 25%;
+  }
+  @media @xl {
+    width: 20%;
+  }
+}
+
+.list-item {
+  padding-right: @gutter/2;
+  padding-left: @gutter/2;
+  flex-grow: 1;
+
+  border-radius: @borderRadiusSecondary;
+  border: solid @borderWidth @listItemBgColor;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color @transitionDurationS;
+
+  &:focus,
+  &:hover {
+    background-color: @listItemBgColor;
+  }
+
+  .item-name {
+    font-size: @fontSizeMedium;
+    margin: @gutter;
+  }
+
+  .item-status {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+
+    margin: @gutter;
+
+    font-size: @fontSizeSmall;
+  }
+}
+
+.list-category-title {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: @gutter/2 @gutter2x;
+
+  color: @subtleTextColor;
+  background-color: transparent;
+  font-size: @fontSizeMedium;
+}

@@ -24,6 +24,27 @@ export class SubscriptionManagerService {
   private subscriptions: Map<string, Array<Subscription>> = new Map<string, Array<Subscription>>();
 
   /**
+   * Return a new unique tag that has not yet
+   * been registered. The tag will always start
+   * with the given prefix.
+   * Enter all following non-global
+   * subscriptions using the returned tag.
+   * @param prefix The generated tags prefix.
+   */
+  public tag(prefix: string): string {
+
+    let tag = prefix;
+    let i = 0;
+    while (this.subscriptions.has(tag)) {
+      tag = prefix + i;
+      i++;
+    }
+    this.subscriptions.set(tag, []);
+    return tag;
+
+  }
+
+  /**
    * Register a subscription with optional tag.
    * @param {string} tag (optional) tag to destroy this subscription
    * @param {Subscription} subscription value

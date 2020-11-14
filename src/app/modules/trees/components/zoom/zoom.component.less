@@ -87,9 +87,9 @@
 .modal2-close {
   height: @m2CloseHeight;
 
-  background-image: url("/assets/img/icon/light/cross.svg");
-  background-size: contain;
-  background-position: center right;
+  background-image: url("/assets/img/icon/special/fullscreen-close.svg");
+  background-size: @m2CloseHeight - @gutter;
+  background-position: calc(100% - @gutter) center;
   background-repeat: no-repeat;
 
   cursor: pointer;
@@ -121,11 +121,11 @@
   background-repeat: no-repeat;
   background-position-y: calc(100% - @gutter);
   cursor: pointer;
+  outline: 0;
   opacity: 0.4;
 
   transition: opacity @transitionDurationS;
 
-  &:focus,
   &:hover {
     opacity: 1;
   }
