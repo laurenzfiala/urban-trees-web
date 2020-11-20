@@ -772,20 +772,24 @@
   },
   "user_progress": {
     "tiers": {
-      "1": "Bauminteressierte(r)",
-      "2": "Baumbeobachter*in",
-      "3": "Baumfreund*in",
-      "4": "Baumbegeisterte(r)",
-      "5": "Baumforscher*in"
+      "1": "Kern",
+      "2": "Keimling",
+      "3": "Jungbaum",
+      "4": "Baum",
+      "5": "Baumriese"
     },
     "details": {
-      "title": "You are a <span class=\"level-text\">{{tier}}</span>!",
+      "title": {
+        "tier_1": "<h1>Your tree is only a <span class=\"level-text\">{{tier}}</span></h1><p class=\"text-sm mb-0\">Create or edit your research diary, enter phenology observations or use the app to read out beacons. This will grow your tree.</p>",
+        "tier": "Your <span class=\"level-text\">{{tier}}</span> is growing!",
+        "tier_5": "Your <span class=\"level-text\">{{tier}}</span> has matured!"
+      },
       "progress_title": "Your progress",
       "contribs_title": "Your latest contributions"
     },
     "error": "Failed to load. Click to retry.",
     "open_details": "Show more",
-    "overview_reach_next_level": "to reach level {{level}}",
+    "overview_reach_next_level": "until your tree grows",
     "overview_xp_earned": "XP earned",
     "level_xp_remaining": "{{xp}} XP to go",
     "level_xp_earned": "{{xp}} XP earned"

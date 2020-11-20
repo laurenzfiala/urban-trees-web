@@ -28,7 +28,7 @@
       <div class="avatar-inner">
         <div *ngIf="level !== maxLevel" class="level-display">
           <div class="lg">{{nextLevelRemainingXp}} XP</div>
-          <div class="sm">{{'user_progress.overview_reach_next_level' | translate:{level: level + 1} }}</div>
+          <div class="sm">{{'user_progress.overview_reach_next_level' | translate }}</div>
         </div>
         <div *ngIf="level === maxLevel" class="level-display">
           <div class="lg">{{achievements.xp}}</div>
@@ -44,18 +44,17 @@
   </ng-template>
 
   <ng-template #modalContent>
-    <div class="details-title my--2">
-      <div class="avatar sm no-progress m-2">
+    <div class="details-title m--2">
+      <div class="avatar sm no-progress">
       </div>
 
-      <div class="m-2">
-        <h1 [innerHTML]="'user_progress.details.title' | translate:{tier: 'user_progress.tiers.' + level | translate}"></h1>
+      <div class="title-container m-2"
+           [innerHTML]="'user_progress.details.title.tier' + (level === 1 || level === maxLevel ? '_' + level : '') | translate:{tier: 'user_progress.tiers.' + level | translate}">
       </div>
 
     </div>
 
-    <div class="mt-4">
-      <h2>{{'user_progress.details.progress_title' | translate}}</h2>
+    <div class="mt-2">
       <div class="level-tiers">
         <ng-container *forN="{start: 1, end: maxLevel}; let i = index">
           <ng-container *ngTemplateOutlet="levelTier;context:{currentLevel: level, displayLevel: i}"></ng-container>

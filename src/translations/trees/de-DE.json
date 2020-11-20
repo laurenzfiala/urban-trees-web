@@ -773,20 +773,24 @@
   },
   "user_progress": {
     "tiers": {
-      "1": "Bauminteressierte(r)",
-      "2": "Baumbeobachter*in",
-      "3": "Baumfreund*in",
-      "4": "Baumbegeisterte(r)",
-      "5": "Baumforscher*in"
+      "1": "Kern",
+      "2": "Keimling",
+      "3": "Jungbaum",
+      "4": "Baum",
+      "5": "Baumriese"
     },
     "details": {
-      "title": "Du bist ein(e) <span class=\"level-text\">{{tier}}</span>!",
+      "title": {
+        "tier_1": "<h1>Dein Baum ist noch ein <span class=\"level-text\">{{tier}}</span></h1><p class=\"text-sm mb-0\">Erstelle oder bearbeite Dein Forschungstagebuch, trage Phänoligebeobachtungen ein oder lies mit der App einen Beacon aus. Das lässt Deinen Baum wachsen!</p>",
+        "tier": "Dein <span class=\"level-text\">{{tier}}</span> wächst!",
+        "tier_5": "Dein <span class=\"level-text\">{{tier}}</span> ist ausgewachsen!"
+      },
       "progress_title": "Dein Fortschritt",
       "contribs_title": "Deine letzten Beiträge"
     },
     "error": "Ladevorgang fehlgeschlagen. Klicken um erneut zu versuchen.",
     "open_details": "Mehr anzeigen",
-    "overview_reach_next_level": "bis Level {{level}}",
+    "overview_reach_next_level": "bis Dein Baum wächst",
     "overview_xp_earned": "XP verdient",
     "level_xp_remaining": "noch {{xp}} XP",
     "level_xp_earned": "{{xp}} XP verdient"

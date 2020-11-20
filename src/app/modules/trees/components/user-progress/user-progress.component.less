@@ -233,10 +233,21 @@ rgb(92, 183, 42), rgb(230, 243, 222);
 
   .avatar {
     box-shadow: none;
+
+    margin: @gutter @gutter @gutter @gutter*2;
+
+    @media @xs, @sm {
+      margin: @gutter;
+    }
+  }
+
+  .title-container {
+    max-width: 400px;
   }
 
   @media @xs, @sm {
     justify-content: center;
+    align-items: center;
     flex-wrap: wrap;
   }
 }
