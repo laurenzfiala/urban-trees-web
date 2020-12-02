@@ -29,8 +29,7 @@
 }
 
 .list-item {
-  padding-right: @gutter/2;
-  padding-left: @gutter/2;
+  padding: @gutter @gutter*1.5;
   flex-grow: 1;
 
   border-radius: @borderRadiusSecondary;
@@ -49,7 +48,19 @@
 
   .item-name {
     font-size: @fontSizeMedium;
-    margin: @gutter;
+
+    &:not(:first-child) {
+      margin-top: @gutter;
+    }
+  }
+
+  .item-desc {
+    font-size: @fontSizeSmall;
+    color: @subtleTextColor;
+
+    &:not(:first-child) {
+      margin-top: @gutter/2;
+    }
   }
 
   .item-status {

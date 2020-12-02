@@ -80,7 +80,7 @@
     </h1>
 
     <ut-list [itemTemplate]="phenobsListItem"
-             [items]="[]"
+             [items]="phenObsHistory"
              [categorizer]="phenObsHistoryCategorizer"
              [statusValues]="StatusValue"
              [status]="getStatusObservable(StatusKey.PHENOBS_HISTORY)"
@@ -93,7 +93,10 @@
            [routerLink]="'/project/phenology'"
            [queryParams]="{'tree': dataset.treeId}">
           <div class="item-name">{{'tree.species.' + dataset.tree.species.name | lowercase | translate}}</div>
-
+          <div class="item-desc">
+            <i class="i i-xxs i-dark i-location align-text-bottom mr-1"></i>
+            {{dataset.tree.location.street}}
+          </div>
         </a>
       </div>
     </ng-template>
