@@ -2,7 +2,7 @@ import {TranslateLoader} from '@ngx-translate/core';
 import {HttpClient} from '@angular/common/http';
 import {forkJoin, Observable, of} from 'rxjs';
 import {VERSION} from '../../../../environments/version';
-import {catchError, flatMap, map, reduce, switchMap} from 'rxjs/operators';
+import {catchError, reduce, switchMap} from 'rxjs/operators';
 import {Log} from '../services/log.service';
 
 /**

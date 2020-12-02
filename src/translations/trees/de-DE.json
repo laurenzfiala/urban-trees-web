@@ -781,7 +781,9 @@
     },
     "details": {
       "title": {
-        "tier_1": "<h1>Dein Baum ist noch ein <span class=\"level-text\">{{tier}}</span></h1><p class=\"text-sm mb-0\">Erstelle oder bearbeite Dein Forschungstagebuch, trage Phänoligebeobachtungen ein oder lies mit der App einen Beacon aus. Das lässt Deinen Baum wachsen!</p>",
+        "tier_1": "Dein Baum ist noch ein <span class=\"level-text\">{{tier}}</span>",
+        "tier_1_desc": "Benutze die Website und lass dadurch Deinen Baum wachsen!",
+        "tier_1_tooltip": "Erstelle oder bearbeite Dein Forschungstagebuch, trage Phänologiebeobachtungen ein oder lies mit der App einen Beacon aus.",
         "tier": "Dein <span class=\"level-text\">{{tier}}</span> wächst!",
         "tier_5": "Dein <span class=\"level-text\">{{tier}}</span> ist ausgewachsen!"
       },

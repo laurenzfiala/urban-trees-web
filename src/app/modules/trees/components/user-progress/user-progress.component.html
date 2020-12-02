@@ -48,8 +48,16 @@
       <div class="avatar sm no-progress">
       </div>
 
-      <div class="title-container m-2"
-           [innerHTML]="'user_progress.details.title.tier' + (level === 1 || level === maxLevel ? '_' + level : '') | translate:{tier: 'user_progress.tiers.' + level | translate}">
+      <div class="title-container m-2">
+        <h1 [innerHTML]="'user_progress.details.title.tier' + (level === 1 || level === maxLevel ? '_' + level : '') | translate:{tier: 'user_progress.tiers.' + level | translate}"></h1>
+        <div *ngIf="level === 1" class="text-sm">
+          {{'user_progress.details.title.tier_1_desc' | translate}}
+          <i class="i i-xxs i-dark i-info align-text-bottom pointer"
+             tabindex="0"
+             [tooltip]="'user_progress.details.title.tier_1_tooltip' | translate"
+             triggers="focus hover"
+             tooltipPlacement="bottom"></i>
+        </div>
       </div>
 
     </div>
