@@ -8,13 +8,16 @@ import {
   ViewChild,
   ViewContainerRef
 } from '@angular/core';
+import {AbstractComponent} from '../abstract.component';
 
 @Component({
   selector: 'ut-zoom',
   templateUrl: './zoom.component.html',
   styleUrls: ['./zoom.component.less']
 })
-export class ZoomComponent implements OnInit {
+export class ZoomComponent {
+
+  public Mode = Mode;
 
   @Input()
   public content: TemplateRef<any>;
@@ -23,10 +26,31 @@ export class ZoomComponent implements OnInit {
   public fullscreenContent: TemplateRef<any>;
 
   /**
-   * Whether to show previous/next controls or not.
+   * If true, the zoom component will show a fullscreen-icon
+   * overtop the given content and handle the open-event by itself.
+   * If set to false, your component can control opening of the
+   * zoom comp using #open(). The fullscreen-icon is not shown.
+   * Defaults to true.
    */
   @Input()
-  public showControls: boolean = false;
+  public managedOpen: boolean = true;
+
+  /**
+   * Which content mode should be used.
+   * This is needed because different content needs to have different
+   * modal-looks and/or varying layout.
+   */
+  @Input()
+  public mode: Mode = Mode.DEFAULT;
+
+  /**
+   * Whether to show slideshow controls
+   * for this zoom component, which means
+   * #previous and #next can be emitted.
+   * Defaults to false.
+   */
+  @Input()
+  public showViewControls: boolean = false;
 
   @Output()
   private opening: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -45,11 +69,7 @@ export class ZoomComponent implements OnInit {
   public isShown: boolean = false;
   public isClosing: boolean = false;
 
-  constructor(private viewContainer: ViewContainerRef) { }
-
-  public ngOnInit() {
-
-  }
+  constructor(private viewContainer: ViewContainerRef) {}
 
   @HostListener('window:keyup', ['$event'])
   private keyEvent(event: KeyboardEvent) {
@@ -60,7 +80,7 @@ export class ZoomComponent implements OnInit {
     if (event.keyCode === 27 || event.code === 'Escape') { // escape
       this.close();
     }
-    if (this.showControls) {
+    if (this.showViewControls) {
       if (event.keyCode === 37 || event.code === 'ArrowLeft') { // left arrow
         this.onPrevious();
       }
@@ -71,28 +91,41 @@ export class ZoomComponent implements OnInit {
 
   }
 
-  public open(): void {
-    if (this.isShown) {
+  /**
+   * Open the modal.
+   * @param internalCall (default false) set to true if called from within zoom component
+   */
+  public open(internalCall: boolean = false): void {
+
+    if ((internalCall && !this.managedOpen) || this.isShown) {
       return;
     }
     this.isShown = true;
     this.opening.emit();
-    this.delay(300).then(value => {
+    document.body.style.overflowY = 'hidden';
+    this.delay(350).then(value => {
       this.opened.emit();
     });
+
   }
 
+  /**
+   * Close the modal.
+   */
   public close(): void {
+
     if (!this.isShown) {
       return;
     }
     this.isShown = false;
     this.isClosing = true;
     this.closing.emit();
-    this.delay(300).then(value => {
+    document.body.style.overflowY = 'auto';
+    this.delay(350).then(value => {
       this.isClosing = false;
       this.closed.emit();
     });
+
   }
 
   public onPrevious(): void {
@@ -107,4 +140,9 @@ export class ZoomComponent implements OnInit {
     await new Promise(resolve => setTimeout(() => resolve(), ms));
   }
 
+}
+
+export enum Mode {
+  DEFAULT,
+  IMAGE
 }

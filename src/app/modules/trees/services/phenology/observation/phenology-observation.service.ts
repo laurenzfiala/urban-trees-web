@@ -15,6 +15,7 @@ import {ApiError} from '../../../../shared/entities/api-error.entity';
 import {SubscriptionManagerService} from '../../subscription-manager.service';
 import {TreeFrontend} from '../../../entities/tree-frontend.entity';
 import {HttpClient, HttpErrorResponse, HttpEventType} from '@angular/common/http';
+import {PhenologyDatasetWithTree} from '../../../entities/phenology-dataset-with-tree.entity';
 
 @Injectable()
 export class PhenologyObservationService extends AbstractService {
@@ -69,6 +70,29 @@ export class PhenologyObservationService extends AbstractService {
               private sub: SubscriptionManagerService,
               private envService: EnvironmentService) {
     super();
+  }
+
+  /**
+   * Load the last 10 phenology datasets for the given user.
+   * @param {(types: Array<PhenologyObservationTypeFrontend>) => void} successCallback Called upon success
+   * @param {(error: any) => void} errorCallback Called upon exception
+   */
+  public loadUserHistory(userId: number,
+                         successCallback: (types: Array<PhenologyDatasetWithTree>) => void,
+                         errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void): void {
+
+    this.http.get<Array<PhenologyDataset>>(this.envService.endpoints.phenologyHistory(userId))
+      .timeout(this.envService.defaultTimeout)
+      .map(value => value.map(element => PhenologyDatasetWithTree.fromObject(element)))
+      .subscribe((history: Array<PhenologyDatasetWithTree>) => {
+        successCallback(history);
+      }, (e: any) => {
+        PhenologyObservationService.LOG.error('Couldn\'t load phenology observation history for user id ' + userId + ': ' + e.message, e);
+        if (errorCallback) {
+          errorCallback(e, this.safeApiError(e));
+        }
+      });
+
   }
 
   /**

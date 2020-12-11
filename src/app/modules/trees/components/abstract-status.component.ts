@@ -6,17 +6,15 @@
  * @since 2018/04/23
  */
 import {ApiError} from '../../shared/entities/api-error.entity';
-import {Observable, Subject} from 'rxjs';
-import {EventEmitter} from '@angular/core';
+import {BehaviorSubject, Observable, Subject} from 'rxjs';
 
 export abstract class AbstractStatusComponent {
 
   /**
    * Contains all current statuses of the component.
-   * @type {Map<number, number>} key and value should be from two different enums.
-   *                             The key Should be the category and the value the current status of it.
-   *                             The value can also be a numeric progress value.
-   * TODO redo doc
+   * @type {Map<number, any[]>} the key represents the status key and the value contains
+   *                            two components: the status value and teh status error, if
+   *                            applicable
    */
   private statuses: Map<number, any[]> = new Map<number, any[]>();
 
@@ -36,11 +34,13 @@ export abstract class AbstractStatusComponent {
    */
   protected setStatus(key: number, value: number, error?: ApiError) {
     this.statuses.set(key, [value, error]);
+    this.getStatusObservable(key);
     const sub = this.statusObservers.get(key);
     if (sub !== undefined) {
       sub.next(value);
     }
     if (error !== undefined) {
+      this.getStatusErrorObservable(key);
       const subErr = this.statusErrorObservers.get(key);
       if (subErr !== undefined) {
         subErr.next(error);
@@ -78,10 +78,9 @@ export abstract class AbstractStatusComponent {
     if (this.statusObservers.has(key)) {
       sub = this.statusObservers.get(key);
     } else {
-      sub = new Subject<number>();
+      sub = new BehaviorSubject<number>(this.getStatus(key));
       this.statusObservers.set(key, sub);
     }
-    sub.next(this.getStatus(key));
     return sub.asObservable();
   }
 
@@ -104,15 +103,14 @@ export abstract class AbstractStatusComponent {
    * @param {number} key category id
    * @returns {Observable<ApiError>} observable called upon change
    */
-  public getStatusErrorObservable(key: number): Observable<number> {
+  public getStatusErrorObservable(key: number): Observable<ApiError> {
     let sub;
     if (this.statusErrorObservers.has(key)) {
       sub = this.statusErrorObservers.get(key);
     } else {
-      sub = new Subject<ApiError>();
+      sub = new BehaviorSubject<ApiError>(this.getStatusError(key));
       this.statusErrorObservers.set(key, sub);
     }
-    sub.next(this.getStatusError(key));
     return sub.asObservable();
   }
 

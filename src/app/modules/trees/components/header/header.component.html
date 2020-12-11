@@ -108,8 +108,8 @@
                class="nav-link d-flex align-items-center"
                tabindex="0"
                [title]="'navigation.login' | translate">
-              <i class="i i-login i-dark" aria-hidden="true"></i>
-              <span class="sr-only">{{'navigation.login' | translate}}</span>
+              {{'navigation.login' | translate}}
+              <i class="i i-login i-dark ml-1" aria-hidden="true"></i>
             </a>
           </li>
         </ul>
@@ -119,16 +119,10 @@
 
 <!-- Content of NAV & dropdown -->
 <ng-template #navContent>
-  <li class="nav-item"
+  <li *auth="envService.security.rolesUser" class="nav-item"
       routerLinkActive="active">
     <a class="nav-link link-container" routerLink="/home">
       <div class="link">{{'navigation.home' | translate}}</div>
-    </a>
-  </li>
-  <li class="nav-item"
-      routerLinkActive="active">
-    <a class="nav-link link-container" routerLink="/participate">
-      <div class="link">{{'navigation.participate' | translate}}</div>
     </a>
   </li>
   <li class="nav-item"
@@ -139,7 +133,7 @@
       </div>
     </a>
   </li>
-  <li *auth="[envService.security.rolesPhenObs]"
+  <li *auth="envService.security.rolesPhenObs"
       class="nav-item"
       routerLinkActive="active">
     <a class="nav-link link-container" routerLink="/project/phenology">
@@ -156,7 +150,7 @@
       </div>
     </a>
   </li>
-  <li class="nav-item"
+  <li *noauth class="nav-item"
       routerLinkActive="active">
     <a class="nav-link link-container" routerLink="/statistics">
       <div class="link">
@@ -164,7 +158,7 @@
       </div>
     </a>
   </li>
-  <li *auth="[envService.security.rolesAdmin]"
+  <li *auth="envService.security.rolesAdmin"
       class="nav-item"
       routerLinkActive="active">
     <a class="nav-link link-container" routerLink="/admin">

@@ -4,6 +4,7 @@ import {ActivatedRoute} from '@angular/router';
 import {TreeService} from '../../services/tree.service';
 import {Tree} from '../../entities/tree.entity';
 import {EnvironmentService} from '../../../shared/services/environment.service';
+import { Mode } from '../zoom/zoom.component';
 
 @Component({
   selector: 'ut-tree',
@@ -16,6 +17,7 @@ export class TreeComponent extends AbstractComponent implements OnInit {
 
   public StatusKey = StatusKey;
   public StatusValue = StatusValue;
+  public Mode = Mode;
 
   /**
    * Tree to display.

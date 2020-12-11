@@ -148,6 +148,21 @@ class EnvironmentEndpoints {
 
   }
 
+  public phenologyHistory(userId: number): string {
+
+    let replacements: any[] = [
+      { placeholder: 'userId', replacement: userId }
+    ];
+
+    return this.prependCommonPath(
+      this.replaceParams(
+        this.context.phenologyHistory,
+        replacements
+      )
+    );
+
+  }
+
   get userAchievements() {
     return this.prependCommonPath(this.context.userAchievements);
   }
@@ -636,6 +651,14 @@ class Security {
 
   get rolesUser() {
     return this.context.roles.user;
+  }
+
+  get rolesTreeEditor() {
+    return this.context.roles.treeEditor;
+  }
+
+  get rolesDiary() {
+    return this.context.roles.diary;
   }
 
   get rolesPhenObs() {

@@ -1,138 +1,128 @@
-<div class="content-cat">
+<section *auth="envService.security.rolesUser" class="content-cat">
   <div class="container">
 
-    <!-- TODO test-->
-    <ut-cms-content
-      contentId="test"
-      [config]="testContentConfig"
-    ></ut-cms-content>
-    <!-- TODO test END-->
+    <div class="profile-wrapper m--3">
+      <div class="m-3">
+        <ut-user-progress (levelUpOutput)="setStatus(StatusKey.USER_LEVEL_UP, StatusValue.LEVELLED_UP)"
+                          (status)="setStatus(StatusKey.USER_ACHIEVEMENTS, $event[0], $event[1])"></ut-user-progress>
+      </div>
 
-    <div *noauth="true" class="mb-2">
-      <h1 class="content-cat-heading d-block" [innerHTML]="'home.title' | translate"></h1>
-      {{'home.desc' | translate}}
-    </div>
+      <div class="m-3">
 
-    <div *auth="envService.security.rolesUser" class="mb-2">
-      <h1 class="content-cat-heading d-block" [innerHTML]="'home.title_user' | translate:{'username': getUsername()}"></h1>
-      <span [innerHTML]="'home.desc_user_1' | translate"></span>
-      <a class="link" routerLink="/phenology/observation/step">{{'home.desc_phenobs_link' | translate}}</a>
-      <span [innerHTML]="'home.desc_user_2' | translate"></span>
-    </div>
+        <div class="mb-4">
+          <h1 class="content-cat-heading d-block" [innerHTML]="'home.title_user' | translate:{'username': getUsername()}"></h1>
+          <p [innerHTML]="'home.desc_user' | translate"></p>
+        </div>
 
-    <div class="btn-img-toolbar">
-      <div class="d-flex flex-wrap">
-        <a class="btn-img trees" routerLink="/trees">
-          <div>
-            <i class="i i-md i-tree mr-2"></i>
-            {{'navigation.links.tree_list' | translate}}
+        <div class="m--2">
+          <div class="m-2">
+            <a class="d-inline-flex flex-row align-items-center link-container"
+                 routerLink="/settings">
+              <div class="link">
+                {{'home.action_settings' | translate}}
+              </div>
+              <i class="i i-sm i-dark i-arrow-right ml-1" aria-hidden="true"></i>
+            </a>
           </div>
-        </a>
-        <a *auth="[envService.security.rolesPhenObs]" class="btn-img phenology" routerLink="/phenology/observation/step">
-          <div>
-            <i class="i i-md i-leaf mr-2"></i>
-            {{'navigation.links.phen_obs' | translate}}
+          <div class="m-2">
+            <a class="d-inline-flex flex-row align-items-center link-container"
+               (action)="logout()">
+              <div class="link">
+                {{'home.action_logout' | translate}}
+              </div>
+              <i class="i i-sm i-dark i-arrow-right ml-1" aria-hidden="true"></i>
+            </a>
           </div>
-        </a>
-        <a class="btn-img measurements" routerLink="/measurements">
-          <div>
-            <i class="i i-md i-beacon mr-2"></i>
-            {{'navigation.links.measurements' | translate}}
-          </div>
-        </a>
-        <a class="btn-img statistics" routerLink="/statistics">
-          <div>
-            <i class="i i-md i-statistics mr-2"></i>
-            {{'navigation.links.statistics' | translate}}
-          </div>
-        </a>
+        </div>
+
       </div>
     </div>
 
   </div>
-</div>
+</section>
 
-<div *auth="[envService.security.rolesUser]"
-     class="content-cat content-cat-user">
+<section *auth="envService.security.rolesTreeEditor" class="content-cat">
   <div class="container">
-    <h1 class="content-cat-heading mb-2">
-      <i *ngIf="hasStatus(StatusKey.USER_LEVEL_UP, StatusValue.LEVELLED_UP)" class="feature-pointer mr-1"></i>{{'home.user_score.title' | translate}}
-      <ut-loading-status
-        errorDescription="home.user_score.error"
-        [statusValues]="StatusValue"
-        [status]="getStatusObservable(StatusKey.USER_OVERVIEW)"
-        [error]="getStatusErrorObservable(StatusKey.USER_OVERVIEW)"></ut-loading-status>
-    </h1>
-    <ut-user-overview (levelUpOutput)="setStatus(StatusKey.USER_LEVEL_UP, StatusValue.LEVELLED_UP)"
-                      (status)="setStatus(StatusKey.USER_OVERVIEW, $event[0], $event[1])"></ut-user-overview>
-  </div>
-</div>
 
-<div *auth="[envService.security.rolesAdmin]"
-     class="content-cat">
-  <div class="container">
-    <h1 class="content-cat-heading">{{'home.admin_console.title' | translate}}</h1>
-    <div class="content-cat-text">
-      {{'home.admin_console.desc' | translate}}
-    </div>
-
-    <a class="content-cat-link" routerLink="/admin">
-      {{'home.admin_console.link' | translate}}
-    </a>
-  </div>
-</div>
-
-<div class="content-cat">
-  <div class="container">
     <h1 class="content-cat-heading">
-      {{'home.project_intro.title' | translate}}
-      <ut-loading-status
-        errorDescription="home.project_intro.error"
-        [statusValues]="StatusValue"
-        [status]="getStatusObservable(StatusKey.STATISTICS)"
-        [error]="getStatusErrorObservable(StatusKey.STATISTICS)"></ut-loading-status>
+      {{'home.cms_history.title' | translate}}
     </h1>
-    <div class="content-cat-text" [innerHTML]="'home.project_intro.desc' | translate"></div>
 
-    <div *ngIf="hasStatus(StatusKey.STATISTICS, StatusValue.SUCCESSFUL)"
-         class="content-cat-highlight-bar mt-2">
-      <div class="item">
-        <div class="big">{{statistics.cityAmount}}</div>
-        <div class="desc">{{'home.project_intro.cities' | translate}}</div>
+    <ut-list [itemTemplate]="cmsTreeListItem"
+             [items]="[]"
+             [statusValues]="StatusValue"
+             [status]="getStatusObservable(StatusKey.CMS_HISTORY)"
+             [error]="getStatusErrorObservable(StatusKey.CMS_HISTORY)"
+             errorDescription="home.cms_history.error"></ut-list>
+
+    <ng-template #cmsTreeListItem let-content="context">
+      <div class="list-item-wrapper">
+        <a class="list-item"
+           [routerLink]="'/tree/' + content.tree.id">
+          <div class="item-name">test</div>
+
+          <div class="item-status">
+            <i class="i i-xxs mr-1" [ngClass]="'i-cms-' + content.status"></i>
+            {{'cms.content.status.' + content.status | translate}}
+          </div>
+        </a>
       </div>
-      <div class="item">
-        <div class="big">{{statistics.treeAmount}}</div>
-        <div class="desc">{{'home.project_intro.trees' | translate}}</div>
+    </ng-template>
+
+  </div>
+</section>
+
+<section *auth="envService.security.rolesPhenObs" class="content-cat">
+  <div class="container">
+
+    <h1 class="content-cat-heading">
+      {{'home.phenobs_history.title' | translate}}
+    </h1>
+
+    <ut-list [itemTemplate]="phenobsListItem"
+             [items]="phenObsHistory"
+             [categorizer]="phenObsHistoryCategorizer"
+             [statusValues]="StatusValue"
+             [status]="getStatusObservable(StatusKey.PHENOBS_HISTORY)"
+             [error]="getStatusErrorObservable(StatusKey.PHENOBS_HISTORY)"
+             errorDescription="home.phenobs_history.error"></ut-list>
+
+    <ng-template #phenobsListItem let-dataset="context">
+      <div class="list-item-wrapper">
+        <a class="list-item"
+           [routerLink]="'/project/phenology'"
+           [queryParams]="{'tree': dataset.treeId}">
+          <div class="item-name">{{'tree.species.' + dataset.tree.species.name | lowercase | translate}}</div>
+          <div class="item-desc">
+            <i class="i i-xxs i-dark i-location align-text-bottom mr-1"></i>
+            {{dataset.tree.location.street}}
+          </div>
+        </a>
       </div>
-      <div class="item">
-        <div class="big">{{statistics.phenologyObservationAmount}}</div>
-        <div class="desc">{{'home.project_intro.obs' | translate}}</div>
-      </div>
-      <div class="item">
-        <div class="big">{{statistics.beaconAmount}}</div>
-        <div class="desc">{{'home.project_intro.beacons' | translate}}</div>
-      </div>
-      <div class="item">
-        <div class="big">{{statistics.beaconDatasetAmount}}</div>
-        <div class="desc">{{'home.project_intro.beacon_datasets' | translate}}</div>
+    </ng-template>
+
+  </div>
+</section>
+
+<section *auth="envService.security.rolesDiary" class="content-cat">
+  <div class="container clearfix">
+
+    <div class="responsive-float m--2">
+      <img class="diary float-right m-2" src="/assets/img/icon/special/placeholder.svg" />
+
+      <div class="m-2">
+        <div class="content-cat-heading">{{'home.diary.title' | translate }}</div>
+        {{'home.diary.text' | translate }}
       </div>
     </div>
 
-    <a class="content-cat-link" routerLink="/statistics">
-      {{'home.project_intro.link' | translate}}
+    <a class="content-cat-link d-inline-flex flex-row align-items-center link-container"
+       routerLink="/diary">
+      <div class="link">
+        {{'home.diary.action' | translate}}
+      </div>
+      <i class="i i-sm i-dark i-arrow-right ml-1" aria-hidden="true"></i>
     </a>
 
   </div>
-</div>
-
-<div class="content-cat">
-  <div class="container">
-    <h1 class="content-cat-heading">{{'home.more_info.title' | translate}}</h1>
-    <div class="content-cat-text" [innerHTML]="'home.more_info.desc' | translate"></div>
-
-    <a class="content-cat-link" href="http://stadt-baum-klima.sbg.ac.at/" target="_blank">
-      {{'home.more_info.link' | translate}}
-    </a>
-
-  </div>
-</div>
+</section>

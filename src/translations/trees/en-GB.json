@@ -14,7 +14,7 @@
       }
     },
     "landing_page": "Start",
-    "home": "Home",
+    "home": "My research",
     "participate": "Participate",
     "phenology": "Phenology",
     "tree_list": "Trees",
@@ -25,10 +25,8 @@
       "report": "Report a problem",
       "imprint": "Imprint",
       "home": "Home page",
-      "madeby": "Made with &#x2764; by the ",
-      "madeby_team": "Urban-Trees-Team",
-      "info_version": "Version",
-      "info_hash": "ID"
+      "madeby": "Made by the ",
+      "madeby_team": "CO₂BS-Team"
     },
     "messages": "Messages",
     "settings": "Language settings",
@@ -555,34 +553,22 @@
   "home": {
     "title": "Welcome to&nbsp;<b>Cool Trees &amp; Sensors</b>!",
     "desc": "You can use this site to enter phenology data for trees, read information and statistics about trees and beacons and gain experience points for helping us collect data!",
-    "title_user": "Welcome back to&nbsp;<b>Cool Trees &amp; Sensors</b>, {{username}}!",
-    "desc_user_1": "We really appreciate any ",
-    "desc_phenobs_link": "Phenology observations",
-    "desc_user_2": " or beacon readouts (using the <a class=\"link\" href=\"https://play.google.com/apps/internaltest/4699755394511268796\" target=\"_blank\">android app</a>). When logged in, you can earn experience points and advance your level by completing one of these activities.",
-    "user_score": {
-      "title": "Your Score",
-      "error": "Could not load your score"
+    "title_user": "Welcome back, {{username}}!",
+    "desc_user": "More information on the project can be found on the start page. If you have any questions or suggestions, send us an e-mail at <a href=\"mailto:co2bs.ffg@sbg.ac.at\" class=\"link\">co2bs.ffg@sbg.ac.at</a>. Have fun researching!",
+    "action_settings": "Account settings",
+    "action_logout": "Log out",
+    "cms_history": {
+      "title": "Your Tree-Entries",
+      "error": "Could not load your previous tree entries."
     },
-    "admin_console": {
-      "title": "Admin Console",
-      "desc": "Admins can add trees, beacons and announcements in the admin console.",
-      "link": "Go to admin console"
+    "phenobs_history": {
+      "title": "Your Phenology Observations",
+      "error": "Could not load your previous observations."
     },
-    "project_intro": {
-      "title": "What we do",
-      "desc": "We monitor lots of trees with Bluetooth-beacons and by hand with the <span class=\"font-italic\">&raquo;Phenology observation&laquo;</span>. They are entered by interested students in three countries around europe.",
-      "error": "Could not load project statistics",
-      "cities": "Cities",
-      "trees": "Trees",
-      "obs": "Observations",
-      "beacons": "Beacons",
-      "beacon_datasets": "Beacon-Datasets",
-      "link": "View detailed statistics"
-    },
-    "more_info": {
-      "title": "More information",
-      "desc": "Find out more about the <span class=\"font-italic\">Urban Trees as climate messengers</span>-Project on our info-website with lots of additional project details.",
-      "link": "Visit now"
+    "diary": {
+      "title": "Your research diary",
+      "text": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
+      "action": "Research diary"
     }
   },
   "user_overview": {
@@ -780,6 +766,57 @@
     }
   },
   "zoom": {
-    "close": "Close"
+    "close": "Close",
+    "previous": "Previous view",
+    "next": "Next view"
+  },
+  "user_progress": {
+    "tiers": {
+      "1": "Kern",
+      "2": "Keimling",
+      "3": "Jungbaum",
+      "4": "Baum",
+      "5": "Baumriese"
+    },
+    "details": {
+      "title": {
+        "tier_1": "Your tree is only a <span class=\"level-text\">{{tier}}</span> This will grow your tree.</p>",
+        "tier_1_desc": "Grow your tree by using this website.",
+        "tier_1_tooltip": "Create or edit your research diary, enter phenology observations or use the app to read out beacons.",
+        "tier": "Your <span class=\"level-text\">{{tier}}</span> is growing!",
+        "tier_5": "Your <span class=\"level-text\">{{tier}}</span> has matured!"
+      },
+      "progress_title": "Your progress",
+      "contribs_title": "Your latest contributions"
+    },
+    "error": "Failed to load. Click to retry.",
+    "open_details": "Show more",
+    "overview_reach_next_level": "until your tree grows",
+    "overview_xp_earned": "XP earned",
+    "level_xp_remaining": "{{xp}} XP to go",
+    "level_xp_earned": "{{xp}} XP earned"
+  },
+  "cms": {
+    "content": {
+      "status": {
+        "draft": "Draft",
+        "approving": "Publishing",
+        "published": "Published"
+      }
+    }
+  },
+  "time": {
+    "category": {
+      "unknown": "Unknown",
+      "today": "Today",
+      "yesterday": "Yesterday",
+      "this_week": "This week",
+      "this_month": "This month",
+      "last_month": "Last month",
+      "more_than_5_years_ago": "5+ years ago"
+    }
+  },
+  "list": {
+    "empty": "No entries were found"
   }
 }

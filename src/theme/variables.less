@@ -60,6 +60,7 @@
 @successDark:                 darken(@success, 10%);
 
 @borderRadius:                0;
+@borderRadiusSecondary:       20px;
 @borderRadiusNew:             0;
 @borderRadiusOuterNew:        0;
 
@@ -83,17 +84,16 @@
 @navBgColor:                  @bgColor;
 @navDropwdownBgColor:         @darkBgColor;
 
-@boxShadowHighlight:          0 3px 6px -3px rgba(0, 0, 0, 0.75);
-@boxShadowHighlightHover:     0 6px 9px -4px rgba(0, 0, 0, 0.75);
-@boxShadowZoom:               0 6px 12px -6px rgba(0, 0, 0, 0.85);
+@boxShadow:                   0 3px 6px -3px rgba(0, 0, 0, 0.75);
 
 @accessibilityFocusOutline:   solid @focusOutlineWidth @linkHoverColor;
 
 @statusOverlayZIndex:         30;
 @navZIndex:                   40;
-@dropdownZIndex:              50;
+@modalZIndex:                 43;
 @zoomZIndex:                  45;
-@tooltipZIndex:               50;
+@dropdownZIndex:              50;
+@tooltipZIndex:               55;
 @notificationsZIndex:         60;
 
 @dropdownBorder:              0;
@@ -103,6 +103,11 @@
 @statusColor:                 @white;
 
 @mapHeightDefault:            350px;
+
+@transitionDurationS:         0.15s;
+@transitionDurationM:         0.35s;
+
+@touchDevice:                 ~"(pointer: coarse)";
 
 // when these are changed, also change LAYOUT_MEDIA_* in app.component.ts
 @xs:                          ~"only screen and (max-width: 575.9px)";

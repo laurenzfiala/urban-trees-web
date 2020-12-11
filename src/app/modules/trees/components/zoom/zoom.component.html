@@ -1,28 +1,48 @@
 <div class="wrapper"
-     (action)="open()"
-     role="button"
-     tabindex="0">
+     [ngClass]="{'handle-open': managedOpen}"
+     (action)="open(true)"
+     [attr.role]="managedOpen ? 'button' : null"
+     [attr.tabindex]="managedOpen ? 0 : null">
   <ng-container *ngTemplateOutlet="content"></ng-container>
-  <div class="expand"></div>
+  <div class="fullscreen-btn"></div>
 </div>
 
-<div class="fullscreen-wrapper"
-     [ngClass]="{'show': isShown, 'closing': isClosing, 'controls': showControls}"
-     (click)="close()">
-  <div class="fullscreen-close close"
-       (action)="close()"
-       role="button"
-       tabindex="0">
-    <span class="sr-only">{{'zoom.close' | translate}}</span>
+<div class="modal2-bg"
+     [ngClass]="{'show': isShown, 'closing': isClosing, 'controls': showViewControls}"
+     (action)="close()">
+  <div class="modal2-wrapper">
+
+    <div class="modal2-close" role="button" tabindex="0">
+      <span class="sr-only">{{'zoom.close' | translate}}</span>
+    </div>
+
+    <div class="modal2-container"
+         (click)="$event.stopPropagation()">
+
+      <div class="modal2-content-wrapper"
+           [ngClass]="{'mode-img': mode === Mode.IMAGE}">
+        <div class="modal2-content">
+
+          <ng-container *ngTemplateOutlet="fullscreenContent"></ng-container>
+
+        </div>
+      </div>
+
+      <div *ngIf="showViewControls"
+           class="modal2-controls view-previous"
+           (action)="onPrevious(); $event.stopPropagation()"
+           role="button"
+           tabindex="0">
+        <span class="sr-only">{{'zoom.previous' | translate}}</span>
+      </div>
+      <div *ngIf="showViewControls"
+           class="modal2-controls view-next"
+           (action)="onNext(); $event.stopPropagation()"
+           role="button"
+           tabindex="0">
+        <span class="sr-only">{{'zoom.next' | translate}}</span>
+      </div>
+
+    </div>
   </div>
-  <div class="fullscreen-content-wrapper"
-       (click)="$event.stopPropagation()">
-    <ng-container *ngTemplateOutlet="fullscreenContent"></ng-container>
-  </div>
-  <div *ngIf="showControls"
-       class="slide-previous"
-       (click)="onPrevious(); $event.stopPropagation()"></div>
-  <div *ngIf="showControls"
-       class="slide-next"
-       (click)="onNext(); $event.stopPropagation()"></div>
 </div>

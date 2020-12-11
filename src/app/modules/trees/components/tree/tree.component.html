@@ -21,7 +21,10 @@
     <div class="content-cat-flex flex-md-nowrap">
       <div class="content-cat-text flex-grow-1" [innerHTML]="'tree.summary.text' | translate">
       </div>
-      <ut-zoom *ngIf="tree.id === 1" [content]="treeImg" [fullscreenContent]="treeImgFull">
+      <ut-zoom *ngIf="tree.id === 1"
+               [content]="treeImg"
+               [fullscreenContent]="treeImgFull"
+               [mode]="Mode.IMAGE">
       </ut-zoom>
       <ng-template #treeImg>
         <img class="content-cat-img" src="../../../../../assets/content/img/tree_1.jpg"/>
@@ -63,7 +66,8 @@
       <ng-template #treeSlide let-url="url" let-alt="alt">
         <ut-zoom [content]="img"
                  [fullscreenContent]="imgFull"
-                 [showControls]="true"
+                 [showViewControls]="true"
+                 [mode]="Mode.IMAGE"
                  (previous)="throughYearSlideshow.previousSlide()"
                  (next)="throughYearSlideshow.nextSlide()"
                  (opening)="throughYearSlideshow.pause = true"

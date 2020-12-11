@@ -1,0 +1,76 @@
+@import (reference) "../../../../../theme/variables";
+@import (reference) "../../../../../theme/loading";
+@import (reference) "list.component";
+
+.list-item-wrapper {
+  position: relative;
+
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: stretch;
+
+  min-width: 150px;
+  margin: @gutter/2;
+  flex-shrink: 0;
+
+  @media @xs, @sm {
+    width: 50%;
+  }
+  @media @md {
+    width: 33.333%;
+  }
+  @media @lg {
+    width: 25%;
+  }
+  @media @xl {
+    width: 20%;
+  }
+}
+
+.list-item {
+  padding: @gutter @gutter*1.5;
+  flex-grow: 1;
+
+  border-radius: @borderRadiusSecondary;
+  border: solid @borderWidth @listItemBgColor;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color @transitionDurationS;
+
+  color: inherit;
+
+  &:focus,
+  &:hover {
+    background-color: @listItemBgColor;
+    text-decoration: none;
+  }
+
+  .item-name {
+    font-size: @fontSizeMedium;
+
+    &:not(:first-child) {
+      margin-top: @gutter;
+    }
+  }
+
+  .item-desc {
+    font-size: @fontSizeSmall;
+    color: @subtleTextColor;
+
+    &:not(:first-child) {
+      margin-top: @gutter/2;
+    }
+  }
+
+  .item-status {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+
+    margin: @gutter;
+
+    font-size: @fontSizeSmall;
+  }
+}

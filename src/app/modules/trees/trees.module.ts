@@ -24,7 +24,6 @@ import {MapComponent} from './components/map/map.component';
 import {BeaconListComponent} from './components/beacon-list/beacon-list.component';
 import {BeaconSelectComponent} from './components/beacon-select/beacon-select.component';
 import {TreeSelectComponent} from './components/tree-select/tree-select.component';
-import {UserOverviewComponent} from './components/user-overview/user-overview.component';
 import {UsernameChangeComponent} from './components/project-username-change/project-username-change.component';
 import {ProjectLoginKeyComponent} from './components/project-login-key/project-login-key.component';
 import {StatisticsComponent} from './components/statistics/statistics.component';
@@ -78,13 +77,15 @@ import {AuthInterceptor} from '../shared/interceptors/auth.interceptor';
 import {SharedModule} from '../shared/shared.module';
 import {AuthService} from '../shared/services/auth.service';
 import {TranslateInitService} from '../shared/services/translate-init.service';
-import {ParticipateComponent} from './components/participate/participate.component';
 import { OtpManageComponent } from './components/otp-manage/otp-manage.component';
 import {AuthPipe} from './pipes/auth.pipe';
 import {OtpScratchCodePipe} from './pipes/otp-scratch-code.pipe';
 import {MultiTranslateHttpLoader} from '../shared/lib/multi-translate-http-loader';
 import {CmsModule} from '../cms/cms.module';
 import { BeacontransferComponent } from './components/beacontransfer/beacontransfer.component';
+import {UserProgressComponent} from './components/user-progress/user-progress.component';
+import { ListComponent } from './components/list/list.component';
+import {MapEntriesPipe} from './pipes/map-entries.pipe';
 
 export function TranslateFactory(http: HttpClient) {
   return new MultiTranslateHttpLoader(http, [
@@ -119,7 +120,6 @@ export function TranslateFactory(http: HttpClient) {
     BeaconListComponent,
     BeaconSelectComponent,
     TreeSelectComponent,
-    UserOverviewComponent,
     UsernameChangeComponent,
     ProjectLoginKeyComponent,
     StatisticsComponent,
@@ -133,8 +133,8 @@ export function TranslateFactory(http: HttpClient) {
     UserPermissionComponent,
     AnnouncementsComponent,
     NotificationsComponent,
-    ParticipateComponent,
     OtpManageComponent,
+    ListComponent,
 
     // Pipes
     StringModificationPipe,
@@ -144,7 +144,9 @@ export function TranslateFactory(http: HttpClient) {
     DecimalPlacesPipe,
     AuthPipe,
     OtpScratchCodePipe,
-    BeacontransferComponent
+    BeacontransferComponent,
+    UserProgressComponent,
+    MapEntriesPipe
   ],
   imports: [
     // Core

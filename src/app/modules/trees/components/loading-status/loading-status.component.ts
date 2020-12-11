@@ -20,7 +20,7 @@ import {SubscriptionManagerService} from '../../services/subscription-manager.se
 })
 export class LoadingStatusComponent extends AbstractComponent implements OnInit, OnDestroy {
 
-  private static SUBSCRIPTION_TAG = 'loading-status-cmp';
+  private subscriptionTag: string;
 
   public StatusKey = StatusKey;
   public StatusValue = StatusValue;
@@ -65,16 +65,17 @@ export class LoadingStatusComponent extends AbstractComponent implements OnInit,
   public ngOnInit() {
 
     this.update(0);
+    this.subscriptionTag = this.subs.tag('loading-status-cmp');
     this.subs.register(this.status.subscribe(value => {
       this.update(value);
-    }), LoadingStatusComponent.SUBSCRIPTION_TAG);
+    }), this.subscriptionTag);
 
     this.subs.register(this.error.subscribe(value => {
       if (!value) {
         return;
       }
       this.internalError = value;
-    }), LoadingStatusComponent.SUBSCRIPTION_TAG);
+    }), this.subscriptionTag);
 
   }
 
@@ -107,7 +108,7 @@ export class LoadingStatusComponent extends AbstractComponent implements OnInit,
   }
 
   public ngOnDestroy(): void {
-    this.subs.unsubscribe(LoadingStatusComponent.SUBSCRIPTION_TAG);
+    this.subs.unsubscribe(this.subscriptionTag);
   }
 
 }
