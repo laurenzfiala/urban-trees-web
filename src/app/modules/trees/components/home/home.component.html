@@ -49,21 +49,22 @@
     </h1>
 
     <ut-list [itemTemplate]="cmsTreeListItem"
-             [items]="[]"
+             [items]="this.treeCmsHistory"
+             [categorizer]="cmsContentHistoryCategorizer"
              [statusValues]="StatusValue"
              [status]="getStatusObservable(StatusKey.CMS_HISTORY)"
              [error]="getStatusErrorObservable(StatusKey.CMS_HISTORY)"
              errorDescription="home.cms_history.error"></ut-list>
 
-    <ng-template #cmsTreeListItem let-content="context">
+    <ng-template #cmsTreeListItem let-contentRef="context">
       <div class="list-item-wrapper">
         <a class="list-item"
-           [routerLink]="'/tree/' + content.tree.id">
-          <div class="item-name">test</div>
+           [routerLink]="'/tree/' + contentRef?.context?.id">
+          <div class="item-name">{{contentRef?.context?.species?.name}}</div>
 
-          <div class="item-status">
-            <i class="i i-xxs mr-1" [ngClass]="'i-cms-' + content.status"></i>
-            {{'cms.content.status.' + content.status | translate}}
+          <div class="item-status text-subtle">
+            <i class="i i-xxs mr-1" [ngClass]="'i-cms-' + contentRef.metadata.getStatusString() | lowercase"></i>
+            {{'cms.content.status.' + contentRef.metadata.getStatusString() | translate}}
           </div>
         </a>
       </div>

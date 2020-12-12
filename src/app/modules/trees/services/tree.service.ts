@@ -11,6 +11,7 @@ import {City} from '../entities/city.entity';
 import {TreeSpecies} from '../entities/tree-species.entity';
 import {BeaconSettings} from '../entities/beacon-settings.entity';
 import {BeaconDataMode} from '../entities/beacon-data-mode.entity';
+import {Observable} from 'rxjs/Observable';
 
 /**
  * Service for backend calls on the tree-list
@@ -66,9 +67,7 @@ export class TreeService extends AbstractService {
 
     TreeService.LOG.debug('Loading tree ' + treeId + ' from ' + url + ' ...');
 
-    this.http.get<Tree>(url)
-      .timeout(this.envService.defaultTimeout)
-      .map(r => r && Tree.fromObject(r))
+    this.loadTreeObservable(treeId)
       .subscribe((result: Tree) => {
         successCallback(result);
       }, (e: any) => {
@@ -77,6 +76,22 @@ export class TreeService extends AbstractService {
           errorCallback(e, this.safeApiError(e));
         }
       });
+
+  }
+
+  /**
+   * Load the given tree's basic info.
+   * @param treeId tree's id to load
+   */
+  public loadTreeObservable(treeId: number): Observable<Tree> {
+
+    const url = this.envService.endpoints.tree(treeId);
+
+    TreeService.LOG.debug('Loading tree ' + treeId + ' from ' + url + ' ...');
+
+    return this.http.get<Tree>(url)
+      .timeout(this.envService.defaultTimeout)
+      .map(r => r && Tree.fromObject(r));
 
   }
 

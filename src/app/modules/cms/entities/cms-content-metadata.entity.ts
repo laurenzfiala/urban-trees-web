@@ -1,70 +1,89 @@
 /**
- * Holds meta-information on all content-elements (layout/component)
- * and its serialized data inside a cms-content-component.
+ * Holds meta-information a backend CMS content entry.
  */
-import {SerializedCmsElement} from './serialized-cms-element.entity';
 import * as moment from 'moment';
 import {EnvironmentService} from '../../shared/services/environment.service';
+import {UserIdentity} from '../../trees/entities/user-identity.entity';
+import {ContentStatus} from '../enums/cms-content-status.enum';
 
-export class SerializedCmsContent {
+export class CmsContentMetadata {
 
-  /**
-   * The serialization service version which
-   * was used to generate this object.
-   */
-  public readonly version: number;
+  public readonly id: number;
+  public readonly contentId: string;
+  public readonly contentTitle: string;
+  public readonly contentLanguage: string;
+  public readonly isDraft: boolean;
+  public readonly saveDate: Date;
+  public readonly user: UserIdentity;
+  public readonly approveDate: Date;
+  public readonly approveUser: UserIdentity;
 
-  /**
-   * The Date at which this object was generated.
-   */
-  public saved: Date;
-
-  /**
-   * The Date at which this object was persisted on the backend.
-   */
-  public stored: Date;
-
-  /**
-   * Contents.
-   */
-  public readonly elements: Array<SerializedCmsElement>;
-
-  constructor(version: number,
-              saved: Date,
-              stored: Date,
-              elements: Array<SerializedCmsElement>) {
-    this.version = version;
-    this.saved = saved;
-    this.stored = stored;
-    this.elements = elements;
+  constructor(id: number,
+              contentId: string,
+              contentTitle: string,
+              contentLanguage: string,
+              isDraft: boolean,
+              saveDate: Date,
+              user: UserIdentity,
+              approveDate: Date,
+              approveUser: UserIdentity) {
+    this.id = id;
+    this.contentId = contentId;
+    this.contentTitle = contentTitle;
+    this.contentLanguage = contentLanguage;
+    this.isDraft = isDraft;
+    this.saveDate = saveDate;
+    this.user = user;
+    this.approveDate = approveDate;
+    this.approveUser = approveUser;
   }
 
-  public isSaved(): boolean {
-    return this.saved !== undefined;
+  /**
+   * @see ContentStatus
+   */
+  public getStatus(): ContentStatus {
+
+    if (this.isDraft) {
+      return ContentStatus.DRAFT;
+    }
+    if (!this.isDraft && this.approveDate == null) {
+      return ContentStatus.PUBLISHING;
+    }
+    return ContentStatus.PUBLISHED;
+
   }
 
-  public isStored(): boolean {
-    return this.stored !== undefined;
+  /**
+   * @see ContentStatus
+   */
+  public getStatusString(): string {
+    return ContentStatus[this.getStatus()];
   }
 
   /**
    * Crete a new instance from an untyped object.
    * @param o untyped object of correct shape.
    * @param envService env vars for date deserialization are needed
-   * @return instance of SerializedCmsContent with set members (if object-shape was correct);
+   * @return instance of CmsContentMetadata with set members (if object-shape was correct);
    *         or null if object is falsy
    */
-  public static fromObject(o: any, envService: EnvironmentService): SerializedCmsContent {
+  public static fromObject(o: any, envService: EnvironmentService): CmsContentMetadata {
 
-    if (!o || !o.elements) {
+    if (!o) {
       return null;
     }
 
-    return new SerializedCmsContent(
-      o.version,
-      o.saved && moment.utc(o.saved, envService.outputDateFormat).toDate(),
-      o.stored && moment.utc(o.stored, envService.outputDateFormat).toDate(),
-      (o.elements as Array<SerializedCmsElement>).map(e => SerializedCmsElement.fromObject(e))
+    return new CmsContentMetadata(
+      o.id,
+      o.contentId,
+      o.contentTitle,
+      o.contentLanguage,
+      o.draft,
+      o.saveDate && moment.utc(o.saveDate, envService.outputDateFormat).toDate(),
+      o.user && UserIdentity.fromObject(o.user),
+      o.approveDate && moment.utc(o.approveDate, envService.outputDateFormat).toDate(),
+      o.approveUser && UserIdentity.fromObject(o.approveUser)
+      //(o.elements as Array<SerializedCmsElement>).map(e => SerializedCmsElement.fromObject(e)) TODO use for cms-content entity
     );
 
   }

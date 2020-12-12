@@ -87,8 +87,8 @@ export const environment = {
     // CMS
     loadContent:                      '/cms/{contentId}',
     saveContent:                      '/cms/{contentId}',
-    loadContentDraft:                 '/cms/{contentId}/draft',
-    loadContentHistory:               '/cms/{contentId}/history'
+    loadContentUserHistory:           '/user/{userId}/content?prefix={prefix}',
+    loadContentUserHistoryWithPrefix: '/user/{userId}/content?prefix={prefix}'
   },
 
   contentSaveDebounceMs:              30_000,

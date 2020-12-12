@@ -11,6 +11,12 @@ import {CmsComponent} from '../interfaces/cms-component.interface';
 import {ElementType} from '../enums/cms-element-type.enum';
 import {CmsLayout} from '../interfaces/cms-layout.interface';
 import {Subject} from 'rxjs';
+import {CmsContentMetadata} from '../entities/cms-content-metadata.entity';
+import {AuthService} from '../../shared/services/auth.service';
+import {Tree} from '../../trees/entities/tree.entity';
+import {CmsContentContextRef} from '../entities/cms-content-context-ref.entity';
+import {Observable} from 'rxjs/Observable';
+import {TreeService} from '../../trees/services/tree.service';
 
 /**
  * Handles loading and saving of CMS content.
@@ -40,7 +46,8 @@ export class ContentService extends AbstractService {
    */
   private elementAddSubject: Subject<CmsElement> = new Subject<CmsElement>();
 
-  constructor(private http: HttpClient,
+  constructor(private authService: AuthService,
+              private http: HttpClient,
               private envService: EnvironmentService) {
     super();
   }
@@ -63,6 +70,26 @@ export class ContentService extends AbstractService {
         successCallback(content);
       }, (e: any) => {
         ContentService.LOG.error('Could not load content with id ' + contentId + ': ' + e.message, e);
+        if (errorCallback) {
+          errorCallback(e, this.safeApiError(e));
+        }
+      });
+
+  }
+
+  public loadCmsUserHistory(contentIdPrefix: string,
+                            successCallback: (history: Array<CmsContentMetadata>) => void,
+                            errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void): void {
+
+    ContentService.LOG.debug('Loading user content history...');
+
+    this.http.get<Array<CmsContentMetadata>>(this.envService.endpoints.loadContentUserHistory(this.authService.getUserId(), contentIdPrefix))
+      .map(list => list && list.map(h => CmsContentMetadata.fromObject(h, this.envService)))
+      .subscribe((h: Array<CmsContentMetadata>) => {
+        ContentService.LOG.debug('Loaded user content history successfully.');
+        successCallback(h);
+      }, (e: any) => {
+        ContentService.LOG.error('Could not load user content history: ' + e.message, e);
         if (errorCallback) {
           errorCallback(e, this.safeApiError(e));
         }
@@ -95,6 +122,14 @@ export class ContentService extends AbstractService {
         }
       });
 
+  }
+
+  /**
+   * TODO
+   * @param contentId
+   */
+  public getContentContextRef(contentId: string): CmsContentContextRef<any> {
+    return CmsContentContextRef.fromContentId(contentId);
   }
 
   /**

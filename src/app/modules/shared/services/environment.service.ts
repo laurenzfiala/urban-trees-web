@@ -623,6 +623,22 @@ class EnvironmentEndpoints {
 
   }
 
+  public loadContentUserHistory(userId: number, prefix?: string): string {
+
+    let replacements: any[] = [
+      { placeholder: 'userId', replacement: userId },
+      { placeholder: 'prefix', replacement: prefix }
+    ];
+
+    return this.prependCommonPath(
+      this.replaceParams(
+        prefix ? this.context.loadContentUserHistoryWithPrefix : this.context.loadContentUserHistory,
+        replacements
+      )
+    );
+
+  }
+
 }
 
 class Security {

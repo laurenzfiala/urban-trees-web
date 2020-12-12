@@ -50,11 +50,11 @@
 
       <div class="title-container m-2">
         <h1 [innerHTML]="'user_progress.details.title.tier' + (level === 1 || level === maxLevel ? '_' + level : '') | translate:{tier: 'user_progress.tiers.' + level | translate}"></h1>
-        <div *ngIf="level === 1" class="text-sm">
-          {{'user_progress.details.title.tier_1_desc' | translate}}
+        <div *ngIf="level !== maxLevel" class="text-sm">
+          {{'user_progress.details.title.desc' | translate}}
           <i class="i i-xxs i-dark i-info align-text-bottom pointer"
              tabindex="0"
-             [tooltip]="'user_progress.details.title.tier_1_tooltip' | translate"
+             [tooltip]="'user_progress.details.title.tooltip' | translate"
              triggers="focus hover"
              placement="bottom"></i>
         </div>

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnDestroy, OnInit} from '@angular/core';
 import {EnvironmentService} from '../../../shared/services/environment.service';
 import {AuthService} from '../../../shared/services/auth.service';
 import {AbstractComponent} from '../abstract.component';
@@ -11,18 +11,36 @@ import {PhenologyDatasetWithTree} from '../../entities/phenology-dataset-with-tr
 import * as moment from 'moment';
 import {environment} from '../../../../../environments/environment';
 import {ListComponent} from '../list/list.component';
+import {
+  CmsComponentConfig,
+  CmsContentConfig,
+  CmsLayoutConfig,
+  CmsLayoutSlotConfig
+} from '../../../cms/entities/content-config.entity';
+import {BlockLayout} from '../../../cms/cms-layouts/block-layout/block-layout.component';
+import {TextComponent} from '../../../cms/cms-components/text/text.component';
+import {ContentService} from '../../../cms/services/content.service';
+import {CmsContentMetadata} from '../../../cms/entities/cms-content-metadata.entity';
+import {TreeService} from '../../services/tree.service';
+import {CmsContentContextRef} from '../../../cms/entities/cms-content-context-ref.entity';
+import {SubscriptionManagerService} from '../../services/subscription-manager.service';
+import {Tree} from '../../entities/tree.entity';
+import { forkJoin } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 @Component({
   selector: 'ut-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.less', '../list/list.shared.less']
 })
-export class HomeComponent extends AbstractComponent implements OnInit {
+export class HomeComponent extends AbstractComponent implements OnInit, OnDestroy {
+
+  private static SUBSCRIPTION_TAG: string = 'observation-cmp';
 
   public StatusKey = StatusKey;
   public StatusValue = StatusValue;
 
-  public cmsHistory: any; // TODO
+  public treeCmsHistory: Array<CmsContentContextRef<Tree>>;
   public phenObsHistory: Array<PhenologyDatasetWithTree>;
 
   /**
@@ -45,7 +63,10 @@ export class HomeComponent extends AbstractComponent implements OnInit {
 
   constructor(private uiService: UIService,
               private phenObsService: PhenologyObservationService,
+              private contentService: ContentService,
+              private treeService: TreeService,
               private authService: AuthService,
+              private subs: SubscriptionManagerService,
               public envService: EnvironmentService) {
     super();
   }
@@ -53,6 +74,10 @@ export class HomeComponent extends AbstractComponent implements OnInit {
   public ngOnInit() {
     this.load();
     this.setStatus(StatusKey.PHENOBS_HISTORY, StatusValue.IN_PROGRESS, new ApiError()); // TODO
+  }
+
+  public ngOnDestroy() {
+    this.subs.unsubscribe(HomeComponent.SUBSCRIPTION_TAG);
   }
 
   /**
@@ -63,23 +88,32 @@ export class HomeComponent extends AbstractComponent implements OnInit {
     this.loadPhenobsHistory();
   }
 
-  private loadCmsHistory(successCallback?: () => void): void {
+  private loadCmsHistory(): void {
 
     this.setStatus(StatusKey.CMS_HISTORY, StatusValue.IN_PROGRESS);
-    if (successCallback && this.cmsHistory) {
-      successCallback();
+    if (this.treeCmsHistory) {
       return;
     }
 
-    /*this.cmsService.loadCmsHistory((stats: Array<Cms>) => { TODO
-      this.statistics = stats;
-      this.setStatus(StatusKey.CMS_HISTORY, StatusValue.SUCCESSFUL);
-      if (successCallback) {
-        successCallback();
-      }
+    this.contentService.loadCmsUserHistory('tree-', (history: Array<CmsContentMetadata>) => {
+
+      let contextRefs = history
+        .map(value => this.contentService.getContentContextRef(value.contentId).for(value));
+      let loadTreeObservables = contextRefs.map(value => {
+        return this.treeService.loadTreeObservable(Number(value.idComponent)).pipe(tap(tree => {
+          value.context = tree;
+        }));
+      });
+      forkJoin(...loadTreeObservables).subscribe(filledContexts => {
+        this.treeCmsHistory = contextRefs;
+        this.setStatus(StatusKey.CMS_HISTORY, StatusValue.SUCCESSFUL);
+      }, error => {
+        this.setStatus(StatusKey.CMS_HISTORY, StatusValue.FAILED);
+      });
+
     }, (error, apiError) => {
       this.setStatus(StatusKey.CMS_HISTORY, StatusValue.FAILED, apiError);
-    });*/
+    });
 
   }
 
@@ -113,6 +147,11 @@ export class HomeComponent extends AbstractComponent implements OnInit {
 
   public phenObsHistoryCategorizer(dataset: PhenologyDatasetWithTree): string {
     const date = moment.utc(dataset.observationDate, environment.outputDateFormat);
+    return ListComponent.historyCategorizer(date);
+  }
+
+  public cmsContentHistoryCategorizer(ref: CmsContentContextRef<Tree>): string {
+    const date = moment.utc(ref.metadata.saveDate, environment.outputDateFormat);
     return ListComponent.historyCategorizer(date);
   }
 

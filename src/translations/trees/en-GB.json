@@ -780,9 +780,9 @@
     },
     "details": {
       "title": {
+        "desc": "Grow your tree by using this website.",
+        "tooltip": "Create or edit your research diary, enter phenology observations or use the app to read out beacons.",
         "tier_1": "Your tree is only a <span class=\"level-text\">{{tier}}</span> This will grow your tree.</p>",
-        "tier_1_desc": "Grow your tree by using this website.",
-        "tier_1_tooltip": "Create or edit your research diary, enter phenology observations or use the app to read out beacons.",
         "tier": "Your <span class=\"level-text\">{{tier}}</span> is growing!",
         "tier_5": "Your <span class=\"level-text\">{{tier}}</span> has matured!"
       },
@@ -799,9 +799,9 @@
   "cms": {
     "content": {
       "status": {
-        "draft": "Draft",
-        "approving": "Publishing",
-        "published": "Published"
+        "DRAFT": "Draft",
+        "PUBLISHING": "Publishing",
+        "PUBLISHED": "Published"
       }
     }
   },

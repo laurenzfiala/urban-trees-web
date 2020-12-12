@@ -188,27 +188,6 @@
   cursor: pointer;
   user-select: none;
   transition: background-color @transitionDurationS;
-
-  &:focus,
-  &:hover {
-    background-color: @listItemBgColor;
-  }
-
-  .item-name {
-    font-size: @fontSizeMedium;
-    margin: @gutter;
-  }
-
-  .item-status {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: flex-end;
-
-    margin: @gutter;
-
-    font-size: @fontSizeSmall;
-  }
 }
 
 .list-category-title {
@@ -222,4 +201,8 @@
   background-color: transparent;
   font-size: @fontSizeMedium;
   white-space: nowrap;
+
+  &:first-child {
+    padding-left: 0;
+  }
 }
