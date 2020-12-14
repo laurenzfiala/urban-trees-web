@@ -105,22 +105,22 @@
   </div>
 </section>
 
-<section *auth="envService.security.rolesDiary" class="content-cat">
+<section *auth="envService.security.rolesJournal" class="content-cat">
   <div class="container clearfix">
 
     <div class="responsive-float m--2">
       <img class="diary float-right m-2" src="/assets/img/icon/special/placeholder.svg" />
 
       <div class="m-2">
-        <div class="content-cat-heading">{{'home.diary.title' | translate }}</div>
-        {{'home.diary.text' | translate }}
+        <div class="content-cat-heading">{{'home.journal.title' | translate }}</div>
+        {{'home.journal.text' | translate }}
       </div>
     </div>
 
     <a class="content-cat-link d-inline-flex flex-row align-items-center link-container"
        routerLink="/diary">
       <div class="link">
-        {{'home.diary.action' | translate}}
+        {{'home.journal.action' | translate}}
       </div>
       <i class="i i-sm i-dark i-arrow-right ml-1" aria-hidden="true"></i>
     </a>

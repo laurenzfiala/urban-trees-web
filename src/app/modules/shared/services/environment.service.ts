@@ -673,8 +673,8 @@ class Security {
     return this.context.roles.treeEditor;
   }
 
-  get rolesDiary() {
-    return this.context.roles.diary;
+  get rolesJournal() {
+    return this.context.roles.journal;
   }
 
   get rolesPhenObs() {
