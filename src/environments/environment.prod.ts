@@ -109,7 +109,7 @@ export const environment = {
     roles: {
       user:                             ['ROLE_USER'],
       treeEditor:                       ['ROLE_TREE_EDITOR'],
-      diary:                            ['ROLE_DIARY'],
+      journal:                          ['ROLE_JOURNAL'],
       phenObs:                          ['ROLE_PHENOBS'],
       admin:                            ['ROLE_ADMIN'],
       tempChangePassword:               'ROLE_TEMP_CHANGE_PASSWORD'
