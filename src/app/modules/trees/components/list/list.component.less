@@ -30,15 +30,12 @@
   &.failed {
     min-height: @listPlaceholderHeight;
 
+    overflow-x: hidden;
     pointer-events: none;
   }
 
-  &.loading {
-    overflow-x: hidden;
-
-    .list-item {
-      .loading-bg(@listItemBgColor);
-    }
+  &.loading .list-item {
+    .loading-bg(@listItemBgColor);
   }
 
   &.empty {

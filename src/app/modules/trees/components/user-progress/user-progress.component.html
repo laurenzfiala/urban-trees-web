@@ -22,8 +22,9 @@
   <ng-template #progressCircular>
     <div class="avatar"
          tabindex="0"
-         (action)="zoom.open()"
-         [tooltip]="'user_progress.open_details' | translate">
+         #avatarTooltip="bs-tooltip"
+         [tooltip]="'user_progress.open_details' | translate"
+         (action)="zoom.open(); avatarTooltip.hide()">
 
       <div class="avatar-inner">
         <div *ngIf="level !== maxLevel" class="level-display">
@@ -72,23 +73,18 @@
 
     <div class="mt-4">
       <h2>{{'user_progress.details.contribs_title' | translate}}</h2>
-      <div *ngIf="hasStatus(StatusKey.ACHIEVEMENTS_LOADING, StatusValue.SUCCESSFUL)"
-           class="d-flex flex-row align-items-stretch justify-content-between">
 
-        <div class="d-flex flex-row align-items-end">
-          <table class="table-xp">
-            <tr *ngFor="let l of achievements.xpHistory.slice(0, 3); let i = index">
-              <td class="text-nowrap">
-                + {{l.xp - (i < achievements.xpHistory.length-1 ? achievements.xpHistory[i+1].xp : 0)}} {{'user_overview.xp' | translate}}
-              </td>
-              <td>
-                {{'user.level_action.' + l.action | translate}}
-              </td>
-            </tr>
-          </table>
-        </div>
+      <table class="table-xp">
+        <tr *ngFor="let l of achievements.xpHistory.slice(0, 3); let i = index">
+          <td class="text-nowrap">
+            + {{l.xp - (i < achievements.xpHistory.length-1 ? achievements.xpHistory[i+1].xp : 0)}} {{'user_overview.xp' | translate}}
+          </td>
+          <td>
+            {{'user.level_action.' + l.action | translate}}
+          </td>
+        </tr>
+      </table>
 
-      </div>
     </div>
   </ng-template>
 
