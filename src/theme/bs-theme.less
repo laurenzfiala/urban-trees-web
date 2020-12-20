@@ -166,8 +166,17 @@
 }
 
 
-.page-link:hover {
-  background-color: @medLightBgColor;
+.page-link {
+  color: @textColor;
+
+  &:hover {
+    background-color: @medLightBgColor;
+    color: @textColorHighlight;
+  }
+
+  &.disabled {
+    pointer-events: none;
+  }
 }
 
 .input-group-append {
