@@ -49,17 +49,6 @@
       "statistics": "Statistics"
     }
   },
-  "home": {
-    "choose": "Choose what to do",
-    "greeting": "Hello, {{username}}!",
-    "level_up": "You reached level {{level}}!",
-    "level": "Level",
-    "xp": "XP",
-    "next_level_difference": "more for level",
-    "score": {
-      "error": "Failed to load your score."
-    }
-  },
   "phenology": {
     "observation_note": {
       "title": "Enter a tree observation",
@@ -761,8 +750,8 @@
       "success_title": "Login renewed!"
     },
     "level_up": {
-      "title": "Levelled up!",
-      "subtitle": "You are now level {{level}}"
+      "title": "Your tree has grown!",
+      "subtitle": "It is now a {{tier}}"
     }
   },
   "zoom": {

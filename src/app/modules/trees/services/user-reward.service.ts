@@ -103,7 +103,9 @@ export class UserRewardService {
     if (this.level !== undefined && this.level < level) {
       let n = new Notification(
         this.translateService.instant('notifications.level_up.title'),
-        this.translateService.instant('notifications.level_up.subtitle', {level: level}),
+        this.translateService.instant(
+          'notifications.level_up.subtitle',
+          {tier: this.translateService.instant('user_progress.tiers.' + level)}),
         NotificationType.levelup
       );
       n.icontext = level + '';

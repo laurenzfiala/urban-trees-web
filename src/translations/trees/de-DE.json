@@ -48,16 +48,6 @@
       "statistics": "Statistiken"
     }
   },
-  "home": {
-    "choose": "Triff eine Auswahl",
-    "greeting": "Hallo, {{username}}!",
-    "level_up": "Level {{level}} erreicht!",
-    "loading_stats_achievements": "Lade Punktestand...",
-    "loading_stats_achievements_failed": "Punktestand konnte nicht geladen werden.",
-    "level": "Level",
-    "xp": "XP",
-    "next_level_difference": "mehr für Level"
-  },
   "phenology": {
     "observation_note": {
       "title": "Phänologiebeobachtung eintragen",
@@ -762,8 +752,8 @@
       "success_title": "Login erneuert!"
     },
     "level_up": {
-      "title": "Aufgestiegen!",
-      "subtitle": "Du hast Level {{level}} erreicht"
+      "title": "Dein Baum ist gewachsen!",
+      "subtitle": "Der Baum ist jetzt ein {{tier}}"
     }
   },
   "zoom": {
