@@ -754,11 +754,6 @@
       "subtitle": "It is now a {{tier}}"
     }
   },
-  "zoom": {
-    "close": "Close",
-    "previous": "Previous view",
-    "next": "Next view"
-  },
   "user_progress": {
     "tiers": {
       "1": "Kern",

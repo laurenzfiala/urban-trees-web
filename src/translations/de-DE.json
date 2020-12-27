@@ -8,5 +8,10 @@
     "date_format_day": "DD.MM",
     "date_format_time": "HH:mm"
   },
-  "title": "<span class=\"title-highlight\">CO₂</span>OLE BÄUME & SENSOREN"
+  "title": "<span class=\"title-highlight\">CO₂</span>OLE BÄUME & SENSOREN",
+  "zoom": {
+    "close": "Schließen",
+    "previous": "Vorige Ansicht",
+    "next": "Nächste Ansicht"
+  }
 }

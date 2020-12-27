@@ -29,7 +29,7 @@ import {ProjectLoginKeyComponent} from './components/project-login-key/project-l
 import {StatisticsComponent} from './components/statistics/statistics.component';
 import {MeasurementsComponent} from './components/measurements/measurements.component';
 import {SettingsComponent} from './components/settings/settings.component';
-import {ZoomComponent} from './components/zoom/zoom.component';
+import {ZoomComponent} from '../shared/components/zoom/zoom.component';
 import {LoadingStatusComponent} from './components/loading-status/loading-status.component';
 import {MessagesComponent} from './components/messages/messages.component';
 import {HelpComponent} from './components/help/help.component';
@@ -77,14 +77,14 @@ import {AuthInterceptor} from '../shared/interceptors/auth.interceptor';
 import {SharedModule} from '../shared/shared.module';
 import {AuthService} from '../shared/services/auth.service';
 import {TranslateInitService} from '../shared/services/translate-init.service';
-import { OtpManageComponent } from './components/otp-manage/otp-manage.component';
+import {OtpManageComponent} from './components/otp-manage/otp-manage.component';
 import {AuthPipe} from './pipes/auth.pipe';
 import {OtpScratchCodePipe} from './pipes/otp-scratch-code.pipe';
 import {MultiTranslateHttpLoader} from '../shared/lib/multi-translate-http-loader';
 import {CmsModule} from '../cms/cms.module';
-import { BeacontransferComponent } from './components/beacontransfer/beacontransfer.component';
+import {BeacontransferComponent} from './components/beacontransfer/beacontransfer.component';
 import {UserProgressComponent} from './components/user-progress/user-progress.component';
-import { ListComponent } from './components/list/list.component';
+import {ListComponent} from './components/list/list.component';
 import {MapEntriesPipe} from './pipes/map-entries.pipe';
 
 export function TranslateFactory(http: HttpClient) {
@@ -125,7 +125,6 @@ export function TranslateFactory(http: HttpClient) {
     StatisticsComponent,
     MeasurementsComponent,
     SettingsComponent,
-    ZoomComponent,
     LoadingStatusComponent,
     MessagesComponent,
     HelpComponent,
@@ -218,7 +217,7 @@ export function TranslateFactory(http: HttpClient) {
     }
   ],
   exports: [
-    TranslateModule
+      TranslateModule
   ]
 })
 export class TreesModule { }

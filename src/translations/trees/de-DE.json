@@ -756,11 +756,6 @@
       "subtitle": "Der Baum ist jetzt ein {{tier}}"
     }
   },
-  "zoom": {
-    "close": "Schließen",
-    "previous": "Vorige Ansicht",
-    "next": "Nächste Ansicht"
-  },
   "user_progress": {
     "tiers": {
       "1": "Kern",

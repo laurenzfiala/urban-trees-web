@@ -1,14 +1,4 @@
-import {
-  Component,
-  ContentChild,
-  ElementRef, EventEmitter, HostListener,
-  Input,
-  OnInit, Output,
-  TemplateRef,
-  ViewChild,
-  ViewContainerRef
-} from '@angular/core';
-import {AbstractComponent} from '../abstract.component';
+import {Component, EventEmitter, HostListener, Input, Output, TemplateRef, ViewContainerRef} from '@angular/core';
 
 @Component({
   selector: 'ut-zoom',

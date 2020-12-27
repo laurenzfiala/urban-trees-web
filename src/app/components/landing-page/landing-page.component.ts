@@ -8,6 +8,7 @@ import {
   ViewEncapsulation
 } from '@angular/core';
 import * as $ from 'jquery';
+import {Mode} from '../../modules/shared/components/zoom/zoom.component';
 
 @Component({
   selector: 'ut-landing-page',
@@ -17,6 +18,8 @@ import * as $ from 'jquery';
 export class LandingPageComponent implements OnInit, AfterViewInit {
 
   private static CYCLE_INTERVAL_MS: number = 5000;
+
+  public Mode = Mode;
 
   public loading: boolean = false;
 

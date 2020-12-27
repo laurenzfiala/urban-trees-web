@@ -198,7 +198,16 @@
       <div class="bg-light">
         <div class="lp-text-container">
           <div class="text-center">
-            <img src="/assets/landing-page/content/projektteam.JPG" class="project-team" />
+            <ut-zoom [content]="teamImg"
+                     [fullscreenContent]="teamImgFull"
+                     [mode]="Mode.IMAGE">
+            </ut-zoom>
+            <ng-template #teamImg>
+              <img class="project-team" src="/assets/landing-page/content/projektteam.JPG"/>
+            </ng-template>
+            <ng-template #teamImgFull>
+              <img class="fullscreen-content" src="/assets/landing-page/content/projektteam.JPG"/>
+            </ng-template>
           </div>
         </div>
       </div>
