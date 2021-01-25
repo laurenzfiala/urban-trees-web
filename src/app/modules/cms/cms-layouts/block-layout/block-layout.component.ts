@@ -1,14 +1,4 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  ComponentFactoryResolver,
-  OnDestroy,
-  OnInit,
-  ViewChild,
-  ViewContainerRef
-} from '@angular/core';
-import {CmsComponent} from '../../interfaces/cms-component.interface';
-import {CmsLayoutSlot} from '../../entities/layout-slot.entity';
+import {ChangeDetectorRef, Component, ComponentFactoryResolver, ViewChild, ViewContainerRef} from '@angular/core';
 import {CmsValidationResult} from '../../entities/cms-validation-result.entities';
 import {SerializationService} from '../../services/serialization.service';
 import {AbstractCmsLayout} from '../../entities/abstract-cms-layout.entity';

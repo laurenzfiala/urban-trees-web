@@ -31,7 +31,7 @@ export class SerializedCmsElement {
   }
 
   /**
-   * Crete a new instance from an untyped object.
+   * Create a new instance from an untyped object.
    * @param o untyped object of correct shape.
    * @return instance of SerializedCmsElement with set members (if object-shape was correct);
    *         or null if object is falsy

@@ -41,6 +41,15 @@
   </div>
 </section>
 
+<section class="content-cat">
+  <div class="container">
+
+    <ut-cms-content contentId="news"
+                    [config]="testContentConfig"></ut-cms-content>
+
+  </div>
+</section>
+
 <section *auth="envService.security.rolesTreeEditor" class="content-cat">
   <div class="container">
 

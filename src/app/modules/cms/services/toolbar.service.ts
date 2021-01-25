@@ -66,10 +66,10 @@ export class ToolbarService {
       console.log('toolbar: component ' + comp.getName() + ' focussed'); // TODO
       this.activeComponent = comp;
     });
-    element.onFocusOut().subscribe(comp => {
+    /*element.onFocusOut().subscribe(comp => {
       console.log('toolbar: component ' + comp.getName() + ' un-focussed'); // TODO
       this.activeComponent = undefined;
-    });
+    });*/
 
   }
 

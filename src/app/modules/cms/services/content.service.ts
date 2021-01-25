@@ -13,10 +13,8 @@ import {CmsLayout} from '../interfaces/cms-layout.interface';
 import {Subject} from 'rxjs';
 import {CmsContentMetadata} from '../entities/cms-content-metadata.entity';
 import {AuthService} from '../../shared/services/auth.service';
-import {Tree} from '../../trees/entities/tree.entity';
 import {CmsContentContextRef} from '../entities/cms-content-context-ref.entity';
-import {Observable} from 'rxjs/Observable';
-import {TreeService} from '../../trees/services/tree.service';
+import {StoredSerializedCmsContent} from '../entities/stored-serialized-cms-content.entity';
 
 /**
  * Handles loading and saving of CMS content.
@@ -106,13 +104,13 @@ export class ContentService extends AbstractService {
    */
   public saveContent(contentId: string,
                      content: SerializedCmsContent,
-                     successCallback: (content: SerializedCmsContent) => void,
+                     successCallback: (content: StoredSerializedCmsContent) => void,
                      errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void): void {
 
     ContentService.LOG.debug('Saving content with id ' + contentId + '...');
-    this.http.put<SerializedCmsContent>(this.envService.endpoints.saveContent(contentId), content)
-      .map(c => SerializedCmsContent.fromObject(c, this.envService))
-      .subscribe((c: SerializedCmsContent) => {
+    this.http.post<StoredSerializedCmsContent>(this.envService.endpoints.saveContent(contentId), content)
+      .map(c => StoredSerializedCmsContent.fromObject(c, this.envService))
+      .subscribe((c: StoredSerializedCmsContent) => {
         ContentService.LOG.debug('Saved content with id ' + contentId + ' successfully.');
         successCallback(c);
       }, (e: any) => {

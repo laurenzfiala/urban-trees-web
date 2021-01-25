@@ -130,6 +130,14 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, After
 
     // TODO load content if needed
 
+    // TODO remove
+    this.addTestContent();
+
+  }
+
+  // TODO remove
+  private async addTestContent(): Promise<void> {
+
     const test = SerializedCmsContent.fromObject({
       version: 1,
       saved: '2020-10-19T09:26:55',
@@ -154,7 +162,7 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, After
         }
       ]
     }, this.envService);
-    this.fillSlot(test.elements[0], () => this.contentSlot);
+    this.elements.push(await this.fillSlot(test.elements[0], () => this.contentSlot));
 
   }
 
@@ -191,11 +199,11 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, After
   private saveContent(force: boolean = false): void {
 
     const now = Date.now();
-    const lastSavedContent = this.changes.find(e => e.saved !== undefined);
-    if (!force && lastSavedContent && lastSavedContent.saved.getTime() > now - this.envService.contentSaveDebounceMs) {
+    const lastSavedContent = this.changes.find(e => e.sent !== undefined);
+    if (!force && lastSavedContent && lastSavedContent.sent.getTime() > now - this.envService.contentSaveDebounceMs) {
       ContentComponent.LOG.trace('Saving is not yet allowed.');
       if (this.saveTimeoutId === 0) {
-        const saveWaitMs = this.envService.contentSaveDebounceMs - now + lastSavedContent.saved.getTime();
+        const saveWaitMs = this.envService.contentSaveDebounceMs - now + lastSavedContent.sent.getTime();
         this.saveTimeoutId = window.setTimeout(
           () => this.saveContent(),
           saveWaitMs
@@ -210,7 +218,7 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, After
     const content = this.changes.peek();
     if (!content) {
       throw new Error('Unexpected state: nothing found to save');
-    } else if (content.saved !== undefined) {
+    } else if (content.sent !== undefined) {
       ContentComponent.LOG.debug('Content already saving/saved.');
       return;
     }
@@ -218,17 +226,17 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, After
     this.setStatus(StatusKey.SAVE, StatusValue.IN_PROGRESS);
     window.clearTimeout(this.saveTimeoutId);
     this.saveTimeoutId = 0;
-    content.saved = new Date();
+    content.sent = new Date();
     this.update();
 
     this.contentService.saveContent(this.contentId, content, c => {
       ContentComponent.LOG.debug('Content successfully saved.');
-      content.stored = c.stored;
+      // TODO content.stored = c; -- maybe remove
       this.setStatus(StatusKey.SAVE, StatusValue.SUCCESSFUL);
       this.update();
     }, (error, apiError) => {
       ContentComponent.LOG.warn('Failed to save content.');
-      content.saved = undefined;
+      content.sent = undefined;
       this.setStatus(StatusKey.SAVE, StatusValue.FAILED);
       this.update();
     });

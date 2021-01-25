@@ -15,14 +15,21 @@ export class SerializedCmsContent {
   public readonly version: number;
 
   /**
+   * UID of the user content that proceeded this one (may be null/undefined if first entry).
+   */
+  public readonly historyId: number;
+
+  /**
    * The Date at which this object was generated.
+   * @see SerializationService#serializeContent(Array<CmsElement>)
    */
   public saved: Date;
 
   /**
-   * The Date at which this object was persisted on the backend.
+   * The Date at which this object was sent to the backend.
+   * Note: this is not the same as the date the object is persisted.
    */
-  public stored: Date;
+  public sent: Date;
 
   /**
    * Contents.
@@ -31,11 +38,9 @@ export class SerializedCmsContent {
 
   constructor(version: number,
               saved: Date,
-              stored: Date,
               elements: Array<SerializedCmsElement>) {
     this.version = version;
     this.saved = saved;
-    this.stored = stored;
     this.elements = elements;
   }
 
@@ -43,12 +48,12 @@ export class SerializedCmsContent {
     return this.saved !== undefined;
   }
 
-  public isStored(): boolean {
-    return this.stored !== undefined;
+  public isSent(): boolean {
+    return this.sent !== undefined;
   }
 
   /**
-   * Crete a new instance from an untyped object.
+   * Create a new instance from an untyped object.
    * @param o untyped object of correct shape.
    * @param envService env vars for date deserialization are needed
    * @return instance of SerializedCmsContent with set members (if object-shape was correct);
@@ -63,7 +68,6 @@ export class SerializedCmsContent {
     return new SerializedCmsContent(
       o.version,
       o.saved && moment.utc(o.saved, envService.outputDateFormat).toDate(),
-      o.stored && moment.utc(o.stored, envService.outputDateFormat).toDate(),
       (o.elements as Array<SerializedCmsElement>).map(e => SerializedCmsElement.fromObject(e))
     );
 

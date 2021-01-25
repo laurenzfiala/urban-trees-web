@@ -7,7 +7,7 @@ import {SerializedCmsElement} from '../entities/serialized-cms-element.entity';
  * Handles serialization and deserialization of cms content
  * and provides utility functions for the cms components to (de-)serialize
  * their content.
- * @author Lautrenz Fiala
+ * @author Laurenz Fiala
  * @since 2020/05/17
  */
 @Injectable({
@@ -31,7 +31,7 @@ export class SerializationService {
       if (!element) {
         return;
       }
-      serializedElements.push(new SerializedCmsElement(element.getName(), this.serializeElement(element)));
+      serializedElements.push(new SerializedCmsElement(element.getName(), element.serialize()));
     });
 
     return serializedElements;
@@ -39,7 +39,10 @@ export class SerializationService {
   }
 
   /**
-   * TODO
+   * Deserialize the given untyped CmsElement to a
+   * SerializedCmsContent instance.
+   * If the name is set, that object can later be
+   * handed to the appropriate CmsElement.
    * @param serializedElement
    */
   public deserializeElement(untypedSerializedElement: any): SerializedCmsElement {
@@ -47,14 +50,15 @@ export class SerializationService {
   }
 
   /**
-   * TODO
-   * @param serializedElements
+   * Serialize all given CmsElements into a single SerializedCmsContent
+   * object for submission to the backend.
+   * @param serializedElements CmsElements retrieved through CmsElement#serialize()
+   * @see #serializeElement(Array<CmsElement>)
    */
   public serializeContent(...serializedElements: Array<CmsElement>): SerializedCmsContent {
     return new SerializedCmsContent(
       SerializationService.VERSION_CODE,
-      undefined, // TODO
-      undefined, // TODO
+      new Date(),
       this.serializeElement(...serializedElements)
     );
   }

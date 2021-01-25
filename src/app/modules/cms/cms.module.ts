@@ -14,13 +14,17 @@ import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
 import {FormsModule} from '@angular/forms';
 import {BlockLayout} from './cms-layouts/block-layout/block-layout.component';
 import {SerializationService} from './services/serialization.service';
+import {TwoColumnLayout} from './cms-layouts/two-column-layout/two-column-layout.component';
 
 @NgModule({
   declarations: [
     // Components
     ContentComponent,
     TextComponent,
+
+    // Layouts
     BlockLayout,
+    TwoColumnLayout,
 
     // Directives
     ForNDirective

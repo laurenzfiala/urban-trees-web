@@ -1,7 +1,7 @@
 {
   "toolbar": {
     "publish": "Publish",
-    "publish_tooltip": "Save &amp; publish this content",
+    "publish_tooltip": "Save & publish this content",
     "publish_tooltip_review": "Save & submit this content for review",
     "save": {
       "in_progress": "Saving",

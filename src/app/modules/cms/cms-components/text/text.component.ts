@@ -1,5 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
-import {CmsComponent} from '../../interfaces/cms-component.interface';
+import {Component, Input} from '@angular/core';
 import {ToolbarBtn, ToolbarDropdown, ToolbarElement, ToolbarSection} from '../../entities/toolbar.entity';
 import {CmsValidationResult} from '../../entities/cms-validation-result.entities';
 import {AbstractCmsComponent} from '../../entities/abstract-cms-component.entity';
@@ -32,6 +31,10 @@ export class TextComponent extends AbstractCmsComponent {
 
   public getName(): string {
     return this.constructor.name;
+  }
+
+  public updateText(event: Event) {
+    this.text = (event.target as HTMLElement).innerHTML;
   }
 
   getToolbarContextual(): ToolbarSection<ToolbarElement> {
