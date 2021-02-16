@@ -1,98 +1,107 @@
+<div class="nav-path">
+  <div class="container py-2">
+    <a class="link" routerLink="/admin">{{'navigation.admin' | translate}}</a>
+    /
+    Reports
+  </div>
+</div>
 
-<div *ngFor="let r of availableReports; let i = index"
-     class="content-cat">
-  <div class="container">
+<div class="container">
+  <div *ngFor="let r of availableReports; let i = index"
+       class="content-cat">
+    <div class="container">
 
-    <ng-container *ngIf="!r.wasResolved">
+      <ng-container *ngIf="!r.wasResolved">
 
-      <h1 class="content-cat-heading d-flex flex-row flex-wrap align-items-center">
-        <div class="flex-shrink-0 flex-grow-1">
-          Report {{r.id}}
-          <span *ngIf="!r.autoCreate" class="badge badge-sm warning align-text-bottom ml-1">USER</span>
-          <span *ngIf="r.autoCreate" class="badge badge-sm primary align-text-bottom ml-1">AUTO</span>
-          <span class="badge badge-sm align-text-bottom ml-1">{{r.reportDate | date:('app.date_format_angular' | translate)}}</span>
+        <h1 class="content-cat-heading d-flex flex-row flex-wrap align-items-center">
+          <div class="flex-shrink-0 flex-grow-1">
+            Report {{r.id}}
+            <span *ngIf="!r.autoCreate" class="badge badge-sm warning align-text-bottom ml-1">USER</span>
+            <span *ngIf="r.autoCreate" class="badge badge-sm primary align-text-bottom ml-1">AUTO</span>
+            <span class="badge badge-sm align-text-bottom ml-1">{{r.reportDate | date:('app.date_format_angular' | translate)}}</span>
+          </div>
+          <div *ngIf="!isEditingReport(r)"
+               class="ml-2 d-flex align-items-center report-resolve"
+               (click)="resolveReport(r)">
+            <i class="i i-check-success i-sm mr-1"></i>
+            <a class="link success">Resolve</a>
+          </div>
+          <div *ngIf="isEditingReport(r)"
+               class="ml-2 d-flex align-items-center report-resolve"
+               (click)="editingReport = null">
+            <i class="i i-cross-circle i-dark i-sm mr-1"></i>
+            <a class="link">Cancel</a>
+          </div>
+          <div *ngIf="isEditingReport(r)"
+               class="ml-2 d-flex align-items-center report-resolve"
+               (click)="updateReportRemark(r)">
+            <i class="i i-send-primary i-sm mr-1"></i>
+            <a class="link primary">Save</a>
+          </div>
+        </h1>
+
+        <div class="content-cat-text">
+          {{r.message}}
         </div>
+
         <div *ngIf="!isEditingReport(r)"
-             class="ml-2 d-flex align-items-center report-resolve"
-             (click)="resolveReport(r)">
-          <i class="i i-check-success i-sm mr-1"></i>
-          <a class="link success">Resolve</a>
+             class="content-cat-text mt-1">
+          Remark: <span class="text-subtle">{{r.remark}}</span>
+          <div class="d-inline-flex align-items-center text-sm ml-1"
+               (click)="editRemark(r)">
+            <i class="i i-dark i-edit-sm i-3xs mr-1"></i>
+            <a class="link">Edit</a>
+          </div>
         </div>
+
         <div *ngIf="isEditingReport(r)"
-             class="ml-2 d-flex align-items-center report-resolve"
-             (click)="editingReport = null">
-          <i class="i i-cross-circle i-dark i-sm mr-1"></i>
-          <a class="link">Cancel</a>
-        </div>
-        <div *ngIf="isEditingReport(r)"
-             class="ml-2 d-flex align-items-center report-resolve"
-             (click)="updateReportRemark(r)">
-          <i class="i i-send-primary i-sm mr-1"></i>
-          <a class="link primary">Save</a>
-        </div>
-      </h1>
-
-      <div class="content-cat-text">
-        {{r.message}}
-      </div>
-
-      <div *ngIf="!isEditingReport(r)"
-           class="content-cat-text mt-1">
-        Remark: <span class="text-subtle">{{r.remark}}</span>
-        <div class="d-inline-flex align-items-center text-sm ml-1"
-             (click)="editRemark(r)">
-          <i class="i i-dark i-edit-sm i-3xs mr-1"></i>
-          <a class="link">Edit</a>
-        </div>
-      </div>
-
-      <div *ngIf="isEditingReport(r)"
-           class="mt-1">
-        <textarea class="form-control mb-1" [(ngModel)]="r.remark"></textarea>
-      </div>
-
-      <ng-container *ngIf="r.assocEvent">
-
-        <hr/>
-
-        <div class="content-cat-subheading">
-          Event
+             class="mt-1">
+          <textarea class="form-control mb-1" [(ngModel)]="r.remark"></textarea>
         </div>
 
-        <pre class="content-cat-text mb-1"><div class="badge badge-sm mr-1">{{r.assocEvent.severity}}</div>{{r.assocEvent.message}}</pre>
-        <pre class="content-cat-text text-subtle mb-0">{{r.assocEvent.details}}</pre>
+        <ng-container *ngIf="r.assocEvent">
+
+          <hr/>
+
+          <div class="content-cat-subheading">
+            Event
+          </div>
+
+          <pre class="content-cat-text mb-1"><div class="badge badge-sm mr-1">{{r.assocEvent.severity}}</div>{{r.assocEvent.message}}</pre>
+          <pre class="content-cat-text text-subtle mb-0">{{r.assocEvent.details}}</pre>
+
+        </ng-container>
 
       </ng-container>
 
-    </ng-container>
+      <div *ngIf="r.wasResolved"
+           class="p-2">
 
-    <div *ngIf="r.wasResolved"
-         class="p-2">
+        <div class="d-flex flex-row align-items-center text-success">
+          <div class="d-flex align-items-center flex-shrink-0 flex-grow-1">
+            <i class="i i-check-success mr-2"></i>
+            Report #{{r.id}} resolved
+          </div>
+          <div class="ml-2 d-flex align-items-center"
+               (click)="unresolveReport(r)">
+            <i class="i i-dark i-undo i-sm mr-1"></i>
+            <a class="link">Undo</a>
+          </div>
+        </div>
 
-      <div class="d-flex flex-row align-items-center text-success">
-        <div class="d-flex align-items-center flex-shrink-0 flex-grow-1">
-          <i class="i i-check-success mr-2"></i>
-          Report #{{r.id}} resolved
-        </div>
-        <div class="ml-2 d-flex align-items-center"
-             (click)="unresolveReport(r)">
-          <i class="i i-dark i-undo i-sm mr-1"></i>
-          <a class="link">Undo</a>
-        </div>
       </div>
 
     </div>
-
   </div>
-</div>
-<div *ngIf="availableReports?.length === 0"
-     class="content-cat">
-  <div class="container">
+  <div *ngIf="availableReports?.length === 0"
+       class="content-cat">
+    <div class="container">
 
-    <div class="d-flex align-items-center text-subtle my-2">
-      <i class="i i-sm i-dark i-info mr-2"></i>
-      No reports
+      <div class="d-flex align-items-center text-subtle my-2">
+        <i class="i i-sm i-dark i-info mr-2"></i>
+        No reports
+      </div>
+
     </div>
-
   </div>
 </div>

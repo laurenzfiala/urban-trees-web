@@ -21,13 +21,13 @@
     "measurements": "Messdaten",
     "statistics": "Statistiken",
     "admin": "Adminkonsole",
+    "reports": "Meldungen",
     "footer": {
       "report": "Problem melden",
       "imprint": "Impressum",
       "madeby": "Entwickelt vom ",
       "madeby_team": "CO₂BS-Team"
     },
-    "messages": "Nachrichten",
     "settings": "Spracheinstellungen",
     "settings_logged_in": "Einstellungen, Konto & Sprache",
     "login": "Anmelden",

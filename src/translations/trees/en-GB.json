@@ -21,6 +21,7 @@
     "measurements": "Measurements",
     "statistics": "Statistics",
     "admin": "Admin console",
+    "reports": "Reports",
     "footer": {
       "report": "Report a problem",
       "imprint": "Imprint",
@@ -28,7 +29,6 @@
       "madeby": "Made by the ",
       "madeby_team": "CO₂BS-Team"
     },
-    "messages": "Messages",
     "settings": "Language settings",
     "settings_logged_in": "Settings, Account & Language",
     "login": "Log in",
