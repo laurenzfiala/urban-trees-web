@@ -26,8 +26,7 @@
 
   <div #listScrollEl
        *ngIf="hasStatus(StatusKey.EXTERNAL_STATUS, StatusValue.SUCCESSFUL) && !isEmpty()"
-       class="list"
-       (scroll)="updateScrollBtns()">
+       class="list">
 
     <ng-container *ngIf="itemCategories">
       <ng-container *ngFor="let category of itemCategories | mapEntries">

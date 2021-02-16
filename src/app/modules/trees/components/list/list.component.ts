@@ -16,6 +16,7 @@ import {PhenologyDatasetWithTree} from '../../entities/phenology-dataset-with-tr
 import * as moment from 'moment';
 import {environment} from '../../../../../environments/environment';
 import {Moment} from 'moment';
+import * as $ from 'jquery';
 
 @Component({
   selector: 'ut-list',
@@ -23,6 +24,8 @@ import {Moment} from 'moment';
   styleUrls: ['./list.component.less']
 })
 export class ListComponent extends LoadingStatusComponent implements OnInit, OnDestroy, AfterViewChecked {
+
+  public $ = $;
 
   @Input()
   public itemTemplate: TemplateRef<any>;
@@ -47,7 +50,7 @@ export class ListComponent extends LoadingStatusComponent implements OnInit, OnD
   private _items: Array<any>;
   public itemCategories: Map<string, Array<any>>;
   private itemsChanged: boolean = false;
-  public scrollBtns: { right: boolean, left: boolean };
+  public scrollBtns: { left: boolean, right: boolean };
 
   constructor(private subs2: SubscriptionManagerService,
               private cdRef: ChangeDetectorRef) {
@@ -67,36 +70,29 @@ export class ListComponent extends LoadingStatusComponent implements OnInit, OnD
   }
 
   public updateScrollBtns(): void {
-    this.scrollBtns = {
-      right: this.showScrollBtn('right'),
-      left: this.showScrollBtn('left')
-    };
-    this.cdRef.markForCheck();
-    console.log('update');
-  }
-
-  private showScrollBtn(type: 'right' | 'left'): boolean {
 
     if (!this.listScrollEl) {
-      return false;
+      return;
     }
 
     const el = this.listScrollEl.nativeElement;
-    if (type === 'left') {
-      return el.scrollLeft > 0;
-    } else if (type === 'right') {
-      return el.scrollLeft < el.scrollWidth - el.clientWidth;
-    }
-    return false;
+    this.scrollBtns = {
+      left: el.scrollLeft > 0,
+      right: el.scrollLeft < el.offsetWidth
+    };
+    this.cdRef.markForCheck();
 
   }
 
   public scrollList(type: 'right' | 'left'): void {
 
     const el = this.listScrollEl.nativeElement;
-    const scrollBy = el.clientWidth * 0.9;
+    const scrollTo = el.scrollLeft + Math.min(el.clientWidth - 100, el.clientWidth * 0.75) * (type === 'right' ? 1 : -1);
 
-    el.scrollLeft += scrollBy * (type === 'right' ? 1 : -1);
+    this.scrollBtns.left = scrollTo > 0;
+    this.scrollBtns.right = scrollTo < el.offsetWidth;
+
+    $(el).animate({scrollLeft: scrollTo}, 350);
 
   }
 
@@ -150,7 +146,7 @@ export class ListComponent extends LoadingStatusComponent implements OnInit, OnD
         }
         d.add(-1, 'year');
       }
-      return 'more_than_5_years_ago';
+      timeCategory = 'more_than_5_years_ago';
     }
     return 'time.category.' + timeCategory;
 
