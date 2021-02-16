@@ -1,7 +1,4 @@
 import {ChangeDetectorRef, Component, ComponentFactoryResolver, ViewChild, ViewContainerRef} from '@angular/core';
-import {CmsComponent} from '../../interfaces/cms-component.interface';
-import {CmsLayoutSlot} from '../../entities/layout-slot.entity';
-import {CmsValidationResult} from '../../entities/cms-validation-result.entities';
 import {SerializationService} from '../../services/serialization.service';
 import {AbstractCmsLayout} from '../../entities/abstract-cms-layout.entity';
 import {ToolbarService} from '../../services/toolbar.service';
@@ -9,6 +6,8 @@ import {CmsElement} from '../../interfaces/cms-element.interface';
 import {ContentService} from '../../services/content.service';
 import {MutableWrapper} from '../../entities/mutable-wrapper.entity';
 import {ViewMode} from '../../enums/cms-layout-view-mode.enum';
+import {CmsValidationResults} from '../../entities/cms-validation-results.entity';
+import {CmsValidationResult} from '../../entities/cms-validation-result.entity';
 
 @Component({
   selector: 'ut-cms-two-column-layout',
@@ -50,9 +49,9 @@ export class TwoColumnLayout extends AbstractCmsLayout {
 
   public async deserialize(data: any): Promise<void> {
     const slotLeftCmp = this.serializationService.deserializeElement(data.slotLeft);
-    this.slotLeftElement.set(await this.fillSlot(slotLeftCmp, () => this.slotLeft));
+    this.slotLeftElement.set(await this.fillSlot(() => this.slotLeft, slotLeftCmp));
     const slotRightCmp = this.serializationService.deserializeElement(data.slotRight);
-    this.slotRightElement.set(await this.fillSlot(slotRightCmp, () => this.slotRight));
+    this.slotRightElement.set(await this.fillSlot(() => this.slotRight, slotRightCmp));
     this.update();
   }
 
@@ -60,11 +59,21 @@ export class TwoColumnLayout extends AbstractCmsLayout {
     return this.constructor.name;
   }
 
-  validate(): Array<CmsValidationResult> {
-    return undefined;
-  }
+  public validate(results: CmsValidationResults) {
 
-  view(mode: ViewMode): void {
+    if (!this.slotLeftElement.get()) {
+      const r = results.addResult(new CmsValidationResult(true, 'Left slot may not be empty'));
+      r.onHighlight().subscribe(value => {
+        window.alert('highlight error'); // TODO
+      });
+    }
+
+    if (!this.slotRightElement.get()) {
+      const r = results.addResult(new CmsValidationResult(true, 'Right slot may not be empty'));
+      r.onHighlight().subscribe(value => {
+        window.alert('highlight error'); // TODO
+      });
+    }
 
   }
 

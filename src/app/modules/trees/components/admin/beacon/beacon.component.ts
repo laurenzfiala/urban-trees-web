@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {AbstractComponent} from '../../abstract.component';
+import {AbstractComponent} from '../../../../shared/components/abstract.component';
 import {TreeService} from '../../../services/tree.service';
 import {BeaconFrontend} from '../../../entities/beacon-frontend.entity';
 import {BeaconService} from '../../../services/beacon.service';

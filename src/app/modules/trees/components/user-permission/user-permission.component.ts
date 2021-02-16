@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {AbstractComponent} from '../abstract.component';
+import {AbstractComponent} from '../../../shared/components/abstract.component';
 import {AuthService} from '../../../shared/services/auth.service';
 import {UserIdentity} from '../../entities/user-identity.entity';
 

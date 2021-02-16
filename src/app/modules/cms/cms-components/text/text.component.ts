@@ -1,8 +1,11 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, SecurityContext} from '@angular/core';
 import {ToolbarBtn, ToolbarDropdown, ToolbarElement, ToolbarSection} from '../../entities/toolbar.entity';
-import {CmsValidationResult} from '../../entities/cms-validation-result.entities';
 import {AbstractCmsComponent} from '../../entities/abstract-cms-component.entity';
 import {ToolbarService} from '../../services/toolbar.service';
+import {CmsValidationResults} from '../../entities/cms-validation-results.entity';
+import {CmsValidationResult} from '../../entities/cms-validation-result.entity';
+import {ContentService} from '../../services/content.service';
+import {DomSanitizer} from '@angular/platform-browser';
 
 @Component({
   selector: 'ut-cms-text',
@@ -11,16 +14,17 @@ import {ToolbarService} from '../../services/toolbar.service';
 })
 export class TextComponent extends AbstractCmsComponent {
 
-  @Input()
   public text: string;
 
-  constructor(protected toolbar: ToolbarService) {
+  constructor(protected contentService: ContentService,
+              protected toolbar: ToolbarService,
+              private sanitizer: DomSanitizer) {
     super();
   }
 
   public deserialize(serialized: any): void {
     const state = serialized;
-    this.text = state.text;
+    this.text = this.sanitizer.sanitize(SecurityContext.HTML, state.text);
   }
 
   public serialize(): any {
@@ -37,7 +41,8 @@ export class TextComponent extends AbstractCmsComponent {
     this.text = (event.target as HTMLElement).innerHTML;
   }
 
-  getToolbarContextual(): ToolbarSection<ToolbarElement> {
+  public getToolbarContextual(): ToolbarSection<ToolbarElement> {
+
     return new ToolbarSection<ToolbarElement>(
       new ToolbarBtn(
         'Toggle bold text',
@@ -57,9 +62,18 @@ export class TextComponent extends AbstractCmsComponent {
         ]
       ))
     );
+
   }
 
-  validate(): Array<CmsValidationResult> {
-    throw new Error('Method not implemented.'); // TODO
+  public validate(results: CmsValidationResults): void {
+
+    if (this.text.trim() === '') {
+      const r = results.addResult(new CmsValidationResult(true, 'errors.components.text.empty'));
+      r.onHighlight().subscribe(value => {
+        window.alert('highlight error in text component');
+      });
+    }
+
   }
+
 }

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {AbstractComponent} from '../abstract.component';
+import {AbstractComponent} from '../../../shared/components/abstract.component';
 import {SystemStatistics} from '../../entities/system-statistics.entity';
 import {UIService} from '../../services/ui.service';
 import {ChartDataSeries} from '../../entities/chart-data-series.entity';

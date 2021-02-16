@@ -766,7 +766,7 @@
       "title": {
         "desc": "Grow your tree by using this website.",
         "tooltip": "Create or edit your research diary, enter phenology observations or use the app to read out beacons.",
-        "tier_1": "Your tree is only a <span class=\"level-text\">{{tier}}</span> This will grow your tree.</p>",
+        "tier_1": "Your tree is only a <span class=\"level-text\">{{tier}}</span>",
         "tier": "Your <span class=\"level-text\">{{tier}}</span> is growing!",
         "tier_5": "Your <span class=\"level-text\">{{tier}}</span> has matured!"
       },

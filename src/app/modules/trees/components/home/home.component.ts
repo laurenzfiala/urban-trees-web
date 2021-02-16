@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {EnvironmentService} from '../../../shared/services/environment.service';
 import {AuthService} from '../../../shared/services/auth.service';
-import {AbstractComponent} from '../abstract.component';
+import {AbstractComponent} from '../../../shared/components/abstract.component';
 import {SystemStatistics} from '../../entities/system-statistics.entity';
 import {UIService} from '../../services/ui.service';
 import {LoginAccessReason} from '../project-login/logout-reason.enum';
@@ -20,13 +20,14 @@ import {
 import {BlockLayout} from '../../../cms/cms-layouts/block-layout/block-layout.component';
 import {TextComponent} from '../../../cms/cms-components/text/text.component';
 import {ContentService} from '../../../cms/services/content.service';
-import {CmsContentMetadata} from '../../../cms/entities/cms-content-metadata.entity';
 import {TreeService} from '../../services/tree.service';
 import {CmsContentContextRef} from '../../../cms/entities/cms-content-context-ref.entity';
 import {SubscriptionManagerService} from '../../services/subscription-manager.service';
 import {Tree} from '../../entities/tree.entity';
-import { forkJoin } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import {forkJoin} from 'rxjs';
+import {tap} from 'rxjs/operators';
+import {CmsContent} from '../../../cms/entities/cms-content.entity';
+import {UserContentMetadata} from '../../../cms/entities/user-content-metadata.entity';
 
 @Component({
   selector: 'ut-home',
@@ -47,6 +48,27 @@ export class HomeComponent extends AbstractComponent implements OnInit, OnDestro
    * Statistics regarding the system overall.
    */
   public statistics: SystemStatistics;
+
+  public testContent: CmsContent = CmsContent.fromObject({
+    historyId: null,
+    saved: '2020-10-19T09:26:55',
+    content: {
+      version: 1,
+      elements: [
+        {
+          name: 'TwoColumnLayout',
+          slotLeft: {
+            name: 'TextComponent',
+            text: 'left'
+          },
+          slotRight: {
+            name: 'TextComponent',
+            text: 'right'
+          }
+        }
+      ]
+    }
+  }, this.envService);
 
   public testContentConfig: CmsContentConfig = new CmsContentConfig(
     [new CmsLayoutConfig(
@@ -95,7 +117,7 @@ export class HomeComponent extends AbstractComponent implements OnInit, OnDestro
       return;
     }
 
-    this.contentService.loadCmsUserHistory('tree-', (history: Array<CmsContentMetadata>) => {
+    this.contentService.loadCmsUserHistory('tree-', (history: Array<UserContentMetadata>) => {
 
       let contextRefs = history
         .map(value => this.contentService.getContentContextRef(value.contentId).for(value));

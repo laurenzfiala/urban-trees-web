@@ -22,7 +22,7 @@ export class PhenologyDatasetFrontend extends PhenologyDataset {
   /**
    * Apply the frontend values to the backend object
    * and return the downcast backend object.
-   * @param string date format
+   * @param dateFormat string date format
    */
   public apply(dateFormat: string): PhenologyDataset {
     this.observationDate = moment(this.uiObservationDate).utc().format(dateFormat);

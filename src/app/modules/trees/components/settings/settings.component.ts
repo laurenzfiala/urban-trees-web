@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {TranslateService} from '@ngx-translate/core';
 import {EnvironmentService} from '../../../shared/services/environment.service';
 import {User} from '../../entities/user.entity';
-import {AbstractComponent} from '../abstract.component';
+import {AbstractComponent} from '../../../shared/components/abstract.component';
 import {HttpErrorResponse} from '@angular/common/http';
 import {ApiError} from '../../../shared/entities/api-error.entity';
 import {UserService} from '../../services/user.service';

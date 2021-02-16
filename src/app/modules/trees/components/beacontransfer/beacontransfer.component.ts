@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {AbstractComponent} from '../abstract.component';
+import {AbstractComponent} from '../../../shared/components/abstract.component';
 import {Beacon} from '../../entities/beacon.entity';
 import {BeaconService} from '../../services/beacon.service';
 import {BeaconFrontend} from '../../entities/beacon-frontend.entity';

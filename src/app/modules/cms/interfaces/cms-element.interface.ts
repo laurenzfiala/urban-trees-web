@@ -1,7 +1,6 @@
-import {CmsValidationResult} from '../entities/cms-validation-result.entities';
-import {EventEmitter} from '@angular/core';
 import {Observable} from 'rxjs';
 import {ElementType} from '../enums/cms-element-type.enum';
+import {CmsValidationResults} from '../entities/cms-validation-results.entity';
 
 /**
  * Serves as the base interface for all CMS layouts and components.
@@ -36,10 +35,10 @@ export interface CmsElement {
   /**
    * Check validity of the element (and its children).
    * This does not trigger any visual output by the corresponding elements.
-   * For user-interaction, use CmsValidationResult#
-   * @return validation results
+   * For user-interaction, use CmsValidationResult#highlight().
+   * @param results use this to add more results
    */
-  validate(): Array<CmsValidationResult>;
+  validate(results: CmsValidationResults): void;
 
   /**
    * The returned observable is triggered every time the element

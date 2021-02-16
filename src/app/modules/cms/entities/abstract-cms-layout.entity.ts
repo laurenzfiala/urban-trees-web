@@ -1,7 +1,6 @@
 import {CmsComponent} from '../interfaces/cms-component.interface';
 import {CmsLayout} from '../interfaces/cms-layout.interface';
 import {CmsLayoutSlot} from './layout-slot.entity';
-import {CmsValidationResult} from './cms-validation-result.entities';
 import {
   AfterViewInit,
   ChangeDetectorRef,
@@ -15,10 +14,11 @@ import {SerializedCmsElement} from './serialized-cms-element.entity';
 import {ToolbarService} from '../services/toolbar.service';
 import {ContentService} from '../services/content.service';
 import {CmsElement} from '../interfaces/cms-element.interface';
-import {AbstractComponent} from '../../trees/components/abstract.component';
+import {AbstractComponent} from '../../shared/components/abstract.component';
 import {Observable, Subject} from 'rxjs';
 import {ElementType} from '../enums/cms-element-type.enum';
 import {ViewMode} from '../enums/cms-layout-view-mode.enum';
+import {CmsValidationResults} from './cms-validation-results.entity';
 
 /**
  * Abstract CMS layout with important logic and helpers for layouts.
@@ -73,18 +73,48 @@ export abstract class AbstractCmsLayout
   }
 
   /**
-   * Fill the given slot with a new instance of serializedElement.
-   * @param serializedElement SerializedCmsElement (can be falsy)
-   * @param slotPromise Template location to fill (promise). TODO doc
-   * @param clear default = true; set to false to append to slot-ViewContainerRef
-   * @return The (future) initialized CmsComponent instance.
+   * Fill the given slot with new instance(s) of serializedElement.
+   * The slot is cleared before appending the given serializedElements.
+   * @param slotGetter function that returns the slot as ViewContainerRef
+   * @param serializedElements elements to deserialize into the given slot
+   * @returns Promise, resolved when all given serilaized elements are
+   *          deserialized and added to the slot.
    */
-  protected async fillSlot(serializedElement: SerializedCmsElement,
-                           slotGetter: () => ViewContainerRef,
-                           clear: boolean = true): Promise<CmsElement> {
+  protected async fillSlotMultiple(slotGetter: () => ViewContainerRef,
+                                   ...serializedElements: Array<SerializedCmsElement>): Promise<Array<CmsElement>> {
+
+    if (!serializedElements) {
+      return Promise.reject();
+    }
+
+    await this.onAfterViewInit();
+
+    const slot = slotGetter();
+    slot.clear();
+
+    const promises = [];
+    for (let serializedElement of serializedElements) {
+      promises.push(this.fillSlot(slotGetter, serializedElement));
+    }
+
+    return Promise.all(promises);
+
+  }
+
+  /**
+   * Fill the given slot with new instance of serializedElement.
+   * @param slotGetter function that returns the slot as ViewContainerRef
+   * @param serializedElement element to deserialize into the given slot
+   * @param clear pass true to clear the slot before filling it (default false)
+   * @returns Promise, resolved when all given serilaized elements are
+   *          deserialized and added to the slot.
+   */
+  protected async fillSlot(slotGetter: () => ViewContainerRef,
+                           serializedElement: SerializedCmsElement,
+                           clear: boolean = false): Promise<CmsElement> {
 
     if (!serializedElement) {
-      return null;
+      return Promise.reject();
     }
 
     await this.onAfterViewInit();
@@ -98,8 +128,8 @@ export abstract class AbstractCmsLayout
     const componentRef = slot.createComponent(componentFactory);
     const element = <CmsElement> componentRef.instance;
 
+    element.deserialize(serializedElement);
     this.contentService.elementAdd(element);
-    element.deserialize(serializedElement.getData());
 
     return Promise.resolve(element);
 
@@ -117,13 +147,20 @@ export abstract class AbstractCmsLayout
     return this.onChangedSubject.asObservable();
   }
 
+  /**
+   * Returns true if the service signals that this
+   * layout should display itself in layout mode.
+   */
+  public isEditLayout(): boolean {
+    return this.contentService.viewMode === ViewMode.EDIT_LAYOUT;
+  }
+
   // --- CmsElement / CmsLayout ---
   onElementAdd(slot: CmsLayoutSlot, component: CmsComponent): void {}
   onElementRemove(component: CmsComponent): void {}
   abstract getName(): string;
   abstract serialize(): any;
   abstract deserialize(data: any): void;
-  abstract validate(): Array<CmsValidationResult>;
-  abstract view(mode: ViewMode): void;
+  abstract validate(results: CmsValidationResults): void;
 
 }

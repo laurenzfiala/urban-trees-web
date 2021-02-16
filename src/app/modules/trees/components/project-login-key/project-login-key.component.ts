@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {AuthService} from '../../../shared/services/auth.service';
-import {AbstractComponent} from '../abstract.component';
+import {AbstractComponent} from '../../../shared/components/abstract.component';
 import {ActivatedRoute, Router} from '@angular/router';
 import {TokenAuthenticationToken} from '../../entities/auth-token.entity';
 

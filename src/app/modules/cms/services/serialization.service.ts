@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {SerializedCmsContent} from '../entities/serialized-cms-content.entity';
 import {CmsElement} from '../interfaces/cms-element.interface';
 import {SerializedCmsElement} from '../entities/serialized-cms-element.entity';
+import {CmsContent} from '../entities/cms-content.entity';
 
 /**
  * Handles serialization and deserialization of cms content
@@ -20,18 +21,32 @@ export class SerializationService {
   constructor() { }
 
   /**
+   * Serializes the given CMS element, null-safe.
+   * @param elements to serialize
+   * @return single serialized element or null if element is falsy
+   */
+  public serializeElement(element: CmsElement): SerializedCmsElement {
+
+    if (!element) {
+      return null;
+    }
+    return new SerializedCmsElement(element.getName(), element.serialize());
+
+  }
+
+  /**
    * Serializes the given CMS element(s), null-safe.
    * @param elements to serialize
-   * @return serialized elements
+   * @return serialized elements array
    */
-  public serializeElement(...elements: Array<CmsElement>): Array<SerializedCmsElement> {
+  public serializeElements(...elements: Array<CmsElement>): Array<SerializedCmsElement> {
 
     const serializedElements = new Array<SerializedCmsElement>();
     elements.forEach(element => {
       if (!element) {
         return;
       }
-      serializedElements.push(new SerializedCmsElement(element.getName(), element.serialize()));
+      serializedElements.push(this.serializeElement(element));
     });
 
     return serializedElements;
@@ -52,15 +67,23 @@ export class SerializationService {
   /**
    * Serialize all given CmsElements into a single SerializedCmsContent
    * object for submission to the backend.
+   * @param base content of which the given elements are based
    * @param serializedElements CmsElements retrieved through CmsElement#serialize()
    * @see #serializeElement(Array<CmsElement>)
    */
-  public serializeContent(...serializedElements: Array<CmsElement>): SerializedCmsContent {
-    return new SerializedCmsContent(
-      SerializationService.VERSION_CODE,
+  public serializeContent(base: CmsContent, ...serializedElements: Array<CmsElement>): CmsContent {
+
+    return new CmsContent(
+      base?.historyId,
       new Date(),
-      this.serializeElement(...serializedElements)
+      undefined,
+      undefined,
+      new SerializedCmsContent(
+        SerializationService.VERSION_CODE,
+        this.serializeElements(...serializedElements)
+      )
     );
+
   }
 
   /**

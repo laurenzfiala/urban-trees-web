@@ -3,7 +3,7 @@ import {BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
 import {TreeService} from '../../../services/tree.service';
 import {AdminService} from '../../../services/admin/admin.service';
 import {City} from '../../../entities/city.entity';
-import {AbstractComponent} from '../../abstract.component';
+import {AbstractComponent} from '../../../../shared/components/abstract.component';
 import {HttpErrorResponse} from '@angular/common/http';
 import {ApiError} from '../../../../shared/entities/api-error.entity';
 import {MapMarker} from '../../../interfaces/map-marker.interface';

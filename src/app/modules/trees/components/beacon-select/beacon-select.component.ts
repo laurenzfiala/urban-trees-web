@@ -1,5 +1,5 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
-import {AbstractComponent} from '../abstract.component';
+import {AbstractComponent} from '../../../shared/components/abstract.component';
 import {TreeFrontend} from '../../entities/tree-frontend.entity';
 import {Log} from '../../../shared/services/log.service';
 import {BeaconFrontend} from '../../entities/beacon-frontend.entity';

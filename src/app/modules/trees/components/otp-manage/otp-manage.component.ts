@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {AbstractComponent} from '../abstract.component';
+import {AbstractComponent} from '../../../shared/components/abstract.component';
 import {AccountService} from '../../services/account.service';
 import {EnvironmentService} from '../../../shared/services/environment.service';
 import {AuthService} from '../../../shared/services/auth.service';

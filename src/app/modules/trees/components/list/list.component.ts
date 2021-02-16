@@ -146,7 +146,7 @@ export class ListComponent extends LoadingStatusComponent implements OnInit, OnD
         }
         d.add(-1, 'year');
       }
-      return 'more_than_5_years_ago';
+      timeCategory = 'more_than_5_years_ago';
     }
     return 'time.category.' + timeCategory;
 

@@ -10,24 +10,15 @@ export class SerializedCmsElement {
    */
   private readonly name: string;
 
-  /**
-   * Element's content-data; previously
-   * serialized by that element.
-   */
-  private readonly data: any;
+  readonly [key: string]: any;
 
-  constructor(name: string,
-              data: any) {
+  constructor(name: string, dataObj: any) {
     this.name = name;
-    this.data = data;
+    Object.assign(this, dataObj);
   }
 
   public getName(): string {
     return this.name;
-  }
-
-  public getData(): any {
-    return this.data;
   }
 
   /**
@@ -44,7 +35,7 @@ export class SerializedCmsElement {
 
     return new SerializedCmsElement(
       o.name,
-      o.data
+      o
     );
 
   }

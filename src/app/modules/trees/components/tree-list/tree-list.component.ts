@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {AbstractComponent} from '../abstract.component';
+import {AbstractComponent} from '../../../shared/components/abstract.component';
 import {Tree} from '../../entities/tree.entity';
 import {TreeFrontend} from '../../entities/tree-frontend.entity';
 import {Log} from '../../../shared/services/log.service';

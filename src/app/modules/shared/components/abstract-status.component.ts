@@ -5,7 +5,7 @@
  * @author Laurenz Fiala
  * @since 2018/04/23
  */
-import {ApiError} from '../../shared/entities/api-error.entity';
+import {ApiError} from '../entities/api-error.entity';
 import {BehaviorSubject, Observable, Subject} from 'rxjs';
 
 export abstract class AbstractStatusComponent {

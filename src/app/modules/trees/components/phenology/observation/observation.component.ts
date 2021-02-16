@@ -2,7 +2,7 @@ import {Component, OnDestroy, OnInit} from '@angular/core';
 import {PhenologyObservationService} from '../../../services/phenology/observation/phenology-observation.service';
 import {SubscriptionManagerService} from '../../../services/subscription-manager.service';
 import {Log} from '../../../../shared/services/log.service';
-import {AbstractComponent} from '../../abstract.component';
+import {AbstractComponent} from '../../../../shared/components/abstract.component';
 import {TreeFrontend} from '../../../entities/tree-frontend.entity';
 import {TreeService} from '../../../services/tree.service';
 import {Tree} from '../../../entities/tree.entity';

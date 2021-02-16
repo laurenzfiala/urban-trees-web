@@ -1,20 +1,21 @@
-import {Injectable, Type} from '@angular/core';
+import {ChangeDetectorRef, Injectable, Type} from '@angular/core';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {ApiError} from '../../shared/entities/api-error.entity';
 import {AbstractService} from '../../shared/services/abstract.service';
 import {Log} from '../../shared/services/log.service';
 import {EnvironmentService} from '../../shared/services/environment.service';
-import {SerializedCmsContent} from '../entities/serialized-cms-content.entity';
 import {CmsElementMap} from '../entities/cms-element-map.entity';
 import {CmsElement} from '../interfaces/cms-element.interface';
 import {CmsComponent} from '../interfaces/cms-component.interface';
 import {ElementType} from '../enums/cms-element-type.enum';
 import {CmsLayout} from '../interfaces/cms-layout.interface';
 import {Subject} from 'rxjs';
-import {CmsContentMetadata} from '../entities/cms-content-metadata.entity';
 import {AuthService} from '../../shared/services/auth.service';
 import {CmsContentContextRef} from '../entities/cms-content-context-ref.entity';
-import {StoredSerializedCmsContent} from '../entities/stored-serialized-cms-content.entity';
+import {CmsContent} from '../entities/cms-content.entity';
+import {UserContent} from '../entities/user-content.entity';
+import {UserContentMetadata} from '../entities/user-content-metadata.entity';
+import {ViewMode} from '../enums/cms-layout-view-mode.enum';
 
 /**
  * Handles loading and saving of CMS content.
@@ -44,6 +45,11 @@ export class ContentService extends AbstractService {
    */
   private elementAddSubject: Subject<CmsElement> = new Subject<CmsElement>();
 
+  /**
+   * How to display the associated content.
+   */
+  public viewMode: ViewMode = ViewMode.CONTENT;
+
   constructor(private authService: AuthService,
               private http: HttpClient,
               private envService: EnvironmentService) {
@@ -51,19 +57,21 @@ export class ContentService extends AbstractService {
   }
 
   /**
-   * Load a content by id from the backend.
+   * Load contents by id and language from the backend.
    * @param contentId content identifier
+   * @param contentLang content language to receive
    * @param successCallback called upon successful retrieval of the content
    * @param errorCallback called upon failed retrieval of the content
    */
   public loadContent(contentId: string,
-                     successCallback: (content: SerializedCmsContent) => void,
+                     contentLang: string,
+                     successCallback: (content: Array<UserContent>) => void,
                      errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void): void {
 
     ContentService.LOG.debug('Loading content with id ' + contentId + '...');
-    this.http.get<SerializedCmsContent>(this.envService.endpoints.loadContent(contentId))
-      .map(c => SerializedCmsContent.fromObject(c, this.envService))
-      .subscribe((content: SerializedCmsContent) => {
+    this.http.get<Array<UserContent>>(this.envService.endpoints.loadContent(contentId, contentLang))
+      .map(contents => contents && contents.map(c => UserContent.fromObject(c, this.envService)))
+      .subscribe((content: Array<UserContent>) => {
         ContentService.LOG.debug('Loaded content with id ' + contentId + ' successfully.');
         successCallback(content);
       }, (e: any) => {
@@ -76,14 +84,14 @@ export class ContentService extends AbstractService {
   }
 
   public loadCmsUserHistory(contentIdPrefix: string,
-                            successCallback: (history: Array<CmsContentMetadata>) => void,
+                            successCallback: (history: Array<UserContentMetadata>) => void,
                             errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void): void {
 
     ContentService.LOG.debug('Loading user content history...');
 
-    this.http.get<Array<CmsContentMetadata>>(this.envService.endpoints.loadContentUserHistory(this.authService.getUserId(), contentIdPrefix))
-      .map(list => list && list.map(h => CmsContentMetadata.fromObject(h, this.envService)))
-      .subscribe((h: Array<CmsContentMetadata>) => {
+    this.http.get<Array<UserContentMetadata>>(this.envService.endpoints.loadContentUserHistory(this.authService.getUserId(), contentIdPrefix))
+      .map(list => list && list.map(h => UserContentMetadata.fromObject(h, this.envService)))
+      .subscribe((h: Array<UserContentMetadata>) => {
         ContentService.LOG.debug('Loaded user content history successfully.');
         successCallback(h);
       }, (e: any) => {
@@ -98,19 +106,28 @@ export class ContentService extends AbstractService {
   /**
    * Save the given content for the given content id on the backend.
    * @param contentId content identifier
+   * @param contentOrder content order (determines ordering inside content id group)
+   * @param contentLang language id of the content
+   * @param isDraft whether the given content sould be saved as draft or published
    * @param content serialized content to persist
    * @param successCallback called upon successful retrieval of the content
    * @param errorCallback called upon failed retrieval of the content
    */
   public saveContent(contentId: string,
-                     content: SerializedCmsContent,
-                     successCallback: (content: StoredSerializedCmsContent) => void,
+                     contentOrder: number,
+                     contentLang: string,
+                     isDraft: boolean,
+                     content: CmsContent,
+                     successCallback: (content: CmsContent) => void,
                      errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void): void {
 
+    const url = this.envService.endpoints.saveContent(contentId, contentOrder, contentLang, isDraft);
+
     ContentService.LOG.debug('Saving content with id ' + contentId + '...');
-    this.http.post<StoredSerializedCmsContent>(this.envService.endpoints.saveContent(contentId), content)
-      .map(c => StoredSerializedCmsContent.fromObject(c, this.envService))
-      .subscribe((c: StoredSerializedCmsContent) => {
+
+    this.http.post<CmsContent>(url, content.toJSONObject(this.envService))
+      .map(c => CmsContent.fromObject(c, this.envService))
+      .subscribe((c: CmsContent) => {
         ContentService.LOG.debug('Saved content with id ' + contentId + ' successfully.');
         successCallback(c);
       }, (e: any) => {

@@ -1,28 +1,21 @@
 <div class="content-wrapper">
 
-  <div class="toolbar-wrapper">
+  <div *ngIf="isEditContent()"
+       class="toolbar-wrapper">
 
     <div class="toolbar justify-content-between flex-wrap-reverse">
       <div class="toolbar-group">
         <button
           class="primary"
-          [tooltip]="'toolbar.publish_tooltip' + (canUserPublish() ? '' : '_review') | translate"
+          [tooltip]="'toolbar.publish_tooltip' | translate"
           container="body">
           {{'toolbar.publish' | translate}}
         </button>
       </div>
       <div class="d-flex flex-row justify-content-end flex-grow-1">
         <div class="toolbar-align align-items-center save-status px-2">
-          <ng-container *ngIf="hasStatus(StatusKey.SAVE, StatusValue.SUCCESSFUL)">
-            {{'toolbar.save.last_saved_moments_ago' | translate}}
-            <!-- TODO -->
-          </ng-container>
-          <ng-container *ngIf="hasStatus(StatusKey.SAVE, StatusValue.IN_PROGRESS)">
-            {{'toolbar.save.in_progress' | translate}} <i class="i i-xs ml-1 i-dark i-save"></i>
-          </ng-container>
-          <ng-container *ngIf="hasStatus(StatusKey.SAVE, StatusValue.FAILED)">
-            <span class="text-danger">{{'toolbar.save.failed' | translate}}</span> <i class="ml-1  flex-shrink-0 i i-xxs i-warning-danger"></i>
-          </ng-container>
+          <ut-content-save-status [status]="getStatusObservable(StatusKey.SAVE)"
+                                  [saved]="onSaved()"></ut-content-save-status>
         </div>
         <div class="toolbar-separator"></div>
         <div class="toolbar-align toolbar-close"
@@ -72,10 +65,13 @@
 
   </div>
 
-  <ng-template #contentSlot></ng-template>
-
-  <div class="cms-drop-zone">
-    Add something here
+  <div class="cms-content"
+       [ngClass]="{'cms-viewmode-layout-edit': isEditLayout(), 'cms-viewmode-content-edit': isEditContent()}">
+    <ng-template #contentSlot></ng-template>
   </div>
+
+  <!--<div class="cms-drop-zone">
+    Add something here
+  </div>-->
 
 </div>

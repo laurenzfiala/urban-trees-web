@@ -12,7 +12,7 @@ import Style from 'ol/style/style';
 import Icon from 'ol/style/icon';
 import Feature from 'ol/feature';
 import Point from 'ol/geom/point';
-import {AbstractComponent} from '../abstract.component';
+import {AbstractComponent} from '../../../shared/components/abstract.component';
 import OlProj from 'ol/proj';
 import OlXYZ from 'ol/source/xyz';
 import OlTileLayer from 'ol/layer/tile';

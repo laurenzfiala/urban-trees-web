@@ -1,22 +1,17 @@
 /**
- * Holds meta-information a backend CMS content entry.
+ * Holds information on a backend CMS content entry
+ * (including its actual content).
  */
 import * as moment from 'moment';
 import {EnvironmentService} from '../../shared/services/environment.service';
 import {UserIdentity} from '../../trees/entities/user-identity.entity';
 import {ContentStatus} from '../enums/cms-content-status.enum';
+import {SerializedCmsContent} from './serialized-cms-content.entity';
+import {UserContentMetadata} from './user-content-metadata.entity';
 
-export class CmsContentMetadata {
+export class UserContent extends UserContentMetadata {
 
-  public readonly id: number;
-  public readonly contentId: string;
-  public readonly contentTitle: string;
-  public readonly contentLanguage: string;
-  public readonly isDraft: boolean;
-  public readonly saveDate: Date;
-  public readonly user: UserIdentity;
-  public readonly approveDate: Date;
-  public readonly approveUser: UserIdentity;
+  public readonly content: SerializedCmsContent;
 
   constructor(id: number,
               contentId: string,
@@ -26,16 +21,10 @@ export class CmsContentMetadata {
               saveDate: Date,
               user: UserIdentity,
               approveDate: Date,
-              approveUser: UserIdentity) {
-    this.id = id;
-    this.contentId = contentId;
-    this.contentTitle = contentTitle;
-    this.contentLanguage = contentLanguage;
-    this.isDraft = isDraft;
-    this.saveDate = saveDate;
-    this.user = user;
-    this.approveDate = approveDate;
-    this.approveUser = approveUser;
+              approveUser: UserIdentity,
+              content: SerializedCmsContent) {
+    super(id, contentId, contentTitle, contentLanguage, isDraft, saveDate, user, approveDate, approveUser);
+    this.content = content;
   }
 
   /**
@@ -67,13 +56,13 @@ export class CmsContentMetadata {
    * @return instance of CmsContentMetadata with set members (if object-shape was correct);
    *         or null if object is falsy
    */
-  public static fromObject(o: any, envService: EnvironmentService): CmsContentMetadata {
+  public static fromObject(o: any, envService: EnvironmentService): UserContentMetadata {
 
     if (!o) {
       return null;
     }
 
-    return new CmsContentMetadata(
+    return new UserContent(
       o.id,
       o.contentId,
       o.contentTitle,
@@ -82,8 +71,8 @@ export class CmsContentMetadata {
       o.saveDate && moment.utc(o.saveDate, envService.outputDateFormat).toDate(),
       o.user && UserIdentity.fromObject(o.user),
       o.approveDate && moment.utc(o.approveDate, envService.outputDateFormat).toDate(),
-      o.approveUser && UserIdentity.fromObject(o.approveUser)
-      //(o.elements as Array<SerializedCmsElement>).map(e => SerializedCmsElement.fromObject(e)) TODO use for cms-content entity
+      o.approveUser && UserIdentity.fromObject(o.approveUser),
+      o.content && SerializedCmsContent.fromObject(o.content, envService)
     );
 
   }

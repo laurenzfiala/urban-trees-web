@@ -1,7 +1,7 @@
 import {Component, ElementRef, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {User} from '../../../entities/user.entity';
 import {AdminService} from '../../../services/admin/admin.service';
-import {AbstractComponent} from '../../abstract.component';
+import {AbstractComponent} from '../../../../shared/components/abstract.component';
 import {HttpErrorResponse} from '@angular/common/http';
 import {ApiError} from '../../../../shared/entities/api-error.entity';
 import {BsModalRef} from 'ngx-bootstrap/modal';

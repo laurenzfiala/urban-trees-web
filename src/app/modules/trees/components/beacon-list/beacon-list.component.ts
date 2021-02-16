@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {BeaconData} from '../../entities/beacon-data.entity';
-import {AbstractComponent} from '../abstract.component';
+import {AbstractComponent} from '../../../shared/components/abstract.component';
 import {TreeService} from '../../services/tree.service';
 import {BeaconSettings} from '../../entities/beacon-settings.entity';
 import {BeaconFrontend} from '../../entities/beacon-frontend.entity';

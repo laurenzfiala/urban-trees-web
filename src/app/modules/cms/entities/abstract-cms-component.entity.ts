@@ -1,11 +1,13 @@
 import {CmsComponent} from '../interfaces/cms-component.interface';
-import {CmsValidationResult} from './cms-validation-result.entities';
 import {Directive, OnDestroy, OnInit} from '@angular/core';
-import {AbstractComponent} from '../../trees/components/abstract.component';
+import {AbstractComponent} from '../../shared/components/abstract.component';
 import {ToolbarElement, ToolbarSection} from './toolbar.entity';
 import {Observable, Subject} from 'rxjs';
 import {ElementType} from '../enums/cms-element-type.enum';
 import {ToolbarService} from '../services/toolbar.service';
+import {CmsValidationResults} from './cms-validation-results.entity';
+import {ViewMode} from '../enums/cms-layout-view-mode.enum';
+import {ContentService} from '../services/content.service';
 
 /**
  * Abstract CMS component with important logic and helpers for components.
@@ -22,6 +24,8 @@ import {ToolbarService} from '../services/toolbar.service';
 export abstract class AbstractCmsComponent
   extends AbstractComponent
   implements CmsComponent, OnInit, OnDestroy {
+
+  protected abstract contentService: ContentService;
 
   private onFocusSubject: Subject<CmsComponent>;
   private onFocusOutSubject: Subject<CmsComponent>;
@@ -72,11 +76,19 @@ export abstract class AbstractCmsComponent
     return ElementType.COMPONENT;
   }
 
+  /**
+   * Returns true if the service signals that this
+   * component should display itself in edit mode.
+   */
+  public isEditContent(): boolean {
+    return this.contentService.viewMode === ViewMode.EDIT_CONTENT;
+  }
+
   // --- CmsElement / CmsComponent ---
   abstract serialize(): any;
   abstract deserialize(data: any): void;
   abstract getName(): string;
-  abstract validate(): Array<CmsValidationResult>;
+  abstract validate(results: CmsValidationResults): void;
   abstract getToolbarContextual(): ToolbarSection<ToolbarElement>;
 
 }

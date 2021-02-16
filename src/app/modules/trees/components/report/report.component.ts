@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {Report} from '../../entities/report.entity';
-import {AbstractComponent} from '../abstract.component';
+import {AbstractComponent} from '../../../shared/components/abstract.component';
 import {BeaconFrontend} from '../../entities/beacon-frontend.entity';
 import {UserService} from '../../services/user.service';
 

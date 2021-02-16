@@ -86,7 +86,8 @@ export const environment = {
 
     // CMS
     loadContent:                      '/content/{contentId}',
-    saveContent:                      '/content/{contentId}',
+    saveContentDraft:                 '/content/{contentId}/{contentOrder}/{contentLang}/draft',
+    publishContent:                   '/content/{contentId}/{contentOrder}/{contentLang}',
     loadContentUserHistory:           '/user/{userId}/content?prefix={prefix}',
     loadContentUserHistoryWithPrefix: '/user/{userId}/content?prefix={prefix}'
   },

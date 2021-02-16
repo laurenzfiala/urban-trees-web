@@ -1,5 +1,5 @@
 import {Component, EventEmitter, HostListener, OnInit, Output} from '@angular/core';
-import {AbstractComponent} from '../abstract.component';
+import {AbstractComponent} from '../../../shared/components/abstract.component';
 import {AuthService} from '../../../shared/services/auth.service';
 import {UserService} from '../../services/user.service';
 import {UserRewardService} from '../../services/user-reward.service';

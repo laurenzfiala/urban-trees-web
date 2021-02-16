@@ -593,10 +593,11 @@ class EnvironmentEndpoints {
 
   }
 
-  public loadContent(contentId: string): string {
+  public loadContent(contentId: string, contentLang: string): string {
 
     let replacements: any[] = [
-      { placeholder: 'contentId', replacement: contentId }
+      { placeholder: 'contentId', replacement: contentId },
+      { placeholder: 'contentLang', replacement: contentLang }
     ];
 
     return this.prependCommonPath(
@@ -608,15 +609,27 @@ class EnvironmentEndpoints {
 
   }
 
-  public saveContent(contentId: string): string {
+  public saveContent(contentId: string,
+                     contentOrder: number,
+                     contentLang: string,
+                     isDraft: boolean = true): string {
+
+    let url;
+    if (isDraft) {
+      url = this.context.saveContentDraft;
+    } else {
+      url = this.context.publishContent;
+    }
 
     let replacements: any[] = [
-      { placeholder: 'contentId', replacement: contentId }
+      { placeholder: 'contentId', replacement: contentId },
+      { placeholder: 'contentOrder', replacement: contentOrder },
+      { placeholder: 'contentLang', replacement: contentLang }
     ];
 
     return this.prependCommonPath(
       this.replaceParams(
-        this.context.saveContent,
+        url,
         replacements
       )
     );

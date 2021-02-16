@@ -1,5 +1,5 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
-import {AbstractComponent} from '../abstract.component';
+import {AbstractComponent} from '../../../shared/components/abstract.component';
 import {ActivatedRoute} from '@angular/router';
 import {TreeService} from '../../services/tree.service';
 import {Tree} from '../../entities/tree.entity';

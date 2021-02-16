@@ -2,14 +2,22 @@
   "toolbar": {
     "publish": "Publish",
     "publish_tooltip": "Save & publish this content",
-    "publish_tooltip_review": "Save & submit this content for review",
     "save": {
       "in_progress": "Saving",
       "last_saved_moments_ago": "Draft saved a moment ago",
+      "last_saved_less_than_minute_ago": "Draft saved less than a minute ago",
       "last_saved_minute_ago": "Last saved {{minutes}} minute ago",
       "last_saved_minutes_ago": "Last saved {{minutes}} minutes ago",
+      "last_saved_more_than_hour_ago": "Last saved more than an hour ago",
       "failed": "Could not save draft"
     },
     "close": "Save Draft & Close"
+  },
+  "errors": {
+    "components": {
+      "text": {
+        "empty": "Text may not be empty"
+      }
+    }
   }
 }

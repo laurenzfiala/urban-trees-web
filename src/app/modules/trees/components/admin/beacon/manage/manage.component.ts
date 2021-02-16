@@ -4,7 +4,7 @@ import {
   BsModalRef,
   BsModalService
 } from 'ngx-bootstrap/modal';
-import {AbstractComponent} from '../../../abstract.component';
+import {AbstractComponent} from '../../../../../shared/components/abstract.component';
 import {AdminService} from '../../../../services/admin/admin.service';
 import {MapMarker} from '../../../../interfaces/map-marker.interface';
 import {City} from '../../../../entities/city.entity';

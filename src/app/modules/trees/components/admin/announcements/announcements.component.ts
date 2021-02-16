@@ -1,7 +1,7 @@
 import {Component, OnInit, TemplateRef} from '@angular/core';
 import {AnnouncementService} from '../../../services/announcement.service';
 import {Announcement} from '../../../entities/announcement.entity';
-import {AbstractComponent} from '../../abstract.component';
+import {AbstractComponent} from '../../../../shared/components/abstract.component';
 import {BsModalRef} from 'ngx-bootstrap/modal';
 import {BsModalService} from 'ngx-bootstrap/modal';
 import {HttpErrorResponse} from '@angular/common/http';
