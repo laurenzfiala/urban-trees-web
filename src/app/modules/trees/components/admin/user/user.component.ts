@@ -8,6 +8,7 @@ import {BsModalRef} from 'ngx-bootstrap/modal';
 import {BsModalService} from 'ngx-bootstrap/modal';
 import {Role} from '../../../entities/role.entity';
 import {EnvironmentService} from '../../../../shared/services/environment.service';
+import {DomSanitizer} from '@angular/platform-browser';
 
 @Component({
   selector: 'ut-admin-user',
@@ -20,8 +21,10 @@ export class AdminUserComponent extends AbstractComponent implements OnInit {
   public StatusValue = StatusValue;
 
   private newUserModalRef: BsModalRef;
-  private newUser: User;
-  private newUserRoles: Array<Role>;
+  public addUserMultiple: boolean = false;
+  public newUser: User;
+  public newUserUsernames: Array<string> = new Array<string>();
+  public newUserRoles: Array<Role>;
 
   /**
    * Current user search input.
@@ -54,7 +57,8 @@ export class AdminUserComponent extends AbstractComponent implements OnInit {
 
   constructor(private adminService: AdminService,
               private modalService: BsModalService,
-              private envService: EnvironmentService) {
+              private envService: EnvironmentService,
+              private sanitizer: DomSanitizer) {
     super();
   }
 
@@ -145,22 +149,43 @@ export class AdminUserComponent extends AbstractComponent implements OnInit {
     this.newUserModalRef.hide();
   }
 
-  public addUser(): void {
+  public addUsers(): void {
 
     this.newUser.roles = this.newUserRoles.filter(r => r.checked);
+    const usernames = this.newUserUsernames.slice();
 
     this.setStatus(StatusKey.NEW_USER, StatusValue.IN_PROGRESS);
-    this.adminService.addUser(this.newUser, () => {
-      this.setStatus(StatusKey.NEW_USER, StatusValue.SUCCESSFUL);
-      this.loadUsers();
+    this.adminService.addUsers(this.newUser, usernames, (users: Array<User>) => {
+      const csvPayload = users.map(u => u.username + ',' + this.envService.endpoints.loginKeyUrl(u.secureLoginKey)).join('\n');
+      const csvBlob = new Blob([csvPayload], { type: 'text/csv' });
+      const csvURL = this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(csvBlob));
+      this.setStatus(StatusKey.NEW_USER, StatusValue.SUCCESSFUL, csvURL);
+      // TODO update users
     }, (error: HttpErrorResponse, apiError: ApiError) => {
-      this.setStatus(StatusKey.NEW_USER, StatusValue.FAILED);
+      this.setStatus(StatusKey.NEW_USER, StatusValue.FAILED, apiError);
     });
 
   }
 
-  public isNewUserUsernameValid(): boolean {
-    return this.newUser.username && this.newUser.username.length >= this.envService.security.minUsernameLength;
+  /**
+   * Check if the given usernames are syntactically valid or not.
+   * This does not check for e.g. existing usernames.
+   * @param usernames usernames to check
+   * @returns false if any of the usernames fail; true otherwise
+   */
+  private isUsernamesValid(...usernames: Array<string>): boolean {
+
+    for (let username of usernames) {
+      if (!username || /\s/g.test(username) || username.length < this.envService.security.minUsernameLength) {
+        return false;
+      }
+    }
+    return true;
+
+  }
+
+  public isNewUserUsernamesValid(): boolean {
+    return this.newUserUsernames.length > 0 && this.isUsernamesValid(...this.newUserUsernames);
   }
 
   /**
@@ -175,8 +200,8 @@ export class AdminUserComponent extends AbstractComponent implements OnInit {
     }
 
     this.displayUsers = this.availableUsers.filter((user: User) => {
-      return user.id === Number.parseInt(searchInput) || user.username.indexOf(searchInput) !== -1;
-    })
+      return user.id === Number.parseInt(searchInput, 10) || user.username.indexOf(searchInput) !== -1;
+    });
 
   }
 
@@ -188,7 +213,7 @@ export class AdminUserComponent extends AbstractComponent implements OnInit {
     this.setStatus(StatusKey.LOGIN_LINK, StatusValue.IN_PROGRESS);
     this.adminService.requestLoginKey(user.id, (token: string) => {
       this.setStatus(StatusKey.LOGIN_LINK, StatusValue.SUCCESSFUL);
-      user.secureLoginLink = this.envService.endpoints.loginKeyUrl(token);
+      user.secureLoginKey = token;
     }, (error: HttpErrorResponse, apiError: ApiError) => {
       this.setStatus(StatusKey.LOGIN_LINK, StatusValue.FAILED);
     });
@@ -212,7 +237,7 @@ export class AdminUserComponent extends AbstractComponent implements OnInit {
    */
   public modifyRole(user: User, toggleRole: Role): void {
 
-    let isAdd = !user.roles.some(r => toggleRole.id == r.id);
+    let isAdd = !user.roles.some(r => toggleRole.id === r.id);
 
     this.setStatus(StatusKey.MODIFY_ROLE, StatusValue.IN_PROGRESS);
 
@@ -228,7 +253,7 @@ export class AdminUserComponent extends AbstractComponent implements OnInit {
     } else {
       this.adminService.removeRoles(user.id, [toggleRole], () => {
         this.setStatus(StatusKey.MODIFY_ROLE, StatusValue.SUCCESSFUL);
-        user.roles = user.roles.filter(r => toggleRole.id != r.id);
+        user.roles = user.roles.filter(r => toggleRole.id !== r.id);
       }, (error: HttpErrorResponse, apiError: ApiError) => {
         this.setStatus(StatusKey.MODIFY_ROLE, StatusValue.FAILED);
       });
@@ -240,7 +265,15 @@ export class AdminUserComponent extends AbstractComponent implements OnInit {
    * Whether the given origRoles contains the given role findRole.
    */
   public containsRole(origRoles: Array<Role>, findRole: Role): boolean {
-    return origRoles.some(r => r.id == findRole.id);
+    return origRoles.some(r => r.id === findRole.id);
+  }
+
+  public setNewUserUsernamesString(usernames: string) {
+    this.newUserUsernames = usernames.replace(/\r/g, '').split('\n');
+  }
+
+  public getNewUserUsernamesString(): string {
+    return this.newUserUsernames ? this.newUserUsernames.join('\n') : '';
   }
 
 }

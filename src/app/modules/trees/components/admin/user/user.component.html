@@ -121,6 +121,7 @@
 
   <!-- LOGIN INFO POPOVER -->
   <ng-template #loginInfoPopover let-u="user">
+
     <div class="info-popover">
       <div class="info-item">
         <i *ngIf="u.lastLoginDate" class="i i-sm i-check-success mr-2"></i>
@@ -146,10 +147,12 @@
         </div>
       </div>
     </div>
+
   </ng-template>
 
   <!-- USER ACCOUNT STATUS POPOVER -->
   <ng-template #statusPopover let-u="user">
+
     <div class="info-popover">
       <div *ngIf="u.active" class="info-item">
         <i class="i i-sm i-check-success mr-2"></i>
@@ -198,10 +201,12 @@
         </div>
       </div>
     </div>
+
   </ng-template>
 
   <!-- GET LONG LINK / EXPIRE CREDENTIALS POPOVER -->
   <ng-template #loginPopover let-u="user">
+
     Expire credentials?
     <div class="text-subtle text-sm">
       User must enter their old password and change it upon next login.
@@ -228,7 +233,7 @@
     <div class="text-subtle text-sm">
       Give the link to a user who's forgotten their password.
     </div>
-    <button *ngIf="!u.secureLoginLink && !hasStatus(StatusKey.LOGIN_LINK, StatusValue.IN_PROGRESS)"
+    <button *ngIf="!u.secureLoginKey && !hasStatus(StatusKey.LOGIN_LINK, StatusValue.IN_PROGRESS)"
             class="btn btn-outline-primary btn-block mt-2"
             (click)="requestSecureLink(u); $event.stopPropagation()">
       Create link for {{u.username}}
@@ -238,25 +243,27 @@
       <i class="i i-sm i-spin i-load float-left"></i>
       Creating link for {{u.username}}
     </button>
-    <div *ngIf="u.secureLoginLink"
+    <div *ngIf="u.secureLoginKey"
          class="d-flex justify-content-center text-success my-2">
       <i class="i i-sm i-check-success mr-2"></i>
       Link created
     </div>
     <input #secureLoginLinkTextfield
-           *ngIf="u.secureLoginLink"
+           *ngIf="u.secureLoginKey"
            type="text"
            readonly=true
            class="get-link-copy-field form-control form-control-sm"
-           [ngModel]="u.secureLoginLink"
+           [ngModel]="envService.endpoints.loginKeyUrl(u.secureLoginKey)"
            (click)="copySecureLink(u)"
            tooltip="Copied link to clipboard!"
            container="body"
            triggers="focus" />
+
   </ng-template>
 
   <!-- CHANGE ROLES / (UN-)LOCK ACCOUNT POPOVER -->
   <ng-template #lockPopover let-u="user">
+
     Change roles?
     <div class="text-subtle text-sm">Control access permissions.</div>
     <div class="role-container">
@@ -297,10 +304,12 @@
         Activating {{u.username}}
       </button>
     </div>
+
   </ng-template>
 
   <!-- DELETE USER POPOVER -->
   <ng-template #userDeletePopover let-u="user">
+
     <div class="d-flex flex-column">
       Delete account?
       <div class="text-subtle text-sm">Deletion can't be undone. Use the inactivation feature to lock a user instead.</div>
@@ -325,24 +334,44 @@
         Could not delete user
       </div>
     </div>
+
   </ng-template>
 
   <!-- NEW USER MODAL -->
   <ng-template #newUserModal>
+
     <div class="modal-header">
-      <h4 class="modal-title pull-left">Add new user</h4>
+      <h4 class="modal-title pull-left">Add new user{{addUserMultiple ? 's' : ''}}</h4>
     </div>
     <div class="modal-body">
       <div class="form-group">
-        <label for="beaconId">Username:</label>
-        <input id="beaconId"
-               [(ngModel)]="newUser.username"
-               type="text"
-               class="form-control"
-               [ngClass]="{'is-invalid': !isNewUserUsernameValid()}"/>
+
+        <ng-container *ngIf="!addUserMultiple">
+          <label for="newUserUsername">Username:</label>
+          <input id="newUserUsername"
+                 [ngModel]="getNewUserUsernamesString()"
+                 (ngModelChange)="setNewUserUsernamesString($event)"
+                 type="text"
+                 class="form-control"
+                 [ngClass]="{'is-invalid': !isNewUserUsernamesValid()}"/>
+          <a class="pointer mt-1" (action)="addUserMultiple = true">add multiple users</a>
+        </ng-container>
+        <ng-container *ngIf="addUserMultiple">
+          <label for="newUserUsernames">Usernames (one per line):</label>
+          <textarea id="newUserUsernames"
+                    [ngModel]="getNewUserUsernamesString()"
+                    (ngModelChange)="setNewUserUsernamesString($event)"
+                    class="form-control"
+                    [ngClass]="{'is-invalid': !isNewUserUsernamesValid()}">
+          </textarea>
+          <a class="pointer mt-1" (action)="addUserMultiple = false; newUserUsernames = []">add only one user</a>
+        </ng-container>
       </div>
       <div class="form-group">
-        <div *ngFor="let r of newUserRoles" class="form-check">
+        <label for="newUserRoles">With these roles:</label>
+        <div *ngFor="let r of newUserRoles"
+             id="newUserRoles"
+             class="form-check">
           <input type="checkbox" class="form-check-input" [id]="'checkbox_role_' + r.name" [(ngModel)]="r.checked">
           <label class="form-check-label" [for]="'checkbox_role_' + r.name">{{r}}</label>
         </div>
@@ -350,12 +379,26 @@
     </div>
     <div class="modal-footer">
       <div class="float-left mx-4">
-        <span *ngIf="hasStatus(StatusKey.NEW_USER, StatusValue.IN_PROGRESS)">Adding user...</span>
-        <span *ngIf="hasStatus(StatusKey.NEW_USER, StatusValue.FAILED)">User could not be added.</span>
-        <span *ngIf="hasStatus(StatusKey.NEW_USER, StatusValue.SUCCESSFUL)">User was successfully added!</span>
+        <span *ngIf="hasStatus(StatusKey.NEW_USER, StatusValue.IN_PROGRESS)">Adding user{{addUserMultiple ? 's' : ''}}...</span>
+        <span *ngIf="hasStatus(StatusKey.NEW_USER, StatusValue.FAILED)">User{{addUserMultiple ? 's' : ''}} could not be added: {{getStatusError(StatusKey.NEW_USER)?.message}}</span>
+        <span *ngIf="hasStatus(StatusKey.NEW_USER, StatusValue.SUCCESSFUL)">
+          User{{addUserMultiple ? 's' : ''}} successfully added!
+          <div class="text-sm text-subtle">
+            <a class="link-btn link-btn-sm"
+               download="user_creation_logins.csv"
+               [href]="getStatusContext(StatusKey.NEW_USER)">
+              <i class="i i-xxs i-dark i-download mr-1"></i>
+              Download new logins
+            </a>
+          </div>
+        </span>
       </div>
       <button type="button" class="btn btn-secondary" (click)="hideNewUserModal()">Close</button>
-      <button type="button" class="btn btn-primary" (click)="addUser()" [disabled]="!isNewUserUsernameValid()">Add user</button>
+      <button type="button" class="btn btn-primary" (click)="addUsers()" [disabled]="!isNewUserUsernamesValid()">
+        <ng-container *ngIf="addUserMultiple">Add {{newUserUsernames.length}} users</ng-container>
+        <ng-container *ngIf="!addUserMultiple">Add user</ng-container>
+      </button>
     </div>
+
   </ng-template>
 </div>

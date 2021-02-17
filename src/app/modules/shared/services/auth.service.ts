@@ -391,12 +391,44 @@ export class AuthService extends AbstractService {
   }
 
   /**
-   * TODO
-   * doc and add role to env
+   * Return true if the current user has the
+   * temporary change password role.
    */
   public isTempChangePasswordAuth(): boolean {
     let roles = this.getUserRoles();
     return roles && roles.indexOf(this.envService.security.roleTempChangePassword) !== -1;
+  }
+
+  /**
+   * Return true if the current user has the
+   * temporary role for OTP activation.
+   */
+  public isTempActivateOTP(): boolean {
+    let roles = this.getUserRoles();
+    return roles && roles.indexOf(this.envService.security.roleTempActivateOTP) !== -1;
+  }
+
+  /**
+   * Returns the application-relative path to which
+   * the user should be redirected after login.
+   * If a temporary role is assigned to the user, we
+   * want them to be rediected to e.g. the password change page.
+   * @param redirectTo this is the low-precedence path used if
+   *                   no special conditions are met.
+   *                   (e.g. the path the user was previously on)
+   *                   default is '/home'
+   * @returns application-relative path (e.g. /account/changepassword)
+   */
+  public getRedirectAfterLogin(redirectTo: string = '/home'): string {
+
+    if (this.isTempChangePasswordAuth()) {
+      redirectTo = '/account/changepassword';
+    } else if (this.isTempActivateOTP()) {
+      redirectTo = '/account/2fa';
+    }
+
+    return redirectTo;
+
   }
 
   /**

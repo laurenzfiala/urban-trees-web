@@ -261,7 +261,7 @@
     "recovery_codes_title": "Deine Wiederherstellungscodes:",
     "recovery_codes_info": "Stelle sicher, dass Du diese Wiederherstellungscodes an einem sicheren Platz speicherst. Wenn Du den Zugang zu deiner Auth-App verlierst, kannst Du sie zum Einloggen nutzen. Jeder dieser Codes ist nur einmal gültig.",
     "deactivate_title": "Zwei-Faktor Authentifizierung deaktivieren",
-    "deactivate_btn": "Jetzt aktivieren",
+    "deactivate_btn": "Jetzt deaktivieren",
     "deactivating_btn": "Deaktiviere...",
     "deactivated_btn": "Deaktiviert",
     "code_placeholder": "Zwei-Faktor Code",
@@ -271,7 +271,8 @@
     "deactivation_success_info": "Erfolgreich deaktiviert",
     "deactivation_error_info": "Code war ungültig, bitte versuche es erneut",
     "deactivation_connection_error_info": "Server konnte nicht erreicht werden, bitte versuche es später nocheinmal",
-    "go_to_home": "Go to home"
+    "go_to_home": "Go to home",
+    "log_in_again": "Neu anmelden, um fortzufahren"
   },
   "tree": {
     "loading": "Lade Baum...",

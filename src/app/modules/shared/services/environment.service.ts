@@ -318,8 +318,8 @@ class EnvironmentEndpoints {
     return this.prependCommonPath(this.context.addTree);
   }
 
-  get addUser() {
-    return this.prependCommonPath(this.context.addUser);
+  get addUsers() {
+    return this.prependCommonPath(this.context.addUsers);
   }
 
   public modifyTree(treeId: number): string {
@@ -637,6 +637,10 @@ class Security {
 
   get roleTempChangePassword() {
     return this.context.roles.tempChangePassword;
+  }
+
+  get roleTempActivateOTP() {
+    return this.context.roles.tempActivateOTP;
   }
 
 }

@@ -21,7 +21,7 @@ export class User {
   public usingOtp: boolean;
 
   public deleteStatus: number;
-  public secureLoginLink: string;
+  public secureLoginKey: string;
 
   constructor(id?: number,
               username?: string,
@@ -32,7 +32,8 @@ export class User {
               lastLoginAttemptDate?: string,
               lastLoginDate?: string,
               roles?: Array<Role>,
-              usingOtp?: boolean) {
+              usingOtp?: boolean,
+              secureLoginKey?: string) {
     this.id = id;
     this.username = username;
     this.active = active;
@@ -47,6 +48,7 @@ export class User {
     }
     this.roles = roles;
     this.usingOtp = usingOtp;
+    this.secureLoginKey = secureLoginKey;
   }
 
   public static fromObject(o: any): User {
@@ -61,7 +63,8 @@ export class User {
       o.lastLoginAttemptDate,
       o.lastLoginDate,
       o.roles && o.roles.map(r => Role.fromObject(r)),
-      o.usingOtp
+      o.usingOtp,
+      o.secureLoginKey
     );
 
   }

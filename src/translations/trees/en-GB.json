@@ -273,7 +273,8 @@
     "deactivation_success_info": "Successfully deactivated",
     "deactivation_error_info": "Code was incorrect, please try again",
     "deactivation_connection_error_info": "Could not reach server, please try again later",
-    "go_to_home": "Go to home"
+    "go_to_home": "Go to home",
+    "log_in_again": "Log in to continue"
   },
   "tree": {
     "loading": "Loading tree...",

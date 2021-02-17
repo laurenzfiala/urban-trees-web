@@ -46,7 +46,7 @@ export const environment = {
     // Admin
     addCity:                          '/admin/city',
     addTree:                          '/admin/tree',
-    addUser:                          '/admin/user',
+    addUsers:                         '/admin/users',
     modifyTree:                       '/admin/tree/{treeId}',
     phenologyObservationTypes:        '/admin/phenology/types',
     addBeacon:                        '/admin/beacon',
@@ -112,7 +112,8 @@ export const environment = {
       journal:                          ['ROLE_JOURNAL'],
       phenObs:                          ['ROLE_PHENOBS'],
       admin:                            ['ROLE_ADMIN'],
-      tempChangePassword:               'ROLE_TEMP_CHANGE_PASSWORD'
+      tempChangePassword:               'ROLE_TEMP_CHANGE_PASSWORD',
+      tempActivateOTP:                  'TEMP_ACTIVATE_OTP'
     }
   }
 

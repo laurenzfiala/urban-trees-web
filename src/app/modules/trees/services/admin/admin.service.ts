@@ -14,6 +14,7 @@ import * as moment from 'moment';
 import {BeaconLog} from '../../entities/beacon-log.entity';
 import {BeaconLogSeverity} from '../../entities/BeaconLogSeverity';
 import {BeaconFrontend} from '../../entities/beacon-frontend.entity';
+import {UserCreation} from '../../entities/user-creation.entity';
 
 /**
  * Service for backend calls on the admin pages.
@@ -79,16 +80,19 @@ export class AdminService extends AbstractService {
 
   }
 
-  public addUser(user: User,
-                 successCallback: () => void,
+  public addUsers(templateUser: User,
+                 usernames: Array<string>,
+                 successCallback: (createdUsers: Array<User>) => void,
                  errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void) {
 
-    AdminService.LOG.debug('Saving user to ' + this.envService.endpoints.addUser + ' ...');
+    AdminService.LOG.debug('Saving users to ' + this.envService.endpoints.addUsers + ' ...');
 
-    this.http.put(this.envService.endpoints.addUser, user)
+    const payload = new UserCreation(templateUser, usernames);
+    this.http.put<Array<User>>(this.envService.endpoints.addUsers, payload)
       .timeout(this.envService.defaultTimeout)
-      .subscribe(() => {
-        successCallback();
+      .map(r => r && r.map(u => User.fromObject(u)))
+      .subscribe((createdUsers) => {
+        successCallback(createdUsers);
       }, (e: any) => {
         AdminService.LOG.error('Could not save user: ' + e.message, e);
         errorCallback(e, this.safeApiError(e));
@@ -100,9 +104,10 @@ export class AdminService extends AbstractService {
                          successCallback: (loginKey: string) => void,
                          errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void) {
 
-    AdminService.LOG.debug('Saving user to ' + this.envService.endpoints.addUser + ' ...');
+    const url = this.envService.endpoints.loginKey(userId);
+    AdminService.LOG.debug('Saving user to ' + url + ' ...');
 
-    this.http.get(this.envService.endpoints.loginKey(userId), {responseType: 'text'})
+    this.http.get(url, {responseType: 'text'})
       .timeout(this.envService.defaultTimeout)
       .subscribe((response: string) => {
         successCallback(response);

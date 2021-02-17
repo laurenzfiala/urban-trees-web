@@ -116,9 +116,9 @@ export class ProjectLoginComponent extends AbstractComponent implements OnInit, 
   public ngAfterViewInit(): void {
 
     if (this.username) {
-      this.passwordInput.nativeElement.focus();
+      this.passwordInput?.nativeElement.focus();
     } else {
-      this.usernameInput.nativeElement.focus();
+      this.usernameInput?.nativeElement.focus();
     }
 
   }
@@ -132,7 +132,7 @@ export class ProjectLoginComponent extends AbstractComponent implements OnInit, 
 
     let loginEntity;
     if (this.otp && this.otp.length > 0) {
-      const otp = this.otp.replace('-', '');
+      const otp = this.otp.replace(' ', '').replace('-', '');
       loginEntity = new UserOtpAuthenticationToken(this.username, this.password, otp);
     } else {
       loginEntity = new UserAuthenticationToken(this.username, this.password);
@@ -142,12 +142,11 @@ export class ProjectLoginComponent extends AbstractComponent implements OnInit, 
       this.setStatus(StatusKey.LOGIN, StatusValue.SUCCESSFUL);
       this.consecutiveFailedLoginAttempts = 0;
 
-      if (this.authService.isTempChangePasswordAuth()) {
-        this.redirectTo = '/account/changepassword';
-      }
+      this.redirectTo = this.authService.getRedirectAfterLogin(this.redirectTo);
       if (this.redirectTo) {
         this.router.navigateByUrl(this.redirectTo);
       }
+
       this.loggedin.emit();
     }, (error, apiError) => {
       let t = error.headers.get(ProjectLoginComponent.HTTP_HEADER_AUTH_REQUIRES_KEY);

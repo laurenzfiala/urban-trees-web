@@ -157,9 +157,14 @@
     <div class="d-flex align-items-center justify-content-between flex-grow-1">
       {{'otp_manage.activation_success_info' | translate}}
 
-      <button class="btn btn-sm btn-success float-right" routerLink="/home">
+      <button *ngIf="!forceLogout" class="btn btn-sm btn-success float-right" routerLink="/home">
         <i class="i i-arrow-right i-sm mr-2 float-left"></i>
         {{'otp_manage.go_to_home' | translate}}
+      </button>
+
+      <button *ngIf="forceLogout" class="btn btn-sm btn-success float-right" routerLink="/login">
+        <i class="i i-login i-sm mr-2 float-left"></i>
+        {{'otp_manage.log_in_again' | translate}}
       </button>
     </div>
 
