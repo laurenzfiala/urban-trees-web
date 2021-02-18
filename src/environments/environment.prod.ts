@@ -53,7 +53,7 @@ export const environment = {
     modifyBeacon:                     '/admin/beacon/{beaconId}',
     deleteBeacon:                     '/admin/beacon/{beaconId}',
     loadBeaconLogs:                   '/admin/beacon/logs',
-    loadUsers:                        '/admin/users',
+    loadUsers:                        '/admin/users?limit={limit}&offset={offset}',
     loadRole:                         '/admin/users/roles',
     deleteUser:                       '/admin/users/{userId}',
     expireCredentials:                '/admin/users/{userId}/expireCredentials',
@@ -86,6 +86,7 @@ export const environment = {
   },
 
   searchDebounceMs:                   200,
+  searchDebounceApiMs:                500,
 
   defaultTimeout:                     30000,
   imageUploadTimeout:                 60000,

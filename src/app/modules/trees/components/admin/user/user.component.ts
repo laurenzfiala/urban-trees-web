@@ -4,11 +4,12 @@ import {AdminService} from '../../../services/admin/admin.service';
 import {AbstractComponent} from '../../abstract.component';
 import {HttpErrorResponse} from '@angular/common/http';
 import {ApiError} from '../../../../shared/entities/api-error.entity';
-import {BsModalRef} from 'ngx-bootstrap/modal';
-import {BsModalService} from 'ngx-bootstrap/modal';
+import {BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
 import {Role} from '../../../entities/role.entity';
 import {EnvironmentService} from '../../../../shared/services/environment.service';
 import {DomSanitizer} from '@angular/platform-browser';
+import {SearchResult} from '../../../entities/search-result.entity';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'ut-admin-user',
@@ -16,6 +17,9 @@ import {DomSanitizer} from '@angular/platform-browser';
   styleUrls: ['./user.component.less']
 })
 export class AdminUserComponent extends AbstractComponent implements OnInit {
+
+  private static SEARCH_PAGE_SIZE = 50;
+  private static MAX_SEARCH_RESULTS = 10000;
 
   public StatusKey = StatusKey;
   public StatusValue = StatusValue;
@@ -26,20 +30,17 @@ export class AdminUserComponent extends AbstractComponent implements OnInit {
   public newUserUsernames: Array<string> = new Array<string>();
   public newUserRoles: Array<Role>;
 
-  /**
-   * Current user search input.
-   */
-  public searchInput: string;
+  private searchFilters: Map<string, any | any[]> = new Map<string, any | any[]>();
+  private _searchFilterRoles: Array<Role>;
+  private searchDebounceTimeoutId: number;
+
+  public showFilters: boolean;
+  public showActions: boolean;
 
   /**
-   * All users currently displayed.
+   * Holds search result received from backend.
    */
-  public displayUsers: Array<User>;
-
-  /**
-   * Holds all registered users.
-   */
-  public availableUsers: Array<User>;
+  public searchResult: SearchResult<Array<User>>;
 
   /**
    * Holds all available user roles.
@@ -57,22 +58,38 @@ export class AdminUserComponent extends AbstractComponent implements OnInit {
 
   constructor(private adminService: AdminService,
               private modalService: BsModalService,
-              private envService: EnvironmentService,
+              public envService: EnvironmentService,
+              private translateService: TranslateService,
               private sanitizer: DomSanitizer) {
     super();
   }
 
   ngOnInit() {
+    this.showFilters = false;
+    this.showActions = false;
+
     this.loadUsers();
     this.loadRoles();
   }
 
-  public loadUsers(): void {
+  public loadUsers(loadAll: boolean = false): void {
+
+    let limit, offset;
+    if (loadAll) {
+      limit = AdminUserComponent.MAX_SEARCH_RESULTS - this.searchResult.result.length;
+      offset = this.searchResult.result.length;
+    } else {
+      limit = AdminUserComponent.SEARCH_PAGE_SIZE;
+      offset = 0;
+    }
 
     this.setStatus(StatusKey.USERS, StatusValue.IN_PROGRESS);
-    this.adminService.loadUsers((users: Array<User>) => {
-      this.availableUsers = users;
-      this.setSearchInput(null);
+    this.adminService.loadUsers(this.searchFilters, limit, offset, (result: SearchResult<Array<User>>) => {
+      if (loadAll) {
+        this.searchResult.result.push(...result.result);
+      } else {
+        this.searchResult = result;
+      }
       this.setStatus(StatusKey.USERS, StatusValue.SUCCESSFUL);
     }, (error: HttpErrorResponse, apiError: ApiError) => {
       this.setStatus(StatusKey.USERS, StatusValue.FAILED);
@@ -85,6 +102,7 @@ export class AdminUserComponent extends AbstractComponent implements OnInit {
     this.setStatus(StatusKey.ROLES, StatusValue.IN_PROGRESS);
     this.adminService.loadRoles((roles: Array<Role>) => {
       this.availableRoles = roles;
+      this._searchFilterRoles = roles.map(r => r);
       this.setStatus(StatusKey.ROLES, StatusValue.SUCCESSFUL);
     }, (error: HttpErrorResponse, apiError: ApiError) => {
       this.setStatus(StatusKey.ROLES, StatusValue.FAILED);
@@ -160,7 +178,7 @@ export class AdminUserComponent extends AbstractComponent implements OnInit {
       const csvBlob = new Blob([csvPayload], { type: 'text/csv' });
       const csvURL = this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(csvBlob));
       this.setStatus(StatusKey.NEW_USER, StatusValue.SUCCESSFUL, csvURL);
-      // TODO update users
+      this.loadUsers();
     }, (error: HttpErrorResponse, apiError: ApiError) => {
       this.setStatus(StatusKey.NEW_USER, StatusValue.FAILED, apiError);
     });
@@ -186,23 +204,6 @@ export class AdminUserComponent extends AbstractComponent implements OnInit {
 
   public isNewUserUsernamesValid(): boolean {
     return this.newUserUsernames.length > 0 && this.isUsernamesValid(...this.newUserUsernames);
-  }
-
-  /**
-   * Set user search and filter displayed users by input.
-   * @param {string} searchInput user's search input
-   */
-  public setSearchInput(searchInput: string): void {
-
-    if (!searchInput) {
-      this.displayUsers = this.availableUsers;
-      return;
-    }
-
-    this.displayUsers = this.availableUsers.filter((user: User) => {
-      return user.id === Number.parseInt(searchInput, 10) || user.username.indexOf(searchInput) !== -1;
-    });
-
   }
 
   /**
@@ -274,6 +275,58 @@ export class AdminUserComponent extends AbstractComponent implements OnInit {
 
   public getNewUserUsernamesString(): string {
     return this.newUserUsernames ? this.newUserUsernames.join('\n') : '';
+  }
+
+  public getSearchFilter(key: string): any | any[] {
+    return this.searchFilters.get(key);
+  }
+
+  public setSearchFilter(key: string, value: any | any[]) {
+
+    this.setStatus(StatusKey.USERS, StatusValue.IN_PROGRESS);
+    if (value === null || value === undefined || (value instanceof Array && value.length === 0)) {
+      this.searchFilters.delete(key);
+    } else {
+      this.searchFilters.set(key, value);
+    }
+
+    if (this.searchDebounceTimeoutId) {
+      window.clearTimeout(this.searchDebounceTimeoutId);
+    }
+    this.searchDebounceTimeoutId = window.setTimeout(() => {
+      this.loadUsers();
+    }, this.envService.searchDebounceApiMs);
+
+  }
+
+  public setSearchFilterNumeric(key: string, value: string) {
+    let v: any = value;
+    if (value !== null && value !== undefined) {
+      v = Number.parseInt(value, 10);
+    }
+    this.setSearchFilter(key, v);
+  }
+
+  get searchFilterRoles(): Array<Role> {
+    return this._searchFilterRoles;
+  }
+
+  public rolesForSearchFilter(): Array<number> {
+    return this._searchFilterRoles.filter(r => r.checked).map(r => r.id);
+  }
+
+  public toggleFilters(): void {
+    this.showFilters = !this.showFilters;
+    if (this.showFilters) {
+      this.showActions = false;
+    }
+  }
+
+  public toggleActions(): void {
+    this.showActions = !this.showActions;
+    if (this.showActions) {
+      this.showFilters = false;
+    }
   }
 
 }

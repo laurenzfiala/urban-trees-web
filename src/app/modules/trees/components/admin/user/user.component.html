@@ -15,106 +15,298 @@
       Manage Users
     </h4>
 
-    <div class="d-flex mt-3">
+    <div class="d-flex mt-1">
       <input
         name="userSearchInput"
         class="form-control search-input"
-        placeholder="Search for usernames and IDs"
-        [ngModel]="searchInput"
-        (ngModelChange)="setSearchInput($event)"/>
-      <button class="btn btn-default d-flex align-items-center flex-shrink-0 ml-2"
+        placeholder="Search for usernames"
+        [ngModel]="getSearchFilter('username')"
+        (ngModelChange)="setSearchFilter('username', $event)"/>
+      <button class="btn btn-default d-flex align-items-center flex-shrink-0 ml-1"
               (click)="showNewUserModal(newUserModal)">
         <i class="i i-sm i-dark i-plus"></i>
         <span class="d-none d-sm-inline ml-2">Add new user</span>
       </button>
     </div>
 
-    <div *ngIf="hasStatus(StatusKey.USERS, StatusValue.IN_PROGRESS)"
-          class="d-flex justify-content-center align-items-center my-4">
-      <i class="i i-black i-spin i-load mr-2"></i>
-      Loading users
-    </div>
-
-    <div *ngIf="hasStatus(StatusKey.USERS, StatusValue.FAILED)"
-          class="d-flex justify-content-center align-items-center text-danger my-4">
-      <i class="i i-warning-danger mr-2"></i>
-      Could not load users
-    </div>
-
-    <ul class="list-group mt-2">
-      <li *ngFor="let u of displayUsers"
-          class="list-group-item user-container"
-          [ngClass]="{'disabled': u.deleteStatus === StatusValue.SUCCESSFUL}">
-
-        <div class="info-container">
-          {{u.username}}
-          <span *ngIf="u.deleteStatus === StatusValue.SUCCESSFUL"> &ndash; deleted</span>
-          <div class="text-subtle text-xs">
-            User ID: {{u.id}} &ndash; Roles: {{u?.roles?.length > 0 ? u.roles : '(none granted)'}}
+    <div class="search-info-wrapper mt-1">
+      <div class="search-info">
+        <div class="text-lg">
+          <div *ngIf="hasStatus(StatusKey.USERS, StatusValue.SUCCESSFUL)"
+               class="search-status">
+            <div>
+              {{searchResult.metadata['totalResultAmount']}}
+              Result{{searchResult.metadata['totalResultAmount'] === 1 ? '' : 's'}}
+              <div class="text-sm text-subtle">
+                {{searchResult.result.length}} shown
+              </div>
+            </div>
+          </div>
+          <div *ngIf="hasStatus(StatusKey.USERS, StatusValue.IN_PROGRESS)"
+               class="search-status text-subtle">
+            <i class="i i-dark i-spin i-load i-sm mr-1"></i>
+            Loading
+          </div>
+          <div *ngIf="hasStatus(StatusKey.USERS, StatusValue.FAILED)"
+               class="search-status text-danger">
+            <i class="i i-warning-danger mr-1"></i>
+            Error
           </div>
         </div>
-
-        <div class="status-container">
-
-          <div class="status"
-               [popover]="loginInfoPopover"
-               [popoverContext]="{user: u}"
-               placement="left"
-               outsideClick=true
-               container="body">
-            <i class="i i-sm i-info-info"></i>
+        <div class="search-features">
+          <div class="link plain search-feature-toggle"
+               (action)="toggleFilters()"
+               [ngClass]="{'active': showFilters}"
+               tabindex="0">
+            <i class="i i-xs i-dark i-filters-xs mr-1"></i>
+            Filters
           </div>
-
-          <div class="status"
-               [popover]="statusPopover"
-               [popoverContext]="{user: u}"
-               placement="left"
-               outsideClick=true
-               container="body">
-            <i *ngIf="!u.active; else status2" class="i i-sm i-cross-danger"></i>
-            <ng-template #status2>
-              <i *ngIf="!u.nonLocked; else status3" class="i i-sm i-warning-danger"></i>
-            </ng-template>
-            <ng-template #status3>
-              <i *ngIf="!u.credentialsNonExpired; else status4" class="i i-sm i-warning-warning"></i>
-            </ng-template>
-            <ng-template #status4>
-              <i class="i i-sm i-check-success"></i>
-            </ng-template>
+          <div class="link plain search-feature-toggle"
+               (action)="toggleActions()"
+               [ngClass]="{'active': showActions}"
+               tabindex="0">
+            <i class="i i-xs i-dark i-edit-xs mr-1"></i>
+            Actions
           </div>
-
-          <div class="status dark"
-               [popover]="loginPopover"
-               (onShown)="deleteStatus(StatusKey.LOGIN_LINK)"
-               [popoverContext]="{user: u}"
-               placement="left"
-               outsideClick=true
-               container="body">
-            <i class="i i-sm i-dark i-password-reset"></i>
-          </div>
-
-          <div class="status dark"
-               [popover]="lockPopover"
-               [popoverContext]="{user: u}"
-               placement="left"
-               outsideClick=true
-               container="body">
-            <i class="i i-sm i-dark i-document-protect"></i>
-          </div>
-
-          <div class="status danger"
-               [popover]="userDeletePopover"
-               [popoverContext]="{user: u}"
-               placement="left"
-               outsideClick=true
-               container="body">
-            <i class="i i-sm i-trash"></i>
-          </div>
-
         </div>
+      </div>
 
-      </li>
-    </ul>
+      <!-- FILTERS -->
+      <div [collapse]="!showFilters">
+        <div class="d-flex flex-row flex-wrap">
+          <div class="search-filter">
+            <div class="search-filter-title">User ID</div>
+            <input class="form-control"
+                   type="number"
+                   [ngModel]="getSearchFilter('id')"
+                   (ngModelChange)="setSearchFilterNumeric('id', $event)" />
+          </div>
+          <div class="search-filter">
+            <div class="search-filter-title">Account Status</div>
+            <div class="text-right">
+              <span class="mr-1">Account Active</span>
+              <div class="btn-group"
+                   btnRadioGroup
+                   [ngModel]="getSearchFilter('isActive')"
+                   (ngModelChange)="setSearchFilter('isActive', $event)">
+                <label class="btn btn-sm btn-primary" [btnRadio]="true" uncheckable tabindex="0" role="button">
+                  Yes
+                </label>
+                <label class="btn btn-sm btn-primary" [btnRadio]="false" uncheckable tabindex="0" role="button">
+                  No
+                </label>
+              </div>
+            </div>
+            <div class="text-right">
+              <span class="mr-1">Two-factor auth active</span>
+              <div class="btn-group"
+                   btnRadioGroup
+                   [ngModel]="getSearchFilter('isUsingOtp')"
+                   (ngModelChange)="setSearchFilter('isUsingOtp', $event)">
+                <label class="btn btn-sm btn-primary" [btnRadio]="true" uncheckable tabindex="0" role="button">
+                  Yes
+                </label>
+                <label class="btn btn-sm btn-primary" [btnRadio]="false" uncheckable tabindex="0" role="button">
+                  No
+                </label>
+              </div>
+            </div>
+            <div class="text-right">
+              <span class="mr-1">Credentials expired</span>
+              <div class="btn-group"
+                   btnRadioGroup
+                   [ngModel]="getSearchFilter('isCredentialsNonExpired')"
+                   (ngModelChange)="setSearchFilter('isCredentialsNonExpired', $event)">
+                <label class="btn btn-sm btn-primary" [btnRadio]="false" uncheckable tabindex="0" role="button">
+                  Yes
+                </label>
+                <label class="btn btn-sm btn-primary" [btnRadio]="true" uncheckable tabindex="0" role="button">
+                  No
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="search-filter">
+            <div class="search-filter-title">User Roles</div>
+            <div>
+              Has
+              <div class="btn-group"
+                   btnRadioGroup
+                   [ngModel]="getSearchFilter('rolesAnd')"
+                   (ngModelChange)="setSearchFilter('rolesAnd', $event)">
+              <label class="btn btn-sm btn-primary" [btnRadio]="undefined" tabindex="0" role="button">
+                any
+              </label>
+              <label class="btn btn-sm btn-primary" [btnRadio]="true" tabindex="0" role="button">
+                all
+              </label>
+            </div>
+              of these roles:
+            </div>
+            <div *ngFor="let r of searchFilterRoles"
+                 id="searchFilterRoles"
+                 class="form-check">
+              <input type="checkbox"
+                     class="form-check-input"
+                     [id]="'searchfilter_checkbox_role_' + r.name"
+                     [(ngModel)]="r.checked"
+                     (ngModelChange)="setSearchFilter('roles', rolesForSearchFilter())">
+              <label class="form-check-label" [for]="'searchfilter_checkbox_role_' + r.name">{{r}}</label>
+            </div>
+          </div>
+          <div class="search-filter">
+            <div class="search-filter-title">Last login date</div>
+            <div class="mb-2">
+              <label for="searchFilterLastLoginDateFrom">From date:</label>
+              <input id="searchFilterLastLoginDateFrom"
+                     type="text"
+                     placeholder="From date"
+                     class="form-control"
+                     bsDatepicker
+                     [bsConfig]="{ dateInputFormat: 'app.date_format_day_full' | translate }"
+                     [ngModel]="getSearchFilter('lastLoginDateFrom')"
+                     (ngModelChange)="setSearchFilter('lastLoginDateFrom', $event)">
+            </div>
+
+            <div>
+              <label for="searchFilterLastLoginDateTo">To date:</label>
+              <input id="searchFilterLastLoginDateTo"
+                     type="text"
+                     placeholder="To date"
+                     class="form-control"
+                     bsDatepicker
+                     [bsConfig]="{ dateInputFormat: 'app.date_format_day_full' | translate }"
+                     [ngModel]="getSearchFilter('lastLoginDateTo')"
+                     (ngModelChange)="setSearchFilter('lastLoginDateTo', $event)">
+            </div>
+          </div>
+          <div class="search-filter">
+            <div class="search-filter-title">Account creation date</div>
+            <div>
+              <label for="searchFilterCreationDateFrom">To date:</label>
+              <input id="searchFilterCreationDateFrom"
+                     type="text"
+                     placeholder="From date"
+                     class="form-control"
+                     bsDatepicker
+                     [bsConfig]="{ dateInputFormat: 'app.date_format_day_full' | translate }"
+                     [ngModel]="getSearchFilter('creationDateFrom')"
+                     (ngModelChange)="setSearchFilter('creationDateFrom', $event)">
+            </div>
+            <div>
+              <label for="searchFilterCreationDateTo">To date:</label>
+              <input id="searchFilterCreationDateTo"
+                     type="text"
+                     placeholder="To date"
+                     class="form-control"
+                     bsDatepicker
+                     [bsConfig]="{ dateInputFormat: 'app.date_format_day_full' | translate }"
+                     [ngModel]="getSearchFilter('creationDateTo')"
+                     (ngModelChange)="setSearchFilter('creationDateTo', $event)">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BULK ACTIONS -->
+      <div [collapse]="!showActions">
+        <div class="d-flex flex-row flex-wrap">
+          coming soon
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="searchResult"
+         class="user-list-container"
+         [ngClass]="{'disabled': hasStatus(StatusKey.USERS, StatusValue.IN_PROGRESS)}">
+
+      <ul class="list-group mt-2">
+        <li *ngFor="let u of searchResult?.result"
+            class="list-group-item user-container"
+            [ngClass]="{'disabled': u.deleteStatus === StatusValue.SUCCESSFUL}">
+
+          <div class="info-container">
+            {{u.username}}
+            <span *ngIf="u.deleteStatus === StatusValue.SUCCESSFUL"> &ndash; deleted</span>
+            <div class="text-subtle text-xs">
+              User ID: {{u.id}}
+              &ndash; Roles: {{u?.roles?.length > 0 ? u.roles : '(none granted)'}}
+              &ndash; Created on {{u?.creationDate | date:('app.date_format_day_full_ng' | translate) }}
+            </div>
+          </div>
+
+          <div class="status-container">
+
+            <div class="status"
+                 [popover]="loginInfoPopover"
+                 [popoverContext]="{user: u}"
+                 placement="left"
+                 outsideClick=true
+                 container="body">
+              <i class="i i-sm i-info-info"></i>
+            </div>
+
+            <div class="status"
+                 [popover]="statusPopover"
+                 [popoverContext]="{user: u}"
+                 placement="left"
+                 outsideClick=true
+                 container="body">
+              <i *ngIf="!u.active; else status2" class="i i-sm i-cross-danger"></i>
+              <ng-template #status2>
+                <i *ngIf="!u.nonLocked; else status3" class="i i-sm i-warning-danger"></i>
+              </ng-template>
+              <ng-template #status3>
+                <i *ngIf="!u.credentialsNonExpired; else status4" class="i i-sm i-warning-warning"></i>
+              </ng-template>
+              <ng-template #status4>
+                <i class="i i-sm i-check-success"></i>
+              </ng-template>
+            </div>
+
+            <div class="status dark"
+                 [popover]="loginPopover"
+                 (onShown)="deleteStatus(StatusKey.LOGIN_LINK)"
+                 [popoverContext]="{user: u}"
+                 placement="left"
+                 outsideClick=true
+                 container="body">
+              <i class="i i-sm i-dark i-password-reset"></i>
+            </div>
+
+            <div class="status dark"
+                 [popover]="lockPopover"
+                 [popoverContext]="{user: u}"
+                 placement="left"
+                 outsideClick=true
+                 container="body">
+              <i class="i i-sm i-dark i-document-protect"></i>
+            </div>
+
+            <div class="status danger"
+                 [popover]="userDeletePopover"
+                 [popoverContext]="{user: u}"
+                 placement="left"
+                 outsideClick=true
+                 container="body">
+              <i class="i i-sm i-trash"></i>
+            </div>
+
+          </div>
+
+        </li>
+      </ul>
+
+      <div *ngIf="searchResult.result.length < searchResult.metadata['totalResultAmount']"
+           class="text-center mt-2">
+        <a class="link"
+           (action)="loadUsers(true)"
+           tabindex="0">
+          Show {{searchResult.metadata['totalResultAmount'] - searchResult.result.length}} more results
+        </a>
+      </div>
+
+    </div>
 
   </div>
   </div>

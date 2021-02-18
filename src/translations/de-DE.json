@@ -5,6 +5,7 @@
     "date_format_angular": "dd.MM.yyyy HH:mm",
     "date_format_short": "DD.MM. HH:mm",
     "date_format_day_full": "DD.MM.YYYY",
+    "date_format_day_full_ng": "dd.MM.YYYY",
     "date_format_day": "DD.MM",
     "date_format_time": "HH:mm"
   },

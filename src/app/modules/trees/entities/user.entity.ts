@@ -19,9 +19,10 @@ export class User {
   public lastLoginDate: Date;
   public roles: Array<Role>;
   public usingOtp: boolean;
+  public secureLoginKey: string;
+  public creationDate: Date;
 
   public deleteStatus: number;
-  public secureLoginKey: string;
 
   constructor(id?: number,
               username?: string,
@@ -33,7 +34,8 @@ export class User {
               lastLoginDate?: string,
               roles?: Array<Role>,
               usingOtp?: boolean,
-              secureLoginKey?: string) {
+              secureLoginKey?: string,
+              creationDate?: Date) {
     this.id = id;
     this.username = username;
     this.active = active;
@@ -49,6 +51,9 @@ export class User {
     this.roles = roles;
     this.usingOtp = usingOtp;
     this.secureLoginKey = secureLoginKey;
+    if (creationDate) {
+      this.creationDate = moment.utc(creationDate, 'YYYY-MM-DD[T]HH-mm-ss').toDate();
+    }
   }
 
   public static fromObject(o: any): User {
@@ -64,7 +69,8 @@ export class User {
       o.lastLoginDate,
       o.roles && o.roles.map(r => Role.fromObject(r)),
       o.usingOtp,
-      o.secureLoginKey
+      o.secureLoginKey,
+      o.creationDate
     );
 
   }

@@ -15,6 +15,7 @@ import {BeaconLog} from '../../entities/beacon-log.entity';
 import {BeaconLogSeverity} from '../../entities/BeaconLogSeverity';
 import {BeaconFrontend} from '../../entities/beacon-frontend.entity';
 import {UserCreation} from '../../entities/user-creation.entity';
+import {SearchResult} from '../../entities/search-result.entity';
 
 /**
  * Service for backend calls on the admin pages.
@@ -244,16 +245,33 @@ export class AdminService extends AbstractService {
 
   }
 
-  public loadUsers(successCallback: (users: Array<User>) => void,
+  public loadUsers(searchFilters: Map<string, any | any[]>,
+                   limit: number,
+                   offset: number,
+                   successCallback: (result: SearchResult<Array<User>>) => void,
                    errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void) {
 
-    let url = this.envService.endpoints.loadUsers;
+    let url = this.envService.endpoints.loadUsers(limit, offset);
     AdminService.LOG.debug('Loading users...');
 
-    this.http.get<Array<User>>(url)
+    // convert map to object and handle dates
+    const filtersObj = Array.from(searchFilters).reduce((obj, [key, value]) => {
+      if (value instanceof Date) {
+        obj[key] = moment(value).startOf('day').utc().format(this.envService.outputDateFormat);
+      } else {
+        obj[key] = value;
+      }
+      return obj;
+    }, {});
+
+    this.http.post<SearchResult<Array<User>>>(url, filtersObj)
       .timeout(this.envService.defaultTimeout)
-      .map(list => list && list.map(u => User.fromObject(u)))
-      .subscribe((result: Array<User>) => {
+      .map(r => {
+        const result = SearchResult.fromObject(r);
+        result.result = result.result.map(user => User.fromObject(user));
+        return result;
+      })
+      .subscribe((result: SearchResult<Array<User>>) => {
         successCallback(result);
       }, (e: any) => {
         AdminService.LOG.error('Could not load users: ' + e.message, e);

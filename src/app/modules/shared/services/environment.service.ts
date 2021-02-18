@@ -21,6 +21,10 @@ export class EnvironmentService {
     return this.context.searchDebounceMs;
   }
 
+  get searchDebounceApiMs() {
+    return this.context.searchDebounceApiMs;
+  }
+
   get defaultTimeout() {
     return this.context.defaultTimeout;
   }
@@ -425,8 +429,18 @@ class EnvironmentEndpoints {
 
   }
 
-  get loadUsers() {
-    return this.prependCommonPath(this.context.loadUsers);
+  public loadUsers(limit: number, offset: number) {
+    let replacements: any[] = [
+      { placeholder: 'limit', replacement: limit },
+      { placeholder: 'offset', replacement: offset }
+    ];
+
+    return this.prependCommonPath(
+      this.replaceParams(
+        this.context.loadUsers,
+        replacements
+      )
+    );
   }
 
   get loadRole() {

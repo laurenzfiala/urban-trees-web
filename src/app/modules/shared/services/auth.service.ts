@@ -412,14 +412,13 @@ export class AuthService extends AbstractService {
    * Returns the application-relative path to which
    * the user should be redirected after login.
    * If a temporary role is assigned to the user, we
-   * want them to be rediected to e.g. the password change page.
+   * want them to be redirected to e.g. the password change page.
    * @param redirectTo this is the low-precedence path used if
    *                   no special conditions are met.
    *                   (e.g. the path the user was previously on)
-   *                   default is '/home'
    * @returns application-relative path (e.g. /account/changepassword)
    */
-  public getRedirectAfterLogin(redirectTo: string = '/home'): string {
+  public getRedirectAfterLogin(redirectTo: string): string {
 
     if (this.isTempChangePasswordAuth()) {
       redirectTo = '/account/changepassword';
