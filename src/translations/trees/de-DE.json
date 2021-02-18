@@ -272,7 +272,8 @@
     "deactivation_error_info": "Code war ungültig, bitte versuche es erneut",
     "deactivation_connection_error_info": "Server konnte nicht erreicht werden, bitte versuche es später nocheinmal",
     "go_to_home": "Go to home",
-    "log_in_again": "Neu anmelden, um fortzufahren"
+    "log_in_again": "Neu anmelden, um fortzufahren",
+    "info_forced_activation": "Du musst Zwei-Faktor Authentifizierung aktivieren, um fortzufahren."
   },
   "tree": {
     "loading": "Lade Baum...",

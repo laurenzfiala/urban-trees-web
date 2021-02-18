@@ -48,6 +48,7 @@ export class AuthService extends AbstractService {
    * Cached permissions PIN is stored here.
    * When #loadPPIN is called and returns successfully,
    * this holds the current users' PPIN.
+   * This is deleted as soon as the user logs out.
    */
   private ppin: string;
 
@@ -97,12 +98,12 @@ export class AuthService extends AbstractService {
   public getUsername(forExpiredAuth: boolean = false): string {
 
     if (forExpiredAuth) {
-      const potentiallyExpiredToken = AuthService.getJWTTokenRaw();
-      if (potentiallyExpiredToken) {
-        return JWTToken.fromObject(this.jwtHelper.decodeToken(potentiallyExpiredToken)).sub;
+        const potentiallyExpiredToken = AuthService.getJWTTokenRaw();
+        if (potentiallyExpiredToken) {
+          return JWTToken.fromObject(this.jwtHelper.decodeToken(potentiallyExpiredToken)).sub;
+        }
+        return undefined;
       }
-      return undefined;
-    }
     let token = this.getJWTToken();
     if (!token) {
       return undefined;
@@ -313,6 +314,7 @@ export class AuthService extends AbstractService {
    * @see AuthService#deleteJWTToken
    */
   public logout(): void {
+    this.ppin = undefined;
     this.deleteJWTToken();
     this.stateChanged();
   }

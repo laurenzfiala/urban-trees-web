@@ -14,21 +14,32 @@
 
   <ng-container *ngIf="hasStatus(StatusKey.CHECK_STATE, StatusValue.SUCCESSFUL)">
 
-    <div class="col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto p-0">
-      <div *ngIf="isActive" class="otp-status alert alert-success justify-content-between m-0">
-        <i class="i i-shield-active-success flex-shrink-0 mr-3"></i>
+    <div *ngIf="forceLogout && isActivateFlow && !isActive; else stateInfo" class="col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto p-0">
+      <div class="alert alert-light justify-content-between m-0">
+        <i class="i i-dark i-info flex-shrink-0 mr-3"></i>
         <div>
-          {{'otp_manage.state_info_enabled' | translate}}
-        </div>
-      </div>
-
-      <div *ngIf="!isActive" class="otp-status alert alert-dark justify-content-between m-0">
-        <i class="i i-dark i-shield-inactive flex-shrink-0 mr-3"></i>
-        <div>
-          {{'otp_manage.state_info_disabled' | translate}}
+          {{'otp_manage.info_forced_activation' | translate}}
         </div>
       </div>
     </div>
+
+    <ng-template #stateInfo>
+      <div class="col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto p-0">
+        <div *ngIf="isActive" class="otp-status alert alert-success justify-content-between m-0">
+          <i class="i i-shield-active-success flex-shrink-0 mr-3"></i>
+          <div>
+            {{'otp_manage.state_info_enabled' | translate}}
+          </div>
+        </div>
+
+        <div *ngIf="!isActive" class="otp-status alert alert-dark justify-content-between m-0">
+          <i class="i i-dark i-shield-inactive flex-shrink-0 mr-3"></i>
+          <div>
+            {{'otp_manage.state_info_disabled' | translate}}
+          </div>
+        </div>
+      </div>
+    </ng-template>
 
     <!-- ACTIVATION -->
     <div *ngIf="isActivateFlow"

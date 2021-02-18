@@ -20,6 +20,7 @@ export class OtpManageComponent extends AbstractComponent implements OnInit {
   public isActive: boolean;
   public isActivateFlow: boolean;
   public forceLogout: boolean;
+  public forceLogoutUsername: string;
 
   public otp: string;
   public scratchCodes: Array<string>;
@@ -45,6 +46,7 @@ export class OtpManageComponent extends AbstractComponent implements OnInit {
       this.isActivateFlow = true;
       this.isActive = false;
       this.forceLogout = true;
+      this.forceLogoutUsername = this.authService.getUsername();
       this.setStatus(StatusKey.CHECK_STATE, StatusValue.SUCCESSFUL);
       return;
     }
@@ -94,7 +96,8 @@ export class OtpManageComponent extends AbstractComponent implements OnInit {
   public deactivate(): void {
 
     this.setStatus(StatusKey.DEACTIVATE, StatusValue.IN_PROGRESS);
-    this.accountService.deactivateOtp(this.otp, () => {
+    const otp = this.otp.replace(' ', '').replace('-', '');
+    this.accountService.deactivateOtp(otp, () => {
       this.isActive = false;
       this.setStatus(StatusKey.DEACTIVATE, StatusValue.SUCCESSFUL);
     }, (error, apiError) => {
@@ -113,7 +116,11 @@ export class OtpManageComponent extends AbstractComponent implements OnInit {
   }
 
   public username(): string {
-    return this.authService.getUsername();
+    let username = this.authService.getUsername();
+    if (this.forceLogoutUsername && !this.authService.isLoggedIn()) {
+      username = this.forceLogoutUsername;
+    }
+    return username;
   }
 
 }
