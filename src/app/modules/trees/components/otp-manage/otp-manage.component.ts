@@ -1,9 +1,9 @@
 import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
-import {AbstractComponent} from '../abstract.component';
 import {AccountService} from '../../services/account.service';
 import {EnvironmentService} from '../../../shared/services/environment.service';
 import {AuthService} from '../../../shared/services/auth.service';
 import {Log} from '../../../shared/services/log.service';
+import {AbstractComponent} from '../../../shared/components/abstract.component';
 
 @Component({
   selector: 'ut-otp-manage',

@@ -1,7 +1,6 @@
 import {Component, ElementRef, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {User} from '../../../entities/user.entity';
 import {AdminService, BulkAction} from '../../../services/admin/admin.service';
-import {AbstractComponent} from '../../abstract.component';
 import {HttpErrorResponse} from '@angular/common/http';
 import {ApiError} from '../../../../shared/entities/api-error.entity';
 import {BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
@@ -10,6 +9,7 @@ import {EnvironmentService} from '../../../../shared/services/environment.servic
 import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
 import {SearchResult} from '../../../entities/search-result.entity';
 import {TranslateService} from '@ngx-translate/core';
+import {AbstractComponent} from '../../../../shared/components/abstract.component';
 
 @Component({
   selector: 'ut-admin-user',
