@@ -431,13 +431,26 @@ class EnvironmentEndpoints {
 
   public loadUsers(limit: number, offset: number) {
     let replacements: any[] = [
-      { placeholder: 'limit', replacement: limit },
-      { placeholder: 'offset', replacement: offset }
+      { placeholder: 'offset', replacement: offset ? offset : 0 },
+      { placeholder: 'limit', replacement: limit ? '&limit=' + limit : '' }
     ];
 
     return this.prependCommonPath(
       this.replaceParams(
         this.context.loadUsers,
+        replacements
+      )
+    );
+  }
+
+  public usersBulkAction(action: string) {
+    let replacements: any[] = [
+      { placeholder: 'action', replacement: action }
+    ];
+
+    return this.prependCommonPath(
+      this.replaceParams(
+        this.context.usersBulkAction,
         replacements
       )
     );

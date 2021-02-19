@@ -254,17 +254,7 @@ export class AdminService extends AbstractService {
     let url = this.envService.endpoints.loadUsers(limit, offset);
     AdminService.LOG.debug('Loading users...');
 
-    // convert map to object and handle dates
-    const filtersObj = Array.from(searchFilters).reduce((obj, [key, value]) => {
-      if (value instanceof Date) {
-        obj[key] = moment(value).startOf('day').utc().format(this.envService.outputDateFormat);
-      } else {
-        obj[key] = value;
-      }
-      return obj;
-    }, {});
-
-    this.http.post<SearchResult<Array<User>>>(url, filtersObj)
+    this.http.post<SearchResult<Array<User>>>(url, this.searchFiltersToPayload(searchFilters))
       .timeout(this.envService.defaultTimeout)
       .map(r => {
         const result = SearchResult.fromObject(r);
@@ -279,6 +269,26 @@ export class AdminService extends AbstractService {
           errorCallback(e, this.safeApiError(e));
         }
       });
+
+  }
+
+  /**
+   * Converts the given search filters map to an object.
+   * It also converts all dates to string using the correct
+   * output format.
+   * @param searchFilters search filters to convert
+   * @returns the object to pass to the HttpClient
+   */
+  private searchFiltersToPayload(searchFilters: Map<string, any | any[]>): any {
+
+    return Array.from(searchFilters).reduce((obj, [key, value]) => {
+      if (value instanceof Date) {
+        obj[key] = moment(value).startOf('day').utc().format(this.envService.outputDateFormat);
+      } else {
+        obj[key] = value;
+      }
+      return obj;
+    }, {});
 
   }
 
@@ -475,5 +485,37 @@ export class AdminService extends AbstractService {
       });
 
   }
+
+  public bulkAction(searchFilters: Map<string, any | any[]>,
+                   action: BulkAction,
+                   successCallback: (affectedUsers: Array<User>) => void,
+                   errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void) {
+
+    let url = this.envService.endpoints.usersBulkAction(BulkAction[action]);
+    AdminService.LOG.debug('Sending bulk action execution order for action ' + action + '...');
+
+    this.http.post<Array<User>>(url, this.searchFiltersToPayload(searchFilters))
+      .timeout(this.envService.defaultTimeout)
+      .map(users => users && users.map(u => User.fromObject(u)))
+      .subscribe((affectedUsers: Array<User>) => {
+        successCallback(affectedUsers);
+      }, (e: any) => {
+        AdminService.LOG.error('Could not execute bulk action: ' + e.message, e);
+        if (errorCallback) {
+          errorCallback(e, this.safeApiError(e));
+        }
+      });
+
+  }
+
+}
+
+export enum BulkAction {
+
+  EXPIRE_CREDENTIALS,
+  CREATE_LOGIN_LINKS,
+  ACTIVATE,
+  INACTIVATE,
+  DELETE
 
 }

@@ -1,13 +1,13 @@
 import {Component, ElementRef, OnInit, TemplateRef, ViewChild} from '@angular/core';
 import {User} from '../../../entities/user.entity';
-import {AdminService} from '../../../services/admin/admin.service';
+import {AdminService, BulkAction} from '../../../services/admin/admin.service';
 import {AbstractComponent} from '../../abstract.component';
 import {HttpErrorResponse} from '@angular/common/http';
 import {ApiError} from '../../../../shared/entities/api-error.entity';
 import {BsModalRef, BsModalService} from 'ngx-bootstrap/modal';
 import {Role} from '../../../entities/role.entity';
 import {EnvironmentService} from '../../../../shared/services/environment.service';
-import {DomSanitizer} from '@angular/platform-browser';
+import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
 import {SearchResult} from '../../../entities/search-result.entity';
 import {TranslateService} from '@ngx-translate/core';
 
@@ -23,19 +23,22 @@ export class AdminUserComponent extends AbstractComponent implements OnInit {
 
   public StatusKey = StatusKey;
   public StatusValue = StatusValue;
+  public BulkAction = BulkAction;
 
-  private newUserModalRef: BsModalRef;
   public addUserMultiple: boolean = false;
   public newUser: User;
   public newUserUsernames: Array<string> = new Array<string>();
   public newUserRoles: Array<Role>;
 
-  private searchFilters: Map<string, any | any[]> = new Map<string, any | any[]>();
+  public searchFilters: Map<string, any | any[]> = new Map<string, any | any[]>();
   private _searchFilterRoles: Array<Role>;
   private searchDebounceTimeoutId: number;
 
   public showFilters: boolean;
   public showActions: boolean;
+
+  private newUserModalRef: BsModalRef;
+  private bulkActionModalRef: BsModalRef;
 
   /**
    * Holds search result received from backend.
@@ -48,13 +51,15 @@ export class AdminUserComponent extends AbstractComponent implements OnInit {
   public availableRoles: Array<Role>;
 
   /**
-   * Once loaded, contains the secure
-   * login link of the selected user.
+   * The currently selected bulk action to execute.
    */
-  public secureLoginLink: string = 'test';
+  public bulkAction: BulkAction;
 
   @ViewChild('secureLoginLinkTextfield')
   public secureLoginLinkTextfield: ElementRef;
+
+  @ViewChild('bulkActionModal')
+  public bulkActionModal: TemplateRef<any>;
 
   constructor(private adminService: AdminService,
               private modalService: BsModalService,
@@ -102,7 +107,7 @@ export class AdminUserComponent extends AbstractComponent implements OnInit {
     this.setStatus(StatusKey.ROLES, StatusValue.IN_PROGRESS);
     this.adminService.loadRoles((roles: Array<Role>) => {
       this.availableRoles = roles;
-      this._searchFilterRoles = roles.map(r => r);
+      this._searchFilterRoles = roles.map(r => Role.fromObject(r));
       this.setStatus(StatusKey.ROLES, StatusValue.SUCCESSFUL);
     }, (error: HttpErrorResponse, apiError: ApiError) => {
       this.setStatus(StatusKey.ROLES, StatusValue.FAILED);
@@ -174,14 +179,32 @@ export class AdminUserComponent extends AbstractComponent implements OnInit {
 
     this.setStatus(StatusKey.NEW_USER, StatusValue.IN_PROGRESS);
     this.adminService.addUsers(this.newUser, usernames, (users: Array<User>) => {
-      const csvPayload = users.map(u => u.username + ',' + this.envService.endpoints.loginKeyUrl(u.secureLoginKey)).join('\n');
-      const csvBlob = new Blob([csvPayload], { type: 'text/csv' });
-      const csvURL = this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(csvBlob));
-      this.setStatus(StatusKey.NEW_USER, StatusValue.SUCCESSFUL, csvURL);
+      this.setStatus(StatusKey.NEW_USER, StatusValue.SUCCESSFUL, this.generateUserLoginCsv(users));
       this.loadUsers();
     }, (error: HttpErrorResponse, apiError: ApiError) => {
       this.setStatus(StatusKey.NEW_USER, StatusValue.FAILED, apiError);
     });
+
+  }
+
+  /**
+   * Generate a local CSV from the given users
+   * and return the URL.
+   * Only the username and login link are added to the CSV.
+   * @param users list of users with populated login key
+   * @private
+   */
+  private generateUserLoginCsv(users: Array<User>): SafeUrl {
+
+    const csvPayload = users.map(u => {
+      if (u.secureLoginKey) {
+        return u.username + ',' + this.envService.endpoints.loginKeyUrl(u.secureLoginKey);
+      } else {
+        return '<ERROR>';
+      }
+    }).join('\n');
+    const csvBlob = new Blob([csvPayload], { type: 'text/csv' });
+    return this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(csvBlob));
 
   }
 
@@ -299,12 +322,13 @@ export class AdminUserComponent extends AbstractComponent implements OnInit {
 
   }
 
-  public setSearchFilterNumeric(key: string, value: string) {
-    let v: any = value;
-    if (value !== null && value !== undefined) {
-      v = Number.parseInt(value, 10);
+  public setSearchFilterNumericArray(key: string, value: string) {
+    if (!value) {
+      this.setSearchFilter(key, null);
+      return;
     }
-    this.setSearchFilter(key, v);
+    const v = Number.parseInt(value, 10);
+    this.setSearchFilter(key, [v]);
   }
 
   get searchFilterRoles(): Array<Role> {
@@ -329,6 +353,66 @@ export class AdminUserComponent extends AbstractComponent implements OnInit {
     }
   }
 
+  public confirmBulkAction(action: BulkAction): void {
+
+    this.bulkAction = action;
+    this.bulkActionModalRef = this.modalService.show(this.bulkActionModal, {ignoreBackdropClick: true});
+
+  }
+
+  public hideBulkActionModal(): void {
+    this.bulkActionModalRef.hide();
+    this.deleteStatus(StatusKey.BULK_ACTION);
+  }
+
+  public executeBulkAction(): void {
+
+    this.setStatus(StatusKey.BULK_ACTION, StatusValue.IN_PROGRESS);
+    this.unloadNotice();
+
+    const action = this.bulkAction;
+    this.adminService.bulkAction(this.searchFilters, action, (affectedUsers: Array<User>) => {
+      let context;
+      if (action === BulkAction.CREATE_LOGIN_LINKS) {
+        const affectedUserIds = affectedUsers.map(au => au.id);
+        let affectedUserIdsFilter = new Map<string, number[]>();
+        affectedUserIdsFilter.set('id', affectedUserIds);
+        this.adminService.loadUsers(affectedUserIdsFilter, null, null,
+          result => {
+            context = this.generateUserLoginCsv(result.result);
+            this.setStatus(StatusKey.BULK_ACTION, StatusValue.SUCCESSFUL, context);
+            this.unloadNotice(true);
+            this.loadUsers();
+          }, (error, apiError) => {
+            this.setStatus(StatusKey.BULK_ACTION, StatusValue.FAILED, apiError);
+            this.unloadNotice(true);
+          });
+      } else {
+        this.unloadNotice(true);
+        this.setStatus(StatusKey.BULK_ACTION, StatusValue.SUCCESSFUL, context);
+        this.loadUsers();
+      }
+    }, (error: HttpErrorResponse, apiError: ApiError) => {
+      this.setStatus(StatusKey.BULK_ACTION, StatusValue.FAILED, apiError);
+      this.unloadNotice(true);
+    });
+
+  }
+
+  private unloadNotice(deactivate: boolean = false) {
+
+    if (deactivate) {
+      window.onbeforeunload = null;
+    } else {
+      window.onbeforeunload = (e) => {
+        e.preventDefault();
+        e.returnValue = '';
+        this.setStatus(StatusKey.BULK_ACTION_CLOSE_INFO, StatusValue.SHOW);
+      };
+    }
+
+  }
+
 }
 
 export enum StatusKey {
@@ -341,7 +425,9 @@ export enum StatusKey {
   NEW_USER,
   ROLES,
   LOGIN_LINK,
-  MODIFY_ROLE
+  MODIFY_ROLE,
+  BULK_ACTION,
+  BULK_ACTION_CLOSE_INFO
 
 }
 
@@ -349,6 +435,7 @@ export enum StatusValue {
 
   IN_PROGRESS,
   SUCCESSFUL,
-  FAILED
+  FAILED,
+  SHOW
 
 }
