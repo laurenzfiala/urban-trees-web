@@ -35,16 +35,34 @@
       <fieldset [attr.disabled]="!isSslConnection() ? true : null">
         <div class="form-group fp-group">
           <div class="fp">{{'login.username_placeholder' | translate}}</div>
-          <input #usernameInput type="text" class="form-control" name="username" [(ngModel)]="this.username" required autofocus>
+          <input #usernameInput
+                 type="text"
+                 class="form-control"
+                 name="username"
+                 [(ngModel)]="this.username"
+                 required
+                 autofocus>
         </div>
         <div class="form-group fp-group">
           <div class="fp">{{'login.password_placeholder' | translate}}</div>
-          <input #passwordInput type="password" class="form-control" name="password" [(ngModel)]="this.password" required>
+          <input #passwordInput
+                 type="password"
+                 class="form-control"
+                 name="password"
+                 [(ngModel)]="this.password"
+                 required>
         </div>
         <div *ngIf="showOtp"
              class="form-group fp-group">
           <div class="fp">{{'login.otp_placeholder' | translate}}</div>
-          <input type="text" class="form-control code" name="otp" [(ngModel)]="this.otp" maxlength="11" required>
+          <input #otpInput
+                 type="text"
+                 class="form-control code"
+                 name="otp"
+                 [(ngModel)]="this.otp"
+                 maxlength="11"
+                 required
+                 focusOnDisplay>
           <div class="otp-info mt-2">
             <i class="i i-xs i-dark i-info mr-2 flex-shrink-0"></i>
             <div class="flex-grow-1">

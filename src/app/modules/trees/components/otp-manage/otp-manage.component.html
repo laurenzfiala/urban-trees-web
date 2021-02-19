@@ -75,7 +75,8 @@
                      name="otpActivate"
                      [(ngModel)]="this.otp"
                      maxlength="6"
-                     required>
+                     required
+                     focusOnDisplay>
             </div>
             <button type="submit" class="btn btn-block btn-primary" [attr.disabled]="hasAnyStatus(StatusKey.ACTIVATE, StatusValue.IN_PROGRESS, StatusValue.SUCCESSFUL) ? true : null">
               <span *ngIf="!hasAnyStatus(StatusKey.ACTIVATE, StatusValue.IN_PROGRESS, StatusValue.SUCCESSFUL)">
@@ -139,8 +140,8 @@
                    name="otpDeactivate"
                    [(ngModel)]="this.otp"
                    maxlength="11"
-                   [autofocus]="true"
-                   required>
+                   required
+                   focusOnDisplay>
           </div>
           <button type="submit" class="btn btn-block btn-primary" [attr.disabled]="hasAnyStatus(StatusKey.DEACTIVATE, StatusValue.IN_PROGRESS, StatusValue.SUCCESSFUL) ? true : null">
             <span *ngIf="!hasAnyStatus(StatusKey.DEACTIVATE, StatusValue.IN_PROGRESS, StatusValue.SUCCESSFUL)">

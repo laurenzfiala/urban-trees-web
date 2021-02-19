@@ -11,6 +11,7 @@ import {LangDirective} from './directives/lang.directive';
 import {HTTP_INTERCEPTORS} from '@angular/common/http';
 import {AuthInterceptor} from './interceptors/auth.interceptor';
 import {ForNDirective} from './directives/for-n.directive';
+import {FocusOnDisplayDirective} from './directives/focus-on-display.directive';
 
 @NgModule({
   declarations: [
@@ -23,7 +24,8 @@ import {ForNDirective} from './directives/for-n.directive';
     CheckDirective,
     ValueaccessorDirective,
     LangDirective,
-    ForNDirective
+    ForNDirective,
+    FocusOnDisplayDirective
   ],
   imports: [
     CommonModule
@@ -38,7 +40,8 @@ import {ForNDirective} from './directives/for-n.directive';
     CheckDirective,
     ValueaccessorDirective,
     LangDirective,
-    ForNDirective
+    ForNDirective,
+    FocusOnDisplayDirective
   ],
   providers: [
     // Interceptors

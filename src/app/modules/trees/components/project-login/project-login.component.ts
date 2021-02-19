@@ -56,6 +56,9 @@ export class ProjectLoginComponent extends AbstractComponent implements OnInit, 
   @ViewChild('passwordInput')
   private passwordInput: ElementRef;
 
+  @ViewChild('otpInput')
+  private otpInput: ElementRef;
+
   public accessReason: LoginAccessReason;
 
   public redirectTo: string;
@@ -153,6 +156,7 @@ export class ProjectLoginComponent extends AbstractComponent implements OnInit, 
       if (t === 'OTP') {
         this.showOtp = true;
         this.setStatus(StatusKey.LOGIN, StatusValue.ENTER_OTP);
+        //this.otpInput?.nativeElement.focus();
         return;
       }
 
