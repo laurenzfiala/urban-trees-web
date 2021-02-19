@@ -21,6 +21,7 @@
     "measurements": "Measurements",
     "statistics": "Statistics",
     "admin": "Admin console",
+    "reports": "Reports",
     "footer": {
       "report": "Report a problem",
       "imprint": "Imprint",
@@ -28,7 +29,6 @@
       "madeby": "Made by the ",
       "madeby_team": "CO₂BS-Team"
     },
-    "messages": "Messages",
     "settings": "Language settings",
     "settings_logged_in": "Settings, Account & Language",
     "login": "Log in",
@@ -262,7 +262,9 @@
     "deactivation_success_info": "Successfully deactivated",
     "deactivation_error_info": "Code was incorrect, please try again",
     "deactivation_connection_error_info": "Could not reach server, please try again later",
-    "go_to_home": "Go to home"
+    "go_to_home": "Go to home",
+    "log_in_again": "Log in to continue",
+    "info_forced_activation": "You have to activate two-factor authentication before you can continue."
   },
   "tree": {
     "loading": "Loading tree...",

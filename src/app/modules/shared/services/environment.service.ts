@@ -25,6 +25,10 @@ export class EnvironmentService {
     return this.context.searchDebounceMs;
   }
 
+  get searchDebounceApiMs() {
+    return this.context.searchDebounceApiMs;
+  }
+
   get defaultTimeout() {
     return this.context.defaultTimeout;
   }
@@ -322,8 +326,8 @@ class EnvironmentEndpoints {
     return this.prependCommonPath(this.context.addTree);
   }
 
-  get addUser() {
-    return this.prependCommonPath(this.context.addUser);
+  get addUsers() {
+    return this.prependCommonPath(this.context.addUsers);
   }
 
   public modifyTree(treeId: number): string {
@@ -429,8 +433,31 @@ class EnvironmentEndpoints {
 
   }
 
-  get loadUsers() {
-    return this.prependCommonPath(this.context.loadUsers);
+  public loadUsers(limit: number, offset: number) {
+    let replacements: any[] = [
+      { placeholder: 'offset', replacement: offset ? offset : 0 },
+      { placeholder: 'limit', replacement: limit ? '&limit=' + limit : '' }
+    ];
+
+    return this.prependCommonPath(
+      this.replaceParams(
+        this.context.loadUsers,
+        replacements
+      )
+    );
+  }
+
+  public usersBulkAction(action: string) {
+    let replacements: any[] = [
+      { placeholder: 'action', replacement: action }
+    ];
+
+    return this.prependCommonPath(
+      this.replaceParams(
+        this.context.usersBulkAction,
+        replacements
+      )
+    );
   }
 
   get loadRole() {
@@ -700,6 +727,10 @@ class Security {
 
   get roleTempChangePassword() {
     return this.context.roles.tempChangePassword;
+  }
+
+  get roleTempActivateOTP() {
+    return this.context.roles.tempActivateOTP;
   }
 
 }

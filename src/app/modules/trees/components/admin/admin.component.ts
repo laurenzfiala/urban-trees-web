@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import {UserData} from '../../entities/user-data.entity';
+import {UserService} from '../../services/user.service';
 
 @Component({
   selector: 'ut-admin',
@@ -7,9 +9,13 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AdminComponent implements OnInit {
 
-  constructor() { }
+  constructor(private userService: UserService) { }
 
   ngOnInit() {
+  }
+
+  get userdata(): UserData {
+    return this.userService.getUserData();
   }
 
 }

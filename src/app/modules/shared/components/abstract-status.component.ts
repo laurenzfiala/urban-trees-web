@@ -30,20 +30,20 @@ export abstract class AbstractStatusComponent {
 
   /**
    * Set the status of the given category.
-   * Optionally with an ApiError.
+   * Optionally with a context or ApiError.
    */
-  protected setStatus(key: number, value: number, error?: ApiError) {
-    this.statuses.set(key, [value, error]);
+  protected setStatus(key: number, value: number, contextOrError?: any | ApiError) {
+    this.statuses.set(key, [value, contextOrError]);
     this.getStatusObservable(key);
     const sub = this.statusObservers.get(key);
     if (sub !== undefined) {
       sub.next(value);
     }
-    if (error !== undefined) {
+    if (contextOrError !== undefined && contextOrError instanceof ApiError) {
       this.getStatusErrorObservable(key);
       const subErr = this.statusErrorObservers.get(key);
       if (subErr !== undefined) {
-        subErr.next(error);
+        subErr.next(contextOrError);
       }
     }
   }
@@ -85,10 +85,24 @@ export abstract class AbstractStatusComponent {
   }
 
   /**
+   * Get the context associated with the status
+   * with given id.
+   * @param {number} key category id
+   * @returns any associated context (may also be an ApiError) or undefined
+   */
+  public getStatusContext(key: number): any {
+    let status = this.statuses.get(key);
+    if (status === undefined) {
+      return undefined;
+    }
+    return status[1];
+  }
+
+  /**
    * Get the error associated with the status
    * with given id.
    * @param {number} key category id
-   * @returns {ApiError} associated error or null
+   * @returns {ApiError} associated error or undefined
    */
   public getStatusError(key: number): ApiError {
     let status = this.statuses.get(key);

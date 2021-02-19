@@ -69,18 +69,18 @@
         <ul class="navbar-nav navbar-right">
           <li *auth="envService.security.rolesAdmin"
             class="nav-item pointer">
-          <a *ngIf="userdata"
-             routerLink="/admin/report"
+          <a routerLink="/admin"
              routerLinkActive="active"
              class="nav-link nav-reports d-flex align-items-center"
-             [title]="'navigation.messages' | translate">
-            <div *ngIf="userdata?.newMessagesAmount > 0"
+             [title]="'navigation.admin' | translate">
+            <div *ngIf="userdata && userdata?.newMessagesAmount > 0"
                  class="nav-badge mr-1"
                  aria-hidden="true">
               {{userdata?.newMessagesAmount}}
+              <span class="sr-only">{{'navigation.reports' | translate}}</span>
             </div>
-            <i class="i i-send i-dark" aria-hidden="true"></i>
-            <span class="sr-only">{{'navigation.messages' | translate}}</span>
+            <i class="i i-admin i-dark" aria-hidden="true"></i>
+            <span class="sr-only">{{'navigation.admin' | translate}}</span>
           </a>
           </li>
           <li class="nav-item pointer">
@@ -155,15 +155,6 @@
     <a class="nav-link link-container" routerLink="/statistics">
       <div class="link">
         {{'navigation.statistics' | translate}}
-      </div>
-    </a>
-  </li>
-  <li *auth="envService.security.rolesAdmin"
-      class="nav-item"
-      routerLinkActive="active">
-    <a class="nav-link link-container" routerLink="/admin">
-      <div class="link">
-        {{'navigation.admin' | translate}}
       </div>
     </a>
   </li>

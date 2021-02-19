@@ -15,112 +15,339 @@
       Manage Users
     </h4>
 
-    <div class="d-flex mt-3">
+    <div class="d-flex mt-1">
       <input
         name="userSearchInput"
         class="form-control search-input"
-        placeholder="Search for usernames and IDs"
-        [ngModel]="searchInput"
-        (ngModelChange)="setSearchInput($event)"/>
-      <button class="btn btn-default d-flex align-items-center flex-shrink-0 ml-2"
+        placeholder="Search for usernames"
+        [ngModel]="getSearchFilter('username')"
+        (ngModelChange)="setSearchFilter('username', $event)"/>
+      <button class="btn btn-default d-flex align-items-center flex-shrink-0 ml-1"
               (click)="showNewUserModal(newUserModal)">
         <i class="i i-sm i-dark i-plus"></i>
         <span class="d-none d-sm-inline ml-2">Add new user</span>
       </button>
     </div>
 
-    <div *ngIf="hasStatus(StatusKey.USERS, StatusValue.IN_PROGRESS)"
-          class="d-flex justify-content-center align-items-center my-4">
-      <i class="i i-black i-spin i-load mr-2"></i>
-      Loading users
-    </div>
-
-    <div *ngIf="hasStatus(StatusKey.USERS, StatusValue.FAILED)"
-          class="d-flex justify-content-center align-items-center text-danger my-4">
-      <i class="i i-warning-danger mr-2"></i>
-      Could not load users
-    </div>
-
-    <ul class="list-group mt-2">
-      <li *ngFor="let u of displayUsers"
-          class="list-group-item user-container"
-          [ngClass]="{'disabled': u.deleteStatus === StatusValue.SUCCESSFUL}">
-
-        <div class="info-container">
-          {{u.username}}
-          <span *ngIf="u.deleteStatus === StatusValue.SUCCESSFUL"> &ndash; deleted</span>
-          <div class="text-subtle text-xs">
-            User ID: {{u.id}} &ndash; Roles: {{u?.roles?.length > 0 ? u.roles : '(none granted)'}}
+    <div class="search-info-wrapper mt-1">
+      <div class="search-info">
+        <div class="text-lg">
+          <div *ngIf="hasStatus(StatusKey.USERS, StatusValue.SUCCESSFUL)"
+               class="search-status">
+            <div>
+              {{searchResult.metadata['totalResultAmount']}}
+              Result{{searchResult.metadata['totalResultAmount'] === 1 ? '' : 's'}}
+              <div class="text-sm text-subtle">
+                {{searchResult.result.length}} shown
+              </div>
+            </div>
+          </div>
+          <div *ngIf="hasStatus(StatusKey.USERS, StatusValue.IN_PROGRESS)"
+               class="search-status text-subtle">
+            <i class="i i-dark i-spin i-load i-sm mr-1"></i>
+            Loading
+          </div>
+          <div *ngIf="hasStatus(StatusKey.USERS, StatusValue.FAILED)"
+               class="search-status text-danger">
+            <i class="i i-warning-danger mr-1"></i>
+            Error
           </div>
         </div>
-
-        <div class="status-container">
-
-          <div class="status"
-               [popover]="loginInfoPopover"
-               [popoverContext]="{user: u}"
-               placement="left"
-               outsideClick=true
-               container="body">
-            <i class="i i-sm i-info-info"></i>
+        <div class="search-features">
+          <div class="link plain search-feature-toggle"
+               (action)="toggleFilters()"
+               [ngClass]="{'active': showFilters}"
+               tabindex="0">
+            <i class="i i-xs i-dark i-filters-xs mr-1"></i>
+            <div>
+              Filters
+              <i *ngIf="searchFilters?.size" class="enabled-pointer"></i>
+            </div>
           </div>
-
-          <div class="status"
-               [popover]="statusPopover"
-               [popoverContext]="{user: u}"
-               placement="left"
-               outsideClick=true
-               container="body">
-            <i *ngIf="!u.active; else status2" class="i i-sm i-cross-danger"></i>
-            <ng-template #status2>
-              <i *ngIf="!u.nonLocked; else status3" class="i i-sm i-warning-danger"></i>
-            </ng-template>
-            <ng-template #status3>
-              <i *ngIf="!u.credentialsNonExpired; else status4" class="i i-sm i-warning-warning"></i>
-            </ng-template>
-            <ng-template #status4>
-              <i class="i i-sm i-check-success"></i>
-            </ng-template>
+          <div class="link plain search-feature-toggle"
+               (action)="toggleActions()"
+               [ngClass]="{'active': showActions, 'disabled': !hasStatus(StatusKey.USERS, StatusValue.SUCCESSFUL)}"
+               tabindex="0">
+            <i class="i i-xs i-dark i-edit-xs mr-1"></i>
+            Actions
           </div>
+        </div>
+      </div>
 
-          <div class="status dark"
-               [popover]="loginPopover"
-               (onShown)="deleteStatus(StatusKey.LOGIN_LINK)"
-               [popoverContext]="{user: u}"
-               placement="left"
-               outsideClick=true
-               container="body">
-            <i class="i i-sm i-dark i-password-reset"></i>
+      <!-- FILTERS -->
+      <div [collapse]="!showFilters">
+        <div class="d-flex flex-row flex-wrap m--2">
+          <div class="search-filter">
+            <div class="search-filter-title">User ID</div>
+            <input class="form-control"
+                   type="number"
+                   [ngModel]="getSearchFilter('id')"
+                   (ngModelChange)="setSearchFilterNumericArray('id', $event)" />
           </div>
+          <div class="search-filter">
+            <div class="search-filter-title">Account Status</div>
+            <div class="text-right">
+              <span class="mr-1">Account Active</span>
+              <div class="btn-group"
+                   btnRadioGroup
+                   [ngModel]="getSearchFilter('isActive')"
+                   (ngModelChange)="setSearchFilter('isActive', $event)">
+                <label class="btn btn-sm btn-primary" [btnRadio]="true" uncheckable tabindex="0" role="button">
+                  Yes
+                </label>
+                <label class="btn btn-sm btn-primary" [btnRadio]="false" uncheckable tabindex="0" role="button">
+                  No
+                </label>
+              </div>
+            </div>
+            <div class="text-right">
+              <span class="mr-1">Two-factor auth active</span>
+              <div class="btn-group"
+                   btnRadioGroup
+                   [ngModel]="getSearchFilter('isUsingOtp')"
+                   (ngModelChange)="setSearchFilter('isUsingOtp', $event)">
+                <label class="btn btn-sm btn-primary" [btnRadio]="true" uncheckable tabindex="0" role="button">
+                  Yes
+                </label>
+                <label class="btn btn-sm btn-primary" [btnRadio]="false" uncheckable tabindex="0" role="button">
+                  No
+                </label>
+              </div>
+            </div>
+            <div class="text-right">
+              <span class="mr-1">Credentials expired</span>
+              <div class="btn-group"
+                   btnRadioGroup
+                   [ngModel]="getSearchFilter('isCredentialsNonExpired')"
+                   (ngModelChange)="setSearchFilter('isCredentialsNonExpired', $event)">
+                <label class="btn btn-sm btn-primary" [btnRadio]="false" uncheckable tabindex="0" role="button">
+                  Yes
+                </label>
+                <label class="btn btn-sm btn-primary" [btnRadio]="true" uncheckable tabindex="0" role="button">
+                  No
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="search-filter">
+            <div class="search-filter-title">User Roles</div>
+            <div>
+              Has
+              <div class="btn-group"
+                   btnRadioGroup
+                   [ngModel]="getSearchFilter('rolesAnd')"
+                   (ngModelChange)="setSearchFilter('rolesAnd', $event)">
+              <label class="btn btn-sm btn-primary" [btnRadio]="undefined" tabindex="0" role="button">
+                any
+              </label>
+              <label class="btn btn-sm btn-primary" [btnRadio]="true" tabindex="0" role="button">
+                all
+              </label>
+            </div>
+              of these roles:
+            </div>
+            <div *ngFor="let r of searchFilterRoles"
+                 id="searchFilterRoles"
+                 class="form-check">
+              <input type="checkbox"
+                     class="form-check-input"
+                     [id]="'searchfilter_checkbox_role_' + r.name"
+                     [(ngModel)]="r.checked"
+                     (ngModelChange)="setSearchFilter('roles', rolesForSearchFilter())">
+              <label class="form-check-label" [for]="'searchfilter_checkbox_role_' + r.name">{{r}}</label>
+            </div>
+          </div>
+          <div class="search-filter">
+            <div class="search-filter-title">Last login date</div>
+            <div class="mb-2">
+              <label for="searchFilterLastLoginDateFrom">From date:</label>
+              <input id="searchFilterLastLoginDateFrom"
+                     type="text"
+                     placeholder="From date"
+                     class="form-control"
+                     bsDatepicker
+                     [bsConfig]="{ dateInputFormat: 'app.date_format_day_full' | translate }"
+                     [ngModel]="getSearchFilter('lastLoginDateFrom')"
+                     (ngModelChange)="setSearchFilter('lastLoginDateFrom', $event)">
+            </div>
 
-          <div class="status dark"
-               [popover]="lockPopover"
-               [popoverContext]="{user: u}"
-               placement="left"
-               outsideClick=true
-               container="body">
-            <i class="i i-sm i-dark i-document-protect"></i>
+            <div>
+              <label for="searchFilterLastLoginDateTo">To date:</label>
+              <input id="searchFilterLastLoginDateTo"
+                     type="text"
+                     placeholder="To date"
+                     class="form-control"
+                     bsDatepicker
+                     [bsConfig]="{ dateInputFormat: 'app.date_format_day_full' | translate }"
+                     [ngModel]="getSearchFilter('lastLoginDateTo')"
+                     (ngModelChange)="setSearchFilter('lastLoginDateTo', $event)">
+            </div>
           </div>
+          <div class="search-filter">
+            <div class="search-filter-title">Account creation date</div>
+            <div>
+              <label for="searchFilterCreationDateFrom">To date:</label>
+              <input id="searchFilterCreationDateFrom"
+                     type="text"
+                     placeholder="From date"
+                     class="form-control"
+                     bsDatepicker
+                     [bsConfig]="{ dateInputFormat: 'app.date_format_day_full' | translate }"
+                     [ngModel]="getSearchFilter('creationDateFrom')"
+                     (ngModelChange)="setSearchFilter('creationDateFrom', $event)">
+            </div>
+            <div>
+              <label for="searchFilterCreationDateTo">To date:</label>
+              <input id="searchFilterCreationDateTo"
+                     type="text"
+                     placeholder="To date"
+                     class="form-control"
+                     bsDatepicker
+                     [bsConfig]="{ dateInputFormat: 'app.date_format_day_full' | translate }"
+                     [ngModel]="getSearchFilter('creationDateTo')"
+                     (ngModelChange)="setSearchFilter('creationDateTo', $event)">
+            </div>
+          </div>
+        </div>
+      </div>
 
-          <div class="status danger"
-               [popover]="userDeletePopover"
-               [popoverContext]="{user: u}"
-               placement="left"
-               outsideClick=true
-               container="body">
-            <i class="i i-sm i-trash"></i>
-          </div>
+      <!-- BULK ACTIONS -->
+      <div [collapse]="!showActions">
+        <div class="text-lg text-subtle mb-2">Bulk actions</div>
+        <div class="d-flex flex-row flex-wrap m--1">
+
+          <button class="btn btn-primary bulk-action-btn"
+                  (action)="confirmBulkAction(BulkAction.EXPIRE_CREDENTIALS)">
+            <i class="i i-sm i-light i-password-reset mr-1"></i>
+            Expire credentials
+          </button>
+
+          <button class="btn btn-primary bulk-action-btn"
+                  (action)="confirmBulkAction(BulkAction.CREATE_LOGIN_LINKS)">
+            <i class="i i-sm i-light i-link mr-1"></i>
+            Create login links &amp; download
+          </button>
+
+          <button class="btn btn-success bulk-action-btn"
+                  (action)="confirmBulkAction(BulkAction.ACTIVATE)">
+            <i class="i i-sm i-light i-document-protect mr-1"></i>
+            Activate accounts
+          </button>
+
+          <button class="btn btn-danger bulk-action-btn"
+                  (action)="confirmBulkAction(BulkAction.INACTIVATE)">
+            <i class="i i-sm i-light i-document-protect mr-1"></i>
+            Inactivate accounts
+          </button>
+
+          <button class="btn btn-danger bulk-action-btn"
+                  (action)="confirmBulkAction(BulkAction.DELETE)">
+            <i class="i i-sm i-light i-trash mr-1"></i>
+            Delete accounts
+          </button>
 
         </div>
+      </div>
+    </div>
 
-      </li>
-    </ul>
+    <div *ngIf="searchResult"
+         class="user-list-container"
+         [ngClass]="{'disabled': hasStatus(StatusKey.USERS, StatusValue.IN_PROGRESS)}">
+
+      <ul class="list-group mt-2">
+        <li *ngFor="let u of searchResult?.result"
+            class="list-group-item user-container"
+            [ngClass]="{'disabled': u.deleteStatus === StatusValue.SUCCESSFUL}">
+
+          <div class="info-container">
+            {{u.username}}
+            <span *ngIf="u.deleteStatus === StatusValue.SUCCESSFUL"> &ndash; deleted</span>
+            <div class="text-subtle text-xs">
+              User ID: {{u.id}}
+              &ndash; Roles: {{u?.roles?.length > 0 ? u.roles : '(none granted)'}}
+              &ndash; Created on {{u?.creationDate | date:('app.date_format_day_full_ng' | translate) }}
+            </div>
+          </div>
+
+          <div class="status-container">
+
+            <div class="status"
+                 [popover]="loginInfoPopover"
+                 [popoverContext]="{user: u}"
+                 placement="left"
+                 outsideClick=true
+                 container="body">
+              <i class="i i-sm i-info-info"></i>
+            </div>
+
+            <div class="status"
+                 [popover]="statusPopover"
+                 [popoverContext]="{user: u}"
+                 placement="left"
+                 outsideClick=true
+                 container="body">
+              <i *ngIf="!u.active; else status2" class="i i-sm i-cross-danger"></i>
+              <ng-template #status2>
+                <i *ngIf="!u.nonLocked; else status3" class="i i-sm i-warning-danger"></i>
+              </ng-template>
+              <ng-template #status3>
+                <i *ngIf="!u.credentialsNonExpired; else status4" class="i i-sm i-warning-warning"></i>
+              </ng-template>
+              <ng-template #status4>
+                <i class="i i-sm i-check-success"></i>
+              </ng-template>
+            </div>
+
+            <div class="status dark"
+                 [popover]="loginPopover"
+                 (onShown)="deleteStatus(StatusKey.LOGIN_LINK)"
+                 [popoverContext]="{user: u}"
+                 placement="left"
+                 outsideClick=true
+                 container="body">
+              <i class="i i-sm i-dark i-password-reset"></i>
+            </div>
+
+            <div class="status dark"
+                 [popover]="lockPopover"
+                 [popoverContext]="{user: u}"
+                 placement="left"
+                 outsideClick=true
+                 container="body">
+              <i class="i i-sm i-dark i-document-protect"></i>
+            </div>
+
+            <div class="status danger"
+                 [popover]="userDeletePopover"
+                 [popoverContext]="{user: u}"
+                 placement="left"
+                 outsideClick=true
+                 container="body">
+              <i class="i i-sm i-trash"></i>
+            </div>
+
+          </div>
+
+        </li>
+      </ul>
+
+      <div *ngIf="searchResult.result.length < searchResult.metadata['totalResultAmount']"
+           class="text-center mt-2">
+        <a class="link"
+           (action)="loadUsers(true)"
+           tabindex="0">
+          Show {{searchResult.metadata['totalResultAmount'] - searchResult.result.length}} more results
+        </a>
+      </div>
+
+    </div>
 
   </div>
   </div>
 
   <!-- LOGIN INFO POPOVER -->
   <ng-template #loginInfoPopover let-u="user">
+
     <div class="info-popover">
       <div class="info-item">
         <i *ngIf="u.lastLoginDate" class="i i-sm i-check-success mr-2"></i>
@@ -146,10 +373,12 @@
         </div>
       </div>
     </div>
+
   </ng-template>
 
   <!-- USER ACCOUNT STATUS POPOVER -->
   <ng-template #statusPopover let-u="user">
+
     <div class="info-popover">
       <div *ngIf="u.active" class="info-item">
         <i class="i i-sm i-check-success mr-2"></i>
@@ -198,10 +427,12 @@
         </div>
       </div>
     </div>
+
   </ng-template>
 
   <!-- GET LONG LINK / EXPIRE CREDENTIALS POPOVER -->
   <ng-template #loginPopover let-u="user">
+
     Expire credentials?
     <div class="text-subtle text-sm">
       User must enter their old password and change it upon next login.
@@ -228,7 +459,7 @@
     <div class="text-subtle text-sm">
       Give the link to a user who's forgotten their password.
     </div>
-    <button *ngIf="!u.secureLoginLink && !hasStatus(StatusKey.LOGIN_LINK, StatusValue.IN_PROGRESS)"
+    <button *ngIf="!u.secureLoginKey && !hasStatus(StatusKey.LOGIN_LINK, StatusValue.IN_PROGRESS)"
             class="btn btn-outline-primary btn-block mt-2"
             (click)="requestSecureLink(u); $event.stopPropagation()">
       Create link for {{u.username}}
@@ -238,25 +469,27 @@
       <i class="i i-sm i-spin i-load float-left"></i>
       Creating link for {{u.username}}
     </button>
-    <div *ngIf="u.secureLoginLink"
+    <div *ngIf="u.secureLoginKey"
          class="d-flex justify-content-center text-success my-2">
       <i class="i i-sm i-check-success mr-2"></i>
       Link created
     </div>
     <input #secureLoginLinkTextfield
-           *ngIf="u.secureLoginLink"
+           *ngIf="u.secureLoginKey"
            type="text"
            readonly=true
            class="get-link-copy-field form-control form-control-sm"
-           [ngModel]="u.secureLoginLink"
+           [ngModel]="envService.endpoints.loginKeyUrl(u.secureLoginKey)"
            (click)="copySecureLink(u)"
            tooltip="Copied link to clipboard!"
            container="body"
            triggers="focus" />
+
   </ng-template>
 
   <!-- CHANGE ROLES / (UN-)LOCK ACCOUNT POPOVER -->
   <ng-template #lockPopover let-u="user">
+
     Change roles?
     <div class="text-subtle text-sm">Control access permissions.</div>
     <div class="role-container">
@@ -297,10 +530,12 @@
         Activating {{u.username}}
       </button>
     </div>
+
   </ng-template>
 
   <!-- DELETE USER POPOVER -->
   <ng-template #userDeletePopover let-u="user">
+
     <div class="d-flex flex-column">
       Delete account?
       <div class="text-subtle text-sm">Deletion can't be undone. Use the inactivation feature to lock a user instead.</div>
@@ -325,37 +560,176 @@
         Could not delete user
       </div>
     </div>
+
   </ng-template>
 
   <!-- NEW USER MODAL -->
   <ng-template #newUserModal>
+
     <div class="modal-header">
-      <h4 class="modal-title pull-left">Add new user</h4>
+      <h4 class="modal-title pull-left">Add new user{{addUserMultiple ? 's' : ''}}</h4>
     </div>
     <div class="modal-body">
       <div class="form-group">
-        <label for="beaconId">Username:</label>
-        <input id="beaconId"
-               [(ngModel)]="newUser.username"
-               type="text"
-               class="form-control"
-               [ngClass]="{'is-invalid': !isNewUserUsernameValid()}"/>
+
+        <ng-container *ngIf="!addUserMultiple">
+          <label for="newUserUsername">Username:</label>
+          <input id="newUserUsername"
+                 [ngModel]="getNewUserUsernamesString()"
+                 (ngModelChange)="setNewUserUsernamesString($event)"
+                 type="text"
+                 class="form-control"
+                 [ngClass]="{'is-invalid': !isNewUserUsernamesValid()}"/>
+          <a class="pointer mt-1" (action)="addUserMultiple = true">add multiple users</a>
+        </ng-container>
+        <ng-container *ngIf="addUserMultiple">
+          <label for="newUserUsernames">Usernames (one per line):</label>
+          <textarea id="newUserUsernames"
+                    [ngModel]="getNewUserUsernamesString()"
+                    (ngModelChange)="setNewUserUsernamesString($event)"
+                    class="form-control"
+                    [ngClass]="{'is-invalid': !isNewUserUsernamesValid()}">
+          </textarea>
+          <a class="pointer mt-1" (action)="addUserMultiple = false; newUserUsernames = []">add only one user</a>
+        </ng-container>
       </div>
       <div class="form-group">
-        <div *ngFor="let r of newUserRoles" class="form-check">
+        <label for="newUserRoles">With these roles:</label>
+        <div *ngFor="let r of newUserRoles"
+             id="newUserRoles"
+             class="form-check">
           <input type="checkbox" class="form-check-input" [id]="'checkbox_role_' + r.name" [(ngModel)]="r.checked">
           <label class="form-check-label" [for]="'checkbox_role_' + r.name">{{r}}</label>
         </div>
       </div>
     </div>
-    <div class="modal-footer">
-      <div class="float-left mx-4">
-        <span *ngIf="hasStatus(StatusKey.NEW_USER, StatusValue.IN_PROGRESS)">Adding user...</span>
-        <span *ngIf="hasStatus(StatusKey.NEW_USER, StatusValue.FAILED)">User could not be added.</span>
-        <span *ngIf="hasStatus(StatusKey.NEW_USER, StatusValue.SUCCESSFUL)">User was successfully added!</span>
-      </div>
-      <button type="button" class="btn btn-secondary" (click)="hideNewUserModal()">Close</button>
-      <button type="button" class="btn btn-primary" (click)="addUser()" [disabled]="!isNewUserUsernameValid()">Add user</button>
+
+    <div *ngIf="hasStatus(StatusKey.NEW_USER, StatusValue.IN_PROGRESS)"
+         class="modal-footer d-flex flex-column justify-content-center text-subtle">
+      <i class="i i-load i-dark i-spin mb-1"></i>
+      Creating new user{{addUserMultiple ? 's' : ''}}...
     </div>
+
+    <div *ngIf="hasStatus(StatusKey.NEW_USER, StatusValue.SUCCESSFUL)"
+         class="modal-footer d-flex flex-column justify-content-center text-success">
+      <i class="i i-check-success mb-1"></i>
+      Success!
+      <div class="mt-2">
+        <a class="link-btn link-btn-sm"
+           download="user_creation_logins.csv"
+           [href]="getStatusContext(StatusKey.NEW_USER)">
+          <i class="i i-xxs i-dark i-download mr-1"></i>
+          Download new logins
+        </a>
+      </div>
+    </div>
+
+    <div *ngIf="hasStatus(StatusKey.NEW_USER, StatusValue.FAILED)"
+         class="modal-footer d-flex flex-column justify-content-center text-danger">
+      <i class="i i-cross-danger mb-1"></i>
+      Failed to create user{{addUserMultiple ? 's' : ''}}
+      <small class="d-block">{{getStatusError(StatusKey.NEW_USER)?.message}}</small>
+    </div>
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" (click)="hideNewUserModal()">Close</button>
+      <button type="button" class="btn btn-primary" (click)="addUsers()" [disabled]="!isNewUserUsernamesValid()">
+        <ng-container *ngIf="addUserMultiple">Add {{newUserUsernames.length}} users</ng-container>
+        <ng-container *ngIf="!addUserMultiple">Add user</ng-container>
+      </button>
+    </div>
+
+  </ng-template>
+
+  <!-- BULK ACTION MODAL -->
+  <ng-template #bulkActionModal>
+
+    <div class="modal-header">
+      <h4 class="modal-title pull-left">Confirm bulk action</h4>
+    </div>
+    <div class="modal-body">
+      Are you sure you want to
+      <ng-container *ngTemplateOutlet="bulkActionWarningText"></ng-container>
+      the {{searchResult.metadata['totalResultAmount']}} users who fit your current search filters?
+
+      <div class="alert alert-danger mt-2 mb-0">
+        <i class="i i-warning-danger flex-shrink-0 mr-3"></i>
+        Bulk actions can take several minutes to complete. Please make sure you apply
+        the action to as little users as necessary.
+      </div>
+    </div>
+
+    <div *ngIf="hasStatus(StatusKey.BULK_ACTION, StatusValue.IN_PROGRESS)"
+         class="modal-footer d-flex flex-column justify-content-center text-subtle">
+      <i class="i i-load i-dark i-spin mb-1"></i>
+      Executing bulk action...
+
+      <div *ngIf="hasStatus(StatusKey.BULK_ACTION_CLOSE_INFO, StatusValue.SHOW)" class="alert alert-warning mt-2">
+        <i class="i i-warning-warning flex-shrink-0 mr-3"></i>
+        Even if you close the window, the bulk action is still executing.<br/>
+        Please wait until the bulk action is complete.
+      </div>
+    </div>
+
+    <div *ngIf="hasStatus(StatusKey.BULK_ACTION, StatusValue.SUCCESSFUL)"
+         class="modal-footer d-flex flex-column justify-content-center text-success">
+      <i class="i i-check-success mb-1"></i>
+      Success!
+      <div *ngIf="bulkAction === BulkAction.CREATE_LOGIN_LINKS"
+           class="mt-2">
+        <a class="link-btn link-btn-sm"
+           download="user_creation_logins.csv"
+           [href]="getStatusContext(StatusKey.BULK_ACTION)">
+          <i class="i i-xxs i-dark i-download mr-1"></i>
+          Download generated login links
+        </a>
+      </div>
+    </div>
+
+    <div *ngIf="hasStatus(StatusKey.BULK_ACTION, StatusValue.FAILED)"
+         class="modal-footer d-flex flex-column justify-content-center text-danger">
+      <i class="i i-cross-danger mb-1"></i>
+      Bulk action failed
+      <small class="d-block">{{getStatusError(StatusKey.BULK_ACTION).message}}</small>
+    </div>
+
+    <div class="modal-footer"
+         [ngClass]="{'disabled': hasStatus(StatusKey.BULK_ACTION, StatusValue.IN_PROGRESS)}">
+      <button type="button" class="btn btn-secondary" (click)="hideBulkActionModal()">Close</button>
+      <button type="button"
+              class="btn"
+              [ngClass]="{'btn-primary': bulkAction === BulkAction.EXPIRE_CREDENTIALS ||
+                                         bulkAction === BulkAction.CREATE_LOGIN_LINKS,
+                          'btn-success': bulkAction === BulkAction.ACTIVATE,
+                          'btn-danger': bulkAction === BulkAction.INACTIVATE ||
+                                        bulkAction === BulkAction.DELETE,
+                          'disabled': hasStatus(StatusKey.BULK_ACTION, StatusValue.SUCCESSFUL)}"
+              (click)="executeBulkAction()">
+        Yes,
+        <ng-container *ngTemplateOutlet="bulkActionWarningText"></ng-container>
+        {{searchResult.metadata['totalResultAmount']}} users
+      </button>
+    </div>
+
+  </ng-template>
+
+  <ng-template #bulkActionWarningText>
+    <ng-container [ngSwitch]="bulkAction">
+      <ng-container *ngSwitchCase="BulkAction.EXPIRE_CREDENTIALS">
+        expire credentials of
+      </ng-container>
+      <ng-container *ngSwitchCase="BulkAction.CREATE_LOGIN_LINKS">
+        create login links for
+      </ng-container>
+      <ng-container *ngSwitchCase="BulkAction.ACTIVATE">
+        activate
+      </ng-container>
+      <ng-container *ngSwitchCase="BulkAction.INACTIVATE">
+        inactivate
+      </ng-container>
+      <ng-container *ngSwitchCase="BulkAction.DELETE">
+        permanently delete
+      </ng-container>
+    </ng-container>
   </ng-template>
 </div>

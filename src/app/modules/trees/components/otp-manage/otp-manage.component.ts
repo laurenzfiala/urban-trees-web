@@ -1,8 +1,9 @@
-import {Component, OnInit} from '@angular/core';
-import {AbstractComponent} from '../../../shared/components/abstract.component';
+import {ChangeDetectorRef, Component, OnInit} from '@angular/core';
+import {AbstractComponent} from '../abstract.component';
 import {AccountService} from '../../services/account.service';
 import {EnvironmentService} from '../../../shared/services/environment.service';
 import {AuthService} from '../../../shared/services/auth.service';
+import {Log} from '../../../shared/services/log.service';
 
 @Component({
   selector: 'ut-otp-manage',
@@ -11,18 +12,23 @@ import {AuthService} from '../../../shared/services/auth.service';
 })
 export class OtpManageComponent extends AbstractComponent implements OnInit {
 
+  private static LOG: Log = Log.newInstance(OtpManageComponent);
+
   public StatusKey = StatusKey;
   public StatusValue = StatusValue;
 
   public isActive: boolean;
   public isActivateFlow: boolean;
+  public forceLogout: boolean;
+  public forceLogoutUsername: string;
 
   public otp: string;
   public scratchCodes: Array<string>;
 
   constructor(private authService: AuthService,
               private accountService: AccountService,
-              private envService: EnvironmentService) {
+              private envService: EnvironmentService,
+              private cdRef: ChangeDetectorRef) {
     super();
   }
 
@@ -31,10 +37,21 @@ export class OtpManageComponent extends AbstractComponent implements OnInit {
   }
 
   /**
-   * Check whether user has turned OTP on or off and update #isActive.
+   * Check whether user has turned OTP on or off and update
+   * #isActive and #isActivateFlow.
    */
   private checkState(): void {
 
+    if (this.authService.isTempActivateOTP()) {
+      this.isActivateFlow = true;
+      this.isActive = false;
+      this.forceLogout = true;
+      this.forceLogoutUsername = this.authService.getUsername();
+      this.setStatus(StatusKey.CHECK_STATE, StatusValue.SUCCESSFUL);
+      return;
+    }
+
+    this.forceLogout = false;
     this.setStatus(StatusKey.CHECK_STATE, StatusValue.IN_PROGRESS);
     this.accountService.isOtpActive((response: boolean) => {
       this.isActive = response;
@@ -57,6 +74,11 @@ export class OtpManageComponent extends AbstractComponent implements OnInit {
       this.isActive = true;
       this.scratchCodes = scratchCodes;
       this.setStatus(StatusKey.ACTIVATE, StatusValue.SUCCESSFUL);
+      if (this.forceLogout) {
+        OtpManageComponent.LOG.info('Logging out user because logout after password change was forced');
+        this.authService.logout();
+        this.cdRef.detectChanges();
+      }
     }, (error, apiError) => {
       this.otp = undefined;
       if (error.status === 0) {
@@ -74,7 +96,8 @@ export class OtpManageComponent extends AbstractComponent implements OnInit {
   public deactivate(): void {
 
     this.setStatus(StatusKey.DEACTIVATE, StatusValue.IN_PROGRESS);
-    this.accountService.deactivateOtp(this.otp, () => {
+    const otp = this.otp.replace(' ', '').replace('-', '');
+    this.accountService.deactivateOtp(otp, () => {
       this.isActive = false;
       this.setStatus(StatusKey.DEACTIVATE, StatusValue.SUCCESSFUL);
     }, (error, apiError) => {
@@ -93,7 +116,11 @@ export class OtpManageComponent extends AbstractComponent implements OnInit {
   }
 
   public username(): string {
-    return this.authService.getUsername();
+    let username = this.authService.getUsername();
+    if (this.forceLogoutUsername && !this.authService.isLoggedIn()) {
+      username = this.forceLogoutUsername;
+    }
+    return username;
   }
 
 }

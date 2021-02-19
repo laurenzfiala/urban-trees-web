@@ -14,6 +14,8 @@ import * as moment from 'moment';
 import {BeaconLog} from '../../entities/beacon-log.entity';
 import {BeaconLogSeverity} from '../../entities/BeaconLogSeverity';
 import {BeaconFrontend} from '../../entities/beacon-frontend.entity';
+import {UserCreation} from '../../entities/user-creation.entity';
+import {SearchResult} from '../../entities/search-result.entity';
 
 /**
  * Service for backend calls on the admin pages.
@@ -79,16 +81,19 @@ export class AdminService extends AbstractService {
 
   }
 
-  public addUser(user: User,
-                 successCallback: () => void,
+  public addUsers(templateUser: User,
+                 usernames: Array<string>,
+                 successCallback: (createdUsers: Array<User>) => void,
                  errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void) {
 
-    AdminService.LOG.debug('Saving user to ' + this.envService.endpoints.addUser + ' ...');
+    AdminService.LOG.debug('Saving users to ' + this.envService.endpoints.addUsers + ' ...');
 
-    this.http.put(this.envService.endpoints.addUser, user)
+    const payload = new UserCreation(templateUser, usernames);
+    this.http.put<Array<User>>(this.envService.endpoints.addUsers, payload)
       .timeout(this.envService.defaultTimeout)
-      .subscribe(() => {
-        successCallback();
+      .map(r => r && r.map(u => User.fromObject(u)))
+      .subscribe((createdUsers) => {
+        successCallback(createdUsers);
       }, (e: any) => {
         AdminService.LOG.error('Could not save user: ' + e.message, e);
         errorCallback(e, this.safeApiError(e));
@@ -100,9 +105,10 @@ export class AdminService extends AbstractService {
                          successCallback: (loginKey: string) => void,
                          errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void) {
 
-    AdminService.LOG.debug('Saving user to ' + this.envService.endpoints.addUser + ' ...');
+    const url = this.envService.endpoints.loginKey(userId);
+    AdminService.LOG.debug('Saving user to ' + url + ' ...');
 
-    this.http.get(this.envService.endpoints.loginKey(userId), {responseType: 'text'})
+    this.http.get(url, {responseType: 'text'})
       .timeout(this.envService.defaultTimeout)
       .subscribe((response: string) => {
         successCallback(response);
@@ -239,16 +245,23 @@ export class AdminService extends AbstractService {
 
   }
 
-  public loadUsers(successCallback: (users: Array<User>) => void,
+  public loadUsers(searchFilters: Map<string, any | any[]>,
+                   limit: number,
+                   offset: number,
+                   successCallback: (result: SearchResult<Array<User>>) => void,
                    errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void) {
 
-    let url = this.envService.endpoints.loadUsers;
+    let url = this.envService.endpoints.loadUsers(limit, offset);
     AdminService.LOG.debug('Loading users...');
 
-    this.http.get<Array<User>>(url)
+    this.http.post<SearchResult<Array<User>>>(url, this.searchFiltersToPayload(searchFilters))
       .timeout(this.envService.defaultTimeout)
-      .map(list => list && list.map(u => User.fromObject(u)))
-      .subscribe((result: Array<User>) => {
+      .map(r => {
+        const result = SearchResult.fromObject(r);
+        result.result = result.result.map(user => User.fromObject(user));
+        return result;
+      })
+      .subscribe((result: SearchResult<Array<User>>) => {
         successCallback(result);
       }, (e: any) => {
         AdminService.LOG.error('Could not load users: ' + e.message, e);
@@ -256,6 +269,26 @@ export class AdminService extends AbstractService {
           errorCallback(e, this.safeApiError(e));
         }
       });
+
+  }
+
+  /**
+   * Converts the given search filters map to an object.
+   * It also converts all dates to string using the correct
+   * output format.
+   * @param searchFilters search filters to convert
+   * @returns the object to pass to the HttpClient
+   */
+  private searchFiltersToPayload(searchFilters: Map<string, any | any[]>): any {
+
+    return Array.from(searchFilters).reduce((obj, [key, value]) => {
+      if (value instanceof Date) {
+        obj[key] = moment(value).startOf('day').utc().format(this.envService.outputDateFormat);
+      } else {
+        obj[key] = value;
+      }
+      return obj;
+    }, {});
 
   }
 
@@ -452,5 +485,37 @@ export class AdminService extends AbstractService {
       });
 
   }
+
+  public bulkAction(searchFilters: Map<string, any | any[]>,
+                   action: BulkAction,
+                   successCallback: (affectedUsers: Array<User>) => void,
+                   errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void) {
+
+    let url = this.envService.endpoints.usersBulkAction(BulkAction[action]);
+    AdminService.LOG.debug('Sending bulk action execution order for action ' + action + '...');
+
+    this.http.post<Array<User>>(url, this.searchFiltersToPayload(searchFilters))
+      .timeout(this.envService.defaultTimeout)
+      .map(users => users && users.map(u => User.fromObject(u)))
+      .subscribe((affectedUsers: Array<User>) => {
+        successCallback(affectedUsers);
+      }, (e: any) => {
+        AdminService.LOG.error('Could not execute bulk action: ' + e.message, e);
+        if (errorCallback) {
+          errorCallback(e, this.safeApiError(e));
+        }
+      });
+
+  }
+
+}
+
+export enum BulkAction {
+
+  EXPIRE_CREDENTIALS,
+  CREATE_LOGIN_LINKS,
+  ACTIVATE,
+  INACTIVATE,
+  DELETE
 
 }

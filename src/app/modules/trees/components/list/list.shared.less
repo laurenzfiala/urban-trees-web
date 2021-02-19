@@ -11,7 +11,7 @@
   justify-content: stretch;
 
   min-width: 150px;
-  margin: @gutter/2;
+  margin: (@gutter/2);
   flex-shrink: 0;
 
   @media @xs, @sm {
@@ -29,7 +29,7 @@
 }
 
 .list-item {
-  padding: @gutter @gutter*1.5;
+  padding: @gutter (@gutter*1.5);
   flex-grow: 1;
 
   border-radius: @borderRadiusSecondary;
@@ -59,7 +59,7 @@
     color: @subtleTextColor;
 
     &:not(:first-child) {
-      margin-top: @gutter/2;
+      margin-top: (@gutter/2);
     }
   }
 
@@ -69,7 +69,7 @@
     align-items: center;
     justify-content: flex-end;
 
-    margin-top: @gutter/2;
+    margin-top: (@gutter/2);
 
     font-size: @fontSizeSmall;
   }

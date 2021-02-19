@@ -14,6 +14,7 @@ import {CastDirective} from './directives/cast.directive';
 import {ForNDirective} from './directives/for-n.directive';
 import {ZoomComponent} from './components/zoom/zoom.component';
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
+import {FocusOnDisplayDirective} from './directives/focus-on-display.directive';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
     ValueaccessorDirective,
     LangDirective,
     CastDirective,
-    ForNDirective
+    ForNDirective,
+    FocusOnDisplayDirective
   ],
   imports: [
     CommonModule,
@@ -51,8 +53,9 @@ import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
     CheckDirective,
     ValueaccessorDirective,
     LangDirective,
+    ForNDirective,
     CastDirective,
-    ForNDirective
+    FocusOnDisplayDirective
   ],
   providers: [
     // Interceptors

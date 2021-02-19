@@ -46,14 +46,15 @@ export const environment = {
     // Admin
     addCity:                          '/admin/city',
     addTree:                          '/admin/tree',
-    addUser:                          '/admin/user',
+    addUsers:                         '/admin/users',
     modifyTree:                       '/admin/tree/{treeId}',
     phenologyObservationTypes:        '/admin/phenology/types',
     addBeacon:                        '/admin/beacon',
     modifyBeacon:                     '/admin/beacon/{beaconId}',
     deleteBeacon:                     '/admin/beacon/{beaconId}',
     loadBeaconLogs:                   '/admin/beacon/logs',
-    loadUsers:                        '/admin/users',
+    loadUsers:                        '/admin/users?offset={offset}{limit}',
+    usersBulkAction:                  '/admin/users/bulk/{action}',
     loadRole:                         '/admin/users/roles',
     deleteUser:                       '/admin/users/{userId}',
     expireCredentials:                '/admin/users/{userId}/expireCredentials',
@@ -94,6 +95,7 @@ export const environment = {
 
   contentSaveDebounceMs:              30_000,
   searchDebounceMs:                   200,
+  searchDebounceApiMs:                500,
 
   defaultTimeout:                     30000,
   imageUploadTimeout:                 60000,
@@ -120,7 +122,8 @@ export const environment = {
       journal:                          ['ROLE_JOURNAL'],
       phenObs:                          ['ROLE_PHENOBS'],
       admin:                            ['ROLE_ADMIN'],
-      tempChangePassword:               'ROLE_TEMP_CHANGE_PASSWORD'
+      tempChangePassword:               'ROLE_TEMP_CHANGE_PASSWORD',
+      tempActivateOTP:                  'TEMP_ACTIVATE_OTP'
     }
   }
 

@@ -36,13 +36,7 @@ export class ProjectLoginKeyComponent extends AbstractComponent implements OnIni
         this.setStatus(StatusKey.LOGIN, StatusValue.SUCCESSFUL);
 
         setTimeout(() => {
-
-          let redirectTo = '/home';
-          if (this.authService.isTempChangePasswordAuth()) {
-            redirectTo = '/account/changepassword';
-          }
-          this.router.navigate([redirectTo]);
-
+          this.router.navigate([this.authService.getRedirectAfterLogin('/home')]);
         }, 1500);
 
 

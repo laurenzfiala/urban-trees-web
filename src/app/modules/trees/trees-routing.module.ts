@@ -104,7 +104,7 @@ const routes: Routes = [
         component: OtpManageComponent,
         canActivate: [ProjectLoginGuard],
         data: {
-          roles: environment.security.roles.user
+          roles: [...environment.security.roles.user, environment.security.roles.tempActivateOTP]
         }
       },
       {

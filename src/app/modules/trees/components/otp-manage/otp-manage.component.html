@@ -14,21 +14,32 @@
 
   <ng-container *ngIf="hasStatus(StatusKey.CHECK_STATE, StatusValue.SUCCESSFUL)">
 
-    <div class="col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto p-0">
-      <div *ngIf="isActive" class="otp-status alert alert-success justify-content-between m-0">
-        <i class="i i-shield-active-success flex-shrink-0 mr-3"></i>
+    <div *ngIf="forceLogout && isActivateFlow && !isActive; else stateInfo" class="col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto p-0">
+      <div class="alert alert-light justify-content-between m-0">
+        <i class="i i-dark i-info flex-shrink-0 mr-3"></i>
         <div>
-          {{'otp_manage.state_info_enabled' | translate}}
-        </div>
-      </div>
-
-      <div *ngIf="!isActive" class="otp-status alert alert-dark justify-content-between m-0">
-        <i class="i i-dark i-shield-inactive flex-shrink-0 mr-3"></i>
-        <div>
-          {{'otp_manage.state_info_disabled' | translate}}
+          {{'otp_manage.info_forced_activation' | translate}}
         </div>
       </div>
     </div>
+
+    <ng-template #stateInfo>
+      <div class="col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto p-0">
+        <div *ngIf="isActive" class="otp-status alert alert-success justify-content-between m-0">
+          <i class="i i-shield-active-success flex-shrink-0 mr-3"></i>
+          <div>
+            {{'otp_manage.state_info_enabled' | translate}}
+          </div>
+        </div>
+
+        <div *ngIf="!isActive" class="otp-status alert alert-dark justify-content-between m-0">
+          <i class="i i-dark i-shield-inactive flex-shrink-0 mr-3"></i>
+          <div>
+            {{'otp_manage.state_info_disabled' | translate}}
+          </div>
+        </div>
+      </div>
+    </ng-template>
 
     <!-- ACTIVATION -->
     <div *ngIf="isActivateFlow"
@@ -64,7 +75,8 @@
                      name="otpActivate"
                      [(ngModel)]="this.otp"
                      maxlength="6"
-                     required>
+                     required
+                     focusOnDisplay>
             </div>
             <button type="submit" class="btn btn-block btn-primary" [attr.disabled]="hasAnyStatus(StatusKey.ACTIVATE, StatusValue.IN_PROGRESS, StatusValue.SUCCESSFUL) ? true : null">
               <span *ngIf="!hasAnyStatus(StatusKey.ACTIVATE, StatusValue.IN_PROGRESS, StatusValue.SUCCESSFUL)">
@@ -128,8 +140,8 @@
                    name="otpDeactivate"
                    [(ngModel)]="this.otp"
                    maxlength="11"
-                   [autofocus]="true"
-                   required>
+                   required
+                   focusOnDisplay>
           </div>
           <button type="submit" class="btn btn-block btn-primary" [attr.disabled]="hasAnyStatus(StatusKey.DEACTIVATE, StatusValue.IN_PROGRESS, StatusValue.SUCCESSFUL) ? true : null">
             <span *ngIf="!hasAnyStatus(StatusKey.DEACTIVATE, StatusValue.IN_PROGRESS, StatusValue.SUCCESSFUL)">
@@ -157,9 +169,14 @@
     <div class="d-flex align-items-center justify-content-between flex-grow-1">
       {{'otp_manage.activation_success_info' | translate}}
 
-      <button class="btn btn-sm btn-success float-right" routerLink="/home">
+      <button *ngIf="!forceLogout" class="btn btn-sm btn-success float-right" routerLink="/home">
         <i class="i i-arrow-right i-sm mr-2 float-left"></i>
         {{'otp_manage.go_to_home' | translate}}
+      </button>
+
+      <button *ngIf="forceLogout" class="btn btn-sm btn-success float-right" routerLink="/login">
+        <i class="i i-login i-sm mr-2 float-left"></i>
+        {{'otp_manage.log_in_again' | translate}}
       </button>
     </div>
 
