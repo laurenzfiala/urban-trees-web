@@ -488,13 +488,16 @@ export class AdminService extends AbstractService {
 
   public bulkAction(searchFilters: Map<string, any | any[]>,
                    action: BulkAction,
+                   data: any,
                    successCallback: (affectedUsers: Array<User>) => void,
                    errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void) {
 
     let url = this.envService.endpoints.usersBulkAction(BulkAction[action]);
     AdminService.LOG.debug('Sending bulk action execution order for action ' + action + '...');
 
-    this.http.post<Array<User>>(url, this.searchFiltersToPayload(searchFilters))
+    const payload = Object.assign({filters: this.searchFiltersToPayload(searchFilters)}, data);
+
+    this.http.post<Array<User>>(url, payload)
       .timeout(this.envService.defaultTimeout)
       .map(users => users && users.map(u => User.fromObject(u)))
       .subscribe((affectedUsers: Array<User>) => {
@@ -514,6 +517,8 @@ export enum BulkAction {
 
   EXPIRE_CREDENTIALS,
   CREATE_LOGIN_LINKS,
+  ADD_ROLES,
+  REMOVE_ROLES,
   ACTIVATE,
   INACTIVATE,
   DELETE

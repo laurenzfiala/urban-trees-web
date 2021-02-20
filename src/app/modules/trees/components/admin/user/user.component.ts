@@ -55,6 +55,12 @@ export class AdminUserComponent extends AbstractComponent implements OnInit {
    */
   public bulkAction: BulkAction;
 
+  /**
+   * Holds optional additional data to send alongside the
+   * bulk action request.
+   */
+  public bulkActionData: any;
+
   @ViewChild('secureLoginLinkTextfield')
   public secureLoginLinkTextfield: ElementRef;
 
@@ -164,7 +170,7 @@ export class AdminUserComponent extends AbstractComponent implements OnInit {
 
   public showNewUserModal(modalTemplateRef: TemplateRef<any>): void {
     this.newUser = new User();
-    this.newUserRoles = this.availableRoles.map(r => r);
+    this.newUserRoles = this.availableRoles.map(r => Role.fromObject(r));
     this.newUserModalRef = this.modalService.show(modalTemplateRef);
   }
 
@@ -353,10 +359,11 @@ export class AdminUserComponent extends AbstractComponent implements OnInit {
     }
   }
 
-  public confirmBulkAction(action: BulkAction): void {
+  public confirmBulkAction(action: BulkAction, data?: any): void {
 
     this.bulkAction = action;
-    this.bulkActionModalRef = this.modalService.show(this.bulkActionModal, {ignoreBackdropClick: true});
+    this.bulkActionData = data;
+    this.bulkActionModalRef = this.modalService.show(this.bulkActionModal, {ignoreBackdropClick: true, keyboard: false});
 
   }
 
@@ -371,7 +378,8 @@ export class AdminUserComponent extends AbstractComponent implements OnInit {
     this.unloadNotice();
 
     const action = this.bulkAction;
-    this.adminService.bulkAction(this.searchFilters, action, (affectedUsers: Array<User>) => {
+    const data = this.bulkActionData;
+    this.adminService.bulkAction(this.searchFilters, action, data, (affectedUsers: Array<User>) => {
       let context;
       if (action === BulkAction.CREATE_LOGIN_LINKS) {
         const affectedUserIds = affectedUsers.map(au => au.id);
