@@ -256,7 +256,9 @@
             <div class="search-info-group-title">Roles</div>
             <div>
               Add role:
-              <select ngModel (ngModelChange)="confirmBulkAction(BulkAction.ADD_ROLES, {roles: [$event]})"
+              <select #userActionsAddRoleSelect
+                      ngModel
+                      (ngModelChange)="confirmBulkAction(BulkAction.ADD_ROLES, {roles: [$event]}); userActionsAddRoleSelect.value = null"
                       class="form-control">
                 <option *ngFor="let r of availableRoles" [ngValue]="r">
                   {{r}}
@@ -265,7 +267,9 @@
             </div>
             <div>
               Remove role:
-              <select ngModel (ngModelChange)="confirmBulkAction(BulkAction.REMOVE_ROLES, {roles: [$event]})"
+              <select #userActionsRemoveRoleSelect
+                      ngModel
+                      (ngModelChange)="confirmBulkAction(BulkAction.REMOVE_ROLES, {roles: [$event]}); userActionsRemoveRoleSelect.value = null"
                       class="form-control">
                 <option *ngFor="let r of availableRoles" [ngValue]="r">
                   {{r}}
@@ -767,4 +771,5 @@
       </ng-container>
     </ng-container>
   </ng-template>
+  </div>
 </div>
