@@ -61,7 +61,7 @@
             <i class="i i-xs i-dark i-filters-xs mr-1"></i>
             <div>
               Filters
-              <i *ngIf="searchFilters?.size" class="enabled-pointer"></i>
+              <i *ngIf="isAdditionalFiltersUsed()" class="enabled-pointer"></i>
             </div>
           </div>
           <div class="link plain search-feature-toggle"

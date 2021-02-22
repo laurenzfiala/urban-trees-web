@@ -421,6 +421,16 @@ export class AdminUserComponent extends AbstractComponent implements OnInit {
 
   }
 
+  public isAdditionalFiltersUsed(): boolean {
+
+    let filtersAmount = this.searchFilters.size;
+    if (this.searchFilters.has('username')) {
+      filtersAmount--;
+    }
+    return filtersAmount > 0;
+
+  }
+
 }
 
 export enum StatusKey {
