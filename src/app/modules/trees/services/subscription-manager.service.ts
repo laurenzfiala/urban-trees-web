@@ -60,6 +60,18 @@ export class SubscriptionManagerService {
   }
 
   /**
+   * Register a subscription with a tag.
+   * If the given tag is already registered, all registered
+   * subscriptions for that tag are unsubscribed from.
+   * @param {string} tag tag to destroy this subscription
+   * @param {Subscription} subscription value
+   */
+  public registerSingleton(subscription: Subscription, tag: string) {
+    this.unsubscribe(tag);
+    this.register(subscription, tag);
+  }
+
+  /**
    * Unsubscribe from all subscriptions registered with specified tag.
    * If no tag is given, the default tag is used.
    */

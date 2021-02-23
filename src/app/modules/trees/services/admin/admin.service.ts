@@ -16,6 +16,8 @@ import {BeaconLogSeverity} from '../../entities/BeaconLogSeverity';
 import {BeaconFrontend} from '../../entities/beacon-frontend.entity';
 import {UserCreation} from '../../entities/user-creation.entity';
 import {SearchResult} from '../../entities/search-result.entity';
+import {Observable} from 'rxjs/Observable';
+import {of} from 'rxjs';
 
 /**
  * Service for backend calls on the admin pages.
@@ -247,27 +249,20 @@ export class AdminService extends AbstractService {
 
   public loadUsers(searchFilters: Map<string, any | any[]>,
                    limit: number,
-                   offset: number,
-                   successCallback: (result: SearchResult<Array<User>>) => void,
-                   errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void) {
+                   offset: number): Observable<SearchResult<Array<User>>> {
 
     let url = this.envService.endpoints.loadUsers(limit, offset);
     AdminService.LOG.debug('Loading users...');
 
-    this.http.post<SearchResult<Array<User>>>(url, this.searchFiltersToPayload(searchFilters))
+    return this.http.post<SearchResult<Array<User>>>(url, this.searchFiltersToPayload(searchFilters))
       .timeout(this.envService.defaultTimeout)
       .map(r => {
         const result = SearchResult.fromObject(r);
         result.result = result.result.map(user => User.fromObject(user));
         return result;
-      })
-      .subscribe((result: SearchResult<Array<User>>) => {
-        successCallback(result);
-      }, (e: any) => {
+      }).catch(e => {
         AdminService.LOG.error('Could not load users: ' + e.message, e);
-        if (errorCallback) {
-          errorCallback(e, this.safeApiError(e));
-        }
+        throw this.safeApiError(e);
       });
 
   }

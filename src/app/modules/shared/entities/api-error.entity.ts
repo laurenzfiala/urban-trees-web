@@ -1,3 +1,5 @@
+import {HttpErrorResponse} from '@angular/common/http';
+
 /**
  * Contains info about an error in the API as well as the HTTP status.
  *
@@ -33,13 +35,23 @@ export class ApiError {
    */
   public clientErrorCode: number;
 
-  constructor(status?: string, timestamp?: string, message?: string, clientErrorCode?: number) {
+  /**
+   * The raw error.
+   */
+  public error: HttpErrorResponse;
+
+  constructor(status?: string,
+              timestamp?: string,
+              message?: string,
+              clientErrorCode?: number,
+              error?: HttpErrorResponse) {
     this.status = status;
     this.timestamp = timestamp;
     this.message = message;
     if (clientErrorCode) {
       this.clientErrorCode = clientErrorCode;
     }
+    this.error = error;
   }
 
   public withStatusCode(statusCode: number): ApiError {
@@ -71,7 +83,8 @@ export class ApiError {
       o.status,
       o.timestamp,
       o.message,
-      o.clientErrorCode
+      o.clientErrorCode,
+      o
     );
 
   }
