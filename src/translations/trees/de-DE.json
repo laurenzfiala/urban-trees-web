@@ -592,6 +592,9 @@
     "finish_prev_steps_first": "Schließe vorhergehende Schritte zuerst ab.",
     "error": "Phänologiebeobachtung konnte nicht geladen werden.",
     "step": "Schritt",
+    "step_done": "ist erledigt",
+    "step_error": "ist unvollständig",
+    "step_dependent": "setzt vorhergehende Schritte voraus",
     "step_1": {
       "title": "Welcher Baum wird beobachtet?",
       "loading": "Lade Bäume...",

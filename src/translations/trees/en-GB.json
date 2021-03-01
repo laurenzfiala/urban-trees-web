@@ -594,6 +594,9 @@
     "finish_prev_steps_first": "Finish previous steps first.",
     "error": "Could not load phenology observation.",
     "step": "Step",
+    "step_done": "is complete",
+    "step_error": "is incomplete",
+    "step_dependent": "requires previous steps to be completed first",
     "step_1": {
       "title": "Which tree do you observe?",
       "loading": "Loading trees...",
