@@ -67,7 +67,7 @@ export class SerializationService {
   /**
    * Serialize all given CmsElements into a single SerializedCmsContent
    * object for submission to the backend.
-   * @param base content of which the given elements are based
+   * @param base content off which the given elements are based
    * @param serializedElements CmsElements retrieved through CmsElement#serialize()
    * @see #serializeElement(Array<CmsElement>)
    */

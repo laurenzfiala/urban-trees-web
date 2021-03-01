@@ -6,23 +6,21 @@ import {CmsContent} from '../../entities/cms-content.entity';
 import {StatusKey, StatusValue} from '../content/content.component';
 import * as moment from 'moment';
 import {Log} from '../../../shared/services/log.service';
-import {valueReferenceToExpression} from '@angular/compiler-cli/src/ngtsc/annotations/src/util';
 
 @Component({
   selector: 'ut-content-save-status',
   templateUrl: './content-save-status.component.html',
   styleUrls: ['./content-save-status.component.less'],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
+  providers: [SubscriptionManagerService]
 })
 export class ContentSaveStatusComponent extends AbstractComponent implements OnInit, OnDestroy {
 
   private static LOG: Log = Log.newInstance(ContentSaveStatusComponent);
-  private static SUBSCRIPTION_TAG: string = 'content-save-status-cmp';
 
   public StatusKey = StatusKey;
   public StatusValue = StatusValue;
 
-  private statusSubscriptionTag: string;
   private saveTimerSubscriptionTag: string;
 
   @Input()
@@ -43,15 +41,10 @@ export class ContentSaveStatusComponent extends AbstractComponent implements OnI
 
   public ngOnInit() {
 
+    this.saveTimerSubscriptionTag = undefined;
     this.updateStatus(StatusValue.NONE);
-    this.statusSubscriptionTag = this.subs.tag(ContentSaveStatusComponent.SUBSCRIPTION_TAG + '-cmp');
-    this.subs.register(this.status.subscribe(status => {
-      this.updateStatus(status);
-    }), this.statusSubscriptionTag);
-
-    this.subs.register(this.saved.subscribe(savedContent => {
-      this.startSaveTimer(savedContent);
-    }), this.statusSubscriptionTag);
+    this.subs.reg(this.status.subscribe(status => this.updateStatus(status)));
+    this.subs.reg(this.saved.subscribe(savedContent => this.startSaveTimer(savedContent)));
 
   }
 
@@ -63,8 +56,10 @@ export class ContentSaveStatusComponent extends AbstractComponent implements OnI
 
     this.saveTimer.content = savedContent;
 
-    this.subs.unsubscribe(this.saveTimerSubscriptionTag);
-    this.saveTimerSubscriptionTag = this.subs.tag(ContentSaveStatusComponent.SUBSCRIPTION_TAG + '-savetimer');
+    if (this.saveTimerSubscriptionTag) {
+      this.subs.unsubscribe(this.saveTimerSubscriptionTag);
+    }
+    this.saveTimerSubscriptionTag = this.subs.tag('savetimer');
     this.subs.register(
       timer(0, 1000).subscribe(value => {
 
@@ -98,9 +93,8 @@ export class ContentSaveStatusComponent extends AbstractComponent implements OnI
 
   }
 
-  public ngOnDestroy(): void {
-    this.subs.unsubscribe(this.statusSubscriptionTag);
-    this.subs.unsubscribe(this.saveTimerSubscriptionTag);
+  ngOnDestroy() {
+    this.subs.unsubAll();
   }
 
 }

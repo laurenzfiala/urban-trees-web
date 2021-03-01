@@ -77,7 +77,7 @@ export abstract class AbstractCmsLayout
    * The slot is cleared before appending the given serializedElements.
    * @param slotGetter function that returns the slot as ViewContainerRef
    * @param serializedElements elements to deserialize into the given slot
-   * @returns Promise, resolved when all given serilaized elements are
+   * @returns Promise, resolved when all given serialized elements are
    *          deserialized and added to the slot.
    */
   protected async fillSlotMultiple(slotGetter: () => ViewContainerRef,

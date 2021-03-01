@@ -14,6 +14,7 @@ export class UserContentMetadata {
   public readonly contentLanguage: string;
   public readonly isDraft: boolean;
   public readonly saveDate: Date;
+  public readonly historyId: number;
   public readonly user: UserIdentity;
   public readonly approveDate: Date;
   public readonly approveUser: UserIdentity;
@@ -24,6 +25,7 @@ export class UserContentMetadata {
               contentLanguage: string,
               isDraft: boolean,
               saveDate: Date,
+              historyId: number,
               user: UserIdentity,
               approveDate: Date,
               approveUser: UserIdentity) {
@@ -33,6 +35,7 @@ export class UserContentMetadata {
     this.contentLanguage = contentLanguage;
     this.isDraft = isDraft;
     this.saveDate = saveDate;
+    this.historyId = historyId;
     this.user = user;
     this.approveDate = approveDate;
     this.approveUser = approveUser;
@@ -80,10 +83,10 @@ export class UserContentMetadata {
       o.contentLanguage,
       o.draft,
       o.saveDate && moment.utc(o.saveDate, envService.outputDateFormat).toDate(),
+      o.historyId,
       o.user && UserIdentity.fromObject(o.user),
       o.approveDate && moment.utc(o.approveDate, envService.outputDateFormat).toDate(),
       o.approveUser && UserIdentity.fromObject(o.approveUser)
-      //(o.elements as Array<SerializedCmsElement>).map(e => SerializedCmsElement.fromObject(e)) TODO use for cms-content entity
     );
 
   }

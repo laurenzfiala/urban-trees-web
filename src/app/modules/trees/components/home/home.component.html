@@ -48,7 +48,14 @@
                     contentOrder="0"
                     contentLang="en_GB"
                     [(content)]="testContent"
-                    [config]="testContentConfig"></ut-cms-content>
+                    [config]="testContentConfig"
+                    [(viewMode)]="testContentViewMode"></ut-cms-content>
+
+    <button *ngIf="testContentViewMode === ViewMode.CONTENT"
+         class="btn btn-primary"
+         (action)="testContentViewMode = ViewMode.EDIT_CONTENT">
+      Edit content
+    </button>
 
   </div>
 </section>

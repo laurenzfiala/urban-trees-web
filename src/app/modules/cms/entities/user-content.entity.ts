@@ -6,12 +6,11 @@ import * as moment from 'moment';
 import {EnvironmentService} from '../../shared/services/environment.service';
 import {UserIdentity} from '../../trees/entities/user-identity.entity';
 import {ContentStatus} from '../enums/cms-content-status.enum';
-import {SerializedCmsContent} from './serialized-cms-content.entity';
 import {UserContentMetadata} from './user-content-metadata.entity';
 
 export class UserContent extends UserContentMetadata {
 
-  public readonly content: SerializedCmsContent;
+  public readonly content: any;
 
   constructor(id: number,
               contentId: string,
@@ -19,11 +18,12 @@ export class UserContent extends UserContentMetadata {
               contentLanguage: string,
               isDraft: boolean,
               saveDate: Date,
+              historyId: number,
               user: UserIdentity,
               approveDate: Date,
               approveUser: UserIdentity,
-              content: SerializedCmsContent) {
-    super(id, contentId, contentTitle, contentLanguage, isDraft, saveDate, user, approveDate, approveUser);
+              content: any) {
+    super(id, contentId, contentTitle, contentLanguage, isDraft, saveDate, historyId, user, approveDate, approveUser);
     this.content = content;
   }
 
@@ -69,10 +69,11 @@ export class UserContent extends UserContentMetadata {
       o.contentLanguage,
       o.draft,
       o.saveDate && moment.utc(o.saveDate, envService.outputDateFormat).toDate(),
+      o.historyId,
       o.user && UserIdentity.fromObject(o.user),
       o.approveDate && moment.utc(o.approveDate, envService.outputDateFormat).toDate(),
       o.approveUser && UserIdentity.fromObject(o.approveUser),
-      o.content && SerializedCmsContent.fromObject(o.content, envService)
+      o.content
     );
 
   }

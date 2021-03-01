@@ -34,51 +34,74 @@ import {Stack} from '../../entities/stack.entity';
 import {EnvironmentService} from '../../../shared/services/environment.service';
 import {CmsContent} from '../../entities/cms-content.entity';
 import {Observable} from 'rxjs/Observable';
-import {Subject} from 'rxjs/Subject';
 import {CmsValidationResults} from '../../entities/cms-validation-results.entity';
+import {Content} from '@angular/compiler/src/render3/r3_ast';
 
 @Component({
   selector: 'ut-cms-content',
   templateUrl: './content.component.html',
   styleUrls: ['./content.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [ContentService, ToolbarService]
+  providers: [ContentService, ToolbarService, SubscriptionManagerService]
 })
 export class ContentComponent extends AbstractCmsLayout implements OnInit, AfterViewInit, OnDestroy {
 
   private static LOG: Log = Log.newInstance(ContentComponent);
-  private static SUBSCRIPTION_TAG: string = 'cms-content-cmp';
 
   public StatusKey = StatusKey;
   public StatusValue = StatusValue;
   public ToolbarDropdown = ToolbarDropdown;
   public ToolbarBtn = ToolbarBtn;
 
-  @Input('contentId')
+  /**
+   * Content id which the given CmsContent belongs to.
+   * May not be undefined/null.
+   */
+  @Input()
   private contentId: string;
 
-  @Input('contentOrder')
-  private contentOrder: number;
+  /**
+   * Content order to display. Defaults to 0.
+   * Use multiple ContentComponents to display all content for a content id.
+   */
+  @Input()
+  private contentOrder: number = 0;
 
-  @Input('contentLang')
+  /**
+   * Content language to display, may not be undefined/null.
+   */
+  @Input()
   private contentLang: string;
 
-  @Input('content')
+  /**
+   * Content to display, may not be undefined/null.
+   * Use CmsContent#fromUserContent() to convert backend response to CmsContent.
+   *
+   * To avoid infinite loops, this must be set before this component's #ngAfterViewInit().
+   * No later changes to this input are accepted.
+   */
+  @Input()
   private content: CmsContent;
 
-  @Output('contentChanged')
-  private contentChanged: EventEmitter<CmsContent>;
-
-  @Input('config')
+  @Input()
   private config: CmsContentConfig;
+
+  @Input()
+  set viewMode(mode: ViewMode) {
+    this.contentService.viewMode = mode;
+  }
+
+  @Output()
+  private contentChange: EventEmitter<CmsContent> = new EventEmitter<CmsContent>();
+
+  @Output()
+  private contentSave: EventEmitter<CmsContent> = new EventEmitter<CmsContent>();
+
+  @Output()
+  private viewModeChange: EventEmitter<ViewMode> = new EventEmitter<ViewMode>();
 
   @ViewChild('contentSlot', {read: ViewContainerRef, static: true})
   public contentSlot: ViewContainerRef;
-
-  /**
-   * Subject that fires every time this content was saved.
-   */
-  public onSavedSubject: Subject<CmsContent>;
 
   /**
    * Tracks the last 50 changes made by the user for undo/redo
@@ -115,8 +138,6 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, After
 
     this.elements = new Array<CmsElement>();
     this.changes = new Stack<CmsContent>(50);
-    this.onSavedSubject = new Subject<CmsContent>();
-    this.contentService.viewMode = ViewMode.CONTENT;
 
     const components = new CmsElementMap()
       .set(
@@ -156,7 +177,8 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, After
 
     this.contentService.setElementMap(CmsElementMap.combine(components, layouts));
     this.toolbar.registerStatic(components.getAllDescriptors(), layouts.getAllDescriptors());
-    this.subs.register(this.contentService.onElementAdd().subscribe(value => this.onElementAdd(null, value)), ContentComponent.SUBSCRIPTION_TAG);
+    this.subs.reg(this.contentService.onElementAdd().subscribe(value => this.onElementAdd(null, value)));
+    this.subs.reg(this.contentService.onViewModeChange().subscribe(value => this.viewModeChange.emit(value)));
 
   }
 
@@ -169,45 +191,38 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, After
    * Update the content slots and add the elements to
    * the #elements array. Also add a checkpoint to the
    * #changes stack.
-   * @param content content to display
+   * @param content content to display. may not be undefined/null.
    */
   private async updateContent(content: CmsContent): Promise<void> {
-    this.changes.push(content);
-    this.elements.push(...await this.fillSlotMultiple( () => this.contentSlot, ...content.content.elements));
+    let elements = [];
+    if (content?.content?.elements) {
+      elements = content?.content?.elements;
+    }
+    this.elements.push(...await this.fillSlotMultiple( () => this.contentSlot, ...elements));
+    this.trackChange(content);
   }
 
   /**
-   * Load content using given content id from the backend.
-   * TODO refactor this method to actually return a working promise
-   *
-   * TODO remove, we want the CmsContent to be loaded from outside!!!
+   * Enter the current content state to the #changes-stack
+   * and trigger the #contentChanged-event.
    */
-  /*private async loadContent(): Promise<void> {
 
-    this.contentService.loadContent(this.contentId,
-                                    this.contentLang,
-                          userContents => {
+  /**
+   * Serialize the current content state and push it to the changes stack.
+   * Afterwards, triggers #contentChange event.
+   * @param base (optional) the CmsContent the newly serialized content is based off.
+   *             this determines e.g. the historyId. if the base is not given, we instead use
+   *             the last cms content in the #changes stack as the base.
+   */
+  private trackChange(base?: CmsContent): void {
 
-      // TODO convert user content to cms content
+    if (!base) {
+      base = this.changes.peek();
+    }
+    const content = this.serializationService.serializeContent(base, ...this.elements);
+    this.changes.push(content);
+    this.contentChange.emit(content);
 
-      this.contentSlot.clear();
-      const promises = new Array<Promise<CmsElement>>();
-      for (let serializedEl of userContent.content) {
-        const component = this.fillSlot(serializedEl, () => this.contentSlot, false); // TODO
-        promises.push(component);
-      }
-      Promise.all(promises).then(value => {
-        this.update();
-      });
-
-    }, (error, apiError) => {
-      this.setStatus(StatusKey.LOAD, StatusValue.FAILED, apiError);
-    });
-
-  }*/
-
-  private trackChange() {
-    this.changes.push(this.serializationService.serializeContent(this.changes.peek(), ...this.elements));
   }
 
   /**
@@ -217,8 +232,8 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, After
    * @param force (optional) pass true to *immediately* save/publish the latest content.
    * @param publish (optional) pass true to publish the latest content.
    */
-  private saveContent(force: boolean = false,
-                      publish: boolean = false): void {
+  private async saveContent(force: boolean = false,
+                      publish: boolean = false): Promise<CmsContent> {
 
     const now = Date.now();
     const lastSavedContent = this.lastSavedContent();
@@ -226,23 +241,22 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, After
       ContentComponent.LOG.trace('Saving is not yet allowed.');
       if (this.saveTimeoutId === 0) {
         const saveWaitMs = this.envService.contentSaveDebounceMs - now + lastSavedContent.sent.getTime();
-        this.saveTimeoutId = window.setTimeout(
-          () => this.saveContent(),
-          saveWaitMs
-        );
-        ContentComponent.LOG.trace('Deferred save for ' + saveWaitMs / 1000 + 's using timeout handle ' + this.saveTimeoutId);
+        await new Promise((resolve, reject) => {
+          this.saveTimeoutId = window.setTimeout(resolve, saveWaitMs);
+          ContentComponent.LOG.trace('Deferred save for ' + saveWaitMs / 1000 + 's using timeout handle ' + this.saveTimeoutId);
+        });
       } else {
         ContentComponent.LOG.trace('Save is already scheduled.');
+        return;
       }
-      return;
     }
 
     const content = this.changes.peek();
     if (!content) {
-      throw new Error('Unexpected state: nothing found to save');
+      return Promise.reject(new Error('Unexpected state: nothing found to save'));
     } else if (content.sent !== undefined) {
-      ContentComponent.LOG.debug('Content already saving/saved.');
-      return;
+      ContentComponent.LOG.info('Content was already saved. Skipping save.');
+      return Promise.resolve(content);
     }
     ContentComponent.LOG.debug('Saving content...');
     this.setStatus(StatusKey.SAVE, StatusValue.IN_PROGRESS);
@@ -250,20 +264,24 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, After
     this.saveTimeoutId = 0;
     content.sent = new Date();
 
-    this.contentService.saveContent(this.contentId,
-                                    this.contentOrder,
-                                    this.contentLang,
-                                    !publish,
-                                    content,
-                                    c => {
-      ContentComponent.LOG.debug('Content successfully ' + (publish ? 'published' : 'saved') + '.');
-      content.stored = c.stored;
-      this.onSavedSubject.next(content);
-      this.setStatus(StatusKey.SAVE, StatusValue.SUCCESSFUL);
-    }, (error, apiError) => {
-      ContentComponent.LOG.warn('Failed to save content.');
-      content.sent = undefined;
-      this.setStatus(StatusKey.SAVE, StatusValue.FAILED);
+    return new Promise((resolve, reject) => {
+      this.contentService.saveContent(this.contentId,
+                                      this.contentOrder,
+                                      this.contentLang,
+                                      !publish,
+                                      content,
+                                      c => {
+        ContentComponent.LOG.debug('Content successfully ' + (publish ? 'published' : 'saved') + '.');
+        content.stored = c.stored;
+        this.setStatus(StatusKey.SAVE, StatusValue.SUCCESSFUL);
+        this.contentSave.emit(content);
+        resolve(content);
+      }, (error, apiError) => {
+        ContentComponent.LOG.warn('Failed to save content.');
+        content.sent = undefined;
+        this.setStatus(StatusKey.SAVE, StatusValue.FAILED);
+        reject(apiError.message);
+      });
     });
 
   }
@@ -301,10 +319,9 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, After
     this.subs.register(
       element.onChanged().subscribe(e => {
         this.elementChanged(e);
-      }),
-      ContentComponent.SUBSCRIPTION_TAG
+        this.cdRef.detectChanges();
+      })
     );
-    this.cdRef.detectChanges();
   }
 
   onElementRemove(component: CmsComponent): void {
@@ -312,7 +329,7 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, After
   }
 
   public onSaved(): Observable<CmsContent> {
-    return this.onSavedSubject.asObservable();
+    return this.contentSave.asObservable();
   }
 
   serialize(): any {
@@ -325,10 +342,24 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, After
     });
   }
 
+  /**
+   * Close the content edit mode.
+   * Saves the content draft and displays the content
+   * without editing UI.
+   */
+  public close(): void {
+    this.saveContent(true).then(value => {
+      this.contentService.viewMode = ViewMode.CONTENT;
+    }).catch(reason => {
+      ContentComponent.LOG.error(reason);
+    }).finally(() => {
+      this.cdRef.detectChanges();
+    });
+  }
+
   public ngOnDestroy(): void {
-    this.subs.unsubscribe(ContentComponent.SUBSCRIPTION_TAG);
+    this.subs.unsubAll();
     window.clearTimeout(this.saveTimeoutId);
-    this.onSavedSubject.complete();
   }
 
 }

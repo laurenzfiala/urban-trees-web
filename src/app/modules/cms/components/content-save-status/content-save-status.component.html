@@ -1,6 +1,6 @@
 <div class="d-flex align-items-center">
 
-  <ng-container *ngIf="hasStatus(StatusKey.SAVE, StatusValue.SUCCESSFUL)">
+  <ng-container *ngIf="saveTimer.content && hasStatus(StatusKey.SAVE, StatusValue.SUCCESSFUL)">
     {{ this.saveTimer.msgKey | translate:{'minutes': this.saveTimer.durationSinceSave.minutes()} }}
   </ng-container>
   <ng-container *ngIf="hasStatus(StatusKey.SAVE, StatusValue.IN_PROGRESS)">

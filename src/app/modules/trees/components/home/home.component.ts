@@ -5,7 +5,6 @@ import {AbstractComponent} from '../../../shared/components/abstract.component';
 import {SystemStatistics} from '../../entities/system-statistics.entity';
 import {UIService} from '../../services/ui.service';
 import {LoginAccessReason} from '../project-login/logout-reason.enum';
-import {ApiError} from '../../../shared/entities/api-error.entity';
 import {PhenologyObservationService} from '../../services/phenology/observation/phenology-observation.service';
 import {PhenologyDatasetWithTree} from '../../entities/phenology-dataset-with-tree.entity';
 import * as moment from 'moment';
@@ -28,6 +27,7 @@ import {forkJoin} from 'rxjs';
 import {tap} from 'rxjs/operators';
 import {CmsContent} from '../../../cms/entities/cms-content.entity';
 import {UserContentMetadata} from '../../../cms/entities/user-content-metadata.entity';
+import {ViewMode} from '../../../cms/enums/cms-layout-view-mode.enum';
 
 @Component({
   selector: 'ut-home',
@@ -49,27 +49,9 @@ export class HomeComponent extends AbstractComponent implements OnInit, OnDestro
    */
   public statistics: SystemStatistics;
 
-  public testContent: CmsContent = CmsContent.fromObject({
-    historyId: null,
-    saved: '2020-10-19T09:26:55',
-    content: {
-      version: 1,
-      elements: [
-        {
-          name: 'TwoColumnLayout',
-          slotLeft: {
-            name: 'TextComponent',
-            text: 'left'
-          },
-          slotRight: {
-            name: 'TextComponent',
-            text: 'right'
-          }
-        }
-      ]
-    }
-  }, this.envService);
-
+  public ViewMode = ViewMode;
+  public testContent: CmsContent;
+  public testContentViewMode: ViewMode = ViewMode.CONTENT;
   public testContentConfig: CmsContentConfig = new CmsContentConfig(
     [new CmsLayoutConfig(
       BlockLayout,
@@ -95,7 +77,11 @@ export class HomeComponent extends AbstractComponent implements OnInit, OnDestro
 
   public ngOnInit() {
     this.load();
-    this.setStatus(StatusKey.PHENOBS_HISTORY, StatusValue.IN_PROGRESS, new ApiError()); // TODO
+    this.setStatus(StatusKey.PHENOBS_HISTORY, StatusValue.IN_PROGRESS);
+
+    this.contentService.loadContent('news', 'en_GB', content => {
+      this.testContent = CmsContent.fromUserContent(content[0], this.envService);
+    });
   }
 
   public ngOnDestroy() {

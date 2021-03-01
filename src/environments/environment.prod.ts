@@ -86,7 +86,7 @@ export const environment = {
     loadPPIN:                         '/account/permission/pin',
 
     // CMS
-    loadContent:                      '/content/{contentId}',
+    loadContent:                      '/content/{contentId}/{contentLang}',
     saveContentDraft:                 '/content/{contentId}/{contentOrder}/{contentLang}/draft',
     publishContent:                   '/content/{contentId}/{contentOrder}/{contentLang}',
     loadContentUserHistory:           '/user/{userId}/content?prefix={prefix}',

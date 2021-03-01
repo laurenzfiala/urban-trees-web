@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Injectable, Type} from '@angular/core';
+import {Injectable, Type} from '@angular/core';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {ApiError} from '../../shared/entities/api-error.entity';
 import {AbstractService} from '../../shared/services/abstract.service';
@@ -46,9 +46,15 @@ export class ContentService extends AbstractService {
   private elementAddSubject: Subject<CmsElement> = new Subject<CmsElement>();
 
   /**
+   * Subject used to notify content component (and parents)
+   * of a change in view mode.
+   */
+  private viewModeChangeSubject: Subject<ViewMode> = new Subject<ViewMode>();
+
+  /**
    * How to display the associated content.
    */
-  public viewMode: ViewMode = ViewMode.CONTENT;
+  private _viewMode: ViewMode;
 
   constructor(private authService: AuthService,
               private http: HttpClient,
@@ -210,6 +216,25 @@ export class ContentService extends AbstractService {
    */
   public onElementAdd() {
     return this.elementAddSubject.asObservable();
+  }
+
+  set viewMode(mode: ViewMode) {
+    if (mode !== this._viewMode) {
+      this._viewMode = mode;
+      this.viewModeChangeSubject.next(mode);
+    }
+  }
+
+  get viewMode(): ViewMode {
+    return this._viewMode;
+  }
+
+  /**
+   * Returns an observable that triggers when
+   * the view mode changes.
+   */
+  public onViewModeChange() {
+    return this.viewModeChangeSubject.asObservable();
   }
 
 }

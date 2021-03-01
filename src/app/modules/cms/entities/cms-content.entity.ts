@@ -1,7 +1,7 @@
-import {SerializedCmsElement} from './serialized-cms-element.entity';
 import * as moment from 'moment';
 import {EnvironmentService} from '../../shared/services/environment.service';
 import {SerializedCmsContent} from './serialized-cms-content.entity';
+import {UserContent} from './user-content.entity';
 
 /**
  * Holds meta-information on all content-elements (layout/component)
@@ -39,11 +39,11 @@ export class CmsContent {
    */
   public readonly content: SerializedCmsContent;
 
-  constructor(historyId: number,
-              saved: Date,
-              sent: Date,
-              stored: Date,
-              content: SerializedCmsContent) {
+  constructor(historyId?: number,
+              saved?: Date,
+              sent?: Date,
+              stored?: Date,
+              content?: SerializedCmsContent) {
     this.historyId = historyId;
     this.saved = saved;
     this.sent = sent;
@@ -106,6 +106,29 @@ export class CmsContent {
       o.sent && moment.utc(o.sent, envService.outputDateFormat).toDate(),
       o.stored && moment.utc(o.stored, envService.outputDateFormat).toDate(),
       o.content && SerializedCmsContent.fromObject(o.content, envService)
+    );
+
+  }
+
+  /**
+   * Create a CmsContent object from the given UserContent object.
+   * @param userContent user content to convert.
+   * @param envService env vars for date deserialization are needed
+   * @returns new CmsContent object with history id from the given user content.
+   *          if user content is falsy, an empty CmsContent without history id is returned.
+   */
+  public static fromUserContent(userContent: UserContent, envService: EnvironmentService): CmsContent {
+
+    if (!userContent) {
+      return new CmsContent();
+    }
+
+    return new CmsContent(
+      userContent.historyId,
+      userContent.content.saved && moment.utc(userContent.content.saved, envService.outputDateFormat).toDate(),
+      userContent.content.sent && moment.utc(userContent.content.sent, envService.outputDateFormat).toDate(),
+      userContent.saveDate && moment.utc(userContent.saveDate, envService.outputDateFormat).toDate(),
+      userContent.content.content && SerializedCmsContent.fromObject(userContent.content.content, envService)
     );
 
   }
