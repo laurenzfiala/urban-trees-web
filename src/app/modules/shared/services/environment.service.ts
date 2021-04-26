@@ -636,6 +636,22 @@ class EnvironmentEndpoints {
 
   }
 
+  public loadContentForUser(contentId: string, contentLang: string): string {
+
+    let replacements: any[] = [
+      { placeholder: 'contentId', replacement: contentId },
+      { placeholder: 'contentLang', replacement: contentLang }
+    ];
+
+    return this.prependCommonPath(
+      this.replaceParams(
+        this.context.loadContentForUser,
+        replacements
+      )
+    );
+
+  }
+
   public saveContent(contentId: string,
                      contentOrder: number,
                      contentLang: string,

@@ -9,6 +9,7 @@ import {
   OnDestroy,
   OnInit,
   Output,
+  Type,
   ViewChild,
   ViewContainerRef
 } from '@angular/core';
@@ -23,7 +24,6 @@ import {CmsContentConfig} from '../../entities/content-config.entity';
 import {SubscriptionManagerService} from '../../../trees/services/subscription-manager.service';
 import {ToolbarService} from '../../services/toolbar.service';
 import {AbstractCmsLayout} from '../../entities/abstract-cms-layout.entity';
-import {CmsLayoutSlot} from '../../entities/layout-slot.entity';
 import {CmsElement} from '../../interfaces/cms-element.interface';
 import {Log} from '../../../shared/services/log.service';
 import {BlockLayout} from '../../cms-layouts/block-layout/block-layout.component';
@@ -35,7 +35,6 @@ import {EnvironmentService} from '../../../shared/services/environment.service';
 import {CmsContent} from '../../entities/cms-content.entity';
 import {Observable} from 'rxjs/Observable';
 import {CmsValidationResults} from '../../entities/cms-validation-results.entity';
-import {Content} from '@angular/compiler/src/render3/r3_ast';
 
 @Component({
   selector: 'ut-cms-content',
@@ -61,11 +60,10 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, After
   private contentId: string;
 
   /**
-   * Content order to display. Defaults to 0.
-   * Use multiple ContentComponents to display all content for a content id.
+   * TODO
    */
   @Input()
-  private contentOrder: number = 0;
+  private contentBaseUid: number;
 
   /**
    * Content language to display, may not be undefined/null.
@@ -110,7 +108,7 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, After
   private changes: Stack<CmsContent>;
 
   /**
-   * Holds all CmsElements that are filled in this component.
+   * Holds all CmsElement-instances that are filled in this component.
    */
   private elements: Array<CmsElement>;
 
@@ -119,6 +117,12 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, After
    * If 0, no timeout is currently scheduled.
    */
   private saveTimeoutId: number = 0;
+
+  /**
+   * This holds the CMS element type of the
+   * last ToolbarBtn the user used.
+   */
+  private addComponentType: Type<unknown>;
 
   constructor(protected resolver: ComponentFactoryResolver,
               protected cdRef: ChangeDetectorRef,
@@ -134,7 +138,7 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, After
 
   ngOnInit(): void {
 
-    //this.cdRef.detach();
+    // this.cdRef.detach(); TODO
 
     this.elements = new Array<CmsElement>();
     this.changes = new Stack<CmsContent>(50);
@@ -148,6 +152,7 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, After
             'New text passage',
             'Add a new text passage to the content',
             '/assets/img/icon/dark/cms-cmp-text.svg')
+          .onAction({next: value => this.addComponent(TextComponent)}, sub => this.subs.reg(sub))
           .build()
         )
     ;
@@ -161,6 +166,7 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, After
             'Block layout',
             'The component takes up the whole width of the page',
             '/assets/img/icon/dark/cms-cmp-text.svg')
+          .onAction({next: (value) => window.alert('block')}, sub => this.subs.reg(sub))
           .build()
         )
       .set(
@@ -171,13 +177,14 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, After
             'Two-column layout',
             'Two components are displayed besides each other',
             '/assets/img/icon/dark/cms-cmp-text.svg')
+          .onAction({next: (value) => window.alert('two col')}, sub => this.subs.reg(sub))
           .build()
         )
     ;
 
     this.contentService.setElementMap(CmsElementMap.combine(components, layouts));
     this.toolbar.registerStatic(components.getAllDescriptors(), layouts.getAllDescriptors());
-    this.subs.reg(this.contentService.onElementAdd().subscribe(value => this.onElementAdd(null, value)));
+    this.subs.reg(this.contentService.onElementAdd().subscribe(value => this.onElementAdd(value)));
     this.subs.reg(this.contentService.onViewModeChange().subscribe(value => this.viewModeChange.emit(value)));
 
   }
@@ -307,6 +314,21 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, After
     return this.contentService.viewMode === ViewMode.EDIT_CONTENT;
   }
 
+  // TODO
+  private addComponent(type: Type<unknown>): void {
+
+    this.contentService.viewMode = ViewMode.EDIT_LAYOUT;
+    this.addComponentType = type;
+
+  }
+
+  // TODO
+  public async appendComponent(): Promise<void> {
+    this.elements.push(await this.fillSlot(() => this.contentSlot, this.addComponentType));
+    this.cdRef.detectChanges();
+    return;
+  }
+
   deserialize(data: any): void {
     throw new Error('deserialize() is not supported');
   }
@@ -315,11 +337,11 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, After
     throw new Error('getName() is not supported');
   }
 
-  onElementAdd(slot: CmsLayoutSlot, element: CmsElement): void { // TODO layout slot may need to be changed/removed
+  onElementAdd(element: CmsElement): void { // TODO layout slot may need to be changed/removed
+    this.contentService.viewMode = ViewMode.CONTENT;
     this.subs.register(
       element.onChanged().subscribe(e => {
         this.elementChanged(e);
-        this.cdRef.detectChanges();
       })
     );
   }

@@ -33,7 +33,7 @@ export class ContentService extends AbstractService {
    * Holds the mapping from string to type for all cms
    * elements in the associated content component.
    */
-  private elementMap: CmsElementMap<CmsElement>;
+  private elementMap: CmsElementMap;
 
   /**
    * Subject used to trigger updates in the content component.
@@ -157,7 +157,7 @@ export class ContentService extends AbstractService {
    * Set the element map for this content service.
    * @param elementMap may not be null or undefined
    */
-  public setElementMap(elementMap: CmsElementMap<CmsElement>): void {
+  public setElementMap(elementMap: CmsElementMap): void {
     this.elementMap = elementMap;
   }
 

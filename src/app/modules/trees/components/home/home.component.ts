@@ -80,6 +80,7 @@ export class HomeComponent extends AbstractComponent implements OnInit, OnDestro
     this.setStatus(StatusKey.PHENOBS_HISTORY, StatusValue.IN_PROGRESS);
 
     this.contentService.loadContent('news', 'en_GB', content => {
+      content[0].id
       this.testContent = CmsContent.fromUserContent(content[0], this.envService);
     });
   }

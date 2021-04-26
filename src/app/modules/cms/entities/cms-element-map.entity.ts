@@ -1,6 +1,6 @@
 import {Type} from '@angular/core';
-import {CmsElement} from '../interfaces/cms-element.interface';
 import {ToolbarBtn, ToolbarSection} from './toolbar.entity';
+import {PartialObserver} from 'rxjs';
 
 /**
  * CMS element map that holds the mapping from element names
@@ -9,18 +9,18 @@ import {ToolbarBtn, ToolbarSection} from './toolbar.entity';
  * @author Laurenz Fiala
  * @since 2020/10/14
  */
-export class CmsElementMap<T extends CmsElement> {
+export class CmsElementMap {
 
   /**
    * Map holds element descriptors.
    */
-  private elements: Map<string, CmsElementDescriptor>;
+  private readonly elements: Map<string, CmsElementDescriptor>;
 
   constructor(elements: Map<string, CmsElementDescriptor> = new Map<string, CmsElementDescriptor>()) {
     this.elements = elements;
   }
 
-  public set(serializedElementName: string, element: CmsElementDescriptor): CmsElementMap<T> {
+  public set(serializedElementName: string, element: CmsElementDescriptor): CmsElementMap {
     this.elements.set(serializedElementName, element);
     return this;
   }
@@ -51,20 +51,21 @@ export class CmsElementMap<T extends CmsElement> {
    * May contain duplicate mappings.
    * @param maps element maps to combine into one
    */
-  public static combine(...maps: Array<CmsElementMap<CmsElement>>): CmsElementMap<CmsElement> {
+  public static combine(...maps: Array<CmsElementMap>): CmsElementMap {
     const result = new Map<string, CmsElementDescriptor>();
     maps.forEach(map => {
       map.getAll().forEach((value, key) => {
         result.set(key, value);
       });
     });
-    return new CmsElementMap<CmsElement>(result);
+    return new CmsElementMap(result);
   }
 
 }
 
 /**
- * TODO
+ * Holds static information on CMS elements
+ * like type and their toolbar section.
  */
 export class CmsElementDescriptor {
 
@@ -102,11 +103,12 @@ export class CmsElementDescriptor {
 }
 
 /**
- * TODO
+ * This is a factory class used to build
+ * a CmsElementDescriptor.
  */
 export class EDBuilder {
 
-  private descriptor: CmsElementDescriptor;
+  private readonly descriptor: CmsElementDescriptor;
 
   constructor() {
     this.descriptor = new CmsElementDescriptor();
@@ -117,15 +119,19 @@ export class EDBuilder {
     return this;
   }
 
-  public toolbarBtn(name: string, description: string, iconPath: string): EDBuilder {
-    this.descriptor.toolbarSection = new ToolbarSection<ToolbarBtn>(
-      new ToolbarBtn(
-        name,
-        description,
-        iconPath
-      )
+  public toolbarBtn(name: string, description: string, iconPath: string): EDToolbarBtnBuilder {
+
+    if (!this.descriptor.toolbarSection) {
+      this.descriptor.toolbarSection = new ToolbarSection<ToolbarBtn>();
+    }
+    const btn = new ToolbarBtn(
+      name,
+      description,
+      iconPath
     );
-    return this;
+    this.descriptor.toolbarSection.elements.push(btn);
+    return new EDToolbarBtnBuilder(this, btn);
+
   }
 
   public build(): CmsElementDescriptor {
@@ -134,6 +140,28 @@ export class EDBuilder {
 
   public static new(): EDBuilder {
     return new EDBuilder();
+  }
+
+}
+
+/**
+ * This is a factory class used to build
+ * a CmsElementDescriptor.
+ */
+export class EDToolbarBtnBuilder {
+
+  constructor(private parent: EDBuilder,
+              private btn: ToolbarBtn) {}
+
+  /**
+   * Subscribes to the toolbar buttons' action
+   * and returns the parent builder.
+   * @param observer observer which gets the updates
+   * @param subscription created subscription (to enable unsubscribing)
+   */
+  public onAction(observer: PartialObserver<any>, subscription: (Subscription) => void): EDBuilder {
+    subscription(this.btn.actionObservable().subscribe(observer));
+    return this.parent;
   }
 
 }

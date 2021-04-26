@@ -1,6 +1,5 @@
 import {CmsComponent} from '../interfaces/cms-component.interface';
 import {CmsLayout} from '../interfaces/cms-layout.interface';
-import {CmsLayoutSlot} from './layout-slot.entity';
 import {
   AfterViewInit,
   ChangeDetectorRef,
@@ -8,6 +7,7 @@ import {
   Directive,
   OnDestroy,
   OnInit,
+  Type,
   ViewContainerRef
 } from '@angular/core';
 import {SerializedCmsElement} from './serialized-cms-element.entity';
@@ -40,7 +40,7 @@ export abstract class AbstractCmsLayout
   private _onAfterViewInit = new Subject<void>();
   private onChangedSubject: Subject<CmsLayout>;
 
-  constructor() {
+  protected constructor() {
     super();
     this.onChangedSubject = new Subject<CmsLayout>();
   }
@@ -102,19 +102,31 @@ export abstract class AbstractCmsLayout
   }
 
   /**
-   * Fill the given slot with new instance of serializedElement.
+   * Fill the given slot with new cms element instance.
    * @param slotGetter function that returns the slot as ViewContainerRef
-   * @param serializedElement element to deserialize into the given slot
-   * @param clear pass true to clear the slot before filling it (default false)
-   * @returns Promise, resolved when all given serilaized elements are
+   * @param typeOrSerializedEl type of empty element to create OR element to deserialize
+   * @param clear (optional) pass true to clear the slot before filling it (default false)
+   * @returns Promise, resolved when all given serialized elements are
    *          deserialized and added to the slot.
    */
   protected async fillSlot(slotGetter: () => ViewContainerRef,
-                           serializedElement: SerializedCmsElement,
-                           clear: boolean = false): Promise<CmsElement> {
+                         typeOrSerializedEl: Type<unknown> | SerializedCmsElement,
+                         clear: boolean = false): Promise<CmsElement> {
 
-    if (!serializedElement) {
+    if (!typeOrSerializedEl) {
       return Promise.reject();
+    }
+
+    let type: Type<unknown>;
+    let serializedElement: SerializedCmsElement;
+    if (typeOrSerializedEl instanceof Type) {
+      type = typeOrSerializedEl;
+      serializedElement = undefined;
+    } else if (typeOrSerializedEl instanceof SerializedCmsElement) {
+      type = this.contentService.getElement(typeOrSerializedEl.getName());
+      serializedElement = typeOrSerializedEl;
+    } else {
+      throw new Error('Invalid type given');
     }
 
     await this.onAfterViewInit();
@@ -123,12 +135,13 @@ export abstract class AbstractCmsLayout
     if (clear) {
       slot.clear();
     }
-    const elementType = this.contentService.getElement(serializedElement.getName());
-    const componentFactory = this.resolver.resolveComponentFactory(elementType);
+    const componentFactory = this.resolver.resolveComponentFactory(type);
     const componentRef = slot.createComponent(componentFactory);
     const element = <CmsElement> componentRef.instance;
 
-    element.deserialize(serializedElement);
+    if (serializedElement !== undefined) {
+      element.deserialize(serializedElement);
+    }
     this.contentService.elementAdd(element);
 
     return Promise.resolve(element);
@@ -156,7 +169,7 @@ export abstract class AbstractCmsLayout
   }
 
   // --- CmsElement / CmsLayout ---
-  onElementAdd(slot: CmsLayoutSlot, component: CmsComponent): void {}
+  onElementAdd(component: CmsComponent): void {}
   onElementRemove(component: CmsComponent): void {}
   abstract getName(): string;
   abstract serialize(): any;

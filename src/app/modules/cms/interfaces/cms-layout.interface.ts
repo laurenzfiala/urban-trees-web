@@ -2,9 +2,7 @@
  * Serves as the base interface for all CMS components.
  */
 import {CmsComponent} from './cms-component.interface';
-import {CmsLayoutSlot} from '../entities/layout-slot.entity';
 import {CmsElement} from './cms-element.interface';
-import {ViewMode} from '../enums/cms-layout-view-mode.enum';
 
 export interface CmsLayout extends CmsElement {
 
@@ -12,7 +10,7 @@ export interface CmsLayout extends CmsElement {
    * TODO
    * @param component
    */
-  onElementAdd(slot: CmsLayoutSlot, component: CmsComponent): void;
+  onElementAdd(component: CmsComponent): void;
 
   /**
    * TODO

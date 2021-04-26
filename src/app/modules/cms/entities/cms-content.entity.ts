@@ -124,7 +124,7 @@ export class CmsContent {
     }
 
     return new CmsContent(
-      userContent.historyId,
+      userContent.id, // TODO check if swapping hist_id <-> id is okay here
       userContent.content.saved && moment.utc(userContent.content.saved, envService.outputDateFormat).toDate(),
       userContent.content.sent && moment.utc(userContent.content.sent, envService.outputDateFormat).toDate(),
       userContent.saveDate && moment.utc(userContent.saveDate, envService.outputDateFormat).toDate(),

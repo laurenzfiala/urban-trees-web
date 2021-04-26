@@ -1,6 +1,6 @@
 <div class="content-wrapper">
 
-  <div *ngIf="isEditContent()"
+  <div *ngIf="isEditContent() || isEditLayout()"
        class="toolbar-wrapper">
 
     <div class="toolbar justify-content-between flex-wrap-reverse">
@@ -71,8 +71,12 @@
     <ng-template #contentSlot></ng-template>
   </div>
 
-  <!--<div class="cms-drop-zone">
+  <div *ngIf="isEditLayout()"
+       (action)="appendComponent()"
+       class="cms-drop-zone"
+       role="button"
+       tabindex="0">
     Add something here
-  </div>-->
+  </div>
 
 </div>

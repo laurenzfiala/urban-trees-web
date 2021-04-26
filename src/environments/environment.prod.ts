@@ -87,20 +87,21 @@ export const environment = {
 
     // CMS
     loadContent:                      '/content/{contentId}/{contentLang}',
+    loadContentForUser:               '/content/user/{contentId}/{contentLang}',
     saveContentDraft:                 '/content/{contentId}/{contentOrder}/{contentLang}/draft',
     publishContent:                   '/content/{contentId}/{contentOrder}/{contentLang}',
     loadContentUserHistory:           '/user/{userId}/content?prefix={prefix}',
     loadContentUserHistoryWithPrefix: '/user/{userId}/content?prefix={prefix}'
   },
 
-  contentSaveDebounceMs:              30_000,
+  contentSaveDebounceMs:              120_000,
   searchDebounceMs:                   200,
   searchDebounceApiMs:                500,
 
-  defaultTimeout:                     30000,
-  imageUploadTimeout:                 60000,
+  defaultTimeout:                     30_000,
+  imageUploadTimeout:                 60_000,
 
-  userDataRefreshIntervalMs:          30000,
+  userDataRefreshIntervalMs:          30_000,
 
   outputDateFormat:                   'YYYY-MM-DD[T]HH-mm-ss',
 

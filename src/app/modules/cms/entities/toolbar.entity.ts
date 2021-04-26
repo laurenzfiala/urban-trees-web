@@ -40,18 +40,25 @@ export class ToolbarBtn extends ToolbarElement {
 
   constructor(name: string,
               description: string,
-              iconPath: string) {
+              iconPath: string,
+              ) {
     super(description);
     this.name = name;
     this.iconPath = iconPath;
+    this.actionSubject = new Subject<any>();
   }
 
   public actionObservable(): Observable<any> {
     return this.actionSubject.asObservable();
   }
 
-  public onAction() {
-    this.actionSubject.next();
+  /**
+   * Notify all observers that this buttons'
+   * action should be executed.
+   * @param value (optional) value to send to observers
+   */
+  public onAction(value?: any) {
+    this.actionSubject.next(value);
   }
 
 }
