@@ -16,9 +16,13 @@ import {SharedModule} from './modules/shared/shared.module';
 import {AuthService} from './modules/shared/services/auth.service';
 import {EnvironmentService} from './modules/shared/services/environment.service';
 import {TranslateInitService} from './modules/shared/services/translate-init.service';
+import {MultiTranslateHttpLoader} from './modules/shared/lib/multi-translate-http-loader';
 
 export function TranslateFactory(http: HttpClient) {
-  return new TranslateHttpLoader(http, '/translations/', '.json?version=' + VERSION.version);
+  return new MultiTranslateHttpLoader(http, [
+    {prefix: '/translations/shared/', suffix: '.json'},
+    {prefix: '/translations/', suffix: '.json'}
+  ]);
 }
 
 @NgModule({

@@ -8,13 +8,25 @@ import {NoAuthDirective} from './directives/noauth.directive';
 import {CheckDirective} from './directives/check.directive';
 import {ValueaccessorDirective} from './directives/valueaccessor.directive';
 import {LangDirective} from './directives/lang.directive';
-import {HTTP_INTERCEPTORS} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClient} from '@angular/common/http';
 import {AuthInterceptor} from './interceptors/auth.interceptor';
 import {ForNDirective} from './directives/for-n.directive';
 import {FocusOnDisplayDirective} from './directives/focus-on-display.directive';
+import {ZoomComponent} from './components/zoom/zoom.component';
+import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
+import {MultiTranslateHttpLoader} from './lib/multi-translate-http-loader';
+
+export function TranslateFactory(http: HttpClient) {
+  return new MultiTranslateHttpLoader(http, [
+    {prefix: '/translations/shared/', suffix: '.json'}
+  ]);
+}
 
 @NgModule({
   declarations: [
+    // Components
+    ZoomComponent,
+
     // Directives
     ActionDirective,
     CssVariableDirective,
@@ -28,9 +40,22 @@ import {FocusOnDisplayDirective} from './directives/focus-on-display.directive';
     FocusOnDisplayDirective
   ],
   imports: [
-    CommonModule
+    CommonModule,
+
+    // Translation
+    TranslateModule.forChild({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: TranslateFactory,
+        deps: [HttpClient]
+      },
+      isolate: true
+    }),
   ],
   exports: [
+    // Components
+    ZoomComponent,
+
     // Directives
     ActionDirective,
     CssVariableDirective,

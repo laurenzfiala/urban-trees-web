@@ -26,8 +26,11 @@ export class TranslateInitService {
    */
   public onModuleInit(): void {
 
+    if (this.translate.currentLang) {
+      return;
+    }
+
     this.translate.addLangs(['en-GB', 'de-DE']);
-    this.translate.setDefaultLang('en-GB');
 
     let userLang = window.navigator.language;
 
@@ -44,6 +47,8 @@ export class TranslateInitService {
 
     if (guessed) {
       this.translate.use(guessed);
+    } else {
+      this.translate.setDefaultLang('en-GB');
     }
 
     this.translate.get('app.title').subscribe((translatedTitle: string) => {

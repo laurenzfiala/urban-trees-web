@@ -4,7 +4,7 @@ import {ActivatedRoute} from '@angular/router';
 import {TreeService} from '../../services/tree.service';
 import {Tree} from '../../entities/tree.entity';
 import {EnvironmentService} from '../../../shared/services/environment.service';
-import { Mode } from '../zoom/zoom.component';
+import { Mode } from '../../../shared/components/zoom/zoom.component';
 
 @Component({
   selector: 'ut-tree',
