@@ -115,7 +115,7 @@ export const environment = {
       phenObs:                          ['ROLE_PHENOBS'],
       admin:                            ['ROLE_ADMIN'],
       tempChangePassword:               'ROLE_TEMP_CHANGE_PASSWORD',
-      tempActivateOTP:                  'TEMP_ACTIVATE_OTP'
+      tempActivateOTP:                  'ROLE_TEMP_ACTIVATE_OTP'
     }
   }
 
