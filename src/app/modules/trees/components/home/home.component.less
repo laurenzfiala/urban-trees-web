@@ -1,13 +1,26 @@
 @import (reference) "../../../../../theme/theme.less";
 
+.test {
+  box-sizing: border-box;
+}
+
 .profile-wrapper {
   display: flex;
   flex-direction: row;
   align-items: center;
 
+  > div:not(:last-child) {
+    margin-right: @gutter2x;
+  }
+
   @media @xs, @sm {
     justify-content: center;
-    flex-wrap: wrap;
+    flex-direction: column;
+
+    > div:not(:last-child) {
+      margin-right: 0;
+      margin-bottom: @gutter2x;
+    }
   }
 }
 

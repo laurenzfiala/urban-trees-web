@@ -690,7 +690,7 @@
     "ppin_info_1": "Du kannst deinen Berechtigungs-PIN in den",
     "ppin_info_2": "Einstellungen finden",
     "loading": "Lade",
-    "error": "Nutzer_innen konnten nicht geldaen werden",
+    "error": "Nutzer_innen konnten nicht geladen werden",
     "request": "Gib Erlaubnis",
     "requesting": "Überprüfe",
     "request_same_account": "Du kannst dir selbst keine Berechtigung geben.",
@@ -699,7 +699,7 @@
     "list_link": "Zurück zur Liste",
     "user_selected": "Ausgewählt",
     "user_deselected": "Abgewählt",
-    "username_placeholder": "Username",
+    "username_placeholder": "Nutzername",
     "password_placeholder": "Berechtigungs-PIN",
     "summary": {
       "access": "{{username}} bekommt Zugang zu",
@@ -720,9 +720,6 @@
   "beacon_select": {
     "none_exist": "Keine Beacons gespeichert",
     "none_found": "Keine Beacons gefunden"
-  },
-  "beacon_select": {
-    "none_found": "Keine Beacons gespeichert."
   },
   "report": {
     "title": "Bei welchem Problem brauchst Du Hilfe?",

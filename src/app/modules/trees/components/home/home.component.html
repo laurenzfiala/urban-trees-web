@@ -1,13 +1,13 @@
 <section *auth="envService.security.rolesUser" class="content-cat">
   <div class="container">
 
-    <div class="profile-wrapper m--3">
-      <div class="m-3">
+    <div class="profile-wrapper">
+      <div>
         <ut-user-progress (levelUpOutput)="setStatus(StatusKey.USER_LEVEL_UP, StatusValue.LEVELLED_UP)"
                           (status)="setStatus(StatusKey.USER_ACHIEVEMENTS, $event[0], $event[1])"></ut-user-progress>
       </div>
 
-      <div class="m-3">
+      <div>
 
         <div class="mb-4">
           <h1 class="content-cat-heading d-block" [innerHTML]="'home.title_user' | translate:{'username': getUsername()}"></h1>
