@@ -43,7 +43,7 @@
       "log_in": "Anmelden",
       "log_out": "Abmelden",
       "change_password": "Passwort ändern",
-      "change_username": "Nutzername ändern",
+      "change_username": "Anmeldename ändern",
       "measurements": "Beacon Messdaten",
       "statistics": "Statistiken"
     }
@@ -204,7 +204,7 @@
   },
   "login": {
     "heading": "Dein Projekt-Account",
-    "username_placeholder": "Nutzername",
+    "username_placeholder": "Anmeldename",
     "password_placeholder": "Passwort",
     "password_old_placeholder": "Derzeitiges Passwort",
     "password_new_placeholder": "Neues Passwort",
@@ -214,7 +214,7 @@
     "change_password": "Passwort ändern",
     "changing_password": "Passwort wird geändert...",
     "status_connection_insecure": "Anmelden über eine unsichere Verbindung ist nicht erlaubt",
-    "status_bad_credentials": "Nutzername und Passwort wurden nicht erkannt",
+    "status_bad_credentials": "Anmeldename und Passwort wurden nicht erkannt",
     "status_successful": "Erfolgreich eingeloggt",
     "status_failed": "Anmeldung fehlgeschlagen, bitte versuche es erneut",
     "status_expired": "Anmeldedaten abgelaufen, bitte melde dich erneut an",
@@ -226,15 +226,15 @@
     "description": "Dein persönlicher Projekt-Account ermöglicht es Dir Dein Forschungstagebuch zu bearbeiten, Phänologiebeobachtungen einzutragen, XP zu sammeln und vieles mehr.",
     "disclaimer": "Wir speichern keine persönlichen Daten, außer solche, die direkt durch Dich hochgeladen werden (oder Anderen, denen Du eine entsprechende Berechtigung erteilt hast).<br/>Durch das Anmelden erlaubst Du, Deine Anmeldedaten lokal zu speichern (dadurch muss das Passwort nur einmal am Tag eingegeben werden).",
     "reset_info": "Dein neues Passwort muss Folgendes erfüllen:<ul><li>Enthält mindestens 1 kleinbuchstaben (a-z)</li><li>Enthält mindestens 1 GROSSBUCHSTABEN (A-Z)</li><li>Enthält mindestens 1 Zahl (0-9)</li><li>Enthält mindestens 1 Symbol (!§$%&/()=?\"'+#<>,..-*~)</li><li>Ist mindestens 10 Zeichen lang</li></ul>",
-    "username_change_info": "Dein neues Passwort muss Folgendes erfüllen:<ul><li>Ist mindestens 10 Zeichen lang</li><li>Ist nicht gleich dem jetzigen Nutzernamen</li><li>Existiert nicht bereits</li></ul>",
+    "username_change_info": "Dein neues Passwort muss Folgendes erfüllen:<ul><li>Ist mindestens 10 Zeichen lang</li><li>Ist nicht gleich dem jetzigen Anmeldenamen</li><li>Existiert nicht bereits</li></ul>",
     "already_logged_in": "Du bist bereits angemeldet.",
-    "username_new_placeholder": "Neuer Nutzername",
-    "change_username": "Nutzername ändern",
-    "changing_username": "Nutzername wird geändert...",
-    "username_changed": "Dein Nutzername wurde erfolgreich geändert",
-    "username_change_failed": "Dein Nutzername konnte nicht geändert werden",
-    "username_duplicate": "Der gewählte Nutzername ist schon vergeben",
-    "username_change_title": "Nutzernamen ändern",
+    "username_new_placeholder": "Neuer Anmeldename",
+    "change_username": "Anmeldename ändern",
+    "changing_username": "Anmeldename wird geändert...",
+    "username_changed": "Dein Anmeldename wurde erfolgreich geändert",
+    "username_change_failed": "Dein Anmeldename konnte nicht geändert werden",
+    "username_duplicate": "Der gewählte Anmeldename ist schon vergeben",
+    "username_change_title": "Anmeldenamen ändern",
     "password_change_title": "Passwort ändern",
     "password_change_title_set": "Passwort setzen",
     "failed_attempts_info": "Dein Account wird nach 10 Versuchen für 5 Minuten gesperrt.",
@@ -453,7 +453,7 @@
       "title": "Konto verwalten",
       "desc":  "Du bist als {{username}} angemeldet.",
       "desc_2":  "Ändere Deinen Nutznamen oder Dein Passwort hier oder bearbeite Einstellungen zur Zwei-Faktor Authentifizierung.",
-      "change_username":  "Nutzername ändern",
+      "change_username":  "Anmeldename ändern",
       "change_password":  "Passwort ändern",
       "manage_2fa": "Zwei-Faktor Authentifizierung"
     },
@@ -694,12 +694,12 @@
     "request": "Gib Erlaubnis",
     "requesting": "Überprüfe",
     "request_same_account": "Du kannst dir selbst keine Berechtigung geben.",
-    "request_error": "Nutzername oder Passwort ist falsch",
+    "request_error": "Anmeldename oder Passwort ist falsch",
     "request_link": "Jemanden Neuen fragen",
     "list_link": "Zurück zur Liste",
     "user_selected": "Ausgewählt",
     "user_deselected": "Abgewählt",
-    "username_placeholder": "Nutzername",
+    "username_placeholder": "Anmeldename",
     "password_placeholder": "Berechtigungs-PIN",
     "summary": {
       "access": "{{username}} bekommt Zugang zu",
@@ -708,7 +708,7 @@
     "permissions": {
       "PHENOLOGY_OBSERVATION": {
         "title": "Phänologiebeobachtungen zu teilen",
-        "summary_access": "<ul><li>Deiner Nutzer-ID</li><li>Deinem Nutzernamen</li></ul>",
+        "summary_access": "<ul><li>Deiner Konto-ID</li><li>Deinem Anmeldenamen</li></ul>",
         "summary_permissions": "<ul><li>Dich zu Phänologiebeobachtungen hinzuzufügen</li><li>Mit Dir Phänologiebeobachtungen zu teilen</li></ul>"
       }
     }
