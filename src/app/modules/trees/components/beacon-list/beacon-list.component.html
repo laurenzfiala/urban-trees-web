@@ -130,7 +130,7 @@
 
     <div *ngIf="modify" class="beacon-settings mt-3">
 
-      <table class="table table-striped">
+      <table class="status-table table table-striped">
         <tr>
           <td>Device ID</td>
           <td>{{selectedBeacon.deviceId}}</td>
@@ -289,7 +289,7 @@
       <div *ngIf="selectedBeacon.settings"
            class="mt-2">
 
-        <table class="table table-striped">
+        <table class="status-table table table-striped">
           <tr>
             <td>PIN</td>
             <td class="pin">{{selectedBeacon.settings.pin | number:'4.0-0' | replace:',':''}}</td>
