@@ -396,8 +396,8 @@
         "mode": {
           "24h": "Letzte 24 Stunden",
           "week": "Letzte Woche",
-          "temp_month_per_day": "Letztes Monat pro Tag (Temperatur)",
-          "humidity_month_per_day": "Letztes Monat pro Tag (Luftfeuchte)"
+          "temp_month_per_day": "Letztes Monat (Temperatur)",
+          "humidity_month_per_day": "Letztes Monat (Luftfeuchte)"
         },
         "all_time": {
           "control_label": "Geamter Aufzeichnungszeitraum",

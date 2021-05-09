@@ -53,8 +53,8 @@
   <!-- Beacon content -->
   <div class="p-2 flex-grow-1 beacon-info-wrapper d-flex flex-column">
 
-    <div class="d-flex flex-row justify-content-between">
-      <h1 class="content-cat-heading">
+    <div>
+      <h1 class="content-cat-heading d-inline-block m-0">
         Beacon {{selectedBeacon.deviceId}}
 
         <div *ngIf="showAssociations && selectedBeacon.tree"
@@ -82,19 +82,28 @@
           [error]="getStatusErrorObservable(StatusKey.BEACON_DATA)"></ut-loading-status>
 
       </h1>
-      <div *ngIf="showData">
+      <div *ngIf="showData"
+           class="float-right">
         <div dropdown class="btn-group">
-          <button dropdownToggle type="button" class="btn btn-sm btn-outline-dark dropdown-toggle">
+          <button dropdownToggle
+                  type="button"
+                  class="btn btn-sm btn-outline-dark dropdown-toggle">
             {{currentBeaconDataMode | translate}}
           </button>
           <div *dropdownMenu class="dropdown-menu dropdown-menu-right">
-            <a *ngFor="let mode of BEACON_DATA_MODE_KEYS;" class="dropdown-item" (click)="loadBeaconData(BeaconDataMode[mode]);">{{BeaconDataMode[mode] | translate}}</a>
+            <a *ngFor="let mode of BEACON_DATA_MODE_KEYS;"
+               class="dropdown-item"
+               tabindex="0"
+               role="button"
+               (action)="loadBeaconData(BeaconDataMode[mode]);">
+              {{BeaconDataMode[mode] | translate}}
+            </a>
           </div>
         </div>
       </div>
     </div>
 
-    <div *ngIf="!modify && selectedBeacon.status === BeaconStatus.INITIAL"
+    <div *ngIf="!showStatus && selectedBeacon.status === BeaconStatus.INITIAL"
          class="status-img my-4 middle">
       <img src="/assets/img/icon/beacon_new.svg" />
       <div>{{'tree.beacon.details.status_initial' | translate}}</div>
@@ -128,7 +137,18 @@
       <div>{{'tree.beacon.data.missing' | translate}}</div>
     </div>
 
-    <div *ngIf="modify" class="beacon-settings mt-3">
+    <div *ngIf="showStatus && !openStatus"
+         class="text-center">
+      <div class="link-btn link-btn-sm"
+           tabindex="0"
+           role="button"
+           (action)="openStatus = true">
+        <i class="i i-xxs i-dark i-chevron-down mr-1"></i>
+        Show device status
+      </div>
+    </div>
+
+    <div *ngIf="showStatus && openStatus" class="beacon-settings mt-3">
 
       <table class="status-table table table-striped">
         <tr>
@@ -245,7 +265,7 @@
         </table>
 
         <div *ngIf="selectedBeacon.logLoadingStatus === StatusValue.SUCCESSFUL && selectedBeacon.canShowMoreLogs"
-             (click)="loadBeaconLogs(selectedBeacon)"
+             (action)="loadBeaconLogs(selectedBeacon)"
              class="text-center">
           <div class="link-btn link-btn-sm">
             <i class="i i-xxs i-dark i-chevron-down mr-1"></i>

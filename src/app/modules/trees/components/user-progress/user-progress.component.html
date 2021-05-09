@@ -23,7 +23,8 @@
     <div class="avatar"
          tabindex="0"
          (action)="zoom.open()"
-         [tooltip]="'user_progress.open_details' | translate">
+         [tooltip]="'user_progress.open_details' | translate"
+         tooltipTrigger="hover mouseup focus">
 
       <div class="avatar-inner">
         <div *ngIf="level !== maxLevel" class="level-display">

@@ -7,8 +7,8 @@ export const environment = {
 
   production:                       false,
 
-  webHost:                          'http://localhost:4200',
-  host:                             'http://localhost:80',
+  webHost:                          'http://192.168.1.45:4200',
+  host:                             'http://192.168.1.45:80',
   mapHost:                          'http://localhost:8081',
 
   endpoints: {

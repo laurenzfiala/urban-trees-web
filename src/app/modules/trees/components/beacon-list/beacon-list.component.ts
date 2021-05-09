@@ -67,7 +67,10 @@ export class BeaconListComponent extends AbstractComponent implements OnInit, On
   public showData: boolean = true;
 
   @Input()
-  public modify: boolean = false;
+  public showStatus: boolean = false;
+
+  @Input()
+  public openStatus: boolean = false;
 
   @Input()
   public showAssociations: boolean = false;
@@ -172,7 +175,7 @@ export class BeaconListComponent extends AbstractComponent implements OnInit, On
     if (this.showData) {
       this.loadBeaconDataInternal(beacon);
     }
-    if ((this.modify && !beacon.settings) || forceRefresh) {
+    if ((this.showStatus && !beacon.settings) || forceRefresh) {
       this.loadBeaconSettings(beacon);
     }
 
