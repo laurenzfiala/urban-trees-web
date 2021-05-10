@@ -1,5 +1,292 @@
 @import (reference) "../../../../../theme/variables";
 
+.transfer-status {
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  z-index: @navZIndex;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  margin: -@gutter;
+  padding: @gutter2x;
+  background-color: @lightBgColor;
+
+  .status-img {
+    position: relative;
+
+    width: 250px;
+    height: 250px;
+    max-width: 80vw;
+    max-height: 80vw;
+
+    border-radius: 50%;
+    background-position: center;
+    background-size: contain;
+    background-repeat: no-repeat;
+
+    flex-shrink: 0;
+    margin: @gutter;
+
+    // States -->
+    &.comm_device_get_settings {
+      background-image: url("/assets/img/icon/transfer-status/comm_device_get_settings.svg");
+    }
+
+    &.comm_device_connecting {
+      background-image: url("/assets/img/icon/beacon.svg");
+      animation: -anim-transfer-status-beacon-transmitting 2s infinite;
+    }
+
+    &.comm_device_connected {
+      background-image: url("/assets/img/icon/beacon.svg");
+      animation: -anim-transfer-status-beacon-connected 2s infinite;
+    }
+
+    &.comm_device_get_data {
+      background-image: url("/assets/img/icon/beacon.svg");
+      animation: -anim-transfer-status-beacon-get-data 2s infinite;
+
+      .handle-1 {
+        animation: -anim-transfer-status-beacon-get-data2 2s infinite;
+      }
+
+      .handle-2 {
+        animation: -anim-transfer-status-beacon-get-data3 2s infinite;
+      }
+    }
+
+    &.comm_device_get_data_failed {
+      border-radius: 0;
+      background-image: url("/assets/img/icon/transfer-status/comm_device_get_data_failed.svg");
+    }
+
+    &.comm_device_send_data {
+      background-image: url("/assets/img/icon/transfer-status/comm_device_send_data.svg");
+    }
+
+    &.comm_device_send_data_failed {
+      border-radius: 0;
+      background-image: url("/assets/img/icon/transfer-status/comm_device_send_data_failed.svg");
+    }
+
+    &.comm_device_readout_finished {
+      border-radius: 0;
+      background-image: url("/assets/img/icon/transfer-status/comm_device_readout_finished.svg");
+    }
+
+    &.comm_device_cancelling {
+      background-image: url("/assets/img/icon/beacon.svg");
+      animation: -anim-transfer-status-beacon-cancelling 6s forwards;
+    }
+
+    &.comm_device_cancelled {
+      background-image: url("/assets/img/icon/beacon.svg");
+      animation: -anim-transfer-status-beacon-cancelled 2s forwards;
+    }
+    // <-- States
+
+    .handle {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+
+      border-radius: 50%;
+    }
+  }
+
+  .status-text-container {
+    margin-top: @gutter2x;
+    text-align: center;
+  }
+
+  .status-text {
+    color: rgba(0, 0, 0, 0.3);
+    animation: -anim-transfer-status-text-intro 1s;
+
+    &.current {
+      color: rgba(0, 0, 0, 1);
+    }
+  }
+
+  .action-bar {
+    position: absolute;
+    top: auto;
+    right: 0;
+    bottom: 0;
+    left: 0;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: (@gutter/2) 0 @gutter2x 0;
+
+    background-color: @lightBgColor;
+
+    .action-container {
+      margin: (@gutter/2) 0;
+
+      .link {
+        display: inline-block;
+      }
+    }
+  }
+
+  /* .transfer-status */ &.sm {
+    height: auto;
+    margin-bottom: @gutter;
+
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+
+    border-bottom: solid @lightBorderColor 1px;
+
+    .status-container {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+    }
+
+    .status-img {
+      width: 4rem;
+      height: 4rem;
+
+
+
+      // States  (sm) -->
+      &.comm_device_connecting {
+        animation-name: -anim-transfer-status-beacon-transmitting-sm;
+      }
+
+      &.comm_device_connected {
+        animation-name: -anim-transfer-status-beacon-connected-sm;
+      }
+
+      &.comm_device_get_data {
+        animation-name: -anim-transfer-status-beacon-get-data-sm;
+
+        .handle-1 {
+          animation-name: -anim-transfer-status-beacon-get-data2-sm;
+        }
+
+        .handle-2 {
+          animation-name: -anim-transfer-status-beacon-get-data3-sm;
+        }
+      }
+      // <-- States (sm)
+    }
+
+    .status-text-container {
+      margin-top: 0;
+    }
+
+    .status-text {
+      margin: @gutter;
+      animation: -anim-transfer-status-text-intro-sm 1s;
+
+      &:not(.current) {
+        display: none;
+      }
+    }
+
+    .action-bar {
+      position: relative;
+
+      flex-direction: row;
+      padding: 0;
+
+      background-color: transparent;
+
+      .action-container {
+        margin: 0 @gutter;
+      }
+    }
+  }
+}
+
+@keyframes -anim-transfer-status-text-intro {
+  0% { opacity: 0; transform: translateY(-@gutter2x) }
+  100% { opacity: 1; transform: translateY(0) }
+}
+
+@keyframes -anim-transfer-status-text-intro-sm {
+  0% { opacity: 0; transform: translateX(-@gutter2x) }
+  100% { opacity: 1; transform: translateX(0) }
+}
+
+// State animations -->
+@keyframes -anim-transfer-status-beacon-transmitting {
+  0% { box-shadow: 0 0 0 0 rgba(149, 149, 149, 1); }
+  100% { box-shadow: 0 0 0 80px rgba(255, 255, 255, 0); }
+}
+@keyframes -anim-transfer-status-beacon-transmitting-sm {
+  0% { box-shadow: 0 0 0 0 rgba(149, 149, 149, 1); }
+  100% { box-shadow: 0 0 0 20px rgba(255, 255, 255, 0); }
+}
+
+@keyframes -anim-transfer-status-beacon-connected {
+  0% { box-shadow: 0 0 0 20px rgba(14, 153, 96, 0.7); }
+  50% { box-shadow: 0 0 0 10px rgba(14, 153, 96, 1); }
+  100% { box-shadow: 0 0 0 20px rgba(14, 153, 96, 0.7); }
+}
+@keyframes -anim-transfer-status-beacon-connected-sm {
+  0% { box-shadow: 0 0 0 10px rgba(14, 153, 96, 0.7); }
+  50% { box-shadow: 0 0 0 5px rgba(14, 153, 96, 1); }
+  100% { box-shadow: 0 0 0 10px rgba(14, 153, 96, 0.7); }
+}
+
+@keyframes -anim-transfer-status-beacon-get-data {
+  0% { box-shadow: 0 0 0 0px rgba(14, 153, 96, 0); }
+  80% { box-shadow: 0 0 0 30px rgba(14, 153, 96, 1); }
+  100% { box-shadow: 0 0 0 60px rgba(14, 153, 96, 0); }
+}
+@keyframes -anim-transfer-status-beacon-get-data-sm {
+  0% { box-shadow: 0 0 0 0px rgba(14, 153, 96, 0); }
+  80% { box-shadow: 0 0 0 5px rgba(14, 153, 96, 1); }
+  100% { box-shadow: 0 0 0 10px rgba(14, 153, 96, 0); }
+}
+
+@keyframes -anim-transfer-status-beacon-get-data2 {
+  0% { box-shadow: 0 0 0 0px rgba(14, 153, 96, 0); }
+  80% { box-shadow: 0 0 0 50px rgba(14, 153, 96, 0.5); }
+  100% { box-shadow: 0 0 0 150px rgba(14, 153, 96, 0); }
+}
+@keyframes -anim-transfer-status-beacon-get-data2-sm {
+  0% { box-shadow: 0 0 0 0px rgba(14, 153, 96, 0); }
+  80% { box-shadow: 0 0 0 8px rgba(14, 153, 96, 0.5); }
+  100% { box-shadow: 0 0 0 24px rgba(14, 153, 96, 0); }
+}
+
+@keyframes -anim-transfer-status-beacon-get-data3 {
+  0% { box-shadow: 0 0 0 0px rgba(14, 153, 96, 0); }
+  80% { box-shadow: 0 0 0 70px rgba(14, 153, 96, 0.25); }
+  100% { box-shadow: 0 0 0 280px rgba(14, 153, 96, 0); }
+}
+@keyframes -anim-transfer-status-beacon-get-data3-sm {
+  0% { box-shadow: 0 0 0 0px rgba(14, 153, 96, 0); }
+  80% { box-shadow: 0 0 0 11px rgba(14, 153, 96, 0.25); }
+  100% { box-shadow: 0 0 0 44px rgba(14, 153, 96, 0); }
+}
+
+@keyframes -anim-transfer-status-beacon-cancelling {
+  0% { opacity: 1; }
+  100% { transform: scale(0.8); opacity: 0.4; }
+}
+
+@keyframes -anim-transfer-status-beacon-cancelled {
+  0% { transform: scale(0.8); opacity: 0.4; }
+  100% { transform: scale(0); opacity: 0.1; }
+}
+// <-- State animations
+
 .transfer-message {
   background-color: @successBg;
   padding: 0.5rem 1rem;

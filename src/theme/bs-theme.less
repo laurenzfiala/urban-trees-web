@@ -117,12 +117,12 @@
   background-color: @navBgColor;
   border: 0;
 }
-.dropdown-toggle {
-  z-index: (@dropdownZIndex + 1) !important;
 
-  &:hover {
-    z-index: (@dropdownZIndex + 1) !important;
-  }
+.dropdown.open .dropdown-toggle {
+  z-index: (@dropdownZIndex + 1) !important;
+}
+
+.dropdown-toggle {
 
   &.btn-sm + .dropdown-menu {
     margin-top: -2rem;

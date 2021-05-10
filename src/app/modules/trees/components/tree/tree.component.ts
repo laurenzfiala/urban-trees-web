@@ -1,4 +1,4 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {AbstractComponent} from '../abstract.component';
 import {ActivatedRoute} from '@angular/router';
 import {TreeService} from '../../services/tree.service';
@@ -20,6 +20,12 @@ export class TreeComponent extends AbstractComponent implements OnInit {
   public Mode = Mode;
 
   /**
+   * If the route param does not hold a tree ID, this may hold the fallback.
+   */
+  @Input()
+  public treeId: number;
+
+  /**
    * Tree to display.
    */
   public tree: Tree;
@@ -36,7 +42,11 @@ export class TreeComponent extends AbstractComponent implements OnInit {
 
     this.route.params.subscribe((params: any) => {
 
-      const treeIdVal = Number(params[TreeComponent.PATH_PARAMS_TREE_ID]);
+      const treeIdParam = params[TreeComponent.PATH_PARAMS_TREE_ID];
+      let treeIdVal = Number(treeIdParam);
+      if (treeIdParam === undefined) {
+        treeIdVal = this.treeId;
+      }
 
       if (!isNaN(treeIdVal) && treeIdVal) {
         this.setStatus(StatusKey.TREE_VALIDATION, StatusValue.SUCCESSFUL);

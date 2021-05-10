@@ -32,6 +32,10 @@ import {BeacontransferComponent} from './components/beacontransfer/beacontransfe
 
 const routes: Routes = [
   {
+    path: 'beacontransfer/:beaconId',
+    component: BeacontransferComponent
+  },
+  {
     path: '',
     component: TreesComponent,
     children: [
@@ -70,10 +74,6 @@ const routes: Routes = [
       {
         path: 'tree/:treeId',
         component: TreeComponent
-      },
-      {
-        path: 'beacontransfer/:beaconId/:transferStatus',
-        component: BeacontransferComponent
       },
       {
         path: 'login',

@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 100 100" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:1.5;">
+    <style>
+		.beacon {
+		  transform-origin: 20px 20px;
+		  animation: -anim-beacon 1s forwards;
+		}
+
+
+		@keyframes -anim-beacon {
+		  0% {
+			transform: scale(1);
+		  }
+		  100% {
+			transform: scale(0.7);
+		  }
+		}
+		
+		.check {
+		  transform-origin: 72.3px 79.4px;
+		  animation: -anim-check 1.75s ease-in-out 0s forwards;
+		}
+
+
+		@keyframes -anim-check {
+		  0%, 57% {
+			transform: scale(0);
+		  }
+		  80% {
+			transform: scale(1.08);
+		  }
+		  100% {
+			transform: scale(1);
+		  }
+		}
+	</style>
+	<g class="beacon">
+		<g transform="matrix(1.6,0,0,1.6,-30,-38.0752)">
+			<path d="M39.639,61.221L60.361,48.493L49.691,41.939L49.691,68.155L60.361,61.601L39.72,48.922" style="fill:none;stroke:rgb(149,149,149);stroke-width:2.5px;"/>
+			<circle cx="50" cy="55.047" r="30" style="fill:none;stroke:rgb(149,149,149);stroke-width:2.5px;"/>
+			<path d="M59.178,80.118C64.858,77.879 69.687,73.906 72.978,68.765C73.352,68.181 73.587,67.815 73.587,67.815" style="fill:none;stroke:rgb(149,149,149);stroke-width:2.5px;"/>
+		</g>
+    </g>
+	<g class="check">
+		<g transform="matrix(0.574644,0,0,0.574644,43.5797,50.6571)">
+			<path d="M6.571,56.478L31.205,81.112C32.904,82.811 35.658,82.811 37.357,81.112L93.429,25.04C95.127,23.342 95.127,20.586 93.429,18.888C91.731,17.19 88.975,17.19 87.277,18.888L34.281,71.883C34.281,71.883 12.723,50.326 12.723,50.326C11.025,48.628 8.269,48.628 6.571,50.326C4.873,52.024 4.873,54.78 6.571,56.478Z" style="fill:rgb(40,167,69);"/>
+		</g>
+    </g>
+</svg>

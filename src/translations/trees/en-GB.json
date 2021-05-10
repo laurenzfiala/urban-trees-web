@@ -183,6 +183,26 @@
     }
   },
   "beacontransfer_view": {
+    "status":  {
+      "COMM_DEVICE_GET_SETTINGS": "Receiving connection parameters...",
+      "COMM_DEVICE_CONNECTING": "Connecting...",
+      "COMM_DEVICE_CONNECTED": "Successfully connected!",
+      "COMM_DEVICE_GET_DATA": "Receiving data...",
+      "COMM_DEVICE_GET_DATA_FAILED": "Failed to read data from beacon!",
+      "COMM_DEVICE_SEND_DATA": "Storing data...",
+      "COMM_DEVICE_SEND_DATA_FAILED": "Failed to store data!",
+      "COMM_DEVICE_READOUT_FINISHED": "Successfully stored data!",
+      "COMM_DEVICE_CANCELLING": "Cancelling connection...",
+      "COMM_DEVICE_CANCELLED": "Connection cancelled!"
+    },
+    "action_back_to_homepage": "Back to your homepage",
+    "action_back_to_homepage_sm": "Homepage",
+    "action_cancel": "Cancel readout",
+    "action_cancel_sm": "Cancel",
+    "action_view_tree": "View tree",
+    "action_view_tree_sm": "Tree",
+    "action_view_beacon": "View beacon data",
+    "action_view_beacon_sm": "Data",
     "success": "Beacon data successfully transferred!",
     "failed": "Could not receive data from beacon!",
     "message": {

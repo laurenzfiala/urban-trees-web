@@ -181,6 +181,26 @@
     }
   },
   "beacontransfer_view": {
+    "status":  {
+      "COMM_DEVICE_GET_SETTINGS": "Erfrage Verbindungsparameter...",
+      "COMM_DEVICE_CONNECTING": "Verbinde...",
+      "COMM_DEVICE_CONNECTED": "Erfolgreich verbunden!",
+      "COMM_DEVICE_GET_DATA": "Empfange Daten...",
+      "COMM_DEVICE_GET_DATA_FAILED": "Auslesung fehlgeschlagen!",
+      "COMM_DEVICE_SEND_DATA": "Speichere Daten...",
+      "COMM_DEVICE_SEND_DATA_FAILED": "Speicherung fehlgeschlagen!",
+      "COMM_DEVICE_READOUT_FINISHED": "Erfolgreich gespeichert!",
+      "COMM_DEVICE_CANCELLING": "Verbindung wird abgebrochen...",
+      "COMM_DEVICE_CANCELLED": "Verbindung abgebrochen!"
+    },
+    "action_back_to_homepage": "Zurück zur Homepage",
+    "action_back_to_homepage_sm": "Homepage",
+    "action_cancel": "Übertragung abbrechen",
+    "action_cancel_sm": "Abbrechen",
+    "action_view_tree": "Baum ansehen",
+    "action_view_tree_sm": "Baum",
+    "action_view_beacon": "Beacon Daten ansehen",
+    "action_view_beacon_sm": "Daten",
     "success": "Beacon-Daten erfolgreich übertragen!",
     "failed": "Der Beacon für diesen Baum konnte nicht ausgelesen werden!",
     "message": {
