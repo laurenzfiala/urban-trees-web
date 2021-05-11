@@ -9,7 +9,7 @@
   z-index: @navZIndex;
 
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   justify-content: center;
   align-items: center;
 
@@ -143,7 +143,6 @@
     height: auto;
     margin-bottom: @gutter;
 
-    flex-direction: row;
     justify-content: space-between;
     flex-wrap: wrap;
 
@@ -158,8 +157,6 @@
     .status-img {
       width: 4rem;
       height: 4rem;
-
-
 
       // States  (sm) -->
       &.comm_device_connecting {
@@ -202,12 +199,24 @@
 
       flex-direction: row;
       padding: 0;
+      margin-left: 0;
 
       background-color: transparent;
 
       .action-container {
         margin: 0 @gutter;
       }
+    }
+  }
+}
+
+@media only screen and (max-height: 576px) {
+  .transfer-status {
+    flex-direction: row;
+
+    .action-bar {
+      position: static;
+      margin-left: (@gutter2x*2);
     }
   }
 }
