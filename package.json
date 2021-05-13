@@ -5,7 +5,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build --prod --aot --vendor-chunk --common-chunk --delete-output-path --build-optimizer --output-hashing all --source-map false",
+    "build": "ng build --configuration production --aot --vendor-chunk --common-chunk --delete-output-path --build-optimizer --output-hashing all --source-map false",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
