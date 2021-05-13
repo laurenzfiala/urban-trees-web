@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, NgZone} from '@angular/core';
 import {Log} from './log.service';
 import {EnvironmentService} from './environment.service';
 import {HttpClient, HttpErrorResponse, HttpResponse} from '@angular/common/http';
@@ -54,12 +54,13 @@ export class AuthService extends AbstractService {
 
   constructor(private http: HttpClient,
               private router: Router,
-              private envService: EnvironmentService) {
+              private envService: EnvironmentService,
+              private zone: NgZone) {
     super();
 
     // make auth tokens accessible to the app
     window['getJWTToken'] = () => AuthService.getJWTTokenRaw();
-    window['refreshLogin'] = () => this.stateChanged();
+    window['refreshLogin'] = () => this.zone.run(args => this.stateChanged());
   }
 
   /**
