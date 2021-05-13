@@ -39,9 +39,6 @@ export class TreeSelectComponent extends AbstractComponent implements OnInit, On
   private selectedTreeInternal: TreeFrontend;
 
   @Input() set selectedTree(value: TreeFrontend) {
-    if (!value || value.id === 0) {
-      return;
-    }
     this.selectedTreeInternal = value;
     this.update();
   }
