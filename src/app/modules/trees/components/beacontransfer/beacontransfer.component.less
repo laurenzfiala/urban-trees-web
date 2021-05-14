@@ -181,6 +181,10 @@
       // <-- States (sm)
     }
 
+    .status-container {
+      margin-top: -@gutter;
+    }
+
     .status-text-container {
       margin-top: 0;
     }
@@ -213,6 +217,18 @@
 @media only screen and (max-height: 576px) {
   .transfer-status {
     flex-direction: row;
+
+    &.sm {
+      padding: 0;
+
+      .status-container {
+        margin-top: 0;
+      }
+
+      .status-img {
+        height: 3rem;
+      }
+    }
 
     .action-bar {
       position: static;
