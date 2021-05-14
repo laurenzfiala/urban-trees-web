@@ -128,7 +128,8 @@
 
           <hr/>
 
-          <div class="mt-2">
+          <div *ngIf="availableTrees"
+               class="mt-2">
             <ut-tree-select
               [availableTrees]="availableTrees"
               [preselectFirstTree]="true"
@@ -261,7 +262,7 @@
 
       </ng-container>
 
-      <ng-container *ngIf="beacon && (showLocation || !assocTree)">
+      <ng-container *ngIf="beacon && showLocation">
 
         <hr *ngIf="assocTree" />
 
@@ -276,7 +277,7 @@
             (selectedMarkerChange)="onBeaconSelectedMarkerChange($event)">
           </ut-map>
         </div>
-        <div *ngIf="beacon && marker"
+        <div *ngIf="marker"
              class="adm-tree-map-annotation d-flex align-items-center flex-row flex-wrap text-subtle p-1">
           <i class="i i-sm i-black i-location m-1"></i>
           <span class="m-1">X</span>

@@ -129,7 +129,7 @@ export class AdminBeaconManageComponent extends AbstractComponent implements OnI
         this.showTreeSelect = false;
         this.showLocation = true;
       }
-      this.loadBeaconSettings();
+      this.loadBeaconSettings(this.beacon);
     } else {
       this.beacon = new BeaconFrontend(
         0,
@@ -154,7 +154,7 @@ export class AdminBeaconManageComponent extends AbstractComponent implements OnI
     if (selectedTree) {
       this.assocTree = TreeLight.fromObject(selectedTree);
       if (linkTreeLocation) {
-        this.onBeaconLocationTreeLink(true);
+        this.onBeaconLocationTreeLink(linkTreeLocation);
       } else {
         if (this.isLocationLocked()) {
           this.showLocation = false;
@@ -163,6 +163,7 @@ export class AdminBeaconManageComponent extends AbstractComponent implements OnI
         }
       }
     } else {
+      this.onBeaconLocationTreeLink(false);
       this.assocTree = null;
     }
 
@@ -200,9 +201,7 @@ export class AdminBeaconManageComponent extends AbstractComponent implements OnI
 
   public saveBeacon(): void {
 
-    if (this.assocTree) {
-      this.beacon.tree = this.assocTree;
-    }
+    this.beacon.tree = this.assocTree;
 
     if (this.beacon.id) { // modify beacon
 
@@ -247,6 +246,17 @@ export class AdminBeaconManageComponent extends AbstractComponent implements OnI
 
   }
 
+  private reloadBeacon(oldBeacon: BeaconFrontend): void {
+
+    this.beaconService.loadBeacon(oldBeacon.id, (updatedBeacon: BeaconFrontend) => {
+      oldBeacon.update(updatedBeacon);
+      this.loadBeaconSettings(oldBeacon);
+    }, (error, apiError) => {
+      this.setStatus(StatusKey.LOAD_BEACONS, StatusValue.FAILED);
+    });
+
+  }
+
   private loadBeacons(selectBeaconByDeviceId?: string): void {
 
     this.setStatus(StatusKey.LOAD_BEACONS, StatusValue.IN_PROGRESS);
@@ -262,14 +272,14 @@ export class AdminBeaconManageComponent extends AbstractComponent implements OnI
 
   }
 
-  private loadBeaconSettings(): void {
+  private loadBeaconSettings(beacon: BeaconFrontend): void {
 
-    this.beacon.settingsLoadingStatus = StatusValue.IN_PROGRESS;
+    beacon.settingsLoadingStatus = StatusValue.IN_PROGRESS;
     this.treeService.loadBeaconSettings(this.beacon.id, (beaconSettings: BeaconSettings) => {
-      this.beacon.settings = beaconSettings;
-      this.beacon.settingsLoadingStatus = StatusValue.SUCCESSFUL;
+      beacon.settings = beaconSettings;
+      beacon.settingsLoadingStatus = StatusValue.SUCCESSFUL;
     }, (error, apiError) => {
-      this.beacon.settingsLoadingStatus = StatusValue.FAILED;
+      beacon.settingsLoadingStatus = StatusValue.FAILED;
     });
 
   }

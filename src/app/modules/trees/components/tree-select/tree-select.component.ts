@@ -40,7 +40,7 @@ export class TreeSelectComponent extends AbstractComponent implements OnInit, On
 
   @Input() set selectedTree(value: TreeFrontend) {
     this.selectedTreeInternal = value;
-    this.update();
+    this.updateResults(false);
   }
 
   get selectedTree(): TreeFrontend {
@@ -51,19 +51,8 @@ export class TreeSelectComponent extends AbstractComponent implements OnInit, On
    * Wheter or not to preselect the first tree in the list.
    * Input "selectedTree" overrides this if it has an id != 0 and is non-falsy.
    */
-  public preselectFirstTreeInternal: boolean = false;
-
-  /**
-   * @see TreeSelectComponent.preselectFirstTreeInternal
-   */
-  @Input() set preselectFirstTree(value: boolean) {
-    this.preselectFirstTreeInternal = value;
-    this.updateSelectedTree();
-  }
-
-  get preselectFirstTree(): boolean {
-    return this.preselectFirstTreeInternal;
-  }
+  @Input()
+  public preselectFirstTree: boolean = false;
 
   /**
    * Once loaded, contains all trees available for observation.
@@ -73,7 +62,7 @@ export class TreeSelectComponent extends AbstractComponent implements OnInit, On
   @Input() set availableTrees(value: Array<TreeFrontend>) {
     this.availableTreesInternal = value;
     this.updateSelectedTree();
-    this.update(false);
+    this.updateResults(false);
   }
 
   get availableTrees(): Array<TreeFrontend> {
@@ -133,8 +122,11 @@ export class TreeSelectComponent extends AbstractComponent implements OnInit, On
         pageSize = 6;
       }
       this.pageSize = pageSize;
-      this.update(false);
+      this.updateResults(false);
     }), TreeSelectComponent.SUBSCRIPTION_TAG);
+
+    this.updateSelectedTree();
+    this.updateResults(false);
 
   }
 
@@ -182,7 +174,7 @@ export class TreeSelectComponent extends AbstractComponent implements OnInit, On
    * Update displayTrees by current filter.
    * @param {boolean} debounce (optional) whether to wait a few ms if a new input is given
    */
-  public update(debounce: boolean = true): void {
+  public updateResults(debounce: boolean = true): void {
 
     const searchInput = this.treeSearchInput;
     if (!searchInput) {
@@ -225,17 +217,17 @@ export class TreeSelectComponent extends AbstractComponent implements OnInit, On
    * Select or deselect a single tree to continue observation.
    * @param {number} treeId id of that tree
    */
-  public toggleTree(treeId: number): void {
+  public toggleTree(treeId: number, noDeselect: boolean = false): void {
 
     if (this.availableTreesInternal === undefined) {
       return;
     }
 
     const newSelection = this.availableTreesInternal.find(value => value.id === treeId);
-    if (this.allowDeselect && newSelection === this.selectedTree) {
-      this.selectedTree = null;
+    if (this.allowDeselect && !noDeselect && newSelection.id === this.selectedTree?.id) {
+      this.selectedTreeInternal = null;
     } else {
-      this.selectedTree = newSelection;
+      this.selectedTreeInternal = newSelection;
     }
 
     this.selectedTreeChange.emit(this.selectedTree);
@@ -248,10 +240,10 @@ export class TreeSelectComponent extends AbstractComponent implements OnInit, On
    */
   private updateSelectedTree(): void {
 
-    if ((!this.selectedTree || this.selectedTree.id === 0) && this.preselectFirstTree && this.availableTreesInternal.length >= 1) {
-      this.toggleTree(this.availableTreesInternal[0].id);
-    } else if (this.selectedTree) {
-      this.toggleTree(this.selectedTree.id);
+    if (this.selectedTree) {
+      this.toggleTree(this.selectedTree.id, true);
+    } else if ((!this.selectedTree || this.selectedTree.id === 0) && this.preselectFirstTree && this.availableTreesInternal.length >= 1) {
+      this.toggleTree(this.availableTreesInternal[0].id, true);
     }
 
   }
