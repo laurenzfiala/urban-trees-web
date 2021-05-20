@@ -775,7 +775,13 @@
   },
   "beacon_list": {
     "empty": "Keine Beacons gefunden",
-    "show_all": "Alle anzeigen"
+    "show_all": "Alle anzeigen",
+    "download_all_data": "Alle Daten herunterladen",
+    "download_all_data_now": "Daten jetzt herunterladen",
+    "beacon_diagram": {
+      "temperature": "Temperatur",
+      "humidity": "Luftfeuchte"
+    }
   },
   "notifications": {
     "auth_timeout": {
@@ -834,8 +840,8 @@
       "today": "Heute",
       "yesterday": "Gestern",
       "this_week": "Diese Woche",
-      "this_month": "Dieses Monat",
-      "last_month": "Letztes Monat",
+      "this_month": "Dieser Monat",
+      "last_month": "Letzter Monat",
       "more_than_5_years_ago": "Vor 5+ Jahren"
     }
   },

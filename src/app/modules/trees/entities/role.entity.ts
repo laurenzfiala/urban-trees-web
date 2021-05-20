@@ -18,7 +18,7 @@ export class Role {
   }
 
   public toString(): string {
-    return this.name.split('_')[1];
+    return this.name.slice(this.name.indexOf('_') + 1);
   }
 
   public static fromObject(o: any): Role {

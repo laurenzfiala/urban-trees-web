@@ -22,9 +22,6 @@ export const environment = {
     loadBeacons:                      '/beacon',
     loadBeacon:                       '/beacon/{beaconId}',
     beaconData:                       '/beacon/{beaconId}/data',
-    beaconDataTimespan:               '/beacon/{beaconId}/data?timespanMin={timespanMin}&timespanMax={timespanMax}',
-    beaconDataTimespanMin:            '/beacon/{beaconId}/data?timespanMin={timespanMin}',
-    beaconDataTimespanMax:            '/beacon/{beaconId}/data?timespanMax={timespanMax}',
     beaconSettings:                   '/beacon/{beaconId}/settings',
 
     // Phenology
@@ -113,6 +110,7 @@ export const environment = {
       treeEditor:                       ['ROLE_TREE_EDITOR'],
       journal:                          ['ROLE_JOURNAL'],
       phenObs:                          ['ROLE_PHENOBS'],
+      allData:                          ['ROLE_ALL_DATA', 'ROLE_ADMIN'],
       admin:                            ['ROLE_ADMIN'],
       tempChangePassword:               'ROLE_TEMP_CHANGE_PASSWORD',
       tempActivateOTP:                  'ROLE_TEMP_ACTIVATE_OTP'

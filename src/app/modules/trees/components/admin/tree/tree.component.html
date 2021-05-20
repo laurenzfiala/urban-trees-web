@@ -63,6 +63,7 @@
 
           <div class="mt-2">
             <ut-tree-select
+              *ngIf="availableTrees"
               [availableTrees]="availableTrees"
               [selectedTree]="tree"
               [preselectFirstTree]="true"
@@ -170,7 +171,7 @@
         Tree-Beacons
       </h1>
       <div [routerLink]="['/admin/beacon/manage']"
-           [queryParams]="{'assocTree': tree.id}"
+           [queryParams]="{'assocTree': savedTree ? savedTree.id : tree.id}"
            class="d-inline-flex flex-row align-items-center link-container mx--2 p-2">
         <i class="i i-beacon-add-info mr-1"></i>
         <a class="link primary">Add new beacon to this tree</a>

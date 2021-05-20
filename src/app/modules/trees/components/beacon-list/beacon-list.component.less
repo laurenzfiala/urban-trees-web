@@ -69,6 +69,19 @@
   background-color: @lightBgColor;
   width: 100%;
 
+
+  &.status-shown {
+
+    .beacon-info-container {
+      position: static;
+    }
+  }
+
+  .beacon-info-container {
+    position: sticky;
+    top: @gutter;
+  }
+
   .chart-wrapper {
     padding-bottom: 4rem;
 

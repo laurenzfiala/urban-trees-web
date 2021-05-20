@@ -1,4 +1,4 @@
-import {Component, OnInit, TemplateRef} from '@angular/core';
+import {ChangeDetectorRef, Component, OnInit, TemplateRef} from '@angular/core';
 import {Beacon} from '../../../../entities/beacon.entity';
 import {
   BsModalRef,
@@ -69,6 +69,7 @@ export class AdminBeaconManageComponent extends AbstractComponent implements OnI
               private phenobsService: PhenologyObservationService,
               private adminService: AdminService,
               private modalService: BsModalService,
+              private cdRef: ChangeDetectorRef,
               private route: ActivatedRoute) {
     super();
   }
@@ -275,6 +276,7 @@ export class AdminBeaconManageComponent extends AbstractComponent implements OnI
   private loadBeaconSettings(beacon: BeaconFrontend): void {
 
     beacon.settingsLoadingStatus = StatusValue.IN_PROGRESS;
+    this.cdRef.detectChanges();
     this.treeService.loadBeaconSettings(this.beacon.id, (beaconSettings: BeaconSettings) => {
       beacon.settings = beaconSettings;
       beacon.settingsLoadingStatus = StatusValue.SUCCESSFUL;

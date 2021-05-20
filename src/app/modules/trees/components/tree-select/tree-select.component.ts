@@ -48,7 +48,7 @@ export class TreeSelectComponent extends AbstractComponent implements OnInit, On
   }
 
   /**
-   * Wheter or not to preselect the first tree in the list.
+   * Whether or not to preselect the first tree in the list.
    * Input "selectedTree" overrides this if it has an id != 0 and is non-falsy.
    */
   @Input()
@@ -240,10 +240,10 @@ export class TreeSelectComponent extends AbstractComponent implements OnInit, On
    */
   private updateSelectedTree(): void {
 
-    if (this.selectedTree) {
-      this.toggleTree(this.selectedTree.id, true);
-    } else if ((!this.selectedTree || this.selectedTree.id === 0) && this.preselectFirstTree && this.availableTreesInternal.length >= 1) {
+    if ((!this.selectedTree || this.selectedTree.id === 0) && this.preselectFirstTree && this.availableTreesInternal.length >= 1) {
       this.toggleTree(this.availableTreesInternal[0].id, true);
+    } else if (this.selectedTree) {
+      this.toggleTree(this.selectedTree.id, true);
     }
 
   }
