@@ -104,7 +104,7 @@
       </div>
 
       <div *ngIf="!showStatus && selectedBeacon.status === BeaconStatus.INITIAL"
-           class="status-img my-4 middle">
+           class="status-img my-4">
         <img src="/assets/img/icon/beacon_new.svg" />
         <div>{{'tree.beacon.details.status_initial' | translate}}</div>
       </div>
@@ -132,7 +132,7 @@
       </div>
 
       <div *ngIf="showData && selectedBeacon.status !== BeaconStatus.INITIAL && hasStatus(StatusKey.BEACON_DATA, StatusValue.SUCCESSFUL) && !(selectedBeacon.chartData && selectedBeacon.datasets?.length > 0)"
-           class="status-img my-4 middle">
+           class="status-img my-4">
         <img src="/assets/img/icon/stats_missing.svg" />
         <div>{{'tree.beacon.data.missing' | translate}}</div>
       </div>
