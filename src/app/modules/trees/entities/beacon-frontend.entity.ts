@@ -57,9 +57,9 @@ export class BeaconFrontend extends Beacon implements MapMarker {
     if (mode === BeaconDataMode.TEMP_LAST_MONTH_PER_DAY) {
 
       this.chartData = new Array<ChartDataSeries>(3);
-      this.chartData[0] = new ChartDataSeries('Temperature Min');
-      this.chartData[1] = new ChartDataSeries('Temperature Avg');
-      this.chartData[2] = new ChartDataSeries('Temperature Max');
+      this.chartData[0] = new ChartDataSeries(translateService.instant('beacon_list.beacon_diagram.temperature_max'));
+      this.chartData[1] = new ChartDataSeries(translateService.instant('beacon_list.beacon_diagram.temperature_avg'));
+      this.chartData[2] = new ChartDataSeries(translateService.instant('beacon_list.beacon_diagram.temperature_min'));
 
       let dataset, nextDataset, datasetDate;
       let tempMin, tempAvg, tempMax, tempSum = 0, dataPerDayCounter = 0;
@@ -83,9 +83,9 @@ export class BeaconFrontend extends Beacon implements MapMarker {
         }
 
         if (!nextDataset || datasetDate !== moment(nextDataset.observationDate).format(dateFormat)) {
-          this.chartData[0].series.push(new ChartData(datasetDate, tempMin));
+          this.chartData[0].series.push(new ChartData(datasetDate, tempMax));
           this.chartData[1].series.push(new ChartData(datasetDate, tempSum / dataPerDayCounter));
-          this.chartData[2].series.push(new ChartData(datasetDate, tempMax));
+          this.chartData[2].series.push(new ChartData(datasetDate, tempMin));
 
           dataPerDayCounter = 0;
           tempMin = undefined;
@@ -99,9 +99,9 @@ export class BeaconFrontend extends Beacon implements MapMarker {
     } else if (mode === BeaconDataMode.HUMI_LAST_MONTH_PER_DAY) {
 
       this.chartData = new Array<ChartDataSeries>(3);
-      this.chartData[0] = new ChartDataSeries('Humidity Min');
-      this.chartData[1] = new ChartDataSeries('Humidity Avg');
-      this.chartData[2] = new ChartDataSeries('Humidity Max');
+      this.chartData[0] = new ChartDataSeries(translateService.instant('beacon_list.beacon_diagram.humidity_max'));
+      this.chartData[1] = new ChartDataSeries(translateService.instant('beacon_list.beacon_diagram.humidity_avg'));
+      this.chartData[2] = new ChartDataSeries(translateService.instant('beacon_list.beacon_diagram.humidity_min'));
 
       let dataset, nextDataset, datasetDate;
       let tempMin, tempAvg, tempMax, tempSum = 0, dataPerDayCounter = 0;
@@ -110,7 +110,7 @@ export class BeaconFrontend extends Beacon implements MapMarker {
 
         nextDataset = this.datasets[i];
         if (i > 0) {
-          dataset = this.datasets[i-1];
+          dataset = this.datasets[i - 1];
           datasetDate = moment(dataset.observationDate).format(dateFormat);
         }
 
@@ -125,9 +125,9 @@ export class BeaconFrontend extends Beacon implements MapMarker {
         }
 
         if (!nextDataset || datasetDate !== moment(nextDataset.observationDate).format(dateFormat)) {
-          this.chartData[0].series.push(new ChartData(datasetDate, tempMin));
+          this.chartData[0].series.push(new ChartData(datasetDate, tempMax));
           this.chartData[1].series.push(new ChartData(datasetDate, tempSum / dataPerDayCounter));
-          this.chartData[2].series.push(new ChartData(datasetDate, tempMax));
+          this.chartData[2].series.push(new ChartData(datasetDate, tempMin));
 
           dataPerDayCounter = 0;
           tempMin = undefined;
