@@ -30,6 +30,12 @@ a.link-btn:not([href]):not([tabindex]) {
     border-color: @linkHoverColor !important;
   }
 
+  &.disabled,
+  &:disabled {
+    opacity: 0.5;
+    pointer-events: auto;
+  }
+
   &.link-btn-xl {
     font-size: @fontSizeExtraLarge;
   }

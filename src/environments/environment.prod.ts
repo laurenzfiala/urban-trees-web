@@ -22,9 +22,6 @@ export const environment = {
     loadBeacons:                      '/beacon',
     loadBeacon:                       '/beacon/{beaconId}',
     beaconData:                       '/beacon/{beaconId}/data',
-    beaconDataTimespan:               '/beacon/{beaconId}/data?timespanMin={timespanMin}&timespanMax={timespanMax}',
-    beaconDataTimespanMin:            '/beacon/{beaconId}/data?timespanMin={timespanMin}',
-    beaconDataTimespanMax:            '/beacon/{beaconId}/data?timespanMax={timespanMax}',
     beaconSettings:                   '/beacon/{beaconId}/settings',
 
     // Phenology
@@ -88,10 +85,9 @@ export const environment = {
     // CMS
     loadContent:                      '/content/{contentId}/{contentLang}',
     loadContentForUser:               '/content/user/{contentId}/{contentLang}',
-    saveContentDraft:                 '/content/{contentId}/{contentOrder}/{contentLang}/draft',
-    publishContent:                   '/content/{contentId}/{contentOrder}/{contentLang}',
-    loadContentUserHistory:           '/user/{userId}/content?prefix={prefix}',
-    loadContentUserHistoryWithPrefix: '/user/{userId}/content?prefix={prefix}'
+    saveContentDraft:                 '/content/{contentLang}/draft?path={contentPath}',
+    publishContent:                   '/content/{contentLang}?path={contentPath}',
+    loadContentUserHistory:           '/user/{userId}/content?path={path}'
   },
 
   contentSaveDebounceMs:              120_000,
@@ -122,9 +118,10 @@ export const environment = {
       treeEditor:                       ['ROLE_TREE_EDITOR'],
       journal:                          ['ROLE_JOURNAL'],
       phenObs:                          ['ROLE_PHENOBS'],
+      allData:                          ['ROLE_ALL_DATA', 'ROLE_ADMIN'],
       admin:                            ['ROLE_ADMIN'],
       tempChangePassword:               'ROLE_TEMP_CHANGE_PASSWORD',
-      tempActivateOTP:                  'TEMP_ACTIVATE_OTP'
+      tempActivateOTP:                  'ROLE_TEMP_ACTIVATE_OTP'
     }
   }
 

@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
 import {BeaconData} from '../../entities/beacon-data.entity';
 import {AbstractComponent} from '../../../shared/components/abstract.component';
 import {TreeService} from '../../services/tree.service';
@@ -13,6 +13,9 @@ import {BeaconStatus} from '../../entities/beacon-status.entity';
 import {LayoutConfig} from '../../config/layout.config';
 import {BreakpointObserver, BreakpointState} from '@angular/cdk/layout';
 import {SubscriptionManagerService} from '../../services/subscription-manager.service';
+import {EnvironmentService} from '../../../shared/services/environment.service';
+import {User} from '../../entities/user.entity';
+import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
 
 @Component({
   selector: 'ut-beacon-list',
@@ -67,7 +70,10 @@ export class BeaconListComponent extends AbstractComponent implements OnInit, On
   public showData: boolean = true;
 
   @Input()
-  public modify: boolean = false;
+  public showStatus: boolean = false;
+
+  @Input()
+  public openStatus: boolean = false;
 
   @Input()
   public showAssociations: boolean = false;
@@ -92,7 +98,10 @@ export class BeaconListComponent extends AbstractComponent implements OnInit, On
               private adminService: AdminService,
               private translateService: TranslateService,
               private subs: SubscriptionManagerService,
-              private bpObserver: BreakpointObserver) {
+              private bpObserver: BreakpointObserver,
+              private sanitizer: DomSanitizer,
+              private cdRef: ChangeDetectorRef,
+              public envService: EnvironmentService) {
     super();
   }
 
@@ -169,10 +178,11 @@ export class BeaconListComponent extends AbstractComponent implements OnInit, On
     }
 
     this.setStatus(StatusKey.BEACON_DATA, StatusValue.PENDING);
+    this.setStatus(StatusKey.BEACON_DATA_DOWNLOAD, StatusValue.PENDING);
     if (this.showData) {
       this.loadBeaconDataInternal(beacon);
     }
-    if ((this.modify && !beacon.settings) || forceRefresh) {
+    if ((this.showStatus && !beacon.settings) || forceRefresh) {
       this.loadBeaconSettings(beacon);
     }
 
@@ -213,6 +223,7 @@ export class BeaconListComponent extends AbstractComponent implements OnInit, On
     }
 
     beacon.settingsLoadingStatus = StatusValue.IN_PROGRESS;
+    this.cdRef.detectChanges();
     this.treeService.loadBeaconSettings(beacon.id, (beaconSettings: BeaconSettings) => {
       beacon.settings = beaconSettings;
       beacon.settingsLoadingStatus = StatusValue.SUCCESSFUL;
@@ -300,6 +311,26 @@ export class BeaconListComponent extends AbstractComponent implements OnInit, On
 
   }
 
+  public downloadBeaconData(): void {
+
+    this.setStatus(StatusKey.BEACON_DATA_DOWNLOAD, StatusValue.IN_PROGRESS);
+    this.treeService.loadBeaconData(
+      this.selectedBeacon.id,
+      null,
+      null,
+      datasets => {
+        const csvPayload = 'date,temperature,humidity,dew point\n' + datasets.map(d => {
+          return d.observationDate.toISOString() + ',' + d.temperature + ',' + d.humidity + ',' + d.dewPoint;
+        }).join('\n');
+        const csvBlob = new Blob([csvPayload], { type: 'text/csv' });
+        const csvUrl = this.sanitizer.bypassSecurityTrustUrl(URL.createObjectURL(csvBlob));
+        this.setStatus(StatusKey.BEACON_DATA_DOWNLOAD, StatusValue.SUCCESSFUL, csvUrl);
+      }, (error, apiError) => {
+        this.setStatus(StatusKey.BEACON_DATA_DOWNLOAD, StatusValue.FAILED);
+      });
+
+  }
+
   public getLimit(): number {
     return this.limit === -1 ? this.beaconsInternal.length : this.limit;
   }
@@ -308,7 +339,8 @@ export class BeaconListComponent extends AbstractComponent implements OnInit, On
 
 export enum StatusKey {
 
-  BEACON_DATA
+  BEACON_DATA,
+  BEACON_DATA_DOWNLOAD
 
 }
 

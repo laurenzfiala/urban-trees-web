@@ -1,0 +1,55 @@
+<section class="content-cat">
+  <div class="container">
+
+    Hier findest Du Arbeitsblätter und Aufgaben zum Projekt.
+    Diese Aufgaben helfen dir, dir die Inhalte aus den Workshops besser zu merken.
+
+  </div>
+
+  <div class="mt-4">
+
+    <div class="tabs-container">
+      <div class="container">
+        <div class="tab"
+             role="button"
+             tabindex="0"
+             [ngClass]="{'active': selectedTab === JournalTabs.EXP_DAYS}"
+             (action)="selectTab(JournalTabs.EXP_DAYS)">
+          Experimentiertage
+        </div>
+        <div class="tab"
+             role="button"
+             tabindex="0"
+             [ngClass]="{'active': selectedTab === JournalTabs.MODULE_SENSOR2APP}"
+             (action)="selectTab(JournalTabs.MODULE_SENSOR2APP)">
+          Sensor2App
+        </div>
+        <div class="tab"
+             role="button"
+             tabindex="0"
+             [ngClass]="{'active': selectedTab === JournalTabs.MODULE_APP2ANALYSE}"
+             (action)="selectTab(JournalTabs.MODULE_APP2ANALYSE)">
+          App2Analyse
+        </div>
+      </div>
+    </div>
+
+    <div class="tabs-content-container">
+      <div class="container">
+        <div class="tab-content"
+             *ngIf="selectedTab === JournalTabs.EXP_DAYS">
+          <ut-exp-days></ut-exp-days>
+        </div>
+        <div class="tab-content"
+             *ngIf="selectedTab === JournalTabs.MODULE_SENSOR2APP">
+          <ut-sensor-to-app></ut-sensor-to-app>
+        </div>
+        <div class="tab-content"
+             *ngIf="selectedTab === JournalTabs.MODULE_APP2ANALYSE">
+          <ut-app-to-analyse></ut-app-to-analyse>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>

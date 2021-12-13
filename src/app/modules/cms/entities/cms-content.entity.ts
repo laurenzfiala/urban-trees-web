@@ -15,7 +15,17 @@ export class CmsContent {
   /**
    * UID of the user content that proceeded this one (may be null/undefined if first entry).
    */
-  public readonly historyId: number;
+  public historyId: number;
+
+  /**
+   * UID of the user content that this content is supposed to be after.
+   */
+  public previousId: number;
+
+  /**
+   * UID of the user content that this content is supposed to be before.
+   */
+  public nextId: number;
 
   /**
    * The Date at which this object was generated.
@@ -40,11 +50,15 @@ export class CmsContent {
   public readonly content: SerializedCmsContent;
 
   constructor(historyId?: number,
+              previousId?: number,
+              nextId?: number,
               saved?: Date,
               sent?: Date,
               stored?: Date,
               content?: SerializedCmsContent) {
     this.historyId = historyId;
+    this.previousId = previousId;
+    this.nextId = nextId;
     this.saved = saved;
     this.sent = sent;
     this.stored = stored;
@@ -102,6 +116,8 @@ export class CmsContent {
 
     return new CmsContent(
       o.historyId,
+      o.previousId,
+      o.nextId,
       o.saved && moment.utc(o.saved, envService.outputDateFormat).toDate(),
       o.sent && moment.utc(o.sent, envService.outputDateFormat).toDate(),
       o.stored && moment.utc(o.stored, envService.outputDateFormat).toDate(),
@@ -123,12 +139,16 @@ export class CmsContent {
       return new CmsContent();
     }
 
+    const cmsContent = JSON.parse(userContent.content);
+
     return new CmsContent(
       userContent.id, // TODO check if swapping hist_id <-> id is okay here
-      userContent.content.saved && moment.utc(userContent.content.saved, envService.outputDateFormat).toDate(),
-      userContent.content.sent && moment.utc(userContent.content.sent, envService.outputDateFormat).toDate(),
+      userContent.previousId,
+      userContent.nextId,
+      cmsContent.saved && moment.utc(cmsContent.saved, envService.outputDateFormat).toDate(),
+      cmsContent.sent && moment.utc(cmsContent.sent, envService.outputDateFormat).toDate(),
       userContent.saveDate && moment.utc(userContent.saveDate, envService.outputDateFormat).toDate(),
-      userContent.content.content && SerializedCmsContent.fromObject(userContent.content.content, envService)
+      cmsContent && SerializedCmsContent.fromObject(cmsContent.content, envService)
     );
 
   }

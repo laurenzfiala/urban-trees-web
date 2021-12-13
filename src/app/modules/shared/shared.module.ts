@@ -10,11 +10,13 @@ import {ValueaccessorDirective} from './directives/valueaccessor.directive';
 import {LangDirective} from './directives/lang.directive';
 import {HTTP_INTERCEPTORS, HttpClient} from '@angular/common/http';
 import {AuthInterceptor} from './interceptors/auth.interceptor';
-import {CastDirective} from './directives/cast.directive';
 import {ForNDirective} from './directives/for-n.directive';
+import {FocusOnDisplayDirective} from './directives/focus-on-display.directive';
 import {ZoomComponent} from './components/zoom/zoom.component';
 import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
-import {FocusOnDisplayDirective} from './directives/focus-on-display.directive';
+import {MultiTranslateHttpLoader} from './lib/multi-translate-http-loader';
+import {AuthPipe} from './pipes/auth.pipe';
+import {CastDirective} from './directives/cast.directive';
 
 @NgModule({
   declarations: [
@@ -30,15 +32,16 @@ import {FocusOnDisplayDirective} from './directives/focus-on-display.directive';
     CheckDirective,
     ValueaccessorDirective,
     LangDirective,
-    CastDirective,
     ForNDirective,
-    FocusOnDisplayDirective
+    FocusOnDisplayDirective,
+    CastDirective,
+
+    // Pipes
+    AuthPipe
   ],
   imports: [
     CommonModule,
-
-    // Translation
-    TranslateModule.forChild(),
+    TranslateModule
   ],
   exports: [
     // Components
@@ -54,8 +57,11 @@ import {FocusOnDisplayDirective} from './directives/focus-on-display.directive';
     ValueaccessorDirective,
     LangDirective,
     ForNDirective,
+    FocusOnDisplayDirective,
     CastDirective,
-    FocusOnDisplayDirective
+
+    // Pipes
+    AuthPipe
   ],
   providers: [
     // Interceptors

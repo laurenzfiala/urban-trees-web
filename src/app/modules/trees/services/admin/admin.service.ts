@@ -16,6 +16,8 @@ import {BeaconLogSeverity} from '../../entities/BeaconLogSeverity';
 import {BeaconFrontend} from '../../entities/beacon-frontend.entity';
 import {UserCreation} from '../../entities/user-creation.entity';
 import {SearchResult} from '../../entities/search-result.entity';
+import {Observable} from 'rxjs/Observable';
+import {of} from 'rxjs';
 
 /**
  * Service for backend calls on the admin pages.
@@ -247,27 +249,20 @@ export class AdminService extends AbstractService {
 
   public loadUsers(searchFilters: Map<string, any | any[]>,
                    limit: number,
-                   offset: number,
-                   successCallback: (result: SearchResult<Array<User>>) => void,
-                   errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void) {
+                   offset: number): Observable<SearchResult<Array<User>>> {
 
     let url = this.envService.endpoints.loadUsers(limit, offset);
     AdminService.LOG.debug('Loading users...');
 
-    this.http.post<SearchResult<Array<User>>>(url, this.searchFiltersToPayload(searchFilters))
+    return this.http.post<SearchResult<Array<User>>>(url, this.searchFiltersToPayload(searchFilters))
       .timeout(this.envService.defaultTimeout)
       .map(r => {
         const result = SearchResult.fromObject(r);
         result.result = result.result.map(user => User.fromObject(user));
         return result;
-      })
-      .subscribe((result: SearchResult<Array<User>>) => {
-        successCallback(result);
-      }, (e: any) => {
+      }).catch(e => {
         AdminService.LOG.error('Could not load users: ' + e.message, e);
-        if (errorCallback) {
-          errorCallback(e, this.safeApiError(e));
-        }
+        throw this.safeApiError(e);
       });
 
   }
@@ -488,13 +483,16 @@ export class AdminService extends AbstractService {
 
   public bulkAction(searchFilters: Map<string, any | any[]>,
                    action: BulkAction,
+                   data: any,
                    successCallback: (affectedUsers: Array<User>) => void,
                    errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void) {
 
     let url = this.envService.endpoints.usersBulkAction(BulkAction[action]);
     AdminService.LOG.debug('Sending bulk action execution order for action ' + action + '...');
 
-    this.http.post<Array<User>>(url, this.searchFiltersToPayload(searchFilters))
+    const payload = Object.assign({filters: this.searchFiltersToPayload(searchFilters)}, data);
+
+    this.http.post<Array<User>>(url, payload)
       .timeout(this.envService.defaultTimeout)
       .map(users => users && users.map(u => User.fromObject(u)))
       .subscribe((affectedUsers: Array<User>) => {
@@ -514,6 +512,8 @@ export enum BulkAction {
 
   EXPIRE_CREDENTIALS,
   CREATE_LOGIN_LINKS,
+  ADD_ROLES,
+  REMOVE_ROLES,
   ACTIVATE,
   INACTIVATE,
   DELETE

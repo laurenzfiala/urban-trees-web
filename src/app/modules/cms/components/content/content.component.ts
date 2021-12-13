@@ -5,6 +5,7 @@ import {
   Component,
   ComponentFactoryResolver,
   EventEmitter,
+  HostListener,
   Input,
   OnDestroy,
   OnInit,
@@ -14,7 +15,6 @@ import {
   ViewContainerRef
 } from '@angular/core';
 import {TextComponent} from '../../cms-components/text/text.component';
-import {CmsComponent} from '../../interfaces/cms-component.interface';
 import {SerializationService} from '../../services/serialization.service';
 import {ContentService} from '../../services/content.service';
 import {ToolbarBtn, ToolbarDropdown} from '../../entities/toolbar.entity';
@@ -35,13 +35,14 @@ import {EnvironmentService} from '../../../shared/services/environment.service';
 import {CmsContent} from '../../entities/cms-content.entity';
 import {Observable} from 'rxjs/Observable';
 import {CmsValidationResults} from '../../entities/cms-validation-results.entity';
+import {FileComponent} from '../../cms-components/file/file.component';
 
 @Component({
   selector: 'ut-cms-content',
   templateUrl: './content.component.html',
   styleUrls: ['./content.component.less'],
   changeDetection: ChangeDetectionStrategy.OnPush,
-  providers: [ContentService, ToolbarService, SubscriptionManagerService]
+  viewProviders: [ContentService, ToolbarService, SubscriptionManagerService]
 })
 export class ContentComponent extends AbstractCmsLayout implements OnInit, AfterViewInit, OnDestroy {
 
@@ -53,20 +54,14 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, After
   public ToolbarBtn = ToolbarBtn;
 
   /**
-   * Content id which the given CmsContent belongs to.
+   * Content path which the given CmsContent belongs to.
    * May not be undefined/null.
    */
   @Input()
-  private contentId: string;
+  private contentPath: string;
 
   /**
-   * TODO
-   */
-  @Input()
-  private contentBaseUid: number;
-
-  /**
-   * Content language to display, may not be undefined/null.
+   * Content language to display, may no be null/undefined.
    */
   @Input()
   private contentLang: string;
@@ -87,6 +82,7 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, After
   @Input()
   set viewMode(mode: ViewMode) {
     this.contentService.viewMode = mode;
+    this.update();
   }
 
   @Output()
@@ -100,10 +96,9 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, After
 
   @ViewChild('contentSlot', {read: ViewContainerRef, static: true})
   public contentSlot: ViewContainerRef;
-
   /**
    * Tracks the last 50 changes made by the user for undo/redo
-   * actions ans automatic saving.
+   * actions and automatic saving.
    */
   private changes: Stack<CmsContent>;
 
@@ -124,6 +119,15 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, After
    */
   private addComponentType: Type<unknown>;
 
+  /**
+   * TODO doc
+   * TODO also implement app-internal nav check
+   */
+  @HostListener('window:beforeunload')
+  public onBeforeUnload(): any {
+    return this.changes.size() === 0 || this.changes.peek().isStored();
+  }
+
   constructor(protected resolver: ComponentFactoryResolver,
               protected cdRef: ChangeDetectorRef,
               private translateInit: TranslateInitService,
@@ -138,7 +142,9 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, After
 
   ngOnInit(): void {
 
-    // this.cdRef.detach(); TODO
+    this.contentService.onUpdate().subscribe(value => {
+      this.cdRef.markForCheck();
+    }); // TODO
 
     this.elements = new Array<CmsElement>();
     this.changes = new Stack<CmsContent>(50);
@@ -154,7 +160,18 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, After
             '/assets/img/icon/dark/cms-cmp-text.svg')
           .onAction({next: value => this.addComponent(TextComponent)}, sub => this.subs.reg(sub))
           .build()
-        )
+      )
+      .set(
+        'FileComponent',
+        EDBuilder.new()
+          .type(FileComponent)
+          .toolbarBtn(
+            'New file',
+            'Add a new file to the content',
+            '/assets/img/icon/dark/cms-cmp-text.svg')
+          .onAction({next: value => this.addComponent(FileComponent)}, sub => this.subs.reg(sub))
+          .build()
+      )
     ;
 
     const layouts = new CmsElementMap()
@@ -206,13 +223,10 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, After
       elements = content?.content?.elements;
     }
     this.elements.push(...await this.fillSlotMultiple( () => this.contentSlot, ...elements));
-    this.trackChange(content);
+    this.changes.push(content);
+    this.content = content;
+    this.contentChange.emit(content);
   }
-
-  /**
-   * Enter the current content state to the #changes-stack
-   * and trigger the #contentChanged-event.
-   */
 
   /**
    * Serialize the current content state and push it to the changes stack.
@@ -228,6 +242,7 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, After
     }
     const content = this.serializationService.serializeContent(base, ...this.elements);
     this.changes.push(content);
+    this.content = content;
     this.contentChange.emit(content);
 
   }
@@ -240,7 +255,7 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, After
    * @param publish (optional) pass true to publish the latest content.
    */
   private async saveContent(force: boolean = false,
-                      publish: boolean = false): Promise<CmsContent> {
+                            publish: boolean = false): Promise<CmsContent> {
 
     const now = Date.now();
     const lastSavedContent = this.lastSavedContent();
@@ -261,7 +276,7 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, After
     const content = this.changes.peek();
     if (!content) {
       return Promise.reject(new Error('Unexpected state: nothing found to save'));
-    } else if (content.sent !== undefined) {
+    } else if (content.sent !== undefined && !publish) {
       ContentComponent.LOG.info('Content was already saved. Skipping save.');
       return Promise.resolve(content);
     }
@@ -272,14 +287,16 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, After
     content.sent = new Date();
 
     return new Promise((resolve, reject) => {
-      this.contentService.saveContent(this.contentId,
-                                      this.contentOrder,
+      this.contentService.saveContent(this.contentPath,
                                       this.contentLang,
                                       !publish,
                                       content,
                                       c => {
         ContentComponent.LOG.debug('Content successfully ' + (publish ? 'published' : 'saved') + '.');
         content.stored = c.stored;
+        content.historyId = c.historyId;
+        content.previousId = c.previousId;
+        content.nextId = c.nextId;
         this.setStatus(StatusKey.SAVE, StatusValue.SUCCESSFUL);
         this.contentSave.emit(content);
         resolve(content);
@@ -301,11 +318,6 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, After
     return this.changes.find(e => e.sent !== undefined);
   }
 
-  private elementChanged(element: CmsElement): void {
-    this.trackChange();
-    this.saveContent();
-  }
-
   /**
    * Returns true if the service signals that this
    * component should display itself in edit mode.
@@ -325,11 +337,11 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, After
   // TODO
   public async appendComponent(): Promise<void> {
     this.elements.push(await this.fillSlot(() => this.contentSlot, this.addComponentType));
-    this.cdRef.detectChanges();
+    this.cdRef.markForCheck();
     return;
   }
 
-  deserialize(data: any): void {
+  async deserialize(data: any): Promise<void> {
     throw new Error('deserialize() is not supported');
   }
 
@@ -338,15 +350,18 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, After
   }
 
   onElementAdd(element: CmsElement): void { // TODO layout slot may need to be changed/removed
+    super.onElementAdd(element);
     this.contentService.viewMode = ViewMode.CONTENT;
     this.subs.register(
       element.onChanged().subscribe(e => {
-        this.elementChanged(e);
+        this.trackChange();
+        this.saveContent();
       })
     );
   }
 
-  onElementRemove(component: CmsComponent): void {
+  onElementRemove(element: CmsElement): void {
+    super.onElementRemove(element);
     throw new Error('onComponentRemove() is not supported');
   }
 
@@ -366,6 +381,21 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, After
 
   /**
    * Close the content edit mode.
+   * Publishes the content draft and displays the content
+   * without editing UI.
+   */
+  public publish(): void {
+    this.saveContent(true, true).then(value => {
+      this.contentService.viewMode = ViewMode.CONTENT;
+    }).catch(reason => {
+      ContentComponent.LOG.error(reason);
+    }).finally(() => {
+      this.cdRef.markForCheck();
+    });
+  }
+
+  /**
+   * Close the content edit mode.
    * Saves the content draft and displays the content
    * without editing UI.
    */
@@ -375,7 +405,7 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, After
     }).catch(reason => {
       ContentComponent.LOG.error(reason);
     }).finally(() => {
-      this.cdRef.detectChanges();
+      this.cdRef.markForCheck();
     });
   }
 

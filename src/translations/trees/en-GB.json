@@ -49,6 +49,17 @@
       "statistics": "Statistics"
     }
   },
+  "home": {
+    "choose": "Choose what to do",
+    "greeting": "Hello, {{username}}!",
+    "level_up": "You reached level {{level}}!",
+    "level": "Level",
+    "xp": "XP",
+    "next_level_difference": "more for level",
+    "score": {
+      "error": "Failed to load your score."
+    }
+  },
   "phenology": {
     "observation_note": {
       "title": "Enter a tree observation",
@@ -172,6 +183,26 @@
     }
   },
   "beacontransfer_view": {
+    "status":  {
+      "COMM_DEVICE_GET_SETTINGS": "Receiving connection parameters...",
+      "COMM_DEVICE_CONNECTING": "Connecting...",
+      "COMM_DEVICE_CONNECTED": "Successfully connected!",
+      "COMM_DEVICE_GET_DATA": "Receiving data...",
+      "COMM_DEVICE_GET_DATA_FAILED": "Failed to read data from beacon!",
+      "COMM_DEVICE_SEND_DATA": "Storing data...",
+      "COMM_DEVICE_SEND_DATA_FAILED": "Failed to store data!",
+      "COMM_DEVICE_READOUT_FINISHED": "Successfully stored data!",
+      "COMM_DEVICE_CANCELLING": "Cancelling connection...",
+      "COMM_DEVICE_CANCELLED": "Connection cancelled!"
+    },
+    "action_back_to_homepage": "Back to your homepage",
+    "action_back_to_homepage_sm": "Homepage",
+    "action_cancel": "Cancel readout",
+    "action_cancel_sm": "Cancel",
+    "action_view_tree": "View tree",
+    "action_view_tree_sm": "Tree",
+    "action_view_beacon": "View beacon data",
+    "action_view_beacon_sm": "Data",
     "success": "Beacon data successfully transferred!",
     "failed": "Could not receive data from beacon!",
     "message": {
@@ -387,8 +418,8 @@
         "mode": {
           "24h": "Last 24 hours",
           "week": "Last week",
-          "temp_month_per_day": "Last month by day (temperature)",
-          "humidity_month_per_day": "Last month by day (humidity)"
+          "temp_month_per_day": "Last month (temperature)",
+          "humidity_month_per_day": "Last month (humidity)"
         },
         "all_time": {
           "control_label": "All time",
@@ -558,7 +589,7 @@
     },
     "journal": {
       "title": "Your research journal",
-      "text": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
+      "text": "",
       "action": "Research journal"
     }
   },
@@ -583,6 +614,9 @@
     "finish_prev_steps_first": "Finish previous steps first.",
     "error": "Could not load phenology observation.",
     "step": "Step",
+    "step_done": "is complete",
+    "step_error": "is incomplete",
+    "step_dependent": "requires previous steps to be completed first",
     "step_1": {
       "title": "Which tree do you observe?",
       "loading": "Loading trees...",
@@ -743,7 +777,13 @@
   },
   "beacon_list": {
     "empty": "No beacons found",
-    "show_all": "Show all"
+    "show_all": "Show all",
+    "download_all_data": "Download all data",
+    "download_all_data_now": "Download data now",
+    "beacon_diagram": {
+      "temperature": "Temperature",
+      "humidity": "Humidity"
+    }
   },
   "notifications": {
     "auth_timeout": {
@@ -752,9 +792,14 @@
       "success_title": "Login renewed!"
     },
     "level_up": {
-      "title": "Your tree has grown!",
-      "subtitle": "It is now a {{tier}}"
+      "title": "Levelled up!",
+      "subtitle": "You are now level {{level}}"
     }
+  },
+  "zoom": {
+    "close": "Close",
+    "previous": "Previous view",
+    "next": "Next view"
   },
   "user_progress": {
     "tiers": {
@@ -766,9 +811,9 @@
     },
     "details": {
       "title": {
-        "desc": "Grow your tree by using this website.",
-        "tooltip": "Create or edit your research diary, enter phenology observations or use the app to read out beacons.",
         "tier_1": "Your tree is only a <span class=\"level-text\">{{tier}}</span>",
+        "tier_1_desc": "Grow your tree by using this website.",
+        "tier_1_tooltip": "Create or edit your research diary, enter phenology observations or use the app to read out beacons.",
         "tier": "Your <span class=\"level-text\">{{tier}}</span> is growing!",
         "tier_5": "Your <span class=\"level-text\">{{tier}}</span> has matured!"
       },
@@ -786,8 +831,11 @@
     "content": {
       "status": {
         "DRAFT": "Draft",
-        "PUBLISHING": "Publishing",
-        "PUBLISHED": "Published"
+        "AWAITING_APPROVAL": "Publishing",
+        "APPROVED": "Published",
+        "APPROVED_AWAITING_DELETION": "Deleting",
+        "UNAPPROVED_AWAITING_DELETION": "Deleting",
+        "DELETED": "Deleted"
       }
     }
   },
@@ -804,5 +852,11 @@
   },
   "list": {
     "empty": "No entries were found"
+  },
+  "login_key": {
+    "preparing": "Preparing login...",
+    "logging_in": "Logging you in...",
+    "failed": "Failed to log in with your link",
+    "success": "Logged in successfully"
   }
 }

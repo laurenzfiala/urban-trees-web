@@ -27,8 +27,7 @@ export abstract class AbstractService {
     let apiErr = ApiError.fromObject(o);
     if (apiErr) {
       return apiErr
-        .withStatusCode(o.status)
-        .withRawHttpError(o);
+        .withStatusCode(o.status);
     }
     return null;
   }

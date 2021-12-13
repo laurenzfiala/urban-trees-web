@@ -36,9 +36,13 @@
                   box-shadow @transitionDurationM;
     }
 
-    &:hover .fullscreen-btn {
-      box-shadow: @boxShadow;
-      opacity: 1;
+    &:focus,
+    &:hover {
+
+      .fullscreen-btn {
+        box-shadow: @boxShadow;
+        opacity: 1;
+      }
     }
   }
 }
@@ -63,6 +67,7 @@
   justify-content: center;
   align-items: center;
   overflow: hidden;
+  visibility: hidden;
 
   background-color: rgba(0, 0, 0, 0);
   opacity: 0;
@@ -73,10 +78,15 @@
               opacity @transitionDurationM;
 
   &.show {
+    visibility: visible;
     background-color: rgba(0, 0, 0, 0.15);
     opacity: 1;
     pointer-events: all;
     backdrop-filter: blur(20px);
+  }
+
+  &.closing {
+    visibility: visible;
   }
 }
 

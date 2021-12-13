@@ -8,7 +8,8 @@
         <button
           class="primary"
           [tooltip]="'toolbar.publish_tooltip' | translate"
-          container="body">
+          container="body"
+          (action)="publish()">
           {{'toolbar.publish' | translate}}
         </button>
       </div>

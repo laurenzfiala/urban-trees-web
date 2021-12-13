@@ -22,9 +22,6 @@ export const environment = {
     loadBeacons:                      '/beacon',
     loadBeacon:                       '/beacon/{beaconId}',
     beaconData:                       '/beacon/{beaconId}/data',
-    beaconDataTimespan:               '/beacon/{beaconId}/data?timespanMin={timespanMin}&timespanMax={timespanMax}',
-    beaconDataTimespanMin:            '/beacon/{beaconId}/data?timespanMin={timespanMin}',
-    beaconDataTimespanMax:            '/beacon/{beaconId}/data?timespanMax={timespanMax}',
     beaconSettings:                   '/beacon/{beaconId}/settings',
 
     // Phenology
@@ -86,12 +83,10 @@ export const environment = {
     loadPPIN:                         '/account/permission/pin',
 
     // CMS
-    loadContent:                      '/content/{contentId}/{contentLang}',
-    loadContentForUser:               '/content/user/{contentId}/{contentLang}',
-    saveContentDraft:                 '/content/{contentId}/{contentOrder}/{contentLang}/draft',
-    publishContent:                   '/content/{contentId}/{contentOrder}/{contentLang}',
-    loadContentUserHistory:           '/user/{userId}/content',
-    loadContentUserHistoryWithPrefix: '/user/{userId}/content?prefix={prefix}'
+    loadContent:                      '/content?path={contentPath}&lang={contentLang}',
+    saveContentDraft:                 '/content/draft?path={contentPath}&lang={contentLang}',
+    publishContent:                   '/content?path={contentPath}&lang={contentLang}',
+    loadContentUserHistory:           '/user/{userId}/content?path={path}'
   },
 
   contentSaveDebounceMs:              30_000,
@@ -120,8 +115,9 @@ export const environment = {
     roles: {
       user:                             ['ROLE_USER'],
       treeEditor:                       ['ROLE_TREE_EDITOR'],
-      journal:                          ['ROLE_JOURNAL'],
+      journal:                          ['ROLE_JOURNAL', 'ROLE_PUPIL'],
       phenObs:                          ['ROLE_PHENOBS'],
+      allData:                          ['ROLE_ALL_DATA', 'ROLE_ADMIN'],
       admin:                            ['ROLE_ADMIN'],
       tempChangePassword:               'ROLE_TEMP_CHANGE_PASSWORD',
       tempActivateOTP:                  'ROLE_TEMP_ACTIVATE_OTP'

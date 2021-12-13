@@ -1,6 +1,7 @@
 <div class="list-wrapper">
   <div *ngIf="!hasStatus(StatusKey.EXTERNAL_STATUS, StatusValue.SUCCESSFUL) || this.isEmpty()"
        class="list"
+       tabindex=""
        [ngClass]="{'loading': hasStatus(StatusKey.EXTERNAL_STATUS, StatusValue.IN_PROGRESS),
                    'failed': hasStatus(StatusKey.EXTERNAL_STATUS, StatusValue.FAILED),
                    'empty': hasStatus(StatusKey.EXTERNAL_STATUS, StatusValue.SUCCESSFUL) && isEmpty()}">
@@ -26,6 +27,7 @@
 
   <div #listScrollEl
        *ngIf="hasStatus(StatusKey.EXTERNAL_STATUS, StatusValue.SUCCESSFUL) && !isEmpty()"
+       (scroll)="updateScrollBtns()"
        class="list">
 
     <ng-container *ngIf="itemCategories">

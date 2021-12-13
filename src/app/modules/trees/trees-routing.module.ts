@@ -29,8 +29,13 @@ import {ObservationComponent} from './components/phenology/observation/observati
 import {HelpComponent} from './components/help/help.component';
 import {OtpManageComponent} from './components/otp-manage/otp-manage.component';
 import {BeacontransferComponent} from './components/beacontransfer/beacontransfer.component';
+import {JournalComponent} from './components/journal/journal.component';
 
 const routes: Routes = [
+  {
+    path: 'beacontransfer/:beaconId',
+    component: BeacontransferComponent
+  },
   {
     path: '',
     component: TreesComponent,
@@ -70,10 +75,6 @@ const routes: Routes = [
       {
         path: 'tree/:treeId',
         component: TreeComponent
-      },
-      {
-        path: 'beacontransfer/:beaconId/:transferStatus',
-        component: BeacontransferComponent
       },
       {
         path: 'login',
@@ -185,13 +186,17 @@ const routes: Routes = [
         component: ObservationComponent,
         canActivate: [ProjectLoginGuard],
         canActivateChild: [ProjectLoginGuard],
-        data: {showAuthTimeout: true},
-        children: [
-          { // Note: redirect old URLs ../observation[[/step]/x]
-            path: '**',
-            redirectTo: ''
-          }
-        ]
+        data: {showAuthTimeout: true}
+      },
+      {
+        path: 'journal',
+        component: JournalComponent,
+        canActivate: [ProjectLoginGuard],
+        canActivateChild: [ProjectLoginGuard],
+        data: {
+          roles: environment.security.roles.journal,
+          showAuthTimeout: true
+        }
       },
       {
         path: 'help',

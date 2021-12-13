@@ -9,20 +9,19 @@
 
 .list-wrapper {
   position: relative;
-
-  @media @touchDevice {
-    overflow-x: auto;
-  }
 }
 
 .list {
   display: flex;
   flex-direction: row;
 
-  overflow: hidden;
+  overflow-x: auto;
 
-  @media @touchDevice {
-    overflow-x: auto;
+  // source: https://stackoverflow.com/a/63950078/2740014 (2021/08/12)
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+  &::-webkit-scrollbar { /* Chrome, Safari and Opera */
+    display: none;
   }
 
   &.loading,
@@ -30,7 +29,7 @@
   &.failed {
     min-height: @listPlaceholderHeight;
 
-    overflow-x: hidden;
+    overflow-x: hidden !important;
     pointer-events: none;
   }
 

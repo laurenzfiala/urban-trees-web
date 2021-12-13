@@ -38,11 +38,13 @@ export abstract class AbstractCmsLayout
   protected abstract resolver: ComponentFactoryResolver;
 
   private _onAfterViewInit = new Subject<void>();
-  private onChangedSubject: Subject<CmsLayout>;
+  private onChangedSubject: Subject<CmsElement>;
+  private onUpdateSubject: Subject<CmsLayout>;
 
   protected constructor() {
     super();
-    this.onChangedSubject = new Subject<CmsLayout>();
+    this.onChangedSubject = new Subject<CmsElement>();
+    this.onUpdateSubject = new Subject<CmsLayout>();
   }
 
   public ngOnInit() {
@@ -69,7 +71,8 @@ export abstract class AbstractCmsLayout
    * Update this component and children using the component's ChangeDetectorRef.
    */
   protected update(): void {
-    this.cdRef.detectChanges();
+    this.cdRef.markForCheck();
+    this.onUpdateSubject.next(this);
   }
 
   /**
@@ -140,9 +143,11 @@ export abstract class AbstractCmsLayout
     const element = <CmsElement> componentRef.instance;
 
     if (serializedElement !== undefined) {
-      element.deserialize(serializedElement);
+      this.cdRef.detectChanges();
+      await element.deserialize(serializedElement);
     }
-    this.contentService.elementAdd(element);
+    this.onElementAdd(element);
+    //this.contentService.elementAdd(element); // TODO make this bubbling
 
     return Promise.resolve(element);
 
@@ -152,12 +157,25 @@ export abstract class AbstractCmsLayout
     return ElementType.LAYOUT;
   }
 
-  public changed(): void {
-    this.onChangedSubject.next(this);
+  public changed(el: CmsElement): void {
+    this.onChangedSubject.next(el);
   }
 
-  public onChanged(): Observable<CmsLayout> {
-    return this.onChangedSubject.asObservable();
+  public onChanged(): Observable<CmsElement> {
+    return this.onChangedSubject;
+  }
+
+  public addUpdater(observable: Observable<CmsElement>) {
+    observable.subscribe(value => {
+      this.update();
+    });
+  }
+
+  public onElementAdd(element: CmsElement): void {
+    element.onChanged().subscribe(el => {
+      this.changed(el);
+    }); // TODO sub
+    element.addUpdater(this.onUpdateSubject);
   }
 
   /**
@@ -169,11 +187,10 @@ export abstract class AbstractCmsLayout
   }
 
   // --- CmsElement / CmsLayout ---
-  onElementAdd(component: CmsComponent): void {}
-  onElementRemove(component: CmsComponent): void {}
+  onElementRemove(element: CmsElement): void {}
   abstract getName(): string;
   abstract serialize(): any;
-  abstract deserialize(data: any): void;
+  abstract deserialize(data: any): Promise<void>;
   abstract validate(results: CmsValidationResults): void;
 
 }

@@ -25,3 +25,5 @@ AddOutputFilterByType DEFLATE application/x-javascript
     Header set Cache-Control "private, max-age=31536000, must-revalidate"
   </IfModule>
 </FilesMatch>
+
+Header add Content-Security-Policy "default-src 'self';"

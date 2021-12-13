@@ -64,6 +64,29 @@ class EnvironmentEndpoints {
 
   }
 
+  /**
+   * Appends the given parameters to the given URL and returns
+   * the complete URL with set query parameters.
+   * Undefined or null params are not added.
+   * @param url URL to add query parameters to
+   * @param params map-object containing parameters to add (key: value)
+   */
+  private query(url: string, params: any): string {
+
+    let first = true;
+    for (let param in params) {
+      if (params[param] === undefined || params[param] === null) {
+        continue;
+      }
+      url += first ? '?' : '&';
+      url += param + '=' + params[param];
+      first = false;
+    }
+
+    return url;
+
+  }
+
   get host() {
     return environment.host;
   }
@@ -573,33 +596,23 @@ class EnvironmentEndpoints {
 
   public beaconData(beaconId: number, maxDatapoints?: number, timespanMin?: string, timespanMax?: string): string {
 
-    let url = this.context.beaconData;
-    if (timespanMin && timespanMax) {
-      url = this.context.beaconDataTimespan;
-    } else if (timespanMin) {
-      url = this.context.beaconDataTimespanMin;
-    } else if (timespanMax) {
-      url = this.context.beaconDataTimespanMax;
-    }
-
-    if (maxDatapoints !== undefined) {
-      if (url === this.context.beaconData) {
-        url += '?maxDatapoints=' + maxDatapoints;
-      } else {
-        url += '&maxDatapoints=' + maxDatapoints;
-      }
-    }
-
     let replacements: any[] = [
-      { placeholder: 'beaconId', replacement: beaconId },
-      { placeholder: 'timespanMin', replacement: timespanMin },
-      { placeholder: 'timespanMax', replacement: timespanMax }
+      { placeholder: 'beaconId', replacement: beaconId }
     ];
 
+    let queryParams: any = {
+      maxDatapoints: maxDatapoints,
+      timespanMin: timespanMin,
+      timespanMax: timespanMax
+    };
+
     return this.prependCommonPath(
-      this.replaceParams(
-        url,
-        replacements
+      this.query(
+        this.replaceParams(
+          this.context.beaconData,
+          replacements
+        ),
+        queryParams
       )
     );
 
@@ -620,10 +633,10 @@ class EnvironmentEndpoints {
 
   }
 
-  public loadContent(contentId: string, contentLang: string): string {
+  public loadContent(contentPath: string, contentLang: string): string {
 
     let replacements: any[] = [
-      { placeholder: 'contentId', replacement: contentId },
+      { placeholder: 'contentPath', replacement: contentPath },
       { placeholder: 'contentLang', replacement: contentLang }
     ];
 
@@ -636,24 +649,7 @@ class EnvironmentEndpoints {
 
   }
 
-  public loadContentForUser(contentId: string, contentLang: string): string {
-
-    let replacements: any[] = [
-      { placeholder: 'contentId', replacement: contentId },
-      { placeholder: 'contentLang', replacement: contentLang }
-    ];
-
-    return this.prependCommonPath(
-      this.replaceParams(
-        this.context.loadContentForUser,
-        replacements
-      )
-    );
-
-  }
-
-  public saveContent(contentId: string,
-                     contentOrder: number,
+  public saveContent(contentPath: string,
                      contentLang: string,
                      isDraft: boolean = true): string {
 
@@ -665,8 +661,7 @@ class EnvironmentEndpoints {
     }
 
     let replacements: any[] = [
-      { placeholder: 'contentId', replacement: contentId },
-      { placeholder: 'contentOrder', replacement: contentOrder },
+      { placeholder: 'contentPath', replacement: contentPath },
       { placeholder: 'contentLang', replacement: contentLang }
     ];
 
@@ -679,16 +674,16 @@ class EnvironmentEndpoints {
 
   }
 
-  public loadContentUserHistory(userId: number, prefix?: string): string {
+  public loadContentUserHistory(userId: number, path?: string): string {
 
     let replacements: any[] = [
       { placeholder: 'userId', replacement: userId },
-      { placeholder: 'prefix', replacement: prefix }
+      { placeholder: 'path', replacement: path }
     ];
 
     return this.prependCommonPath(
       this.replaceParams(
-        prefix ? this.context.loadContentUserHistoryWithPrefix : this.context.loadContentUserHistory,
+        this.context.loadContentUserHistory,
         replacements
       )
     );
@@ -735,6 +730,10 @@ class Security {
 
   get rolesPhenObs() {
     return this.context.roles.phenObs;
+  }
+
+  get rolesAllData() {
+    return this.context.roles.allData;
   }
 
   get rolesAdmin() {

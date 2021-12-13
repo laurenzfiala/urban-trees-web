@@ -1,6 +1,23 @@
 {
   "toolbar": {
     "publish": "Veröffentlichen",
+    "publish_tooltip": "Inhalt speichern & veröffentlichen",
+    "save": {
+      "in_progress": "Speichere",
+      "last_saved_moments_ago": "Entwurf vor wenigen Sekunden gespeichert",
+      "last_saved_less_than_minute_ago": "Entwurf vor weniger als Minute gespeichert",
+      "last_saved_minute_ago": "Zuletzt vor einer Minute gespeichert",
+      "last_saved_minutes_ago": "Zuletzt vor {{minutes}} Minuten gespeichert",
+      "last_saved_more_than_hour_ago": "Zuletzt vor mehr als einer Stunde gespeichert",
+      "failed": "Entwurf konnte nicht gespeichert werden"
+    },
     "close": "Entwurf speichern & schließen"
+  },
+  "errors": {
+    "components": {
+      "text": {
+        "empty": "Text darf nicht leer sein"
+      }
+    }
   }
 }

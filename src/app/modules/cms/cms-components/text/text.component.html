@@ -1,11 +1,5 @@
-<div *ngIf="isEditContent(); else textEditContent" class="cms-text-container"
-     (focus)="focus()"
-     (focusout)="focusOut()"
-     (input)="updateText($event); changed()"
-     contenteditable="true"
+<div #textEditElement
+     class="cms-text-container"
+     [contentEditable]="isEditContent()"
      [innerHTML]="text"
 ></div>
-
-<ng-template #textEditContent>
-  <div class="cms-text-container" [innerHTML]="text"></div>
-</ng-template>

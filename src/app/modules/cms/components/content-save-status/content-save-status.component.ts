@@ -50,6 +50,7 @@ export class ContentSaveStatusComponent extends AbstractComponent implements OnI
 
   private updateStatus(status: StatusValue): void {
     this.setStatus(StatusKey.SAVE, status);
+    this.cdRef.markForCheck();
   }
 
   private startSaveTimer(savedContent: CmsContent): void {
@@ -72,7 +73,7 @@ export class ContentSaveStatusComponent extends AbstractComponent implements OnI
 
         const now = moment();
         let key;
-        if (saveDate.isAfter(now.clone().subtract(10, 'second'))) {
+        if (saveDate.isAfter(now.clone().subtract(20, 'second'))) {
           key = 'last_saved_moments_ago';
         } else if (saveDate.isAfter(now.clone().subtract(1, 'minute'))) {
           key = 'last_saved_less_than_minute_ago';
@@ -85,7 +86,7 @@ export class ContentSaveStatusComponent extends AbstractComponent implements OnI
         }
         this.saveTimer.msgKey = 'toolbar.save.' + key;
 
-        this.cdRef.detectChanges();
+        this.cdRef.markForCheck();
 
       }),
       this.saveTimerSubscriptionTag

@@ -68,7 +68,7 @@ export class BeaconFrontend extends Beacon implements MapMarker {
 
         nextDataset = this.datasets[i];
         if (i > 0) {
-          dataset = this.datasets[i-1];
+          dataset = this.datasets[i - 1];
           datasetDate = moment(dataset.observationDate).format(dateFormat);
         }
 
@@ -140,17 +140,17 @@ export class BeaconFrontend extends Beacon implements MapMarker {
 
     } else {
 
-      this.chartData = new Array<ChartDataSeries>(3);
-      this.chartData[0] = new ChartDataSeries('Temperature');
-      this.chartData[1] = new ChartDataSeries('Humidity');
-      this.chartData[2] = new ChartDataSeries('Dew Point');
+      this.chartData = new Array<ChartDataSeries>(2);
+      this.chartData[0] = new ChartDataSeries(translateService.instant('beacon_list.beacon_diagram.temperature'));
+      this.chartData[1] = new ChartDataSeries(translateService.instant('beacon_list.beacon_diagram.humidity'));
+      // this.chartData[2] = new ChartDataSeries('Dew Point');
 
       let datasetDate;
       this.datasets.forEach(dataset => {
         datasetDate = moment(dataset.observationDate).format(dateFormatWithTime);
         this.chartData[0].series.push(new ChartData(datasetDate, dataset.temperature));
         this.chartData[1].series.push(new ChartData(datasetDate, dataset.humidity));
-        this.chartData[2].series.push(new ChartData(datasetDate, dataset.dewPoint));
+        // this.chartData[2].series.push(new ChartData(datasetDate, dataset.dewPoint));
       });
 
     }

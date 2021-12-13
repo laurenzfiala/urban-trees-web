@@ -22,8 +22,6 @@ export class AppComponent implements OnInit {
    */
   public ngOnInit(): void {
 
-    this.translateInit.onModuleInit();
-
     this.router.events.subscribe((evt) => {
       if (evt instanceof NavigationEnd && (!this.router.getCurrentNavigation().extras.state || this.router.getCurrentNavigation().extras.state.scrollTop !== false)) {
         window.scrollTo(0, 0);

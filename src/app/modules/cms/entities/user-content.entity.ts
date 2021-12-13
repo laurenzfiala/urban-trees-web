@@ -5,48 +5,41 @@
 import * as moment from 'moment';
 import {EnvironmentService} from '../../shared/services/environment.service';
 import {UserIdentity} from '../../trees/entities/user-identity.entity';
-import {ContentStatus} from '../enums/cms-content-status.enum';
 import {UserContentMetadata} from './user-content-metadata.entity';
+import {UserContentStatus} from './user-content-status.entity';
 
 export class UserContent extends UserContentMetadata {
 
-  public readonly content: any;
+  public readonly content: string;
 
   constructor(id: number,
               contentId: string,
               contentTitle: string,
               contentLanguage: string,
-              isDraft: boolean,
+              status: UserContentStatus,
               saveDate: Date,
               historyId: number,
+              previousId: number,
+              nextId: number,
               user: UserIdentity,
               approveDate: Date,
               approveUser: UserIdentity,
               content: any) {
-    super(id, contentId, contentTitle, contentLanguage, isDraft, saveDate, historyId, user, approveDate, approveUser);
+    super(
+      id,
+      contentId,
+      contentTitle,
+      contentLanguage,
+      status,
+      saveDate,
+      historyId,
+      previousId,
+      nextId,
+      user,
+      approveDate,
+      approveUser
+    );
     this.content = content;
-  }
-
-  /**
-   * @see ContentStatus
-   */
-  public getStatus(): ContentStatus {
-
-    if (this.isDraft) {
-      return ContentStatus.DRAFT;
-    }
-    if (!this.isDraft && this.approveDate == null) {
-      return ContentStatus.PUBLISHING;
-    }
-    return ContentStatus.PUBLISHED;
-
-  }
-
-  /**
-   * @see ContentStatus
-   */
-  public getStatusString(): string {
-    return ContentStatus[this.getStatus()];
   }
 
   /**
@@ -70,6 +63,8 @@ export class UserContent extends UserContentMetadata {
       o.draft,
       o.saveDate && moment.utc(o.saveDate, envService.outputDateFormat).toDate(),
       o.historyId,
+      o.previousId,
+      o.nextId,
       o.user && UserIdentity.fromObject(o.user),
       o.approveDate && moment.utc(o.approveDate, envService.outputDateFormat).toDate(),
       o.approveUser && UserIdentity.fromObject(o.approveUser),

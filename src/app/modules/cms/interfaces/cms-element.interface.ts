@@ -12,7 +12,7 @@ export interface CmsElement {
    * instance.
    * @param serialized the serialized object from #serialize.
    */
-  deserialize(data: any): void;
+  deserialize(data: any): Promise<void>;
 
   /**
    * Serializes the current CMS element to an object
@@ -45,5 +45,13 @@ export interface CmsElement {
    * changed.
    */
   onChanged(): Observable<CmsElement>;
+
+  /**
+   * The parent element(s) call this so the element
+   * can register itself with them to receive updates.
+   * This is especially needed, when a child has CdStrat.OnPush
+   * and needs an input event to update.
+   */
+  addUpdater(observable: Observable<CmsElement>): void;
 
 }

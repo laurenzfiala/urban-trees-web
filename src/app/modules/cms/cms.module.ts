@@ -7,7 +7,7 @@ import {ContentComponent} from './components/content/content.component';
 import {ForNDirective} from './directives/for-n.directive';
 import {TooltipModule} from 'ngx-bootstrap/tooltip';
 import {TranslateInitService} from '../shared/services/translate-init.service';
-import {TranslateModule} from '@ngx-translate/core';
+import {TranslateModule, TranslateService} from '@ngx-translate/core';
 import {SharedModule} from '../shared/shared.module';
 import {PopoverModule} from 'ngx-bootstrap/popover';
 import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
@@ -16,32 +16,38 @@ import {BlockLayout} from './cms-layouts/block-layout/block-layout.component';
 import {SerializationService} from './services/serialization.service';
 import {TwoColumnLayout} from './cms-layouts/two-column-layout/two-column-layout.component';
 import {ContentSaveStatusComponent} from './components/content-save-status/content-save-status.component';
+import {FileComponent} from './cms-components/file/file.component';
 
 @NgModule({
   declarations: [
     // Components
     ContentComponent,
-    TextComponent,
     ContentSaveStatusComponent,
 
-    // Layouts
+    // Directives
+    ForNDirective,
+
+    // CMS Components
+    TextComponent,
+    FileComponent,
+
+    // CMS Layouts
     BlockLayout,
     TwoColumnLayout,
-
-    // Directives
-    ForNDirective
   ],
   imports: [
     CommonModule,
     SharedModule,
     TooltipModule,
-    TranslateModule,
 
     // Ngx-Bootstrap
     PopoverModule,
     TooltipModule,
     BsDropdownModule,
-    FormsModule
+    FormsModule,
+
+    // Translation
+    TranslateModule
   ],
   providers: [
     // Services
@@ -58,7 +64,6 @@ import {ContentSaveStatusComponent} from './components/content-save-status/conte
   exports: [
     // Components
     ContentComponent
-    // TODO
   ]
 })
 export class CmsModule { }

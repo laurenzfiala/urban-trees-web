@@ -9,6 +9,9 @@ import {EnvironmentService} from '../../../../shared/services/environment.servic
 import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
 import {SearchResult} from '../../../entities/search-result.entity';
 import {TranslateService} from '@ngx-translate/core';
+import {SubscriptionManagerService} from '../../../services/subscription-manager.service';
+import {takeUntil} from 'rxjs/operators';
+import {Subject} from 'rxjs/Subject';
 import {AbstractComponent} from '../../../../shared/components/abstract.component';
 
 @Component({
@@ -24,6 +27,8 @@ export class AdminUserComponent extends AbstractComponent implements OnInit {
   public StatusKey = StatusKey;
   public StatusValue = StatusValue;
   public BulkAction = BulkAction;
+
+  private _onLoadUsers: Subject<void> = new Subject();
 
   public addUserMultiple: boolean = false;
   public newUser: User;
@@ -55,6 +60,12 @@ export class AdminUserComponent extends AbstractComponent implements OnInit {
    */
   public bulkAction: BulkAction;
 
+  /**
+   * Holds optional additional data to send alongside the
+   * bulk action request.
+   */
+  public bulkActionData: any;
+
   @ViewChild('secureLoginLinkTextfield')
   public secureLoginLinkTextfield: ElementRef;
 
@@ -62,6 +73,7 @@ export class AdminUserComponent extends AbstractComponent implements OnInit {
   public bulkActionModal: TemplateRef<any>;
 
   constructor(private adminService: AdminService,
+              private subs: SubscriptionManagerService,
               private modalService: BsModalService,
               public envService: EnvironmentService,
               private translateService: TranslateService,
@@ -89,15 +101,18 @@ export class AdminUserComponent extends AbstractComponent implements OnInit {
     }
 
     this.setStatus(StatusKey.USERS, StatusValue.IN_PROGRESS);
-    this.adminService.loadUsers(this.searchFilters, limit, offset, (result: SearchResult<Array<User>>) => {
-      if (loadAll) {
-        this.searchResult.result.push(...result.result);
-      } else {
-        this.searchResult = result;
-      }
-      this.setStatus(StatusKey.USERS, StatusValue.SUCCESSFUL);
-    }, (error: HttpErrorResponse, apiError: ApiError) => {
-      this.setStatus(StatusKey.USERS, StatusValue.FAILED);
+    this._onLoadUsers.next();
+    this.adminService.loadUsers(this.searchFilters, limit, offset)
+      .pipe(takeUntil(this._onLoadUsers))
+      .subscribe(result => {
+        if (loadAll) {
+          this.searchResult.result.push(...result.result);
+        } else {
+          this.searchResult = result;
+        }
+        this.setStatus(StatusKey.USERS, StatusValue.SUCCESSFUL);
+    }, error => {
+        this.setStatus(StatusKey.USERS, StatusValue.FAILED);
     });
 
   }
@@ -164,7 +179,7 @@ export class AdminUserComponent extends AbstractComponent implements OnInit {
 
   public showNewUserModal(modalTemplateRef: TemplateRef<any>): void {
     this.newUser = new User();
-    this.newUserRoles = this.availableRoles.map(r => r);
+    this.newUserRoles = this.availableRoles.map(r => Role.fromObject(r));
     this.newUserModalRef = this.modalService.show(modalTemplateRef);
   }
 
@@ -353,10 +368,11 @@ export class AdminUserComponent extends AbstractComponent implements OnInit {
     }
   }
 
-  public confirmBulkAction(action: BulkAction): void {
+  public confirmBulkAction(action: BulkAction, data?: any): void {
 
     this.bulkAction = action;
-    this.bulkActionModalRef = this.modalService.show(this.bulkActionModal, {ignoreBackdropClick: true});
+    this.bulkActionData = data;
+    this.bulkActionModalRef = this.modalService.show(this.bulkActionModal, {ignoreBackdropClick: true, keyboard: false});
 
   }
 
@@ -371,20 +387,21 @@ export class AdminUserComponent extends AbstractComponent implements OnInit {
     this.unloadNotice();
 
     const action = this.bulkAction;
-    this.adminService.bulkAction(this.searchFilters, action, (affectedUsers: Array<User>) => {
+    const data = this.bulkActionData;
+    this.adminService.bulkAction(this.searchFilters, action, data, (affectedUsers: Array<User>) => {
       let context;
       if (action === BulkAction.CREATE_LOGIN_LINKS) {
         const affectedUserIds = affectedUsers.map(au => au.id);
         let affectedUserIdsFilter = new Map<string, number[]>();
         affectedUserIdsFilter.set('id', affectedUserIds);
-        this.adminService.loadUsers(affectedUserIdsFilter, null, null,
-          result => {
+        this.adminService.loadUsers(affectedUserIdsFilter, null, null)
+          .subscribe(result => {
             context = this.generateUserLoginCsv(result.result);
             this.setStatus(StatusKey.BULK_ACTION, StatusValue.SUCCESSFUL, context);
             this.unloadNotice(true);
             this.loadUsers();
-          }, (error, apiError) => {
-            this.setStatus(StatusKey.BULK_ACTION, StatusValue.FAILED, apiError);
+          }, error => {
+            this.setStatus(StatusKey.BULK_ACTION, StatusValue.FAILED, error);
             this.unloadNotice(true);
           });
       } else {
@@ -410,6 +427,16 @@ export class AdminUserComponent extends AbstractComponent implements OnInit {
         this.setStatus(StatusKey.BULK_ACTION_CLOSE_INFO, StatusValue.SHOW);
       };
     }
+
+  }
+
+  public isAdditionalFiltersUsed(): boolean {
+
+    let filtersAmount = this.searchFilters.size;
+    if (this.searchFilters.has('username')) {
+      filtersAmount--;
+    }
+    return filtersAmount > 0;
 
   }
 

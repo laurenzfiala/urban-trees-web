@@ -554,7 +554,7 @@ export class ObservationComponent extends AbstractComponent implements OnInit, O
       return errors;
     }
 
-    if (['image/jpeg', 'a/png'].indexOf(this.observationService.userImage.type) === -1) {
+    if (['image/jpeg', 'image/png'].indexOf(this.observationService.userImage.type) === -1) {
       errors.push(UserImageError.INVALID_TYPE);
     }
     if (this.userImage.size > 5242880) {

@@ -1,7 +1,4 @@
-import {Directive, ElementRef, Input, OnDestroy, OnInit, TemplateRef, Type, ViewContainerRef} from '@angular/core';
-import {AuthService} from '../services/auth.service';
-import {Subscription} from 'rxjs';
-import {ToolbarDropdown} from '../../cms/entities/toolbar.entity';
+import {Directive, ElementRef, Input, OnInit, TemplateRef, Type, ViewContainerRef} from '@angular/core';
 
 /**
  * Conditional directive to TODO

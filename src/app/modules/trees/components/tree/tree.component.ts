@@ -1,10 +1,10 @@
-import {Component, OnDestroy, OnInit} from '@angular/core';
-import {AbstractComponent} from '../../../shared/components/abstract.component';
+import {Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {TreeService} from '../../services/tree.service';
 import {Tree} from '../../entities/tree.entity';
 import {EnvironmentService} from '../../../shared/services/environment.service';
 import { Mode } from '../../../shared/components/zoom/zoom.component';
+import {AbstractComponent} from '../../../shared/components/abstract.component';
 
 @Component({
   selector: 'ut-tree',
@@ -18,6 +18,12 @@ export class TreeComponent extends AbstractComponent implements OnInit {
   public StatusKey = StatusKey;
   public StatusValue = StatusValue;
   public Mode = Mode;
+
+  /**
+   * If the route param does not hold a tree ID, this may hold the fallback.
+   */
+  @Input()
+  public treeId: number;
 
   /**
    * Tree to display.
@@ -36,7 +42,11 @@ export class TreeComponent extends AbstractComponent implements OnInit {
 
     this.route.params.subscribe((params: any) => {
 
-      const treeIdVal = Number(params[TreeComponent.PATH_PARAMS_TREE_ID]);
+      const treeIdParam = params[TreeComponent.PATH_PARAMS_TREE_ID];
+      let treeIdVal = Number(treeIdParam);
+      if (treeIdParam === undefined) {
+        treeIdVal = this.treeId;
+      }
 
       if (!isNaN(treeIdVal) && treeIdVal) {
         this.setStatus(StatusKey.TREE_VALIDATION, StatusValue.SUCCESSFUL);

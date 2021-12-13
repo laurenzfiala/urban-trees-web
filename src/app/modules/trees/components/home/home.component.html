@@ -1,13 +1,13 @@
 <section *auth="envService.security.rolesUser" class="content-cat">
   <div class="container p-3">
 
-    <div class="profile-wrapper m--3">
-      <div class="m-3">
+    <div class="profile-wrapper">
+      <div>
         <ut-user-progress (levelUpOutput)="setStatus(StatusKey.USER_LEVEL_UP, StatusValue.LEVELLED_UP)"
                           (status)="setStatus(StatusKey.USER_ACHIEVEMENTS, $event[0], $event[1])"></ut-user-progress>
       </div>
 
-      <div class="m-3">
+      <div>
 
         <div class="mb-4">
           <h1 class="content-cat-heading d-block" [innerHTML]="'home.title_user' | translate:{'username': getUsername()}"></h1>
@@ -41,21 +41,26 @@
   </div>
 </section>
 
-<section class="content-cat">
-  <div class="container">
+<section *auth="envService.security.rolesJournal" class="content-cat">
+  <div class="container clearfix">
 
-    <ut-cms-content contentId="news"
-                    [contentBaseUid]="testC"
-                    contentLang="en_GB"
-                    [(content)]="testContent"
-                    [config]="testContentConfig"
-                    [(viewMode)]="testContentViewMode"></ut-cms-content>
+    <div class="responsive-float m--2">
+      <img class="journal float-right m-2" src="/assets/img/icon/special/placeholder.svg" />
 
-    <button *ngIf="testContentViewMode === ViewMode.CONTENT"
-         class="btn btn-primary"
-         (action)="testContentViewMode = ViewMode.EDIT_CONTENT">
-      Edit content
-    </button>
+      <div class="m-2">
+        <div class="content-cat-heading">{{'home.journal.title' | translate }}</div>
+        In Deinem Forschungstagebuch findest Du Arbeitsblätter und Aufgaben zum Üben.
+        Mit diesen Aufgaben wird es dir leichter fallen dir den Inhalt der Workshops zu merken.
+      </div>
+    </div>
+
+    <a class="content-cat-link d-inline-flex flex-row align-items-center link-container"
+       routerLink="/journal">
+      <div class="link">
+        {{'home.journal.action' | translate}}
+      </div>
+      <i class="i i-sm i-dark i-arrow-right ml-1" aria-hidden="true"></i>
+    </a>
 
   </div>
 </section>
@@ -124,25 +129,21 @@
   </div>
 </section>
 
-<section *auth="envService.security.rolesJournal" class="content-cat">
-  <div class="container clearfix">
+<section class="content-cat">
+  <div class="container">
 
-    <div class="responsive-float m--2">
-      <img class="journal float-right m-2" src="/assets/img/icon/special/placeholder.svg" />
+    <ut-cms-content *ngIf="testContent"
+                    contentPath="/test/1"
+                    contentLang="de-DE"
+                    [(content)]="testContent"
+                    [config]="testContentConfig"
+                    [(viewMode)]="testContentViewMode"></ut-cms-content>
 
-      <div class="m-2">
-        <div class="content-cat-heading">{{'home.journal.title' | translate }}</div>
-        {{'home.journal.text' | translate }}
-      </div>
-    </div>
-
-    <a class="content-cat-link d-inline-flex flex-row align-items-center link-container"
-       routerLink="/journal">
-      <div class="link">
-        {{'home.journal.action' | translate}}
-      </div>
-      <i class="i i-sm i-dark i-arrow-right ml-1" aria-hidden="true"></i>
-    </a>
+    <button *ngIf="testContentViewMode === ViewMode.CONTENT"
+            class="btn btn-primary"
+            (action)="testContentViewMode = ViewMode.EDIT_CONTENT">
+      Edit content
+    </button>
 
   </div>
 </section>

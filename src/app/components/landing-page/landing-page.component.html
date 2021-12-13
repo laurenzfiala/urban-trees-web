@@ -6,18 +6,14 @@
 
       <nav class="header">
         <div>
-          <a *noauth="true" routerLink="/trees" (action)="loadPage($event)">
-            <img class="header-icon" src="/assets/landing-page/logo.svg" />
-          </a>
-          <a *auth routerLink="/home" (action)="loadPage($event)">
+          <a routerLink="/home" (action)="loadPage($event)">
             <img class="header-icon" src="/assets/landing-page/logo.svg" />
           </a>
         </div>
         <div class="header-links">
-          <a *noauth="true" class="lp-link" routerLink="/trees" (action)="loadPage($event)">Webapp</a>
-          <a *auth class="lp-link" routerLink="/home" (action)="loadPage($event)">Webapp</a>
+          <a class="lp-link" routerLink="/trees" (action)="loadPage($event)">Webapp</a>
           <a *noauth class="lp-link" routerLink="/login" (action)="loadPage($event)">Login</a>
-          <a *auth class="lp-link" routerLink="/project/phenology" (action)="loadPage($event)">Phenology</a>
+          <a *auth class="lp-link" routerLink="/project/phenology" (action)="loadPage($event)">Phänologie</a>
         </div>
       </nav>
 
@@ -81,7 +77,16 @@
             lernt, wie Bäume kühlen, ihr programmiert einen Messsensor und erfährt, wie dieser misst und wie man die Daten
             analysiert.
           </div>
-          <img src="/assets/landing-page/timeline/experimentieren.jpg" class="img-sm" />
+          <ut-zoom [content]="timelineExperimentImg"
+                   [fullscreenContent]="timelineExperimentImgFull"
+                   [mode]="Mode.IMAGE">
+          </ut-zoom>
+          <ng-template #timelineExperimentImg>
+            <img src="/assets/landing-page/timeline/experimentieren.jpg" class="img-sm" />
+          </ng-template>
+          <ng-template #timelineExperimentImgFull>
+            <img class="fullscreen-content" src="/assets/landing-page/timeline/experimentieren.jpg"/>
+          </ng-template>
         </div>
       </div>
       <div class="timeline">
@@ -103,7 +108,16 @@
             Bäume beeinflussen das Klima und kühlen unsere Umwelt. Wie sie das machen und wie du diese Prozesse
             untersuchen und dazu Daten erheben kannst, lernst du im Sensor2App Workshop.
           </div>
-          <img src="/assets/landing-page/timeline/messen.jpg" class="img-sm" />
+          <ut-zoom [content]="timelineMeasureImg"
+                   [fullscreenContent]="timelineMeasureImgFull"
+                   [mode]="Mode.IMAGE">
+          </ut-zoom>
+          <ng-template #timelineMeasureImg>
+            <img src="/assets/landing-page/timeline/messen.jpg" class="img-sm" />
+          </ng-template>
+          <ng-template #timelineMeasureImgFull>
+            <img class="fullscreen-content" src="/assets/landing-page/timeline/messen.jpg"/>
+          </ng-template>
         </div>
       </div>
       <div class="timeline">
@@ -125,7 +139,7 @@
           individuellen Einsatz im Unterricht erhalten und zum Beispiel als Basis für eigene innovative Ideen rund um
           die Thematik „Baum als Klimaregulator“ und „Sensorik” verwenden.
         </p>
-        Weitere Informationen zu Projektzuschüssen können beim Projektleiter angefragt werden:
+        Weitere Informationen zu Projektzuschüssen können beim Projektleiter oder per E-Mail angefragt werden:
         <table class="mt-2 table table-sm table-responsive-sm">
           <tr>
             <td>Projektleitung</td>
@@ -137,7 +151,7 @@
           </tr>
           <tr>
             <td>E-Mail</td>
-            <td>alexander.strahl@sbg.ac.at</td>
+            <td><a href="mailto:co2bs.ffg@sbg.ac.at">co2bs.ffg@sbg.ac.at</a></td>
           </tr>
         </table>
       </div>
@@ -203,7 +217,7 @@
                      [mode]="Mode.IMAGE">
             </ut-zoom>
             <ng-template #teamImg>
-              <img class="project-team" src="/assets/landing-page/content/projektteam.JPG"/>
+              <img src="/assets/landing-page/content/projektteam.JPG" class="project-team" />
             </ng-template>
             <ng-template #teamImgFull>
               <img class="fullscreen-content" src="/assets/landing-page/content/projektteam.JPG"/>
@@ -308,31 +322,7 @@
 
           <div class="footer-attribution">
             <div>
-              Icons erstellt von
-              <a href="https://www.flaticon.com/de/autoren/iconixar"
-                 title="iconixar"
-                 class="link"
-                 target="_blank">iconixar</a>
-              von
-              <a href="https://www.flaticon.com/de/"
-                 title="Flaticon"
-                 class="link"
-                 target="_blank">www.flaticon.com</a>
-            </div>
-            <div>
-              Icons erstellt von
-              <a href="https://www.flaticon.com/de/autoren/eucalyp"
-                 title="Eucalyp"
-                 class="link"
-                 target="_blank">Eucalyp</a>
-              von
-              <a href="https://www.flaticon.com/de/"
-                 title="Flaticon"
-                 class="link"
-                 target="_blank">www.flaticon.com</a>
-            </div>
-            <div>
-              Icons erstellt von
+              Icons im Abschnitt "Lehrpersonen" erstellt von
               <a href="https://www.flaticon.com/de/autoren/freepik"
                  title="Freepik"
                  class="link"

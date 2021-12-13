@@ -9,7 +9,7 @@ import {CmsElement} from '../interfaces/cms-element.interface';
 import {CmsComponent} from '../interfaces/cms-component.interface';
 import {ElementType} from '../enums/cms-element-type.enum';
 import {CmsLayout} from '../interfaces/cms-layout.interface';
-import {Subject} from 'rxjs';
+import {BehaviorSubject, Observable, Subject} from 'rxjs';
 import {AuthService} from '../../shared/services/auth.service';
 import {CmsContentContextRef} from '../entities/cms-content-context-ref.entity';
 import {CmsContent} from '../entities/cms-content.entity';
@@ -49,7 +49,7 @@ export class ContentService extends AbstractService {
    * Subject used to notify content component (and parents)
    * of a change in view mode.
    */
-  private viewModeChangeSubject: Subject<ViewMode> = new Subject<ViewMode>();
+  private viewModeChangeSubject: Subject<ViewMode>;
 
   /**
    * How to display the associated content.
@@ -60,28 +60,29 @@ export class ContentService extends AbstractService {
               private http: HttpClient,
               private envService: EnvironmentService) {
     super();
+    this.viewModeChangeSubject = new BehaviorSubject<ViewMode>(this._viewMode);
   }
 
   /**
    * Load contents by id and language from the backend.
-   * @param contentId content identifier
+   * @param contentPath content path
    * @param contentLang content language to receive
    * @param successCallback called upon successful retrieval of the content
    * @param errorCallback called upon failed retrieval of the content
    */
-  public loadContent(contentId: string,
+  public loadContent(contentPath: string,
                      contentLang: string,
                      successCallback: (content: Array<UserContent>) => void,
                      errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void): void {
 
-    ContentService.LOG.debug('Loading content with id ' + contentId + '...');
-    this.http.get<Array<UserContent>>(this.envService.endpoints.loadContent(contentId, contentLang))
+    ContentService.LOG.debug('Loading content at ' + contentPath + '...');
+    this.http.get<Array<UserContent>>(this.envService.endpoints.loadContent(contentPath, contentLang))
       .map(contents => contents && contents.map(c => UserContent.fromObject(c, this.envService)))
       .subscribe((content: Array<UserContent>) => {
-        ContentService.LOG.debug('Loaded content with id ' + contentId + ' successfully.');
+        ContentService.LOG.debug('Loaded content at ' + contentPath + ' successfully.');
         successCallback(content);
       }, (e: any) => {
-        ContentService.LOG.error('Could not load content with id ' + contentId + ': ' + e.message, e);
+        ContentService.LOG.error('Could not load content at ' + contentPath + ': ' + e.message, e);
         if (errorCallback) {
           errorCallback(e, this.safeApiError(e));
         }
@@ -111,33 +112,31 @@ export class ContentService extends AbstractService {
 
   /**
    * Save the given content for the given content id on the backend.
-   * @param contentId content identifier
-   * @param contentOrder content order (determines ordering inside content id group)
+   * @param contentPath content path
    * @param contentLang language id of the content
-   * @param isDraft whether the given content sould be saved as draft or published
+   * @param isDraft whether the given content should be saved as draft or published
    * @param content serialized content to persist
    * @param successCallback called upon successful retrieval of the content
    * @param errorCallback called upon failed retrieval of the content
    */
-  public saveContent(contentId: string,
-                     contentOrder: number,
+  public saveContent(contentPath: string,
                      contentLang: string,
                      isDraft: boolean,
                      content: CmsContent,
-                     successCallback: (content: CmsContent) => void,
+                     successCallback: (userContent: CmsContent) => void,
                      errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void): void {
 
-    const url = this.envService.endpoints.saveContent(contentId, contentOrder, contentLang, isDraft);
+    const url = this.envService.endpoints.saveContent(contentPath, contentLang, isDraft);
 
-    ContentService.LOG.debug('Saving content with id ' + contentId + '...');
+    ContentService.LOG.debug('Saving content at ' + contentPath + '...');
 
-    this.http.post<CmsContent>(url, content.toJSONObject(this.envService))
-      .map(c => CmsContent.fromObject(c, this.envService))
-      .subscribe((c: CmsContent) => {
-        ContentService.LOG.debug('Saved content with id ' + contentId + ' successfully.');
-        successCallback(c);
+    this.http.post<UserContent>(url, content.toJSONObject(this.envService))
+      .map(uc => CmsContent.fromUserContent(uc, this.envService))
+      .subscribe((uc: CmsContent) => {
+        ContentService.LOG.debug('Saved content at ' + contentPath + ' successfully.');
+        successCallback(uc);
       }, (e: any) => {
-        ContentService.LOG.error('Could not save content with id ' + contentId + ': ' + e.message, e);
+        ContentService.LOG.error('Could not save content at ' + contentPath + ': ' + e.message, e);
         if (errorCallback) {
           errorCallback(e, this.safeApiError(e));
         }
@@ -149,8 +148,8 @@ export class ContentService extends AbstractService {
    * TODO
    * @param contentId
    */
-  public getContentContextRef(contentId: string): CmsContentContextRef<any> {
-    return CmsContentContextRef.fromContentId(contentId);
+  public getContentContextRef(idRegex: RegExp, contentId: string): CmsContentContextRef<any> {
+    return CmsContentContextRef.fromContentId(idRegex, contentId);
   }
 
   /**
@@ -233,8 +232,8 @@ export class ContentService extends AbstractService {
    * Returns an observable that triggers when
    * the view mode changes.
    */
-  public onViewModeChange() {
-    return this.viewModeChangeSubject.asObservable();
+  public onViewModeChange(): Observable<ViewMode> {
+    return this.viewModeChangeSubject;
   }
 
 }

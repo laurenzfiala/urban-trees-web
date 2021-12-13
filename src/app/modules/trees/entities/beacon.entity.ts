@@ -51,6 +51,20 @@ export class Beacon {
     this.settings = settings;
   }
 
+  /**
+   * Updates the given beacon using the value of the given beacon.
+   * @param updatedBeacon beacon using which this beacon shall be updated
+   */
+  public update(updatedBeacon: Beacon) {
+    this.id = updatedBeacon.id;
+    this.deviceId = updatedBeacon.deviceId;
+    this.tree = updatedBeacon.tree;
+    this.bluetoothAddress = updatedBeacon.bluetoothAddress;
+    this.status = updatedBeacon.status;
+    this.location = updatedBeacon.location;
+    this.settings = updatedBeacon.settings;
+  }
+
   public static fromObject(o: any): Beacon {
 
     return new Beacon(

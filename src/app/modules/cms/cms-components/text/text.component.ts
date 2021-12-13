@@ -1,4 +1,13 @@
-import {Component, Input, SecurityContext} from '@angular/core';
+import {
+  AfterContentInit, AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ElementRef, Inject,
+  NgZone, OnInit,
+  SecurityContext,
+  ViewChild
+} from '@angular/core';
 import {ToolbarBtn, ToolbarDropdown, ToolbarElement, ToolbarSection} from '../../entities/toolbar.entity';
 import {AbstractCmsComponent} from '../../entities/abstract-cms-component.entity';
 import {ToolbarService} from '../../services/toolbar.service';
@@ -6,23 +15,49 @@ import {CmsValidationResults} from '../../entities/cms-validation-results.entity
 import {CmsValidationResult} from '../../entities/cms-validation-result.entity';
 import {ContentService} from '../../services/content.service';
 import {DomSanitizer} from '@angular/platform-browser';
+import {fromEvent} from 'rxjs';
+import {ViewMode} from '../../enums/cms-layout-view-mode.enum';
 
 @Component({
   selector: 'ut-cms-text',
   templateUrl: './text.component.html',
-  styleUrls: ['./text.component.less']
+  styleUrls: ['./text.component.less'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class TextComponent extends AbstractCmsComponent {
+export class TextComponent extends AbstractCmsComponent implements AfterViewInit {
 
   public text: string;
 
+  @ViewChild('textEditElement')
+  private textEditElement: ElementRef<HTMLDivElement>;
+
   constructor(protected contentService: ContentService,
               protected toolbar: ToolbarService,
-              private sanitizer: DomSanitizer) {
+              protected cdRef: ChangeDetectorRef,
+              private sanitizer: DomSanitizer,
+              private zone: NgZone) {
     super();
   }
 
-  public deserialize(serialized: any): void {
+  ngAfterViewInit() {
+
+    this.zone.runOutsideAngular(args => {
+      fromEvent(this.textEditElement.nativeElement, 'focus')
+        //.pipe(takeUntil(this._destroyed$))
+        .subscribe(e => {
+          this.focus();
+        });
+      fromEvent(this.textEditElement.nativeElement, 'input')
+        //.pipe(takeUntil(this._destroyed$))
+        .subscribe(e => {
+          this.updateText(e);
+        });
+    });
+    // TODO unsub
+
+  }
+
+  public async deserialize(serialized: any): Promise<void> {
     const state = serialized;
     this.text = this.sanitizer.sanitize(SecurityContext.HTML, state.text);
   }
@@ -39,6 +74,7 @@ export class TextComponent extends AbstractCmsComponent {
 
   public updateText(event: Event) {
     this.text = (event.target as HTMLElement).innerHTML;
+    this.changed();
   }
 
   public getToolbarContextual(): ToolbarSection<ToolbarElement> {

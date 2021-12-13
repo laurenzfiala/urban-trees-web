@@ -1,4 +1,11 @@
-import {ChangeDetectorRef, Component, ComponentFactoryResolver, ViewChild, ViewContainerRef} from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ComponentFactoryResolver,
+  ViewChild,
+  ViewContainerRef
+} from '@angular/core';
 import {SerializationService} from '../../services/serialization.service';
 import {AbstractCmsLayout} from '../../entities/abstract-cms-layout.entity';
 import {ToolbarService} from '../../services/toolbar.service';
@@ -12,7 +19,8 @@ import {SubscriptionManagerService} from '../../../trees/services/subscription-m
 @Component({
   selector: 'ut-cms-block-layout',
   templateUrl: './block-layout.component.html',
-  styleUrls: ['./block-layout.component.less']
+  styleUrls: ['./block-layout.component.less'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class BlockLayout extends AbstractCmsLayout {
 

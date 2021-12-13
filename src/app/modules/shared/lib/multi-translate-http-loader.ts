@@ -4,6 +4,7 @@ import {forkJoin, Observable, of} from 'rxjs';
 import {VERSION} from '../../../../environments/version';
 import {catchError, reduce, switchMap} from 'rxjs/operators';
 import {Log} from '../services/log.service';
+import {merge} from 'rxjs-compat/operator/merge';
 
 /**
  * Describes a translation file to be loaded by the TranslateHttpLoader.
@@ -22,7 +23,7 @@ export class MultiTranslateHttpLoader implements TranslateLoader {
 
   constructor(
     private http: HttpClient,
-    private sources: Array<TranslationSource>,
+    private sources: Array<TranslationSource>
   ) {}
 
   public getTranslation(lang: string): Observable<any> {

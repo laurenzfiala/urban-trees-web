@@ -3,25 +3,25 @@
   <div *ngIf="!hasStatusKey(StatusKey.LOGIN)"
        class="d-flex justify-content-center align-items-center text-subtle">
     <i class="i i-lg i-spin i-dark i-load mr-3"></i>
-    Preparing login...
+    {{'login_key.preparing' | translate}}
   </div>
 
   <div *ngIf="hasStatus(StatusKey.LOGIN, StatusValue.IN_PROGRESS)"
        class="d-flex justify-content-center align-items-center text-subtle">
     <i class="i i-lg i-spin i-dark i-load mr-3"></i>
-    Logging you in...
+    {{'login_key.logging_in' | translate}}
   </div>
 
   <div *ngIf="hasStatus(StatusKey.LOGIN, StatusValue.FAILED)"
        class="d-flex justify-content-center align-items-center text-danger">
     <i class="i i-lg i-cross-danger mr-3"></i>
-    Failed to log in with your link
+    {{'login_key.failed' | translate}}
   </div>
 
   <div *ngIf="hasStatus(StatusKey.LOGIN, StatusValue.SUCCESSFUL)"
        class="d-flex justify-content-center align-items-center text-success">
     <i class="i i-lg i-check-success mr-3"></i>
-    Logged in successfully
+    {{'login_key.success' | translate}}
   </div>
 
 </div>

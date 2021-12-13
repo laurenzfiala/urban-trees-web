@@ -61,6 +61,10 @@ export class ProjectLoginComponent extends AbstractComponent implements OnInit, 
 
   public accessReason: LoginAccessReason;
 
+  /**
+   * Where to redirect to as soon as the
+   * user is logged in.
+   */
   public redirectTo: string;
 
   /**
@@ -99,6 +103,9 @@ export class ProjectLoginComponent extends AbstractComponent implements OnInit, 
       }
       if (redirectVal) {
         this.redirectTo = redirectVal;
+        if (this.isAlreadyLoggedIn()) {
+          this.router.navigateByUrl(this.redirectTo);
+        }
       } else if (!this.relog) {
         this.redirectTo = '/home';
       }
@@ -156,7 +163,6 @@ export class ProjectLoginComponent extends AbstractComponent implements OnInit, 
       if (t === 'OTP') {
         this.showOtp = true;
         this.setStatus(StatusKey.LOGIN, StatusValue.ENTER_OTP);
-        //this.otpInput?.nativeElement.focus();
         return;
       }
 

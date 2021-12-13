@@ -1,4 +1,11 @@
-import {ChangeDetectorRef, Component, ComponentFactoryResolver, ViewChild, ViewContainerRef} from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  ComponentFactoryResolver,
+  ViewChild,
+  ViewContainerRef
+} from '@angular/core';
 import {SerializationService} from '../../services/serialization.service';
 import {AbstractCmsLayout} from '../../entities/abstract-cms-layout.entity';
 import {ToolbarService} from '../../services/toolbar.service';
@@ -12,7 +19,8 @@ import {CmsValidationResult} from '../../entities/cms-validation-result.entity';
 @Component({
   selector: 'ut-cms-two-column-layout',
   templateUrl: './two-column-layout.component.html',
-  styleUrls: ['./two-column-layout.component.less']
+  styleUrls: ['./two-column-layout.component.less'],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class TwoColumnLayout extends AbstractCmsLayout {
 
@@ -50,8 +58,10 @@ export class TwoColumnLayout extends AbstractCmsLayout {
   public async deserialize(data: any): Promise<void> {
     const slotLeftCmp = this.serializationService.deserializeElement(data.slotLeft);
     this.slotLeftElement.set(await this.fillSlot(() => this.slotLeft, slotLeftCmp));
+    this.onElementAdd(this.slotLeftElement.get());
     const slotRightCmp = this.serializationService.deserializeElement(data.slotRight);
     this.slotRightElement.set(await this.fillSlot(() => this.slotRight, slotRightCmp));
+    this.onElementAdd(this.slotRightElement.get());
     this.update();
   }
 

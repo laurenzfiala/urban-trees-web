@@ -79,8 +79,7 @@ export class HomeComponent extends AbstractComponent implements OnInit, OnDestro
     this.load();
     this.setStatus(StatusKey.PHENOBS_HISTORY, StatusValue.IN_PROGRESS);
 
-    this.contentService.loadContent('news', 'en_GB', content => {
-      content[0].id
+    this.contentService.loadContent('/test/1', 'de-DE', content => {
       this.testContent = CmsContent.fromUserContent(content[0], this.envService);
     });
   }
@@ -104,15 +103,21 @@ export class HomeComponent extends AbstractComponent implements OnInit, OnDestro
       return;
     }
 
-    this.contentService.loadCmsUserHistory('tree-', (history: Array<UserContentMetadata>) => {
+    this.contentService.loadCmsUserHistory('/tree/*', (history: Array<UserContentMetadata>) => {
+
+      if (history.length === 0) {
+        this.setStatus(StatusKey.CMS_HISTORY, StatusValue.SUCCESSFUL);
+        return;
+      }
 
       let contextRefs = history
-        .map(value => this.contentService.getContentContextRef(value.contentId).for(value));
+        .map(value => this.contentService.getContentContextRef(/\/tree\/(.*)/g, value.contentPath).for(value));
       let loadTreeObservables = contextRefs.map(value => {
         return this.treeService.loadTreeObservable(Number(value.idComponent)).pipe(tap(tree => {
           value.context = tree;
         }));
       });
+
       forkJoin(...loadTreeObservables).subscribe(filledContexts => {
         this.treeCmsHistory = contextRefs;
         this.setStatus(StatusKey.CMS_HISTORY, StatusValue.SUCCESSFUL);

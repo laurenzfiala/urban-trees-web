@@ -22,9 +22,9 @@
   <ng-template #progressCircular>
     <div class="avatar"
          tabindex="0"
-         #avatarTooltip="bs-tooltip"
+         (action)="zoom.open()"
          [tooltip]="'user_progress.open_details' | translate"
-         (action)="zoom.open(); avatarTooltip.hide()">
+         triggers="hover mouseup focus">
 
       <div class="avatar-inner">
         <div *ngIf="level !== maxLevel" class="level-display">
@@ -51,11 +51,11 @@
 
       <div class="title-container m-2">
         <h1 [innerHTML]="'user_progress.details.title.tier' + (level === 1 || level === maxLevel ? '_' + level : '') | translate:{tier: 'user_progress.tiers.' + level | translate}"></h1>
-        <div *ngIf="level !== maxLevel" class="text-sm">
-          {{'user_progress.details.title.desc' | translate}}
+        <div *ngIf="level === 1" class="text-sm">
+          {{'user_progress.details.title.tier_1_desc' | translate}}
           <i class="i i-xxs i-dark i-info align-text-bottom pointer"
              tabindex="0"
-             [tooltip]="'user_progress.details.title.tooltip' | translate"
+             [tooltip]="'user_progress.details.title.tier_1_tooltip' | translate"
              triggers="focus hover"
              placement="bottom"></i>
         </div>
@@ -73,18 +73,23 @@
 
     <div class="mt-4">
       <h2>{{'user_progress.details.contribs_title' | translate}}</h2>
+      <div *ngIf="hasStatus(StatusKey.ACHIEVEMENTS_LOADING, StatusValue.SUCCESSFUL)"
+           class="d-flex flex-row align-items-stretch justify-content-between">
 
-      <table class="table-xp">
-        <tr *ngFor="let l of achievements.xpHistory.slice(0, 3); let i = index">
-          <td class="text-nowrap">
-            + {{l.xp - (i < achievements.xpHistory.length-1 ? achievements.xpHistory[i+1].xp : 0)}} {{'user_overview.xp' | translate}}
-          </td>
-          <td>
-            {{'user.level_action.' + l.action | translate}}
-          </td>
-        </tr>
-      </table>
+        <div class="d-flex flex-row align-items-end">
+          <table class="table-xp">
+            <tr *ngFor="let l of achievements.xpHistory.slice(0, 3); let i = index">
+              <td class="text-nowrap">
+                + {{l.xp - (i < achievements.xpHistory.length-1 ? achievements.xpHistory[i+1].xp : 0)}} {{'user_overview.xp' | translate}}
+              </td>
+              <td>
+                {{'user.level_action.' + l.action | translate}}
+              </td>
+            </tr>
+          </table>
+        </div>
 
+      </div>
     </div>
   </ng-template>
 

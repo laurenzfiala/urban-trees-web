@@ -61,7 +61,7 @@
             <i class="i i-xs i-dark i-filters-xs mr-1"></i>
             <div>
               Filters
-              <i *ngIf="searchFilters?.size" class="enabled-pointer"></i>
+              <i *ngIf="isAdditionalFiltersUsed()" class="enabled-pointer"></i>
             </div>
           </div>
           <div class="link plain search-feature-toggle"
@@ -77,15 +77,15 @@
       <!-- FILTERS -->
       <div [collapse]="!showFilters">
         <div class="d-flex flex-row flex-wrap m--2">
-          <div class="search-filter">
-            <div class="search-filter-title">User ID</div>
+          <div class="search-info-group">
+            <div class="search-info-group-title">User ID</div>
             <input class="form-control"
                    type="number"
                    [ngModel]="getSearchFilter('id')"
                    (ngModelChange)="setSearchFilterNumericArray('id', $event)" />
           </div>
-          <div class="search-filter">
-            <div class="search-filter-title">Account Status</div>
+          <div class="search-info-group">
+            <div class="search-info-group-title">Account Status</div>
             <div class="text-right">
               <span class="mr-1">Account Active</span>
               <div class="btn-group"
@@ -129,8 +129,8 @@
               </div>
             </div>
           </div>
-          <div class="search-filter">
-            <div class="search-filter-title">User Roles</div>
+          <div class="search-info-group">
+            <div class="search-info-group-title">User Roles</div>
             <div>
               Has
               <div class="btn-group"
@@ -157,8 +157,8 @@
               <label class="form-check-label" [for]="'searchfilter_checkbox_role_' + r.name">{{r}}</label>
             </div>
           </div>
-          <div class="search-filter">
-            <div class="search-filter-title">Last login date</div>
+          <div class="search-info-group">
+            <div class="search-info-group-title">Last login date</div>
             <div class="mb-2">
               <label for="searchFilterLastLoginDateFrom">From date:</label>
               <input id="searchFilterLastLoginDateFrom"
@@ -183,10 +183,10 @@
                      (ngModelChange)="setSearchFilter('lastLoginDateTo', $event)">
             </div>
           </div>
-          <div class="search-filter">
-            <div class="search-filter-title">Account creation date</div>
+          <div class="search-info-group">
+            <div class="search-info-group-title">Account creation date</div>
             <div>
-              <label for="searchFilterCreationDateFrom">To date:</label>
+              <label for="searchFilterCreationDateFrom">From date:</label>
               <input id="searchFilterCreationDateFrom"
                      type="text"
                      placeholder="From date"
@@ -213,38 +213,70 @@
 
       <!-- BULK ACTIONS -->
       <div [collapse]="!showActions">
-        <div class="text-lg text-subtle mb-2">Bulk actions</div>
         <div class="d-flex flex-row flex-wrap m--1">
 
-          <button class="btn btn-primary bulk-action-btn"
-                  (action)="confirmBulkAction(BulkAction.EXPIRE_CREDENTIALS)">
-            <i class="i i-sm i-light i-password-reset mr-1"></i>
-            Expire credentials
-          </button>
+          <div class="search-info-group">
+            <div class="search-info-group-title">Login</div>
+            <div class="m--1">
+              <button class="link-btn link-btn-sm bulk-action-btn"
+                      (action)="confirmBulkAction(BulkAction.EXPIRE_CREDENTIALS)">
+                <i class="i i-xs i-dark i-password-reset mr-1"></i>
+                Expire credentials
+              </button>
+              <button class="link-btn link-btn-sm bulk-action-btn"
+                      (action)="confirmBulkAction(BulkAction.CREATE_LOGIN_LINKS)">
+                <i class="i i-xs i-dark i-link mr-1"></i>
+                Create login links &amp; download
+              </button>
+            </div>
+          </div>
+          <div class="search-info-group">
+            <div class="search-info-group-title">Access</div>
+            <div class="m--1">
+              <button class="link-btn link-btn-sm bulk-action-btn"
+                      (action)="confirmBulkAction(BulkAction.ACTIVATE)">
+                <i class="i i-xs i-dark i-document-protect mr-1"></i>
+                Activate accounts
+              </button>
 
-          <button class="btn btn-primary bulk-action-btn"
-                  (action)="confirmBulkAction(BulkAction.CREATE_LOGIN_LINKS)">
-            <i class="i i-sm i-light i-link mr-1"></i>
-            Create login links &amp; download
-          </button>
+              <button class="link-btn link-btn-sm bulk-action-btn"
+                      (action)="confirmBulkAction(BulkAction.INACTIVATE)">
+                <i class="i i-xs i-dark i-document-protect mr-1"></i>
+                Inactivate accounts
+              </button>
 
-          <button class="btn btn-success bulk-action-btn"
-                  (action)="confirmBulkAction(BulkAction.ACTIVATE)">
-            <i class="i i-sm i-light i-document-protect mr-1"></i>
-            Activate accounts
-          </button>
-
-          <button class="btn btn-danger bulk-action-btn"
-                  (action)="confirmBulkAction(BulkAction.INACTIVATE)">
-            <i class="i i-sm i-light i-document-protect mr-1"></i>
-            Inactivate accounts
-          </button>
-
-          <button class="btn btn-danger bulk-action-btn"
-                  (action)="confirmBulkAction(BulkAction.DELETE)">
-            <i class="i i-sm i-light i-trash mr-1"></i>
-            Delete accounts
-          </button>
+              <button class="link-btn link-btn-sm bulk-action-btn"
+                      (action)="confirmBulkAction(BulkAction.DELETE)">
+                <i class="i i-xs i-dark i-trash mr-1"></i>
+                Delete accounts
+              </button>
+            </div>
+          </div>
+          <div class="search-info-group">
+            <div class="search-info-group-title">Roles</div>
+            <div>
+              Add role:
+              <select #userActionsAddRoleSelect
+                      ngModel
+                      (ngModelChange)="confirmBulkAction(BulkAction.ADD_ROLES, {roles: [$event]}); userActionsAddRoleSelect.value = null"
+                      class="form-control">
+                <option *ngFor="let r of availableRoles" [ngValue]="r">
+                  {{r}}
+                </option>
+              </select>
+            </div>
+            <div>
+              Remove role:
+              <select #userActionsRemoveRoleSelect
+                      ngModel
+                      (ngModelChange)="confirmBulkAction(BulkAction.REMOVE_ROLES, {roles: [$event]}); userActionsRemoveRoleSelect.value = null"
+                      class="form-control">
+                <option *ngFor="let r of availableRoles" [ngValue]="r">
+                  {{r}}
+                </option>
+              </select>
+            </div>
+          </div>
 
         </div>
       </div>
@@ -342,7 +374,6 @@
 
     </div>
 
-  </div>
   </div>
 
   <!-- LOGIN INFO POPOVER -->
@@ -699,10 +730,12 @@
       <button type="button"
               class="btn"
               [ngClass]="{'btn-primary': bulkAction === BulkAction.EXPIRE_CREDENTIALS ||
-                                         bulkAction === BulkAction.CREATE_LOGIN_LINKS,
+                                         bulkAction === BulkAction.CREATE_LOGIN_LINKS ||
+                                         bulkAction === BulkAction.ADD_ROLES,
                           'btn-success': bulkAction === BulkAction.ACTIVATE,
                           'btn-danger': bulkAction === BulkAction.INACTIVATE ||
-                                        bulkAction === BulkAction.DELETE,
+                                        bulkAction === BulkAction.DELETE ||
+                                        bulkAction === BulkAction.REMOVE_ROLES,
                           'disabled': hasStatus(StatusKey.BULK_ACTION, StatusValue.SUCCESSFUL)}"
               (click)="executeBulkAction()">
         Yes,
@@ -721,6 +754,12 @@
       <ng-container *ngSwitchCase="BulkAction.CREATE_LOGIN_LINKS">
         create login links for
       </ng-container>
+      <ng-container *ngSwitchCase="BulkAction.ADD_ROLES">
+        add role {{bulkActionData.roles[0].name}} to
+      </ng-container>
+      <ng-container *ngSwitchCase="BulkAction.REMOVE_ROLES">
+        remove role {{bulkActionData.roles[0].name}} from
+      </ng-container>
       <ng-container *ngSwitchCase="BulkAction.ACTIVATE">
         activate
       </ng-container>
@@ -732,4 +771,5 @@
       </ng-container>
     </ng-container>
   </ng-template>
+  </div>
 </div>

@@ -1,5 +1,5 @@
 import {CmsComponent} from '../interfaces/cms-component.interface';
-import {Directive, OnDestroy, OnInit} from '@angular/core';
+import {ChangeDetectorRef, Directive, OnDestroy, OnInit} from '@angular/core';
 import {AbstractComponent} from '../../shared/components/abstract.component';
 import {ToolbarElement, ToolbarSection} from './toolbar.entity';
 import {Observable, Subject} from 'rxjs';
@@ -8,6 +8,8 @@ import {ToolbarService} from '../services/toolbar.service';
 import {CmsValidationResults} from './cms-validation-results.entity';
 import {ViewMode} from '../enums/cms-layout-view-mode.enum';
 import {ContentService} from '../services/content.service';
+import {CmsLayout} from '../interfaces/cms-layout.interface';
+import {CmsElement} from '../interfaces/cms-element.interface';
 
 /**
  * Abstract CMS component with important logic and helpers for components.
@@ -31,7 +33,8 @@ export abstract class AbstractCmsComponent
   private onFocusOutSubject: Subject<CmsComponent>;
   private onChangedSubject: Subject<CmsComponent>;
 
-  protected toolbar: ToolbarService;
+  protected abstract toolbar: ToolbarService;
+  protected abstract cdRef: ChangeDetectorRef;
 
   constructor() {
     super();
@@ -69,11 +72,17 @@ export abstract class AbstractCmsComponent
   }
 
   public onChanged(): Observable<CmsComponent> {
-    return this.onChangedSubject.asObservable();
+    return this.onChangedSubject;
   }
 
   public getElementType(): ElementType {
     return ElementType.COMPONENT;
+  }
+
+  public addUpdater(observable: Observable<CmsElement>) {
+    observable.subscribe(value => {
+      this.cdRef.markForCheck();
+    });
   }
 
   /**
@@ -86,7 +95,7 @@ export abstract class AbstractCmsComponent
 
   // --- CmsElement / CmsComponent ---
   abstract serialize(): any;
-  abstract deserialize(data: any): void;
+  abstract deserialize(data: any): Promise<void>;
   abstract getName(): string;
   abstract validate(results: CmsValidationResults): void;
   abstract getToolbarContextual(): ToolbarSection<ToolbarElement>;

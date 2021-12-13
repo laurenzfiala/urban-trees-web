@@ -17,6 +17,9 @@
     "components": {
       "text": {
         "empty": "Text may not be empty"
+      },
+      "file": {
+        "fileUid_is_falsy": "File reference must be set"
       }
     }
   }

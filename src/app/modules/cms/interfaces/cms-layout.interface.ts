@@ -1,22 +1,21 @@
 /**
- * Serves as the base interface for all CMS components.
+ * Serves as the base interface for all CMS layouts.
  */
-import {CmsComponent} from './cms-component.interface';
 import {CmsElement} from './cms-element.interface';
 
 export interface CmsLayout extends CmsElement {
 
   /**
    * TODO
-   * @param component
+   * @param element
    */
-  onElementAdd(component: CmsComponent): void;
+  onElementAdd(element: CmsElement): void;
 
   /**
    * TODO
-   * @param component
+   * @param element
    */
-  onElementRemove(component: CmsComponent): void;
+  onElementRemove(element: CmsElement): void;
 
 }
 

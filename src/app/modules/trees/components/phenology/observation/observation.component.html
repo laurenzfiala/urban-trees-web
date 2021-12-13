@@ -530,16 +530,19 @@
       <div *ngIf="selectedTree" class="d-flex flex-row align-items-center badge success m-1">
         <i class="i i-xs i-check-success mr-1"></i>
         {{'phen_obs.step' | translate}} 1
+        <span class="sr-only">&nbsp;{{'phen_obs.step_done' | translate}}</span>
       </div>
       <div *ngIf="!selectedTree" class="d-flex flex-row align-items-center badge danger m-1">
         <i class="i i-xs i-cross-danger mr-1"></i>
         {{'phen_obs.step' | translate}} 1
+        <span class="sr-only">&nbsp;{{'phen_obs.step_error' | translate}}</span>
       </div>
 
       <!-- STEP 2 -->
       <div class="d-flex flex-row align-items-center badge success m-1">
         <i class="i i-xs i-check-success mr-1"></i>
         {{'phen_obs.step' | translate}} 2
+        <span class="sr-only">&nbsp;{{'phen_obs.step_done' | translate}}</span>
       </div>
 
       <!-- STEP 3 -->
@@ -547,15 +550,18 @@
            class="d-flex flex-row align-items-center badge m-1">
         <i class="i i-xs i-dark i-arrow-right mr-1"></i>
         {{'phen_obs.step' | translate}} 3
+        <span class="sr-only">&nbsp;{{'phen_obs.step_dependent' | translate}}</span>
       </div>
       <ng-template #statusStepObs>
         <div *ngIf="isObservationsDone()" class="d-flex flex-row align-items-center badge success m-1">
           <i class="i i-xs i-check-success mr-1"></i>
           {{'phen_obs.step' | translate}} 3
+          <span class="sr-only">&nbsp;{{'phen_obs.step_done' | translate}}</span>
         </div>
         <div *ngIf="!isObservationsDone()" class="d-flex flex-row align-items-center badge danger m-1">
           <i class="i i-xs i-cross-danger mr-1"></i>
           {{'phen_obs.step' | translate}} 3
+          <span class="sr-only">&nbsp;{{'phen_obs.step_error' | translate}}</span>
         </div>
       </ng-template>
 
@@ -564,15 +570,18 @@
            class="d-flex flex-row align-items-center badge m-1">
         <i class="i i-xs i-dark i-arrow-right mr-1"></i>
         {{'phen_obs.step' | translate}} 4
+        <span class="sr-only">&nbsp;{{'phen_obs.step_dependent' | translate}}</span>
       </div>
       <ng-template #statusStepImg>
         <div *ngIf="isImgOk()" class="d-flex flex-row align-items-center badge success m-1">
           <i class="i i-xs i-check-success mr-1"></i>
           {{'phen_obs.step' | translate}} 4
+          <span class="sr-only">&nbsp;{{'phen_obs.step_done' | translate}}</span>
         </div>
         <div *ngIf="!isImgOk()" class="d-flex flex-row align-items-center badge danger m-1">
           <i class="i i-xs i-cross-danger mr-1"></i>
           {{'phen_obs.step' | translate}} 4
+          <span class="sr-only">&nbsp;{{'phen_obs.step_error' | translate}}</span>
         </div>
       </ng-template>
 
@@ -581,15 +590,18 @@
            class="d-flex flex-row align-items-center badge m-1">
         <i class="i i-xs i-dark i-arrow-right mr-1"></i>
         {{'phen_obs.step' | translate}} 5
+        <span class="sr-only">&nbsp;{{'phen_obs.step_dependent' | translate}}</span>
       </div>
       <ng-template #statusStepUsers>
         <div *ngIf="isUsersOk()" class="d-flex flex-row align-items-center badge success m-1">
           <i class="i i-xs i-check-success mr-1"></i>
           {{'phen_obs.step' | translate}} 5
+          <span class="sr-only">&nbsp;{{'phen_obs.step_done' | translate}}</span>
         </div>
         <div *ngIf="!isUsersOk()" class="d-flex flex-row align-items-center badge danger m-1">
           <i class="i i-xs i-cross-danger mr-1"></i>
           {{'phen_obs.step' | translate}} 5
+          <span class="sr-only">&nbsp;{{'phen_obs.step_error' | translate}}</span>
         </div>
       </ng-template>
 

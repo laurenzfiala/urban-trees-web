@@ -6,12 +6,8 @@ import {TranslateInitService} from '../shared/services/translate-init.service';
   templateUrl: './trees.component.html',
   styleUrls: ['./trees.component.less']
 })
-export class TreesComponent implements OnInit {
+export class TreesComponent {
 
-  constructor(private translateInit: TranslateInitService) { }
-
-  public ngOnInit(): void {
-    this.translateInit.onModuleInit();
-  }
+  constructor() { }
 
 }

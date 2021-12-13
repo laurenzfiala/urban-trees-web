@@ -4,63 +4,56 @@
 import * as moment from 'moment';
 import {EnvironmentService} from '../../shared/services/environment.service';
 import {UserIdentity} from '../../trees/entities/user-identity.entity';
-import {ContentStatus} from '../enums/cms-content-status.enum';
+import {UserContentStatus} from './user-content-status.entity';
+import {User} from '../../trees/entities/user.entity';
 
 export class UserContentMetadata {
 
   public readonly id: number;
-  public readonly contentId: string;
+  public readonly contentPath: string;
   public readonly contentTitle: string;
   public readonly contentLanguage: string;
-  public readonly isDraft: boolean;
+  public readonly status: UserContentStatus;
   public readonly saveDate: Date;
   public readonly historyId: number;
+  public readonly previousId: number;
+  public readonly nextId: number;
   public readonly user: UserIdentity;
   public readonly approveDate: Date;
   public readonly approveUser: UserIdentity;
 
   constructor(id: number,
-              contentId: string,
+              contentPath: string,
               contentTitle: string,
               contentLanguage: string,
-              isDraft: boolean,
+              status: UserContentStatus,
               saveDate: Date,
               historyId: number,
+              previousId: number,
+              nextId: number,
               user: UserIdentity,
               approveDate: Date,
               approveUser: UserIdentity) {
     this.id = id;
-    this.contentId = contentId;
+    this.contentPath = contentPath;
     this.contentTitle = contentTitle;
     this.contentLanguage = contentLanguage;
-    this.isDraft = isDraft;
+    this.status = status;
     this.saveDate = saveDate;
     this.historyId = historyId;
+    this.previousId = previousId;
+    this.nextId = nextId;
     this.user = user;
     this.approveDate = approveDate;
     this.approveUser = approveUser;
   }
 
-  /**
-   * @see ContentStatus
-   */
-  public getStatus(): ContentStatus {
-
-    if (this.isDraft) {
-      return ContentStatus.DRAFT;
-    }
-    if (!this.isDraft && this.approveDate == null) {
-      return ContentStatus.PUBLISHING;
-    }
-    return ContentStatus.PUBLISHED;
-
+  public getStatus(): UserContentStatus {
+    return this.status;
   }
 
-  /**
-   * @see ContentStatus
-   */
   public getStatusString(): string {
-    return ContentStatus[this.getStatus()];
+    return UserContentStatus[this.getStatus()];
   }
 
   /**
@@ -78,12 +71,14 @@ export class UserContentMetadata {
 
     return new UserContentMetadata(
       o.id,
-      o.contentId,
+      o.contentPath,
       o.contentTitle,
       o.contentLanguage,
-      o.draft,
+      UserContentStatus[o.status],
       o.saveDate && moment.utc(o.saveDate, envService.outputDateFormat).toDate(),
       o.historyId,
+      o.previousId,
+      o.nextId,
       o.user && UserIdentity.fromObject(o.user),
       o.approveDate && moment.utc(o.approveDate, envService.outputDateFormat).toDate(),
       o.approveUser && UserIdentity.fromObject(o.approveUser)

@@ -75,6 +75,8 @@ export class SerializationService {
 
     return new CmsContent(
       base?.historyId,
+      base?.previousId,
+      base?.nextId,
       new Date(),
       undefined,
       undefined,

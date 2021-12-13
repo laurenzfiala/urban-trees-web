@@ -1,0 +1,12 @@
+<div *ngIf="isEditContent(); else fileViewContent" class="cms-file-container"
+     (focus)="focus()"
+     (focusout)="focusOut()"
+>
+  <img [src]="'http://localhost/content/file/' + fileUid + '?path=/test/1' | auth | async" />
+</div>
+
+<ng-template #fileViewContent>
+  <div class="cms-file-container">
+    <img *ngIf="fileUid" [src]="'http://localhost/content/file/' + fileUid + '?path=/test/1' | auth | async" />
+  </div>
+</ng-template>

@@ -51,6 +51,7 @@ export class ListComponent extends LoadingStatusComponent implements OnInit, OnD
   public itemCategories: Map<string, Array<any>>;
   private itemsChanged: boolean = false;
   public scrollBtns: { left: boolean, right: boolean };
+  private autoScrolling: boolean = false;
 
   constructor(private subs2: SubscriptionManagerService,
               private cdRef: ChangeDetectorRef) {
@@ -71,14 +72,14 @@ export class ListComponent extends LoadingStatusComponent implements OnInit, OnD
 
   public updateScrollBtns(): void {
 
-    if (!this.listScrollEl) {
+    if (!this.listScrollEl || this.autoScrolling) {
       return;
     }
 
     const el = this.listScrollEl.nativeElement;
     this.scrollBtns = {
       left: el.scrollLeft > 0,
-      right: el.scrollLeft < el.offsetWidth
+      right: el.scrollLeft < el.scrollWidth - el.clientWidth && el.scrollWidth > el.offsetWidth
     };
     this.cdRef.markForCheck();
 
@@ -90,9 +91,12 @@ export class ListComponent extends LoadingStatusComponent implements OnInit, OnD
     const scrollTo = el.scrollLeft + Math.min(el.clientWidth - 100, el.clientWidth * 0.75) * (type === 'right' ? 1 : -1);
 
     this.scrollBtns.left = scrollTo > 0;
-    this.scrollBtns.right = scrollTo < el.offsetWidth;
+    this.scrollBtns.right = scrollTo < el.scrollWidth - el.clientWidth;
 
-    $(el).animate({scrollLeft: scrollTo}, 350);
+    $(el).animate({scrollLeft: scrollTo}, 350, 'swing', () => {
+      this.autoScrolling = false;
+    });
+    this.autoScrolling = true;
 
   }
 

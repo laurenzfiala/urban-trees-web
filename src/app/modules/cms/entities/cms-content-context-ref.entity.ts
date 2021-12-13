@@ -1,12 +1,11 @@
 /**
- * Holds meta-information a backend CMS content entry.
+ * Holds meta-information of a backend CMS content entry.
  */
 import {UserContentMetadata} from './user-content-metadata.entity';
 
 export class CmsContentContextRef<T> {
 
   public readonly contentId: string;
-  public readonly typeComponent: string;
   public readonly idComponent: string;
   public context: T;
   private _metadata: UserContentMetadata;
@@ -16,38 +15,27 @@ export class CmsContentContextRef<T> {
   }
 
   constructor(contentId: string,
-              typeComponent: string,
               idComponent: string) {
     this.contentId = contentId;
-    this.typeComponent = typeComponent;
     this.idComponent = idComponent;
   }
 
-  /**
-   * TODO
-   */
   public for(metadata: UserContentMetadata): CmsContentContextRef<T> {
     this._metadata = metadata;
     return this;
   }
 
-  public static fromContentId(contentId: string): CmsContentContextRef<any> {
+  public static fromContentId(idRegex: RegExp, contentId: string): CmsContentContextRef<any> {
 
     if (!contentId) {
       return null;
     }
 
-    let separatorIndex = contentId.indexOf('-');
-    if (separatorIndex === -1) {
-      separatorIndex = contentId.length;
-    }
-    let typeComponent = contentId.substring(0, separatorIndex);
-    let idComponent = contentId.substring(separatorIndex + 1);
+    let matches = idRegex.exec(contentId);
 
     return new CmsContentContextRef(
       contentId,
-      typeComponent,
-      idComponent
+      matches[1]
     );
 
   }

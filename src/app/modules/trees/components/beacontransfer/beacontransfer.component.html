@@ -1,45 +1,126 @@
-<div *ngIf="hasStatus(StatusKey.APP_TRANSFER_STATUS, StatusValue.SUCCESSFUL)" class="content-status success">
-  <div class="container d-flex flex-row align-items-center">
-    {{'beacontransfer_view.success' | translate}}
+<div>
+
+  <!--
+  <div *ngIf="hasStatus(StatusKey.APP_TRANSFER_STATUS, StatusValue.SUCCESSFUL)" class="content-status success">
+    <div class="container d-flex flex-row align-items-center">
+      {{'beacontransfer_view.success' | translate}}
+    </div>
   </div>
-</div>
 
-<div *ngIf="hasStatus(StatusKey.APP_TRANSFER_STATUS, StatusValue.FAILED)" class="content-status danger">
-  <div class="container d-flex flex-row align-items-center">
-    {{'beacontransfer_view.failed' | translate}}
+  <div *ngIf="hasStatus(StatusKey.APP_TRANSFER_STATUS, StatusValue.FAILED)" class="content-status danger">
+    <div class="container d-flex flex-row align-items-center">
+      {{'beacontransfer_view.failed' | translate}}
+    </div>
   </div>
-</div>
+  -->
 
-<ng-container
-  *auth="envService.security.rolesAdmin">
-  <section class="content-cat"
-           *ngIf="hasStatus(StatusKey.APP_TRANSFER_STATUS, StatusValue.FAILED)">
 
-  </section>
-</ng-container>
-
-<section class="content-cat"
-         *ngIf="hasStatus(StatusKey.BEACON_LOADING, StatusValue.SUCCESSFUL)">
-  <div class="container tree-image">
-    <h1 class="content-cat-heading">
-      <i *ngIf="appTransferAmount" class="feature-pointer mr-1"></i>
-      {{'tree.beacon.details.heading' | translate}}
-    </h1>
-    <div *ngIf="appTransferAmount" class="text-center">
-      <div class="transfer-message">
-        {{'beacontransfer_view.message.title' | translate}}
-        <span>
-            &mdash; {{'beacontransfer_view.message.text' | translate:{'amount': appTransferAmount} }}
-          </span>
+  <div class="transfer-status"
+       [ngClass]="{'sm': showTree || viewMode !== View.NONE}">
+    <div *ngIf="currentState"
+         class="status-container">
+      <div class="status-img" [ngClass]="TransferStatus[currentState.status] | lowercase">
+        <div class="handle handle-1"></div>
+        <div class="handle handle-2"></div>
+      </div>
+      <div class="status-text-container">
+        <div *ngFor="let s of states.slice().reverse()"
+             class="status-text"
+             [ngClass]="{'current': currentState === s}">
+          {{s.text | translate}}
+        </div>
       </div>
     </div>
-    <div class="mt-3">
+    <div class="action-bar">
+      <!-- BACK HOME ACTION -->
+      <div *ngIf="currentState && currentState.isDone()"
+           class="action-container">
+        <a class="link-container text-nowrap"
+           [routerLink]="isLoggedInAndNotAnon() ? '/home' : '/trees'">
+          <span class="link"
+                [ngClass]="{'d-none d-md-inline': viewMode !== View.NONE}">
+            {{'beacontransfer_view.action_back_to_homepage' | translate}}
+          </span>
+          <span class="link"
+                [ngClass]="{'d-md-none': viewMode !== View.NONE, 'd-none': viewMode === View.NONE}">
+            {{'beacontransfer_view.action_back_to_homepage_sm' | translate}}
+          </span>
+          <i class="i i-xs i-dark i-arrow-right align-middle ml-1" aria-hidden="true"></i>
+        </a>
+      </div>
+      <!-- CANCEL ACTION -->
+      <div *ngIf="currentState && currentState.isInProgress() && !currentState.isCancelling()"
+           class="action-container">
+        <a class="link-container text-nowrap"
+           (action)="cancelTransfer()">
+          <span class="link sm"
+                [ngClass]="{'d-none d-md-inline': viewMode !== View.NONE}">
+            {{'beacontransfer_view.action_cancel' | translate}}
+          </span>
+          <span class="link sm"
+                [ngClass]="{'d-md-none': viewMode !== View.NONE, 'd-none': viewMode === View.NONE}">
+            {{'beacontransfer_view.action_cancel_sm' | translate}}
+          </span>
+          <i class="i i-xs i-dark i-cross-circle align-middle ml-1" aria-hidden="true"></i>
+        </a>
+      </div>
+      <!-- TREE ACTION -->
+      <div *ngIf="beacon?.tree"
+           class="action-container">
+        <a class="link-container text-nowrap"
+           (action)="viewMode === View.TREE ? viewMode = View.NONE : viewMode = View.TREE">
+          <span class="link"
+                [ngClass]="{'active': viewMode === View.TREE, 'd-none d-md-inline': viewMode !== View.NONE}">
+            {{'beacontransfer_view.action_view_tree' | translate}}
+          </span>
+          <span class="link"
+                [ngClass]="{'active': viewMode === View.TREE, 'd-md-none': viewMode !== View.NONE, 'd-none': viewMode === View.NONE}">
+            {{'beacontransfer_view.action_view_tree_sm' | translate}}
+          </span>
+          <i class="i i-xs i-dark align-middle ml-1"
+             [ngClass]="{'i-chevron-down': viewMode !== View.TREE, 'i-chevron-up': viewMode === View.TREE}"
+             aria-hidden="true"></i>
+        </a>
+      </div>
+      <!-- BEACON ACTION -->
+      <div *ngIf="beacon"
+           class="action-container">
+        <a class="link-container text-nowrap"
+           (action)="viewMode === View.BEACON ? viewMode = View.NONE : viewMode = View.BEACON">
+          <div *ngIf="currentState && currentState.isSuccess()" class="feature-pointer mr-1"></div>
+          <div class="link"
+               [ngClass]="{'active': viewMode === View.BEACON, 'd-none d-md-inline': viewMode !== View.NONE}">
+              {{'beacontransfer_view.action_view_beacon' | translate}}
+          </div>
+          <div class="link"
+               [ngClass]="{'active': viewMode === View.BEACON, 'd-md-none': viewMode !== View.NONE, 'd-none': viewMode === View.NONE}">
+            {{'beacontransfer_view.action_view_beacon_sm' | translate}}
+          </div>
+          <i class="i i-xs i-dark align-middle ml-1"
+             [ngClass]="{'i-chevron-down': viewMode !== View.BEACON, 'i-chevron-up': viewMode === View.BEACON}"
+             aria-hidden="true"></i>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- BEACON -->
+  <section class="content-cat"
+           *ngIf="viewMode === View.BEACON && hasStatus(StatusKey.BEACON_LOADING, StatusValue.SUCCESSFUL)">
+    <div class="container">
+      <div *ngIf="appTransferAmount" class="text-center">
+        <div class="transfer-message">
+          {{'beacontransfer_view.message.title' | translate}}
+          <span>
+            &mdash; {{'beacontransfer_view.message.text' | translate:{'amount': appTransferAmount} }}
+          </span>
+        </div>
+      </div>
       <ng-container *auth="envService.security.rolesAdmin; else beaconData">
         <ut-beacon-list
           [beacons]="[beacon]"
           [showData]="true"
-          [showAssociations]="true"
-          [modify]="true">
+          [showStatus]="true">
         </ut-beacon-list>
       </ng-container>
       <ng-template #beaconData>
@@ -48,21 +129,27 @@
         ></ut-beacon-list>
       </ng-template>
     </div>
-  </div>
-</section>
+  </section>
 
-<div *ngIf="hasAnyStatusKey([StatusKey.BEACON_VALIDATION, StatusKey.BEACON_LOADING], StatusValue.FAILED)"
-     class="status-overlay position-relative d-block h-auto my-4">
-  <div class="status-content">
-    <div class="status-heading heading-danger">
-      {{'beacontransfer_view.error.title' | translate}}
-    </div>
-    <div class="status-text">
-      {{'beacontransfer_view.error.text' | translate}}
-    </div>
-    <div class="status-controls">
-      <button class="btn btn-light"
-              (click)="ngOnInit()">{{'general.retry' | translate}}</button>
+  <!-- TREE -->
+  <ng-container *ngIf="viewMode === View.TREE && hasStatus(StatusKey.BEACON_LOADING, StatusValue.SUCCESSFUL)">
+    <ut-tree [treeId]="beacon.tree.id"></ut-tree>
+  </ng-container>
+
+  <div *ngIf="hasAnyStatusKey([StatusKey.BEACON_VALIDATION, StatusKey.BEACON_LOADING], StatusValue.FAILED)"
+       class="status-overlay position-relative d-block h-auto my-4">
+    <div class="status-content">
+      <div class="status-heading heading-danger">
+        {{'beacontransfer_view.error.title' | translate}}
+      </div>
+      <div class="status-text">
+        {{'beacontransfer_view.error.text' | translate}}
+      </div>
+      <div class="status-controls">
+        <button class="btn btn-light"
+                (click)="ngOnInit()">{{'general.retry' | translate}}</button>
+      </div>
     </div>
   </div>
+
 </div>
