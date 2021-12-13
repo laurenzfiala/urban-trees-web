@@ -13,8 +13,7 @@ import {AuthInterceptor} from './interceptors/auth.interceptor';
 import {ForNDirective} from './directives/for-n.directive';
 import {FocusOnDisplayDirective} from './directives/focus-on-display.directive';
 import {ZoomComponent} from './components/zoom/zoom.component';
-import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
-import {MultiTranslateHttpLoader} from './lib/multi-translate-http-loader';
+import {TranslateModule} from '@ngx-translate/core';
 import {AuthPipe} from './pipes/auth.pipe';
 import {CastDirective} from './directives/cast.directive';
 

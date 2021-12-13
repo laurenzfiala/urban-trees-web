@@ -89,7 +89,7 @@ export class BeaconListComponent extends AbstractComponent implements OnInit, On
   public selectedMinLogSeverity: BeaconLogSeverity = BeaconLogSeverity.TRACE;
 
   public currentBeaconDataMode: BeaconDataMode = BeaconDataMode.LAST_24H;
-  public maxDatapoints: number = 10000;
+  public maxDatapoints: number = 5000;
 
   // color scheme for charts
   public colorScheme: any;
@@ -298,10 +298,14 @@ export class BeaconListComponent extends AbstractComponent implements OnInit, On
       case BeaconDataMode.LAST_24H:
       case BeaconDataMode.LAST_WEEK:
         this.colorScheme = {
-          domain: ['#5AA454', '#A10A28', '#C7B42C']
+          domain: ['#A10A28', '#3e4da4', '#c79855']
         };
         break;
       case BeaconDataMode.TEMP_LAST_MONTH_PER_DAY:
+        this.colorScheme = {
+          domain: ['#A10A28', '#82a191', '#3e4da4']
+        };
+        break;
       case BeaconDataMode.HUMI_LAST_MONTH_PER_DAY:
         this.colorScheme = {
           domain: ['#3e4da4', '#82a191', '#c79855']

@@ -1,12 +1,12 @@
 import {ChangeDetectorRef, Component, NgZone, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
-import {AbstractComponent} from '../../../shared/components/abstract.component';
 import {Beacon} from '../../entities/beacon.entity';
 import {BeaconService} from '../../services/beacon.service';
 import {BeaconFrontend} from '../../entities/beacon-frontend.entity';
 import {EnvironmentService} from '../../../shared/services/environment.service';
-import {TranslateInitService} from '../../../shared/services/translate-init.service';
+import {AbstractComponent} from '../../../shared/components/abstract.component';
 import {AuthService} from '../../../shared/services/auth.service';
+import {TranslateInitService} from '../../../shared/services/translate-init.service';
 
 @Component({
   selector: 'ut-beacontransfer',
@@ -67,6 +67,7 @@ export class BeacontransferComponent extends AbstractComponent implements OnInit
 
     this.viewMode = View.NONE;
     this.states = new Array<TransferState>();
+    this.translateInitService.onInit();
     this.setStatus(StatusKey.BEACON_VALIDATION, StatusValue.PENDING);
 
     this.route.params.subscribe((params: any) => {

@@ -35,6 +35,10 @@ export class TranslateInitService {
       return;
     }
 
+    if (this.translate.currentLang) {
+      return;
+    }
+
     this.translate.addLangs(['en-GB', 'de-DE']);
 
     let userLang = this.translate.getBrowserLang();

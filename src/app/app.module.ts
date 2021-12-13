@@ -8,9 +8,7 @@ import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import {FormsModule} from '@angular/forms';
 import {HttpClient, HttpClientModule} from '@angular/common/http';
-import {TranslateHttpLoader} from '@ngx-translate/http-loader';
 import {LayoutModule} from '@angular/cdk/layout';
-import {VERSION} from '../environments/version';
 import {LandingPageComponent} from './components/landing-page/landing-page.component';
 import {SharedModule} from './modules/shared/shared.module';
 import {AuthService} from './modules/shared/services/auth.service';
@@ -52,14 +50,14 @@ export function TranslateFactory(http: HttpClient) {
       }
     })
   ],
-  exports: [
-    TranslateModule
-  ],
   providers: [
     // Services
     AuthService,
     EnvironmentService,
     TranslateInitService
+  ],
+  exports: [
+    TranslateModule
   ],
   bootstrap: [AppComponent]
 })

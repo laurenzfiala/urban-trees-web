@@ -784,6 +784,11 @@
       "subtitle": "Der Baum ist jetzt ein {{tier}}"
     }
   },
+  "zoom": {
+    "close": "Schließen",
+    "previous": "Vorige Ansicht",
+    "next": "Nächste Ansicht"
+  },
   "user_progress": {
     "tiers": {
       "1": "Kern",
@@ -797,6 +802,8 @@
         "desc": "Benutze die Website und lass dadurch Deinen Baum wachsen!",
         "tooltip": "Erstelle oder bearbeite Dein Forschungstagebuch, trage Phänologiebeobachtungen ein oder lies mit der App einen Beacon aus.",
         "tier_1": "Dein Baum ist noch ein <span class=\"level-text\">{{tier}}</span>",
+        "tier_1_desc": "Benutze die Website und lass dadurch Deinen Baum wachsen!",
+        "tier_1_tooltip": "Erstelle oder bearbeite Dein Forschungstagebuch, trage Phänologiebeobachtungen ein oder lies mit der App einen Beacon aus.",
         "tier": "Dein <span class=\"level-text\">{{tier}}</span> wächst!",
         "tier_5": "Dein <span class=\"level-text\">{{tier}}</span> ist ausgewachsen!"
       },

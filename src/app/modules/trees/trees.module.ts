@@ -54,7 +54,7 @@ import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
 import {CollapseModule} from 'ngx-bootstrap/collapse';
 import {TabsModule} from 'ngx-bootstrap/tabs';
 import {NgxChartsModule} from '@swimlane/ngx-charts';
-import {TranslateLoader, TranslateModule, TranslateService} from '@ngx-translate/core';
+import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
 import {EnvironmentService} from '../shared/services/environment.service';
 import {SubscriptionManagerService} from './services/subscription-manager.service';
 import {AnnouncementService} from './services/announcement.service';
@@ -172,7 +172,6 @@ import {AppToAnalyseComponent} from './components/journal/app-to-analyse/app-to-
     // Charts
     NgxChartsModule
   ],
-  exports: [],
   providers: [
     // Core services
     AuthService,
@@ -209,4 +208,4 @@ import {AppToAnalyseComponent} from './components/journal/app-to-analyse/app-to-
     }
   ]
 })
-export class TreesModule {}
+export class TreesModule { }
