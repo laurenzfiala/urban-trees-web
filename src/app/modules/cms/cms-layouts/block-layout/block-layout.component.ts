@@ -30,15 +30,14 @@ export class BlockLayout extends AbstractCmsLayout {
   // -> SLOT_MAIN
   @ViewChild('slotMain', {read: ViewContainerRef})
   public slotMain: ViewContainerRef;
-  private slotMainElement: MutableWrapper<CmsElement> = new MutableWrapper<CmsElement>();
+  public slotMainElement: MutableWrapper<CmsElement> = new MutableWrapper<CmsElement>();
   // <-
 
   constructor(private serializationService: SerializationService,
               protected contentService: ContentService,
               protected toolbar: ToolbarService,
               protected cdRef: ChangeDetectorRef,
-              protected resolver: ComponentFactoryResolver,
-              private subs: SubscriptionManagerService) {
+              protected subs: SubscriptionManagerService) {
     super();
   }
 
@@ -50,7 +49,8 @@ export class BlockLayout extends AbstractCmsLayout {
 
   public async deserialize(data: any): Promise<void> {
     const sCmp = this.serializationService.deserializeElement(data.slot);
-    this.slotMainElement.set(await this.fillSlot(() => this.slotMain, sCmp, true));
+    const element = await this.fillSlot(() => this.slotMain, sCmp, true);
+    this.slotMainElement.set(element);
     this.update();
   }
 

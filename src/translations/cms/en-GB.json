@@ -9,7 +9,8 @@
       "last_saved_minute_ago": "Last saved {{minutes}} minute ago",
       "last_saved_minutes_ago": "Last saved {{minutes}} minutes ago",
       "last_saved_more_than_hour_ago": "Last saved more than an hour ago",
-      "failed": "Could not save draft"
+      "failed": "Could not publish",
+      "failed_draft": "Could not save draft"
     },
     "close": "Save Draft & Close"
   },
@@ -21,6 +22,14 @@
       "file": {
         "fileUid_is_falsy": "File reference must be set"
       }
+    }
+  },
+  "components": {
+    "img": {
+      "upload_tooltip": "Upload new image"
+    },
+    "file": {
+      "placeholder": "Upload a file"
     }
   }
 }

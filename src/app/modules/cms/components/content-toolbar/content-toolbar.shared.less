@@ -1,0 +1,110 @@
+@import (reference) "../../../../../theme/variables";
+
+@primaryBtnColor: lighten(#007bff, 5%);
+@toolbarBorder:   solid darken(@lightBorderColor, 10%) 1px;
+.iconDimensions() {
+  width: 2em;
+  height: 2em;
+}
+@iconSmPadding: 0.5em;
+
+.toolbar {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+
+  background-color: @bgColor;
+
+  &:not(:first-child) {
+    border-top: @toolbarBorder;
+  }
+
+  .toolbar-section,
+  .toolbar-align {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+  }
+
+  .toolbar-section.contextual {
+    &,
+    button {
+      box-shadow: 0 -@borderWidth 0 0 @primaryColorHighlight inset;
+    }
+  }
+
+  .toolbar-separator {
+    border-left: @toolbarBorder;
+
+    &.sm {
+      margin-top: @gutter;
+      margin-bottom: @gutter;
+    }
+  }
+
+  button,
+  .toolbar-close {
+    padding: (@gutter/2);
+
+    &.active,
+    &:hover {
+      background-color: @medLightGrey;
+    }
+  }
+
+  button {
+    padding-right: @gutter;
+    padding-left: @gutter;
+
+    background-color: transparent;
+    border: 0; // TODO
+
+    user-select: none;
+
+    &.primary {
+      color: @white;
+      background-color: fade(@primaryBtnColor, 75%);
+
+      &:hover {
+        background-color: @primaryBtnColor;
+      }
+    }
+
+    &.active {
+      background-color: darken(@medLightGrey, 10%);
+    }
+
+    &.dropdown-toggle {
+      opacity: 0.5;
+    }
+
+    > img {
+      .iconDimensions();
+      vertical-align: center;
+    }
+  }
+
+  .save-status {
+    color: @subtleTextColor;
+    font-size: @fontSizeExtraSmall;
+  }
+
+  @selectArrowWidth: 0.95em;
+  select {
+    appearance: none;
+    background-color: transparent;
+    border: none;
+
+    padding: (@gutter/2) (@gutter + @selectArrowWidth) (@gutter/2) @gutter;
+
+    background-image: url('/assets/img/icon/dark/chevron-down.svg');
+    background-repeat: no-repeat;
+    background-position: right (@gutter/2) top 50%;
+    background-size: @selectArrowWidth auto;
+    cursor: pointer;
+
+    &:hover {
+      background-image: url('/assets/img/icon/black/chevron-down.svg');
+    }
+  }
+}

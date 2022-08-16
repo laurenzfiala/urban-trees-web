@@ -13,7 +13,7 @@ import {Directive, ElementRef, Input, TemplateRef, ViewContainerRef} from '@angu
 export class ForNDirective {
 
   @Input('forN')
-  set forN(n: number | {start, end}) {
+  set forN(n: number | {start: number, end: number}) {
 
     let start = 0;
     let end;

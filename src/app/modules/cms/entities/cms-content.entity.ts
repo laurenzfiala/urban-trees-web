@@ -65,18 +65,6 @@ export class CmsContent {
     this.content = content;
   }
 
-  public isSaved(): boolean {
-    return this.saved !== undefined;
-  }
-
-  public isSent(): boolean {
-    return this.sent !== undefined;
-  }
-
-  public isStored(): boolean {
-    return this.stored !== undefined;
-  }
-
   /**
    * Iterates over all properties in this CMS content and
    * formats the dates using the global outputDateFormat.

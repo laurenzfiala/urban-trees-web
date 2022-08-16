@@ -1,10 +1,14 @@
-import {Component, Input, OnDestroy, OnInit} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {ActivatedRoute} from '@angular/router';
 import {TreeService} from '../../services/tree.service';
 import {Tree} from '../../entities/tree.entity';
 import {EnvironmentService} from '../../../shared/services/environment.service';
-import { Mode } from '../../../shared/components/zoom/zoom.component';
+import {Mode} from '../../../shared/components/zoom/zoom.component';
 import {AbstractComponent} from '../../../shared/components/abstract.component';
+import {CmsContent} from '../../../cms/entities/cms-content.entity';
+import {ViewMode} from '../../../cms/enums/cms-layout-view-mode.enum';
+import {ContentService} from '../../../cms/services/content.service';
+import {UserContent} from '../../../cms/entities/user-content.entity';
 
 @Component({
   selector: 'ut-tree',
@@ -18,6 +22,12 @@ export class TreeComponent extends AbstractComponent implements OnInit {
   public StatusKey = StatusKey;
   public StatusValue = StatusValue;
   public Mode = Mode;
+  public ViewMode = ViewMode;
+
+  public treeContentPath: string;
+  public treeContentLang: string;
+  public treeContent: CmsContent;
+  public treeContentViewMode: ViewMode = ViewMode.CONTENT;
 
   /**
    * If the route param does not hold a tree ID, this may hold the fallback.
@@ -32,6 +42,7 @@ export class TreeComponent extends AbstractComponent implements OnInit {
 
   constructor(private route: ActivatedRoute,
               private treeService: TreeService,
+              private contentService: ContentService,
               public envService: EnvironmentService) {
     super();
   }
@@ -64,11 +75,20 @@ export class TreeComponent extends AbstractComponent implements OnInit {
     this.setStatus(StatusKey.TREE_LOADING, StatusValue.IN_PROGRESS);
     this.treeService.loadTree(treeId, (tree: Tree) => {
       this.tree = tree;
+      this.loadTreeContent();
       this.setStatus(StatusKey.TREE_LOADING, StatusValue.SUCCESSFUL);
     }, (error, apiError) => {
       this.setStatus(StatusKey.TREE_LOADING, StatusValue.FAILED);
     });
 
+  }
+
+  private loadTreeContent(): void {
+    this.treeContentPath = '/tree/' + this.tree.id;
+    this.treeContentLang = 'de-DE';
+    this.contentService.loadContent(this.treeContentPath, this.treeContentLang, content => {
+      this.treeContent = CmsContent.fromUserContent(content[0], this.envService);
+    });
   }
 
 }

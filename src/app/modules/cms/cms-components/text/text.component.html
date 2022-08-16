@@ -1,5 +1,8 @@
 <div #textEditElement
-     class="cms-text-container"
-     [contentEditable]="isEditContent()"
+     class="cms-component cms-text-container cms-element-border"
+     [contentEditable]="hasViewMode(ViewMode.EDIT_CONTENT)"
      [innerHTML]="text"
+     (drop)="$event.preventDefault()"
+     (focus)="focus()"
+     (focusout)="focusOut()"
 ></div>

@@ -208,6 +208,9 @@
       "BEACON_READOUT": "Beacon ausgelesen",
       "PHENOLOGY_IMAGE_UPLOAD": "Bild für Phänologie hochgeladen",
       "PHENOLOGY_OBSERVATION": "Phänologiebeobachtung",
+      "USER_EXP_DAYS_SUBMIT": "Experimentiertage abgeschickt",
+      "USER_MODULE_SENSOR2APP_SUBMIT": "Sensor2App abgeschickt",
+      "USER_MODULE_APP2ANALYSE_SUBMIT": "App2Analyse abgeschickt",
       "UPGRADE_ACCOUNT": "Veralteter Account erneuert",
       "ADMIN_THANKYOU": "Belohnung fürs Helfen (Danke!)"
     }
@@ -564,7 +567,7 @@
     "title": "Willkommen bei&nbsp;<b>Coole Bäume &amp; Sensoren</b>!",
     "desc": "Du kannst diese Website benutzen, um Phänologiedaten zu Bäumen einzutragen, Informationen und Statistiken über die Bäume und Beacons anzusehen und um Punkte durch Mithelfen zu erhalten!",
     "title_user": "Willkommen zurück, {{username}}!",
-    "desc_user": "Mehr Informationen und Neuigkeiten zum Projekt kannst Du auf der Startseite finden. Bei Fragen oder Anregungen, wende Dich an <a href=\"mailto:co2bs.ffg@sbg.ac.at\" class=\"link\">co2bs.ffg@sbg.ac.at</a>. Wir wünschen viel Spaß beim Forschen!",
+    "desc_user": "Mehr Informationen und Neuigkeiten zum Projekt kannst Du auf der Startseite finden. Bei Fragen oder Anregungen, wende Dich an <a href=\"mailto:co2bs.ffg@plus.ac.at\" class=\"link\">co2bs.ffg@plus.ac.at</a>. Wir wünschen viel Spaß beim Forschen!",
     "action_settings": "Kontoeinstellungen",
     "action_logout": "Abmelden",
     "cms_history": {
@@ -574,11 +577,6 @@
     "phenobs_history": {
       "title": "Meine Phänologiebeobachtungen",
       "error": "Meine Beobachtungen konnten nicht geladen werden."
-    },
-    "journal": {
-      "title": "Mein Forschungstagebuch",
-      "text": "",
-      "action": "Forschungstagebuch"
     }
   },
   "user_overview": {

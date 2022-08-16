@@ -21,7 +21,11 @@ export class Notification {
   public dismiss: EventEmitter<any> = new EventEmitter<any>();
   public action: EventEmitter<any> = new EventEmitter<any>();
 
-  constructor(title?: string, subtitle?: string, type: NotificationType = NotificationType.none, content?: TemplateRef<any>, dismissable: boolean = true) {
+  constructor(title?: string,
+              subtitle?: string,
+              type: NotificationType = NotificationType.none,
+              content?: TemplateRef<any>,
+              dismissable: boolean = true) {
     this.title = title;
     this.subtitle = subtitle;
     this.type = type;

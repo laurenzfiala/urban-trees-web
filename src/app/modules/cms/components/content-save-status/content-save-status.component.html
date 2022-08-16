@@ -1,13 +1,14 @@
 <div class="d-flex align-items-center">
 
   <ng-container *ngIf="saveTimer.content && hasStatus(StatusKey.SAVE, StatusValue.SUCCESSFUL)">
-    {{ this.saveTimer.msgKey | translate:{'minutes': this.saveTimer.durationSinceSave.minutes()} }}
+    {{ this.saveTimer.msgKey | translate:{'minutes': this.saveTimer.durationSinceSave?.minutes()} }}
   </ng-container>
   <ng-container *ngIf="hasStatus(StatusKey.SAVE, StatusValue.IN_PROGRESS)">
     {{'toolbar.save.in_progress' | translate}} <i class="i i-xs ml-1 i-dark i-save"></i>
   </ng-container>
   <ng-container *ngIf="hasStatus(StatusKey.SAVE, StatusValue.FAILED)">
-    <span class="text-danger">{{'toolbar.save.failed' | translate}}</span> <i class="ml-1  flex-shrink-0 i i-xxs i-warning-danger"></i>
+    <span class="text-danger">{{(isDraft ? 'toolbar.save.failed_draft' : 'toolbar.save.failed') | translate}}</span>
+    <i class="ml-1  flex-shrink-0 i i-xxs i-warning-danger"></i>
   </ng-container>
 
 </div>

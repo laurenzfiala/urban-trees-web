@@ -1,45 +1,23 @@
-<div class="mb-3">
-  <div class="mb-1 text-lg">Der Experimentiertag hat mir...</div>
-  <div class="d-flex align-items-center">
-    <i class="i i-lg i-star-filled"></i>
-    <i class="i i-lg i-star-filled"></i>
-    <i class="i i-lg i-star-filled"></i>
-    <i class="i i-lg i-star-empty"></i>
-    <i class="i i-lg i-star-empty"></i>
-    <div class="ml-2">
-      gut gefallen!
-    </div>
+
+<ut-cms-exp-days-layout #expDaysLayout></ut-cms-exp-days-layout>
+
+<div class="d-flex flex-row flex-wrap save-toolbar mx--2 mb--2 mt-2">
+  <button class="btn btn-primary m-2"
+          (action)="save()">Speichern</button>
+  <div *ngIf="hasStatus(StatusKey.SAVE, StatusValue.IN_PROGRESS)"
+       class="d-flex flex-row align-items-center justify-content-center m-2">
+    <i class="i i-sm i-black i-save mr-1"></i>
+    Speichere...
+  </div>
+  <div *ngIf="hasStatus(StatusKey.SAVE, StatusValue.SUCCESSFUL)"
+       class="d-flex flex-row align-items-center justify-content-center text-success m-2">
+    <i class="i i-sm i-check-success i-save mr-1"></i>
+    Gespeichert!
+  </div>
+  <div *ngIf="hasStatus(StatusKey.SAVE, StatusValue.FAILED)"
+       class="d-flex flex-row align-items-center justify-content-center text-danger m-2">
+    <i class="i i-sm i-cross-danger i-save mr-1"></i>
+    Fehler: {{getStatusError(StatusKey.MODEL)?.message}}
   </div>
 </div>
-
-<div class="mb-3">
-  <div class="mb-1 text-lg">Mein Lieblingsexperiment war:</div>
-  <div class="d-flex flex-row">
-    <div class="experiment active">
-      <img src="/assets/img/journal/expdays/experiments/leaves_in_plastic.JPG" />
-      <div>Blätter im Plastiksack</div>
-    </div>
-    <div class="experiment">
-      <img src="/assets/img/journal/expdays/experiments/leaves_in_plastic.JPG" />
-      <div>Blätter im Plastiksack</div>
-    </div>
-  </div>
-</div>
-
-<div class="mb-3">
-  <div class="mb-1 text-lg">Das habe ich gelernt:</div>
-  <textarea></textarea>
-</div>
-
-<div class="d-flex align-items-center mb-3">
-  <div class="mr-2 text-lg">Mein Erinnerungsbild</div>
-  <div>
-    <img src="/assets/img/bud_icon_1.png" style="border-radius: 50%">
-  </div>
-</div>
-
-<button class="btn btn-primary">Speichern</button>
-
-
-
 

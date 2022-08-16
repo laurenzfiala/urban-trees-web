@@ -5,9 +5,9 @@
     class="login-container"
     [ngClass]="{'col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto max-width': !embed}">
 
-    <h4 class="mb-3">
+    <h1 class="mb-3 mt-0">
       {{'login.heading' | translate}}
-    </h4>
+    </h1>
 
     <form (submit)="logout()">
       <div class="mb-3">
@@ -27,9 +27,9 @@
     class="login-container fp-bg-medlight"
     [ngClass]="{'col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto max-width': !embed}">
 
-    <h4 class="mb-3">
+    <h1 class="mb-3 mt-0">
       {{'login.heading' | translate}}
-    </h4>
+    </h1>
 
     <form (submit)="login()">
       <fieldset [attr.disabled]="!isSslConnection() ? true : null">

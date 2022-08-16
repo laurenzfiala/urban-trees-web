@@ -9,7 +9,7 @@ import {PhenologyObservationService} from '../../services/phenology/observation/
 import {PhenologyDatasetWithTree} from '../../entities/phenology-dataset-with-tree.entity';
 import * as moment from 'moment';
 import {environment} from '../../../../../environments/environment';
-import {ListComponent} from '../list/list.component';
+import {ListComponent} from '../../../shared/components/list/list.component';
 import {
   CmsComponentConfig,
   CmsContentConfig,
@@ -32,7 +32,7 @@ import {ViewMode} from '../../../cms/enums/cms-layout-view-mode.enum';
 @Component({
   selector: 'ut-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.less', '../list/list.shared.less']
+  styleUrls: ['./home.component.less', '../../../shared/components/list/list.shared.less']
 })
 export class HomeComponent extends AbstractComponent implements OnInit, OnDestroy {
 
@@ -49,22 +49,6 @@ export class HomeComponent extends AbstractComponent implements OnInit, OnDestro
    */
   public statistics: SystemStatistics;
 
-  public ViewMode = ViewMode;
-  public testContent: CmsContent;
-  public testContentViewMode: ViewMode = ViewMode.CONTENT;
-  public testContentConfig: CmsContentConfig = new CmsContentConfig(
-    [new CmsLayoutConfig(
-      BlockLayout,
-      [
-        new CmsLayoutSlotConfig(
-          'all',
-          'all'
-        )
-      ]
-    )],
-    [new CmsComponentConfig(TextComponent)]
-  );
-
   constructor(private uiService: UIService,
               private phenObsService: PhenologyObservationService,
               private contentService: ContentService,
@@ -78,10 +62,6 @@ export class HomeComponent extends AbstractComponent implements OnInit, OnDestro
   public ngOnInit() {
     this.load();
     this.setStatus(StatusKey.PHENOBS_HISTORY, StatusValue.IN_PROGRESS);
-
-    this.contentService.loadContent('/test/1', 'de-DE', content => {
-      this.testContent = CmsContent.fromUserContent(content[0], this.envService);
-    });
   }
 
   public ngOnDestroy() {
@@ -89,7 +69,7 @@ export class HomeComponent extends AbstractComponent implements OnInit, OnDestro
   }
 
   /**
-   * Load all resource neccessary for this page.
+   * Load all resource necessary for this page.
    */
   public load(): void {
     this.loadCmsHistory();

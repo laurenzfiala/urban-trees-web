@@ -649,6 +649,38 @@ class EnvironmentEndpoints {
 
   }
 
+  public loadContentFile(fileUid: number, contentPath: string, filename: string): string {
+
+    let replacements: any[] = [
+      { placeholder: 'fileUid', replacement: fileUid },
+      { placeholder: 'contentPath', replacement: contentPath },
+      { placeholder: 'filename', replacement: filename }
+    ];
+
+    return this.prependCommonPath(
+      this.replaceParams(
+        this.context.loadContentFile,
+        replacements
+      )
+    );
+
+  }
+
+  public saveContentFile(contentPath: string): string {
+
+    let replacements: any[] = [
+      { placeholder: 'contentPath', replacement: contentPath }
+    ];
+
+    return this.prependCommonPath(
+      this.replaceParams(
+        this.context.saveContentFile,
+        replacements
+      )
+    );
+
+  }
+
   public saveContent(contentPath: string,
                      contentLang: string,
                      isDraft: boolean = true): string {
@@ -684,6 +716,111 @@ class EnvironmentEndpoints {
     return this.prependCommonPath(
       this.replaceParams(
         this.context.loadContentUserHistory,
+        replacements
+      )
+    );
+
+  }
+
+  public managerContentAccessViewable(pathExp: string): string {
+
+    let replacements: any[] = [
+      { placeholder: 'pathExp', replacement: pathExp ? ('?pathExp=' + pathExp) : '' }
+    ];
+
+    return this.prependCommonPath(
+      this.replaceParams(
+        this.context.managerContentAccessViewable,
+        replacements
+      )
+    );
+
+  }
+
+  public managerContentAccessApprovable(pathExp: string): string {
+
+    let replacements: any[] = [
+      { placeholder: 'pathExp', replacement: pathExp ? ('?pathExp=' + pathExp) : '' }
+    ];
+
+    return this.prependCommonPath(
+      this.replaceParams(
+        this.context.managerContentAccessApprovable,
+        replacements
+      )
+    );
+
+  }
+
+  public managerContentViewable(accessId: number): string {
+
+    let replacements: any[] = [
+      { placeholder: 'accessId', replacement: accessId }
+    ];
+
+    return this.prependCommonPath(
+      this.replaceParams(
+        this.context.managerContentViewable,
+        replacements
+      )
+    );
+
+  }
+
+  public managerContentApprovable(accessId: number): string {
+
+    let replacements: any[] = [
+      { placeholder: 'accessId', replacement: accessId }
+    ];
+
+    return this.prependCommonPath(
+      this.replaceParams(
+        this.context.managerContentApprovable,
+        replacements
+      )
+    );
+
+  }
+
+  public managerContent(contentUid: number): string {
+
+    let replacements: any[] = [
+      { placeholder: 'contentUid', replacement: contentUid }
+    ];
+
+    return this.prependCommonPath(
+      this.replaceParams(
+        this.context.managerContent,
+        replacements
+      )
+    );
+
+  }
+
+  public managerApproveContent(contentUid: number): string {
+
+    let replacements: any[] = [
+      { placeholder: 'contentUid', replacement: contentUid }
+    ];
+
+    return this.prependCommonPath(
+      this.replaceParams(
+        this.context.managerApproveContent,
+        replacements
+      )
+    );
+
+  }
+
+  public managerDenyContent(contentUid: number): string {
+
+    let replacements: any[] = [
+      { placeholder: 'contentUid', replacement: contentUid }
+    ];
+
+    return this.prependCommonPath(
+      this.replaceParams(
+        this.context.managerDenyContent,
         replacements
       )
     );
@@ -726,6 +863,10 @@ class Security {
 
   get rolesJournal() {
     return this.context.roles.journal;
+  }
+
+  get rolesTeacher() {
+    return this.context.roles.teacher;
   }
 
   get rolesPhenObs() {

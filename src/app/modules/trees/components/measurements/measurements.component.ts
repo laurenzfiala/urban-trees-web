@@ -99,7 +99,7 @@ export class MeasurementsComponent extends AbstractComponent implements OnInit {
     }
 
     // debounce search input (for improved performance)
-    setTimeout(() => {
+    window.setTimeout(() => {
       if (this.beaconSearchInput !== value) {
         return;
       }

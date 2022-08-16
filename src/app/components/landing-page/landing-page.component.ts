@@ -83,7 +83,7 @@ export class LandingPageComponent implements OnInit, AfterViewInit {
 
   private startSlideCycle(): void {
 
-    this.cycleIntervalId = setInterval(() => {
+    this.cycleIntervalId = window.setInterval(() => {
       if (!this._runSlideCycle) {
         return;
       }

@@ -9,7 +9,8 @@
       "last_saved_minute_ago": "Zuletzt vor einer Minute gespeichert",
       "last_saved_minutes_ago": "Zuletzt vor {{minutes}} Minuten gespeichert",
       "last_saved_more_than_hour_ago": "Zuletzt vor mehr als einer Stunde gespeichert",
-      "failed": "Entwurf konnte nicht gespeichert werden"
+      "failed": "Entwurf konnte nicht gespeichert werden",
+      "failed_draft": "Inhalt konnte nicht veröffentlicht werden"
     },
     "close": "Entwurf speichern & schließen"
   },
@@ -18,6 +19,14 @@
       "text": {
         "empty": "Text darf nicht leer sein"
       }
+    }
+  },
+  "components": {
+    "img": {
+      "upload_tooltip": "Neues Bild hochladen"
+    },
+    "file": {
+      "placeholder": "Datei hochladen"
     }
   }
 }

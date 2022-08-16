@@ -25,6 +25,9 @@ export abstract class AbstractService {
       return null;
     }
     let apiErr = ApiError.fromObject(o);
+    if (o.status === 0) {
+      apiErr.message = 'Server cannot be reached';
+    }
     if (apiErr) {
       return apiErr
         .withStatusCode(o.status);

@@ -41,6 +41,35 @@
   </div>
 </section>
 
+<section *auth="envService.security.rolesTeacher" class="content-cat">
+  <div class="container clearfix">
+
+    <div class="responsive-float m--2">
+      <div class="m-2">
+        <h1 class="content-cat-heading">Lehrende</h1>
+        Inhalte und Links für Lehrpersonen.
+      </div>
+    </div>
+
+    <a class="content-cat-link d-flex flex-row align-items-center link-container mt-4"
+       routerLink="/teacher/journal">
+      <div class="link">
+        Forschungstagebücher ansehen
+      </div>
+      <i class="i i-sm i-dark i-arrow-right ml-1" aria-hidden="true"></i>
+    </a>
+
+    <a class="content-cat-link d-flex flex-row align-items-center link-container"
+       routerLink="/methodbox">
+      <div class="link">
+        Digitale Methodenbox
+      </div>
+      <i class="i i-sm i-dark i-arrow-right ml-1" aria-hidden="true"></i>
+    </a>
+
+  </div>
+</section>
+
 <section *auth="envService.security.rolesJournal" class="content-cat">
   <div class="container clearfix">
 
@@ -48,7 +77,7 @@
       <img class="journal float-right m-2" src="/assets/img/icon/special/placeholder.svg" />
 
       <div class="m-2">
-        <div class="content-cat-heading">{{'home.journal.title' | translate }}</div>
+        <h1 class="content-cat-heading">Mein Forschungstagebuch</h1>
         In Deinem Forschungstagebuch findest Du Arbeitsblätter und Aufgaben zum Üben.
         Mit diesen Aufgaben wird es dir leichter fallen dir den Inhalt der Workshops zu merken.
       </div>
@@ -57,7 +86,7 @@
     <a class="content-cat-link d-inline-flex flex-row align-items-center link-container"
        routerLink="/journal">
       <div class="link">
-        {{'home.journal.action' | translate}}
+        Forschungstagebuch
       </div>
       <i class="i i-sm i-dark i-arrow-right ml-1" aria-hidden="true"></i>
     </a>
@@ -125,25 +154,6 @@
         </a>
       </div>
     </ng-template>
-
-  </div>
-</section>
-
-<section class="content-cat">
-  <div class="container">
-
-    <ut-cms-content *ngIf="testContent"
-                    contentPath="/test/1"
-                    contentLang="de-DE"
-                    [(content)]="testContent"
-                    [config]="testContentConfig"
-                    [(viewMode)]="testContentViewMode"></ut-cms-content>
-
-    <button *ngIf="testContentViewMode === ViewMode.CONTENT"
-            class="btn btn-primary"
-            (action)="testContentViewMode = ViewMode.EDIT_CONTENT">
-      Edit content
-    </button>
 
   </div>
 </section>

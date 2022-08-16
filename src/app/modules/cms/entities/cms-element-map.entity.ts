@@ -75,7 +75,7 @@ export class CmsElementDescriptor {
   private _type: Type<unknown>;
 
   /**
-   * Defines the sttaic toolbar for this element.
+   * Defines the static toolbar for this element.
    */
   private _toolbarSection: ToolbarSection<ToolbarBtn>;
 
@@ -154,14 +154,27 @@ export class EDToolbarBtnBuilder {
               private btn: ToolbarBtn) {}
 
   /**
-   * Subscribes to the toolbar buttons' action
-   * and returns the parent builder.
+   * Subscribes to the toolbar buttons' action.
    * @param observer observer which gets the updates
    * @param subscription created subscription (to enable unsubscribing)
    */
-  public onAction(observer: PartialObserver<any>, subscription: (Subscription) => void): EDBuilder {
-    subscription(this.btn.actionObservable().subscribe(observer));
+  public onAction(observer: PartialObserver<any>, subscription: (Subscription) => void): EDToolbarBtnBuilder {
+    subscription(this.btn.onAction().subscribe(observer));
+    return this;
+  }
+
+  /**
+   * Returns the parent builder.
+   */
+  public and() {
     return this.parent;
+  }
+
+  /**
+   * Builds the CMS element descriptor.
+   */
+  public build() {
+    return this.parent.build();
   }
 
 }

@@ -85,8 +85,19 @@ export const environment = {
     // CMS
     loadContent:                      '/content?path={contentPath}&lang={contentLang}',
     saveContentDraft:                 '/content/draft?path={contentPath}&lang={contentLang}',
+    loadContentFile:                  '/content/file/{fileUid}?path={contentPath}&filename={filename}',
+    saveContentFile:                  '/content/file?path={contentPath}',
     publishContent:                   '/content?path={contentPath}&lang={contentLang}',
-    loadContentUserHistory:           '/user/{userId}/content?path={path}'
+    loadContentUserHistory:           '/user/{userId}/content?path={path}',
+
+    // CMS Manager
+    managerContentAccessViewable:     '/manage/content/access/viewable{pathExp}',
+    managerContentAccessApprovable:   '/manage/content/access/approvable{pathExp}',
+    managerContentViewable:           '/manage/content/viewable?accessId={accessId}',
+    managerContentApprovable:         '/manage/content/approvable?accessId={accessId}',
+    managerContent:                   '/manage/content/{contentUid}',
+    managerApproveContent:            '/manage/content/{contentUid}/approve',
+    managerDenyContent:               '/manage/content/{contentUid}/deny'
   },
 
   contentSaveDebounceMs:              30_000,
@@ -108,7 +119,7 @@ export const environment = {
     minUsernameLength:                  5,
     minPasswordLength:                  10,
     jwtTokenExpireMs:                   86400000,
-    adminTimeoutMs:                     1800000,
+    adminTimeoutMs:                     3600000,
 
     interceptorRedirectExclusions:      ['/login'],
 
@@ -116,6 +127,7 @@ export const environment = {
       user:                             ['ROLE_USER'],
       treeEditor:                       ['ROLE_TREE_EDITOR'],
       journal:                          ['ROLE_JOURNAL', 'ROLE_PUPIL'],
+      teacher:                          ['ROLE_TEACHER'],
       phenObs:                          ['ROLE_PHENOBS'],
       allData:                          ['ROLE_ALL_DATA', 'ROLE_ADMIN'],
       admin:                            ['ROLE_ADMIN'],

@@ -187,7 +187,7 @@ export class BeaconSelectComponent extends AbstractComponent implements OnInit, 
 
     if (debounce) {
       // debounce search input (for improved performance)
-      setTimeout(fn, this.envService.searchDebounceMs);
+      window.setTimeout(fn, this.envService.searchDebounceMs);
     } else {
       fn();
     }

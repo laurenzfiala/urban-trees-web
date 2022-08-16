@@ -1,4 +1,4 @@
-import {Observable} from 'rxjs';
+import {BehaviorSubject, Observable} from 'rxjs';
 import {ElementType} from '../enums/cms-element-type.enum';
 import {CmsValidationResults} from '../entities/cms-validation-results.entity';
 

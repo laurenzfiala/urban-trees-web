@@ -16,9 +16,14 @@ export enum ViewMode {
   EDIT_CONTENT,
 
   /**
-   * Hide the content so layout bounds can be seen.
+   * Show layout bounds and layout editiing buttons.
    * This is used for e.g. a new component.
    */
-  EDIT_LAYOUT
+  EDIT_LAYOUT,
+
+  /**
+   * Show drop targets while a component is selected/dragged for insertion.
+   */
+  INSERT_ELEMENT
 
 }

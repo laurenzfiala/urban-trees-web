@@ -1,12 +1,27 @@
-<div *ngIf="isEditContent(); else fileViewContent" class="cms-file-container"
-     (focus)="focus()"
-     (focusout)="focusOut()"
->
-  <img [src]="'http://localhost/content/file/' + fileUid + '?path=/test/1' | auth | async" />
-</div>
-
-<ng-template #fileViewContent>
-  <div class="cms-file-container">
-    <img *ngIf="fileUid" [src]="'http://localhost/content/file/' + fileUid + '?path=/test/1' | auth | async" />
+<div class="cms-component">
+  <div *ngIf="!hasViewMode(ViewMode.CONTENT)"
+       class="cms-file-container custom-file"
+       (focus)="focus()"
+       (focusout)="focusOut()">
+    <div class="custom-file d-flex flex-row">
+      <div class="flex-grow-1 position-relative">
+        <input
+          type="file"
+          class="custom-file-input"
+          [tabindex]="hasViewMode(ViewMode.EDIT_LAYOUT, ViewMode.INSERT_ELEMENT) ? -1 : 0"
+          (change)="uploadFile($event);">
+        <label class="custom-file-label">
+          {{filename ? filename : ('components.file.placeholder' | translate)}}
+        </label>
+      </div>
+    </div>
   </div>
-</ng-template>
+
+  <div *ngIf="hasViewMode(ViewMode.CONTENT) && fileUid">
+    <a class="btn"
+       [href]="getFileUrl()">
+      <i class="i i-xs i-black i-file mr-1"></i>
+      {{filename}}
+    </a>
+  </div>
+</div>

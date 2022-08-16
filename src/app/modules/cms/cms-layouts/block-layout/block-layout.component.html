@@ -1,3 +1,5 @@
-<div class="cms-layout cms-layout-block">
+<div class="cms-layout cms-layout-block position-relative">
   <ng-template #slotMain></ng-template>
+
+  <ut-edit-layout *ngIf="hasViewMode(ViewMode.EDIT_LAYOUT, ViewMode.INSERT_ELEMENT)" [layout]="this"></ut-edit-layout>
 </div>

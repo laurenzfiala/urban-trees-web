@@ -1,0 +1,46 @@
+@import (reference) "../../../../../theme/variables";
+
+[role="button"].disabled {
+  opacity: 0.25;
+  pointer-events: none;
+}
+button.disabled {
+   opacity: 0.5;
+   pointer-events: none;
+ }
+
+.access-nav {
+  flex-shrink: 0;
+  width: 100%;
+  padding: (@gutter/2);
+
+  .toggle {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: -1px;
+  }
+}
+
+.content-nav {
+  position: sticky;
+  top: -1px;
+  z-index: @navZIndex;
+
+  margin-top: -1px;
+
+  .arrow {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: @gutter;
+
+    &:hover,
+    &:focus {
+      background-color: @lightBorderColor;
+    }
+  }
+}
+
+.content-container {
+}

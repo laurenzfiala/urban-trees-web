@@ -1,7 +1,15 @@
 @import (reference) "../../../../../theme/variables";
 
-::ng-deep .cms-file-container {
-  img {
-    width: 200px;
+a.btn {
+  display: inline-flex;
+  flex-direction: row;
+  align-items: center;
+
+  background-color: @white;
+  border: solid @lightBorderColor @borderWidth;
+  border-radius: 0.5em;
+
+  > * {
+    flex-shrink: 0;
   }
 }

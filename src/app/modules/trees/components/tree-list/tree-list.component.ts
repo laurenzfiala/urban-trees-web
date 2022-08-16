@@ -167,7 +167,7 @@ export class TreeListComponent extends AbstractComponent implements OnInit {
     this.selectedTree = null;
 
     // debounce search input (for improved performance)
-    setTimeout(() => {
+    window.setTimeout(() => {
       if (this.treeSearchInput !== searchInput) {
         return;
       }

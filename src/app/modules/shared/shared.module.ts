@@ -16,11 +16,14 @@ import {ZoomComponent} from './components/zoom/zoom.component';
 import {TranslateModule} from '@ngx-translate/core';
 import {AuthPipe} from './pipes/auth.pipe';
 import {CastDirective} from './directives/cast.directive';
+import {ListComponent} from './components/list/list.component';
+import {MapEntriesPipe} from './pipes/map-entries.pipe';
 
 @NgModule({
   declarations: [
     // Components
     ZoomComponent,
+    ListComponent,
 
     // Directives
     ActionDirective,
@@ -36,7 +39,8 @@ import {CastDirective} from './directives/cast.directive';
     CastDirective,
 
     // Pipes
-    AuthPipe
+    AuthPipe,
+    MapEntriesPipe
   ],
   imports: [
     CommonModule,
@@ -45,6 +49,7 @@ import {CastDirective} from './directives/cast.directive';
   exports: [
     // Components
     ZoomComponent,
+    ListComponent,
 
     // Directives
     ActionDirective,
@@ -60,7 +65,8 @@ import {CastDirective} from './directives/cast.directive';
     CastDirective,
 
     // Pipes
-    AuthPipe
+    AuthPipe,
+    MapEntriesPipe
   ],
   providers: [
     // Interceptors

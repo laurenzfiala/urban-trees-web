@@ -1,5 +1,5 @@
 import {Injectable, Type} from '@angular/core';
-import {HttpClient, HttpErrorResponse} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpEventType} from '@angular/common/http';
 import {ApiError} from '../../shared/entities/api-error.entity';
 import {AbstractService} from '../../shared/services/abstract.service';
 import {Log} from '../../shared/services/log.service';
@@ -16,6 +16,7 @@ import {CmsContent} from '../entities/cms-content.entity';
 import {UserContent} from '../entities/user-content.entity';
 import {UserContentMetadata} from '../entities/user-content-metadata.entity';
 import {ViewMode} from '../enums/cms-layout-view-mode.enum';
+import {User} from '../../trees/entities/user.entity';
 
 /**
  * Handles loading and saving of CMS content.
@@ -30,6 +31,12 @@ export class ContentService extends AbstractService {
   private static LOG: Log = Log.newInstance(ContentService);
 
   /**
+   * Content displayed by the content component
+   * that this service is scoped to.
+   */
+  public content: CmsContent;
+
+  /**
    * Holds the mapping from string to type for all cms
    * elements in the associated content component.
    */
@@ -41,15 +48,33 @@ export class ContentService extends AbstractService {
   private updateSubject: Subject<void> = new Subject<void>();
 
   /**
-   * Subject used to notify content component of new elements.
+   * Subject used to notify content component that a new root-level
+   * element has been dropped at a given location (index).
    */
-  private elementAddSubject: Subject<CmsElement> = new Subject<CmsElement>();
+  private elementDroppedSubject: Subject<number> = new Subject<number>();
+
+  /**
+   * Subject used to notify content component that a root-level
+   * element is to be removed from the content.
+   */
+  private elementRemoveSubject: Subject<CmsElement> = new Subject<CmsElement>();
+
+  /**
+   * Subject used to instruct content component to undo/redo
+   * an editing step.
+   */
+  private undoSubject: Subject<boolean> = new Subject<boolean>();
 
   /**
    * Subject used to notify content component (and parents)
    * of a change in view mode.
    */
   private viewModeChangeSubject: Subject<ViewMode>;
+
+  /**
+   * TODO
+   */
+  private contentPathSubject: BehaviorSubject<string>;
 
   /**
    * How to display the associated content.
@@ -61,6 +86,25 @@ export class ContentService extends AbstractService {
               private envService: EnvironmentService) {
     super();
     this.viewModeChangeSubject = new BehaviorSubject<ViewMode>(this._viewMode);
+  }
+
+  public contentPath(): BehaviorSubject<string> {
+    if (!this.contentPathSubject) {
+      throw new Error('CMS element requested content path, but it was not set.');
+    }
+    return this.contentPathSubject;
+  }
+
+  /**
+   * TODO
+   * @param contentPath
+   */
+  public setContentPath(contentPath: string) {
+    if (this.contentPathSubject) {
+      this.contentPathSubject.next(contentPath);
+    } else {
+      this.contentPathSubject = new BehaviorSubject<string>(contentPath);
+    }
   }
 
   /**
@@ -110,6 +154,48 @@ export class ContentService extends AbstractService {
 
   }
 
+  public saveContentFile(contentPath: string,
+                         file: File,
+                         successCallback: (fileId: number) => void,
+                         errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void): Observable<number> {
+
+    if (!file) {
+      ContentService.LOG.debug('No content file given to save.');
+      return;
+    }
+
+    const url = this.envService.endpoints.saveContentFile(contentPath);
+    ContentService.LOG.debug('Saving content file at ' + contentPath + '...');
+
+    let formdata: FormData = new FormData();
+    formdata.append('file', file);
+
+    let uploadProgressSubject = new Subject<number>();
+
+    let uploadProgress = 0;
+    this.http.post(url, formdata, {reportProgress: true, responseType: 'text'})
+      .subscribe((event: any) => {
+      if (event.type === HttpEventType.UploadProgress) {
+        uploadProgress = Math.round(100 * event.loaded / event.total);
+        ContentService.LOG.info('Uploading content file: ' + uploadProgress + ' %');
+        uploadProgressSubject.next(uploadProgress);
+      } else {
+        const fileId = Number.parseInt(event, 10);
+        ContentService.LOG.info('Successfully uploaded content file with id ' + fileId + '.');
+        successCallback(fileId);
+        uploadProgressSubject.complete();
+      }
+    }, (e: any) => {
+      ContentService.LOG.error('Could not upload content image: ' + e.error.message, e);
+      if (errorCallback) {
+        errorCallback(e, this.safeApiError(e));
+      }
+    });
+
+    return uploadProgressSubject.asObservable();
+
+  }
+
   /**
    * Save the given content for the given content id on the backend.
    * @param contentPath content path
@@ -123,7 +209,7 @@ export class ContentService extends AbstractService {
                      contentLang: string,
                      isDraft: boolean,
                      content: CmsContent,
-                     successCallback: (userContent: CmsContent) => void,
+                     successCallback: (cmsContent: CmsContent) => void,
                      errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void): void {
 
     const url = this.envService.endpoints.saveContent(contentPath, contentLang, isDraft);
@@ -131,10 +217,11 @@ export class ContentService extends AbstractService {
     ContentService.LOG.debug('Saving content at ' + contentPath + '...');
 
     this.http.post<UserContent>(url, content.toJSONObject(this.envService))
-      .map(uc => CmsContent.fromUserContent(uc, this.envService))
-      .subscribe((uc: CmsContent) => {
+      .subscribe((uc: UserContent) => {
         ContentService.LOG.debug('Saved content at ' + contentPath + ' successfully.');
-        successCallback(uc);
+        this.content = CmsContent.fromUserContent(uc, this.envService);
+        this.content.historyId = uc.id;
+        successCallback(content);
       }, (e: any) => {
         ContentService.LOG.error('Could not save content at ' + contentPath + ': ' + e.message, e);
         if (errorCallback) {
@@ -162,6 +249,7 @@ export class ContentService extends AbstractService {
 
   /**
    * @param elementName cms element name (see #getName())
+   * @return type of the given CMS element, or null
    * @see CmsElementMap
    */
   public getElement(elementName: string): Type<unknown> {
@@ -203,18 +291,35 @@ export class ContentService extends AbstractService {
   }
 
   /**
-   * Signal that a new element has been added.
+   * Signal that a root-level element
+   * requests removal from the content.
    */
-  public elementAdd(element: CmsElement) {
-    return this.elementAddSubject.next(element);
+  public elementRemove(element: CmsElement) {
+    this.elementRemoveSubject.next(element);
   }
 
   /**
    * Returns an observable that triggers when
    * elements are slotted into a layout.
    */
-  public onElementAdd() {
-    return this.elementAddSubject.asObservable();
+  public onElementRemove() {
+    return this.elementRemoveSubject.asObservable();
+  }
+
+  /**
+   * Signal that a new root-level element has been dropped
+   * into a drop zone.
+   */
+  public elementDropped(index: number) {
+    this.elementDroppedSubject.next(index);
+  }
+
+  /**
+   * Returns an observable that triggers when
+   * root-level elements are dropped into a drop zone.
+   */
+  public onElementDropped() {
+    return this.elementDroppedSubject.asObservable();
   }
 
   set viewMode(mode: ViewMode) {
@@ -234,6 +339,18 @@ export class ContentService extends AbstractService {
    */
   public onViewModeChange(): Observable<ViewMode> {
     return this.viewModeChangeSubject;
+  }
+
+  public onUndo(): Observable<boolean> {
+    return this.undoSubject.asObservable();
+  }
+
+  /**
+   * TODO doc
+   * @param backwards
+   */
+  public undo(backwards: boolean = true): void {
+    this.undoSubject.next(backwards);
   }
 
 }

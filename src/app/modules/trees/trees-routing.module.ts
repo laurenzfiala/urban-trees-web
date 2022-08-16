@@ -30,6 +30,8 @@ import {HelpComponent} from './components/help/help.component';
 import {OtpManageComponent} from './components/otp-manage/otp-manage.component';
 import {BeacontransferComponent} from './components/beacontransfer/beacontransfer.component';
 import {JournalComponent} from './components/journal/journal.component';
+import {ContentComponent} from './components/admin/content/content.component';
+import {JournalViewComponent} from './components/teacher/journal-view/journal-view.component';
 
 const routes: Routes = [
   {
@@ -168,6 +170,15 @@ const routes: Routes = [
           showAuthTimeout: true
         }
       },
+      {// Note: if messages are implemented in the future, redirect from /admin/report to e.g. /messages and use same comp
+        path: 'admin/content',
+        component: ContentComponent,
+        canActivate: [ProjectLoginGuard, AdminGuard],
+        data: {
+          roles: environment.security.roles.admin,
+          showAuthTimeout: true
+        }
+      },
       {
         path: 'report',
         component: ReportComponent,
@@ -195,6 +206,16 @@ const routes: Routes = [
         canActivateChild: [ProjectLoginGuard],
         data: {
           roles: environment.security.roles.journal,
+          showAuthTimeout: true
+        }
+      },
+      {
+        path: 'teacher/journal',
+        component: JournalViewComponent,
+        canActivate: [ProjectLoginGuard],
+        canActivateChild: [ProjectLoginGuard],
+        data: {
+          roles: environment.security.roles.teacher,
           showAuthTimeout: true
         }
       },

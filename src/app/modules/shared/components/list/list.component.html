@@ -43,9 +43,9 @@
       </ng-container>
     </ng-container>
 
-    <ng-template *ngFor="let item of items"
+    <ng-template *ngFor="let item of items; let i = index"
                  [ngTemplateOutlet]="itemTemplate"
-                 [ngTemplateOutletContext]="{context: item}"></ng-template>
+                 [ngTemplateOutletContext]="{context: item, index: i}"></ng-template>
 
   </div>
 

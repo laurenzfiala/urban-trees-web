@@ -25,6 +25,7 @@ export class LoadingStatusComponent extends AbstractComponent implements OnInit,
   public StatusKey = StatusKey;
   public StatusValue = StatusValue;
 
+  public initialStatus: number = StatusValue.IN_PROGRESS;
   public internalError: ApiError;
 
   @Input()
@@ -64,19 +65,32 @@ export class LoadingStatusComponent extends AbstractComponent implements OnInit,
 
   public ngOnInit() {
 
-    this.update(0);
+    this.update(this.initialStatus);
     this.subscriptionTag = this.subs.tag('loading-status-cmp');
-    this.subs.register(this.status.subscribe(value => {
-      this.update(value);
-    }), this.subscriptionTag);
+    if (this.status !== undefined) {
+      this.subs.register(this.status.subscribe(value => {
+        this.update(value);
+      }), this.subscriptionTag);
+    }
+    if (this.error !== undefined) {
+      this.subs.register(this.error.subscribe(value => {
+        if (!value) {
+          return;
+        }
+        this.internalError = value;
+      }), this.subscriptionTag);
+    }
 
-    this.subs.register(this.error.subscribe(value => {
-      if (!value) {
-        return;
-      }
-      this.internalError = value;
-    }), this.subscriptionTag);
+  }
 
+  /**
+   * Initializes this component to not wait for any status observables
+   * and have EXTERNAL_STATUS set to SUCCESSFUL.
+   * Has to be called before this#ngOnInit.
+   */
+  public noop(): void {
+    this.initialStatus = StatusValue.SUCCESSFUL;
+    this.statusValues = StatusValue;
   }
 
   /**

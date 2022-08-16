@@ -50,6 +50,7 @@ export class ProjectLoginGuard implements CanActivate, CanActivateChild {
    * be redirected to the login page.
    * @param {ActivatedRouteSnapshot} route
    * @param {RouterStateSnapshot} state
+   * @param redirect (default true) if true, adds redirect param to the login url
    * @returns {boolean} true if the route may be accessed; false otherwise
    */
   private canActivateRoute(route: ActivatedRouteSnapshot, state: RouterStateSnapshot, redirect: boolean = true): UrlTree | boolean {

@@ -1,6 +1,6 @@
 <div class="content-wrapper">
 
-  <div *ngIf="isEditContent() || isEditLayout()"
+  <div *ngIf="config?.showToolbar && hasViewMode(ViewMode.EDIT_LAYOUT, ViewMode.EDIT_CONTENT, ViewMode.INSERT_ELEMENT)"
        class="toolbar-wrapper">
 
     <div class="toolbar justify-content-between flex-wrap-reverse">
@@ -16,12 +16,13 @@
       <div class="d-flex flex-row justify-content-end flex-grow-1">
         <div class="toolbar-align align-items-center save-status px-2">
           <ut-content-save-status [status]="getStatusObservable(StatusKey.SAVE)"
-                                  [saved]="onSaved()"></ut-content-save-status>
+                                  [saved]="onSaved()"
+                                  [isDraft]="changeConfig.isLastSaveDraft"></ut-content-save-status>
         </div>
         <div class="toolbar-separator"></div>
         <div class="toolbar-align toolbar-close"
              role="button"
-             tabindex="-1"
+             tabindex="0"
              [tooltip]="'toolbar.close' | translate"
              container="body"
              (action)="close()">
@@ -30,54 +31,15 @@
       </div>
     </div>
 
-    <div class="toolbar">
-      <div *ngFor="let element of toolbar.getContextual()?.elements; let i = index" class="toolbar-section contextual">
-
-        <div *ngIf="i > 0" class="toolbar-separator sm"></div>
-        <div *cast="{in: element, castTo: ToolbarBtn}; let btn = out">
-          <button
-            (action)="btn.onAction()"
-            [tooltip]="btn.description">
-            <img [src]="btn.iconPath" />
-          </button>
-        </div>
-        <select *cast="{in: element, castTo: ToolbarDropdown}; let dropdown = out"
-                [(ngModel)]="dropdown.selectedKey">
-          <option *ngFor="let option of dropdown.options | keyvalue">
-            {{option.key}}
-          </option>
-        </select>
-
-      </div>
-      <div *ngIf="toolbar.getContextual()" class="toolbar-separator"></div>
-      <div *ngFor="let section of toolbar.getComponents(); let i = index" class="toolbar-section">
-
-        <div *ngIf="i > 0" class="toolbar-separator"></div>
-        <ng-container *ngFor="let btn of section.elements; let i = index">
-          <div *ngIf="i > 0" class="toolbar-separator sm"></div>
-          <button
-            (action)="btn.onAction()"
-            [tooltip]="btn.description">
-            <img [src]="btn.iconPath" />
-          </button>
-        </ng-container>
-
-      </div>
-    </div>
+    <ut-content-toolbar class="toolbar"></ut-content-toolbar>
 
   </div>
 
   <div class="cms-content"
-       [ngClass]="{'cms-viewmode-layout-edit': isEditLayout(), 'cms-viewmode-content-edit': isEditContent()}">
+       [ngClass]="{'cms-viewmode-layout-edit': hasViewMode(ViewMode.EDIT_LAYOUT),
+                   'cms-viewmode-insert-element': hasViewMode(ViewMode.INSERT_ELEMENT),
+                   'cms-viewmode-content-edit': hasViewMode(ViewMode.EDIT_CONTENT)}">
     <ng-template #contentSlot></ng-template>
-  </div>
-
-  <div *ngIf="isEditLayout()"
-       (action)="appendComponent()"
-       class="cms-drop-zone"
-       role="button"
-       tabindex="0">
-    Add something here
   </div>
 
 </div>

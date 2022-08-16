@@ -2,14 +2,14 @@ import {CmsComponent} from '../interfaces/cms-component.interface';
 import {ChangeDetectorRef, Directive, OnDestroy, OnInit} from '@angular/core';
 import {AbstractComponent} from '../../shared/components/abstract.component';
 import {ToolbarElement, ToolbarSection} from './toolbar.entity';
-import {Observable, Subject} from 'rxjs';
+import {BehaviorSubject, Observable, ReplaySubject, Subject} from 'rxjs';
 import {ElementType} from '../enums/cms-element-type.enum';
 import {ToolbarService} from '../services/toolbar.service';
 import {CmsValidationResults} from './cms-validation-results.entity';
 import {ViewMode} from '../enums/cms-layout-view-mode.enum';
 import {ContentService} from '../services/content.service';
-import {CmsLayout} from '../interfaces/cms-layout.interface';
 import {CmsElement} from '../interfaces/cms-element.interface';
+import {map} from 'rxjs/operators';
 
 /**
  * Abstract CMS component with important logic and helpers for components.
@@ -27,8 +27,11 @@ export abstract class AbstractCmsComponent
   extends AbstractComponent
   implements CmsComponent, OnInit, OnDestroy {
 
+  ViewMode = ViewMode;
+
   protected abstract contentService: ContentService;
 
+  private onDestroySubject: ReplaySubject<CmsComponent>;
   private onFocusSubject: Subject<CmsComponent>;
   private onFocusOutSubject: Subject<CmsComponent>;
   private onChangedSubject: Subject<CmsComponent>;
@@ -38,6 +41,7 @@ export abstract class AbstractCmsComponent
 
   constructor() {
     super();
+    this.onDestroySubject = new ReplaySubject<CmsComponent>();
     this.onFocusSubject = new Subject<CmsComponent>();
     this.onFocusOutSubject = new Subject<CmsComponent>();
     this.onChangedSubject = new Subject<CmsComponent>();
@@ -47,8 +51,26 @@ export abstract class AbstractCmsComponent
     this.toolbar.register(this);
   }
 
+  /**
+   * Update this component and children using the component's ChangeDetectorRef.
+   */
+  protected update(): void {
+    this.cdRef.detectChanges();
+  }
+
   public ngOnDestroy() {
     this.toolbar.deregister(this);
+    this.onDestroySubject.next(this);
+    this.onDestroySubject.complete();
+  }
+
+  protected async onDestroy(): Promise<void> {
+    const promise = new Promise<void>(resolve => {
+      this.onDestroySubject.subscribe(() => {
+        resolve();
+      });
+    });
+    return promise;
   }
 
   public focus(): void {
@@ -86,11 +108,21 @@ export abstract class AbstractCmsComponent
   }
 
   /**
-   * Returns true if the service signals that this
-   * component should display itself in edit mode.
+   * Shortcut to the content path subject provided by
+   * ContentService.
    */
-  public isEditContent(): boolean {
-    return this.contentService.viewMode === ViewMode.EDIT_CONTENT;
+  public contentPath(): BehaviorSubject<string> {
+    return this.contentService.contentPath();
+  }
+
+  /**
+   * Returns true if the service signals that this
+   * component should display itself in ANY of the
+   * given view modes.
+   * @param modes view modes: if ANY of these match, return true
+   */
+  public hasViewMode(...modes: ViewMode[]): boolean {
+    return modes.includes(this.contentService.viewMode);
   }
 
   // --- CmsElement / CmsComponent ---

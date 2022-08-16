@@ -220,6 +220,9 @@
       "BEACON_READOUT": "Beacon readout",
       "PHENOLOGY_IMAGE_UPLOAD": "Phenology image uploaded",
       "PHENOLOGY_OBSERVATION": "Phenology observation",
+      "USER_EXP_DAYS_SUBMIT": "Experimentation days submitted",
+      "USER_MODULE_SENSOR2APP_SUBMIT": "Sensor2App submitted",
+      "USER_MODULE_APP2ANALYSE_SUBMIT": "App2Analyse submitted",
       "UPGRADE_ACCOUNT": "Legacy account upgraded",
       "ADMIN_THANKYOU": "Reward for helping (Thank you!)"
     }
@@ -576,7 +579,7 @@
     "title": "Welcome to&nbsp;<b>Cool Trees &amp; Sensors</b>!",
     "desc": "You can use this site to enter phenology data for trees, read information and statistics about trees and beacons and gain experience points for helping us collect data!",
     "title_user": "Welcome back, {{username}}!",
-    "desc_user": "More information on the project can be found on the start page. If you have any questions or suggestions, send us an e-mail at <a href=\"mailto:co2bs.ffg@sbg.ac.at\" class=\"link\">co2bs.ffg@sbg.ac.at</a>. Have fun researching!",
+    "desc_user": "More information on the project can be found on the start page. If you have any questions or suggestions, send us an e-mail at <a href=\"mailto:co2bs.ffg@plus.ac.at\" class=\"link\">co2bs.ffg@plus.ac.at</a>. Have fun researching!",
     "action_settings": "Account settings",
     "action_logout": "Log out",
     "cms_history": {
@@ -586,11 +589,6 @@
     "phenobs_history": {
       "title": "Your Phenology Observations",
       "error": "Could not load your previous observations."
-    },
-    "journal": {
-      "title": "Your research journal",
-      "text": "Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet. Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua. At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.",
-      "action": "Research journal"
     }
   },
   "user_overview": {
@@ -793,7 +791,7 @@
     },
     "level_up": {
       "title": "Levelled up!",
-      "subtitle": "You are now level {{level}}"
+      "subtitle": "Your tree is now a {{tier}}"
     }
   },
   "zoom": {

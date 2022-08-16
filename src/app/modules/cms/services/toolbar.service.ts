@@ -3,10 +3,10 @@ import {Log} from '../../shared/services/log.service';
 import {ToolbarBtn, ToolbarElement, ToolbarSection} from '../entities/toolbar.entity';
 import {CmsComponent} from '../interfaces/cms-component.interface';
 import {CmsElementDescriptor} from '../entities/cms-element-map.entity';
-import {MutableWrapper} from '../entities/mutable-wrapper.entity';
 import {CmsElement} from '../interfaces/cms-element.interface';
 import {ContentService} from './content.service';
-import {ElementType} from '../enums/cms-element-type.enum';
+import {Observable, Subject} from 'rxjs';
+import {SubscriptionManagerService} from '../../trees/services/subscription-manager.service';
 
 /**
  * Handles communication of toolbar content from CMS elements
@@ -27,7 +27,13 @@ export class ToolbarService {
   private elementsContextual = new Set<CmsElement>();
   private activeComponent: CmsComponent;
 
-  constructor(private contentService: ContentService) {
+  /**
+   * Subject used to instruct toolbar component to update itself.
+   */
+  private updateSubject: Subject<void> = new Subject<void>();
+
+  constructor(private contentService: ContentService,
+              private subs: SubscriptionManagerService) {
   }
 
   /**
@@ -60,16 +66,12 @@ export class ToolbarService {
     }
 
     element.onChanged().subscribe(comp => {
-      console.log('toolbar: component ' + comp.getName() + ' changed'); // TODO
+      this.updateSubject.next();
     });
     element.onFocus().subscribe(comp => {
-      console.log('toolbar: component ' + comp.getName() + ' focussed'); // TODO
       this.activeComponent = comp;
+      this.updateSubject.next();
     });
-    /*element.onFocusOut().subscribe(comp => {
-      console.log('toolbar: component ' + comp.getName() + ' un-focussed'); // TODO
-      this.activeComponent = undefined;
-    });*/
 
   }
 
@@ -85,8 +87,24 @@ export class ToolbarService {
     return Array.from(this.components.values());
   }
 
+  public getLayouts(): Array<ToolbarSection<ToolbarBtn>> {
+    return Array.from(this.layouts.values());
+  }
+
   public getContextual(): ToolbarSection<ToolbarElement> {
     return this.activeComponent?.getToolbarContextual();
+  }
+
+  get onUpdate(): Observable<void> {
+    return this.updateSubject.asObservable();
+  }
+
+  public update(): void {
+    this.updateSubject.next();
+  }
+
+  public reset(): void {
+    this.activeComponent = undefined;
   }
 
 }

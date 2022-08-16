@@ -1,0 +1,33 @@
+<div class="cms-component position-relative w-100 h-100">
+  <div *ngIf="!hasViewMode(ViewMode.CONTENT); else viewContent"
+       (focus)="focus()"
+       (focusout)="focusOut()"
+       class="w-100 h-100 cms-element-border">
+
+    <div class="cms-img-wrapper uploadable"
+         [ngClass]="{'pointer-events-none': hasViewMode(ViewMode.EDIT_LAYOUT),
+                     'empty': !fileUid,
+                     'uploading': hasStatus(StatusKey.UPLOAD, StatusValue.IN_PROGRESS)}"
+         [tooltip]="'components.img.upload_tooltip' | translate"
+         triggers="hover"
+         (click)="selectImage()">
+      <img *ngIf="!hasStatus(StatusKey.UPLOAD, StatusValue.IN_PROGRESS) && fileUid"
+           [src]="getFileUrl()"/>
+    </div>
+
+    <input
+      #fileInput
+      class="file-input"
+      type="file"
+      accept="image/jpeg,image/png"
+      (change)="uploadFile($event)"/>
+
+  </div>
+</div>
+
+<ng-template #viewContent>
+  <div class="cms-img-wrapper">
+    <img *ngIf="!hasStatus(StatusKey.UPLOAD, StatusValue.IN_PROGRESS) && fileUid"
+         [src]="getFileUrl()"/>
+  </div>
+</ng-template>

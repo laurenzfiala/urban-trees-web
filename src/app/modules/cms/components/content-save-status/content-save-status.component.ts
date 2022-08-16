@@ -24,6 +24,9 @@ export class ContentSaveStatusComponent extends AbstractComponent implements OnI
   private saveTimerSubscriptionTag: string;
 
   @Input()
+  private isDraft: boolean;
+
+  @Input()
   private status: Observable<StatusValue>;
 
   @Input()
@@ -50,7 +53,7 @@ export class ContentSaveStatusComponent extends AbstractComponent implements OnI
 
   private updateStatus(status: StatusValue): void {
     this.setStatus(StatusKey.SAVE, status);
-    this.cdRef.markForCheck();
+    this.cdRef.detectChanges();
   }
 
   private startSaveTimer(savedContent: CmsContent): void {
@@ -86,7 +89,7 @@ export class ContentSaveStatusComponent extends AbstractComponent implements OnI
         }
         this.saveTimer.msgKey = 'toolbar.save.' + key;
 
-        this.cdRef.markForCheck();
+        this.cdRef.detectChanges();
 
       }),
       this.saveTimerSubscriptionTag

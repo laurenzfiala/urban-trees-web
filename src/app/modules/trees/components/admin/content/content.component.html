@@ -1,0 +1,25 @@
+<div class="nav-path">
+  <div class="container py-2">
+    <a class="link" routerLink="/admin">{{'navigation.admin' | translate}}</a>
+    /
+    User Content
+  </div>
+</div>
+
+<div>
+  <div class="content-cat">
+    <div class="container">
+      <h1 class="content-cat-heading">
+        Manage User Content
+      </h1>
+      <div class="content-cat-text">
+        View, approve &amp; manage user generated content below.
+      </div>
+    </div>
+  </div>
+  <div class="content-cat">
+    <div class="container">
+      <ut-content-manager [mode]="ContentManagerMode.APPROVE"></ut-content-manager>
+    </div>
+  </div>
+</div>

@@ -1,5 +1,4 @@
 import {Observable, Subject} from 'rxjs';
-import {CmsComponent} from '../interfaces/cms-component.interface';
 
 /**
  * A group of toolbar elements belonging to a component.
@@ -26,6 +25,13 @@ export abstract class ToolbarElement {
     this.description = description;
   }
 
+  /**
+   * The toolbar element unsubscribes from all pending
+   * subscriptions when the given promise completes.
+   * @param promise shut the toolbar el down when this fires
+   */
+  abstract destroyOn(promise: Promise<void>): ToolbarElement;
+
 }
 
 /**
@@ -36,29 +42,42 @@ export class ToolbarBtn extends ToolbarElement {
 
   public readonly name: string;
   public readonly iconPath: string;
-  public readonly actionSubject: Subject<any>;
+  public readonly actionSubject: Subject<ToolbarBtn>;
+  public data: any;
 
   constructor(name: string,
               description: string,
               iconPath: string,
-              ) {
+              data: any = {}) {
     super(description);
     this.name = name;
     this.iconPath = iconPath;
-    this.actionSubject = new Subject<any>();
+    this.actionSubject = new Subject<ToolbarBtn>();
+    this.data = data;
   }
 
-  public actionObservable(): Observable<any> {
+  public onAction(): Observable<any> {
     return this.actionSubject.asObservable();
+  }
+
+  public setAction(onAction: (value: any) => void): ToolbarBtn {
+    this.actionSubject.subscribe(onAction);
+    return this;
   }
 
   /**
    * Notify all observers that this buttons'
-   * action should be executed.
-   * @param value (optional) value to send to observers
+   * action should be executed and pass self.
    */
-  public onAction(value?: any) {
-    this.actionSubject.next(value);
+  public action() {
+    this.actionSubject.next(this);
+  }
+
+  public destroyOn(promise: Promise<void>): ToolbarBtn {
+    promise.then(value => {
+      this.actionSubject?.complete();
+    });
+    return this;
   }
 
 }
@@ -69,22 +88,42 @@ export class ToolbarBtn extends ToolbarElement {
  */
 export class ToolbarDropdown extends ToolbarElement {
 
-  public readonly selectedKey: string;
+  public selectedKey: any;
   private readonly options: Map<string, any> = new Map<string, any>();
   private readonly changedSubject: Subject<any>;
 
-  constructor(description: string, selectedKey: string, options: Map<string, any>) {
+  constructor(description: string, selectedKey: any, options: Map<string, any>) {
     super(description);
     this.selectedKey = selectedKey;
     this.options = options;
+    this.changedSubject = new Subject<any>();
   }
 
-  public changedObservable(): Observable<any> {
+  public onChanged(): Observable<any> {
     return this.changedSubject.asObservable();
   }
 
-  public onChanged() {
-    this.changedSubject.next(this.options.get(this.selectedKey));
+  public setChange(onChange: (value: any) => void): ToolbarDropdown {
+    this.changedSubject.subscribe(onChange);
+    return this;
+  }
+
+  public changed() {
+    this.changedSubject.next(this.selectedKey);
+  }
+
+  public setValueOn(observable: Observable<any>): ToolbarDropdown {
+    observable.subscribe(value => {
+      this.selectedKey = value;
+    });
+    return this;
+  }
+
+  public destroyOn(promise: Promise<void>): ToolbarDropdown {
+    promise.then(value => {
+      this.changedSubject?.complete();
+    });
+    return this;
   }
 
 }

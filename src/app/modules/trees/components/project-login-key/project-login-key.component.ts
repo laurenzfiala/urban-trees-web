@@ -35,7 +35,7 @@ export class ProjectLoginKeyComponent extends AbstractComponent implements OnIni
       this.authService.login(loginEntity, () => {
         this.setStatus(StatusKey.LOGIN, StatusValue.SUCCESSFUL);
 
-        setTimeout(() => {
+        window.setTimeout(() => {
           this.router.navigate([this.authService.getRedirectAfterLogin('/home')]);
         }, 1500);
 

@@ -1,0 +1,77 @@
+<div class="toolbar">
+
+  <!-- Contextual -->
+  <div *ngFor="let element of toolbar.getContextual()?.elements; let i = index" class="toolbar-section contextual">
+
+    <div *ngIf="i > 0" class="toolbar-separator sm"></div>
+    <div *cast="{in: element, castTo: ToolbarBtn}; let btn = out">
+      <button
+        (action)="btn.action()"
+        [tooltip]="btn.description">
+        <img [src]="btn.iconPath" draggable="false" />
+      </button>
+    </div>
+    <select *cast="{in: element, castTo: ToolbarDropdown}; let dropdown = out"
+            [(ngModel)]="dropdown.selectedKey"
+            (change)="dropdown.changed()">
+      <option *ngFor="let option of dropdown.options | keyvalue"
+              [value]="option.value">
+        {{option.key}}
+      </option>
+    </select>
+
+  </div>
+
+  <!-- Components -->
+  <div *ngIf="toolbar.getContextual()?.elements.length > 0" class="toolbar-separator"></div>
+  <div class="toolbar-section">
+
+    <button
+      class="d-flex flex-row align-items-center text-muted"
+      (action)="editLayout()"
+      [tooltip]="viewMode === ViewMode.EDIT_CONTENT ? 'Edit layout' : 'Edit content'"
+      draggable="false">
+      <img [src]="'/assets/img/icon/cms/' + (viewMode === ViewMode.EDIT_CONTENT ? 'edit-layout.svg' : 'edit-layout-active.svg')"
+           class="mr-1" />
+      {{hasViewMode(ViewMode.EDIT_CONTENT) ? 'Edit layout' : 'Edit content'}}
+    </button>
+
+    <div *ngIf="hasViewMode(ViewMode.EDIT_LAYOUT, ViewMode.INSERT_ELEMENT)"
+         class="toolbar-section">
+      <ng-container *ngFor="let section of toolbar.getComponents(); let i = index">
+
+        <div class="toolbar-separator sm"></div>
+        <ng-container *ngFor="let btn of section.elements; let i = index">
+          <button
+            [ngClass]="{'active': btn.data?.active}"
+            (dragstart)="!btn.data?.active ? doBtnAction(btn) : null"
+            (action)="doBtnAction(btn)"
+            [tooltip]="btn.description"
+            draggable="true">
+            <img [src]="btn.iconPath" [alt]="btn.description" draggable="false" />
+          </button>
+        </ng-container>
+
+      </ng-container>
+    </div>
+
+  </div>
+
+  <!-- Undo/Redo -->
+  <div class="toolbar-separator"></div>
+  <div class="toolbar-section">
+
+    <button
+      (action)="undo()"
+      tooltip="Undo">
+      <img src="/assets/img/icon/cms/undo.svg" />
+    </button>
+    <div class="toolbar-separator sm"></div>
+    <button
+      (action)="redo()"
+      tooltip="Redo">
+      <img src="/assets/img/icon/cms/redo.svg" />
+    </button>
+
+  </div>
+</div>

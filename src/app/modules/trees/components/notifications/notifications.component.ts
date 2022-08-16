@@ -87,7 +87,7 @@ export class NotificationsComponent implements OnInit, OnDestroy {
     this.displayNotifications.push(notification);
 
     if (!notification.indefinite) {
-      setTimeout(() => {
+      window.setTimeout(() => {
         this.hideNotification(notification);
       }, NotificationsComponent.AUTO_DISMISS_TIMEOUT_MS);
     }
@@ -106,7 +106,7 @@ export class NotificationsComponent implements OnInit, OnDestroy {
     }
     if (found) {
       notification.hide = true;
-      setTimeout(() => {
+      window.setTimeout(() => {
         this.displayNotifications.splice(i, 1);
       }, NotificationsComponent.DISMISS_ANIMATION_DURATION_MS);
     }

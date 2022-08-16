@@ -7,13 +7,14 @@ import {EnvironmentService} from '../../shared/services/environment.service';
 import {UserIdentity} from '../../trees/entities/user-identity.entity';
 import {UserContentMetadata} from './user-content-metadata.entity';
 import {UserContentStatus} from './user-content-status.entity';
+import {CmsContent} from './cms-content.entity';
 
 export class UserContent extends UserContentMetadata {
 
   public readonly content: string;
 
   constructor(id: number,
-              contentId: string,
+              contentPath: string,
               contentTitle: string,
               contentLanguage: string,
               status: UserContentStatus,
@@ -27,7 +28,7 @@ export class UserContent extends UserContentMetadata {
               content: any) {
     super(
       id,
-      contentId,
+      contentPath,
       contentTitle,
       contentLanguage,
       status,
@@ -43,13 +44,13 @@ export class UserContent extends UserContentMetadata {
   }
 
   /**
-   * Crete a new instance from an untyped object.
+   * Create a new instance from an untyped object.
    * @param o untyped object of correct shape.
    * @param envService env vars for date deserialization are needed
    * @return instance of CmsContentMetadata with set members (if object-shape was correct);
    *         or null if object is falsy
    */
-  public static fromObject(o: any, envService: EnvironmentService): UserContentMetadata {
+  public static fromObject(o: any, envService: EnvironmentService): UserContent {
 
     if (!o) {
       return null;
@@ -57,10 +58,10 @@ export class UserContent extends UserContentMetadata {
 
     return new UserContent(
       o.id,
-      o.contentId,
+      o.contentPath,
       o.contentTitle,
-      o.contentLanguage,
-      o.draft,
+      o.contentLanguage.id,
+      UserContentStatus[o.status],
       o.saveDate && moment.utc(o.saveDate, envService.outputDateFormat).toDate(),
       o.historyId,
       o.previousId,

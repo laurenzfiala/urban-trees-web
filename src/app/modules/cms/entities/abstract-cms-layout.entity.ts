@@ -1,24 +1,15 @@
-import {CmsComponent} from '../interfaces/cms-component.interface';
 import {CmsLayout} from '../interfaces/cms-layout.interface';
-import {
-  AfterViewInit,
-  ChangeDetectorRef,
-  ComponentFactoryResolver,
-  Directive,
-  OnDestroy,
-  OnInit,
-  Type,
-  ViewContainerRef
-} from '@angular/core';
+import {AfterViewInit, ChangeDetectorRef, Directive, OnDestroy, OnInit, Type, ViewContainerRef} from '@angular/core';
 import {SerializedCmsElement} from './serialized-cms-element.entity';
 import {ToolbarService} from '../services/toolbar.service';
 import {ContentService} from '../services/content.service';
 import {CmsElement} from '../interfaces/cms-element.interface';
 import {AbstractComponent} from '../../shared/components/abstract.component';
-import {Observable, Subject} from 'rxjs';
+import {BehaviorSubject, Observable, ReplaySubject, Subject} from 'rxjs';
 import {ElementType} from '../enums/cms-element-type.enum';
 import {ViewMode} from '../enums/cms-layout-view-mode.enum';
 import {CmsValidationResults} from './cms-validation-results.entity';
+import {SubscriptionManagerService} from '../../trees/services/subscription-manager.service';
 
 /**
  * Abstract CMS layout with important logic and helpers for layouts.
@@ -32,12 +23,14 @@ export abstract class AbstractCmsLayout
   extends AbstractComponent
   implements CmsLayout, OnInit, AfterViewInit, OnDestroy {
 
+  ViewMode = ViewMode;
+
   protected abstract contentService: ContentService;
   protected abstract toolbar: ToolbarService;
+  protected abstract subs: SubscriptionManagerService;
   protected abstract cdRef: ChangeDetectorRef;
-  protected abstract resolver: ComponentFactoryResolver;
 
-  private _onAfterViewInit = new Subject<void>();
+  private _onAfterViewInit = new ReplaySubject<void>(1);
   private onChangedSubject: Subject<CmsElement>;
   private onUpdateSubject: Subject<CmsLayout>;
 
@@ -56,22 +49,28 @@ export abstract class AbstractCmsLayout
    * filling layout slots.
    */
   public ngAfterViewInit() {
-    this._onAfterViewInit.complete();
+    this._onAfterViewInit.next();
   }
 
   public ngOnDestroy() {
     this.toolbar.deregister(this);
+    this._onAfterViewInit.complete();
   }
 
   protected async onAfterViewInit(): Promise<void> {
-    return this._onAfterViewInit.toPromise();
+    const promise = new Promise<void>(resolve => {
+      this._onAfterViewInit.subscribe(() => {
+        resolve();
+      });
+    });
+    return promise;
   }
 
   /**
    * Update this component and children using the component's ChangeDetectorRef.
    */
   protected update(): void {
-    this.cdRef.markForCheck();
+    this.cdRef.detectChanges();
     this.onUpdateSubject.next(this);
   }
 
@@ -83,8 +82,8 @@ export abstract class AbstractCmsLayout
    * @returns Promise, resolved when all given serialized elements are
    *          deserialized and added to the slot.
    */
-  protected async fillSlotMultiple(slotGetter: () => ViewContainerRef,
-                                   ...serializedElements: Array<SerializedCmsElement>): Promise<Array<CmsElement>> {
+  public async fillSlotMultiple(slotGetter: () => ViewContainerRef,
+                                ...serializedElements: Array<SerializedCmsElement>): Promise<Array<CmsElement>> {
 
     if (!serializedElements) {
       return Promise.reject();
@@ -109,12 +108,14 @@ export abstract class AbstractCmsLayout
    * @param slotGetter function that returns the slot as ViewContainerRef
    * @param typeOrSerializedEl type of empty element to create OR element to deserialize
    * @param clear (optional) pass true to clear the slot before filling it (default false)
+   * @param index (optional) index at which to insert the element (default last)
    * @returns Promise, resolved when all given serialized elements are
    *          deserialized and added to the slot.
    */
-  protected async fillSlot(slotGetter: () => ViewContainerRef,
-                         typeOrSerializedEl: Type<unknown> | SerializedCmsElement,
-                         clear: boolean = false): Promise<CmsElement> {
+  public async fillSlot(slotGetter: () => ViewContainerRef,
+                        typeOrSerializedEl: Type<unknown> | SerializedCmsElement,
+                        clear: boolean = false,
+                        index?: number): Promise<CmsElement> {
 
     if (!typeOrSerializedEl) {
       return Promise.reject();
@@ -138,8 +139,7 @@ export abstract class AbstractCmsLayout
     if (clear) {
       slot.clear();
     }
-    const componentFactory = this.resolver.resolveComponentFactory(type);
-    const componentRef = slot.createComponent(componentFactory);
+    const componentRef = slot.createComponent(type, {index});
     const element = <CmsElement> componentRef.instance;
 
     if (serializedElement !== undefined) {
@@ -147,7 +147,6 @@ export abstract class AbstractCmsLayout
       await element.deserialize(serializedElement);
     }
     this.onElementAdd(element);
-    //this.contentService.elementAdd(element); // TODO make this bubbling
 
     return Promise.resolve(element);
 
@@ -179,11 +178,21 @@ export abstract class AbstractCmsLayout
   }
 
   /**
-   * Returns true if the service signals that this
-   * layout should display itself in layout mode.
+   * Shortcut to the content path subject provided by
+   * ContentService.
    */
-  public isEditLayout(): boolean {
-    return this.contentService.viewMode === ViewMode.EDIT_LAYOUT;
+  public contentPath(): BehaviorSubject<string> {
+    return this.contentService.contentPath();
+  }
+
+  /**
+   * Returns true if the service signals that this
+   * component should display itself in ANY of the
+   * given view modes.
+   * @param modes view modes: if ANY of these match, return true
+   */
+  public hasViewMode(...modes: ViewMode[]): boolean {
+    return modes.includes(this.contentService.viewMode);
   }
 
   // --- CmsElement / CmsLayout ---

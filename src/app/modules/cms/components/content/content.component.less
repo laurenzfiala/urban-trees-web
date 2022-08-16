@@ -1,14 +1,5 @@
 @import (reference) "../../../../../theme/variables";
 
-@primaryBtnColor: lighten(#007bff, 5%);
-@toolbarBorder:   solid darken(@lightBorderColor, 10%) 1px;
-.iconDimensions() {
-  width: 2em;
-  height: 2em;
-}
-@iconSmPadding: 0.5em;
-
-
 .cms-content {
   margin-top: @gutter;
 }
@@ -16,126 +7,21 @@
 .toolbar-wrapper {
   position: sticky;
   top: 0;
+  z-index: (@navZIndex - 1);
 }
 
-.toolbar {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
+::ng-deep {
 
-  background-color: @bgColor;
-
-  &:not(:first-child) {
-    border-top: @toolbarBorder;
+  .cms-layout {
+    margin-top: @gutter;
   }
 
-  .toolbar-section,
-  .toolbar-align {
-    display: flex;
-    flex-direction: row;
-    flex-wrap: nowrap; // TODO check
-  }
+  .cms-viewmode-content-edit,
+  .cms-viewmode-insert-element,
+  .cms-viewmode-layout-edit {
 
-  .toolbar-separator {
-    border-left: @toolbarBorder;
-
-    &.sm {
-      margin-top: (@gutter/2);
-      margin-bottom: (@gutter/2);
+    .cms-element-border {
+      border: @borderWidth solid @borderColor;
     }
-  }
-
-  button,
-  .toolbar-close {
-    padding: (@gutter/2);
-
-    &.active,
-    &:hover {
-      background-color: @medLightGrey;
-    }
-  }
-
-  button {
-    padding-right: @gutter;
-    padding-left: @gutter;
-
-    background-color: transparent;
-    border: 0; // TODO
-
-    user-select: none;
-
-    &.primary {
-      color: @white;
-      background-color: fade(@primaryBtnColor, 75%);
-
-      &:hover {
-        background-color: @primaryBtnColor;
-      }
-    }
-
-    &.dropdown-toggle {
-      opacity: 0.5;
-    }
-
-    > img {
-      .iconDimensions();
-      vertical-align: center;
-    }
-  }
-
-  .toolbar-section.contextual {
-    button > img {
-      padding: @iconSmPadding;
-    }
-  }
-
-  .save-status {
-    color: @subtleTextColor;
-    font-size: @fontSizeExtraSmall;
-  }
-
-  @selectArrowWidth: 0.95em;
-  select {
-    appearance: none;
-    background-color: transparent;
-    border: none;
-
-    padding: (@gutter/2) (@gutter + @selectArrowWidth) (@gutter/2) @gutter;
-
-    background-image: url('/assets/img/icon/dark/chevron-down.svg');
-    background-repeat: no-repeat;
-    background-position: right (@gutter/2) top 50%;
-    background-size: @selectArrowWidth auto;
-    cursor: pointer;
-
-    &:hover {
-      background-image: url('/assets/img/icon/black/chevron-down.svg');
-    }
-  }
-}
-
-::ng-deep .cms-layout {
-  margin-top: @gutter;
-}
-
-::ng-deep .cms-drop-zone {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-
-  margin: @gutter 0;
-  padding: @gutter @gutter2x;
-
-  border: dashed @borderColor 4px;
-  color: @subtleTextColor;
-
-  cursor: pointer;
-  user-select: none;
-
-  &:hover,
-  &.active {
-    border-color: #6293d6;
-    color: #6293d6;
   }
 }

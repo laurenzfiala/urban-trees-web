@@ -42,5 +42,5 @@ export class CssVariableDirective implements OnChanges {
 
 export interface Property {
   name: string;
-  value: string;
+  value: any;
 }

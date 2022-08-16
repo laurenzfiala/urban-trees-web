@@ -23,12 +23,12 @@ export class AuthInterceptor implements HttpInterceptor {
     let routerState = this.router.routerState.snapshot;
     AuthInterceptor.LOG.trace('Intercepting http request.');
 
-    const token = AuthService.getJWTTokenRaw();
+    const token = this.authService.getJWTTokenRaw();
     const apiKey = AuthService.getApiKeyRaw();
 
     let newRequest;
     if (token) {
-      newRequest = req.clone({headers: req.headers.set(AuthService.HEADER_AUTH_KEY, token)});
+      newRequest = req.clone({withCredentials: true});
     } else if (apiKey) {
       newRequest = req.clone({headers: req.headers.set(AuthService.HEADER_API_KEY, apiKey)});
     } else {

@@ -3,9 +3,10 @@
 
 @listModeBtnDimensions:     1rem;
 @listItemBgColor:           @medLightGrey;
-@listScrollBtnWidth:        4rem;
+@listScrollBtnWidth:        6rem;
 @listScrollBtnArrowHeight:  40px;
 @listPlaceholderHeight:     100px;
+@scrollBtnBgGradientStop:   30%;
 
 .list-wrapper {
   position: relative;
@@ -108,7 +109,7 @@
     right: 0;
 
     background-image: url("/assets/img/icon/dark/chevron-right.svg"),
-                      linear-gradient(to right, fade(@lightBgColor, 0%), fade(@lightBgColor, 100%));
+                      linear-gradient(to right, fade(@lightBgColor, 0%), @scrollBtnBgGradientStop, fade(@lightBgColor, 100%));
     background-position: center, right;
 
     &:hover {
@@ -120,7 +121,7 @@
     left: 0;
 
     background-image: url("/assets/img/icon/dark/chevron-left.svg"),
-                      linear-gradient(to left, fade(@lightBgColor, 0%), fade(@lightBgColor, 100%));
+                      linear-gradient(to left, fade(@lightBgColor, 0%), @scrollBtnBgGradientStop, fade(@lightBgColor, 100%));
     background-position: center, left;
 
     &:hover {
@@ -137,12 +138,12 @@
   .list-scroll-btn {
     &.scroll-btn-right {
       background-image: url("/assets/img/icon/dark/chevron-right.svg"),
-                        linear-gradient(to right, fade(@white, 0%), fade(@white, 100%));
+                        linear-gradient(to right, fade(@white, 0%), @scrollBtnBgGradientStop, fade(@white, 100%));
     }
 
     &.scroll-btn-left {
       background-image: url("/assets/img/icon/dark/chevron-left.svg"),
-                        linear-gradient(to left, fade(@white, 0%), fade(@white, 100%));
+                        linear-gradient(to left, fade(@white, 0%), @scrollBtnBgGradientStop, fade(@white, 100%));
     }
   }
 }

@@ -1,15 +1,21 @@
 /**
- * Simple stack impelementation.
+ * Simple stack implementation.
  *
  * @author Laurenz Fiala
  * @since 2020/10/29
  */
+
 export class Stack<T> {
 
   /**
    * Elements for internal use are sotred in this array.
    */
   private elements: Array<T>;
+
+  /**
+   * Current position in the #elements-array.
+   */
+  private _stackPointer: number;
 
   /**
    * Current size of the stack.
@@ -24,51 +30,82 @@ export class Stack<T> {
   private maxSize: number;
 
   /**
+   * Amount of elements at the star tof the stack
+   * protected from being removed by #pop().
+   */
+  private protectedSize: number;
+
+  /**
    * Create a new stack, optionally with a maximum size.
    * @param maxSize if maxSize is exceeded, the oldest entries rotate out (are deleted).
    */
-  constructor(maxSize: number = -1) {
+  constructor(maxSize: number = -1, protectedSize: number = 0) {
     this.elements = new Array<T>();
+    this._stackPointer = 0;
     this._size = 0;
     this.maxSize = maxSize;
+    this.protectedSize = protectedSize;
   }
 
   /**
-   * Returns the newest element from the stack.
-   * If the stack is empty, returns undefined.
+   * Pushes the given elements to the
+   * current stack pointer location. The last given
+   * element is then the last entry in the stack
+   * and the new stack position.
+   * @param elements all elements to add to the stack
    */
   public push(...elements: Array<T>): void {
     if (this.maxSize >= 0) {
-      const overflow = this._size + elements.length - this.maxSize;
-      if (overflow > 0) {
+      const overflow = this._stackPointer + elements.length - this.maxSize;
+      if (elements.length > this.maxSize) {
+        elements = elements.slice(0, elements.length - this.maxSize);
+        this._stackPointer = 0;
+        this._size = 0;
+      } else if (overflow > 0) {
         this.elements = this.elements.slice(overflow);
         this._size -= overflow;
       }
     }
-    this.elements.push(...elements);
+    elements.forEach(value => {
+      this.elements[this._stackPointer++] = value;
+    });
+    this.elements = this.elements.slice(0, this._stackPointer);
     this._size += elements.length;
   }
 
   /**
    * Returns the newest element from the stack.
    * If the stack is empty, returns undefined.
+   * Does not move the stack pointer.
+   * @param offset TODO
    */
-  public peek(): T | undefined {
+  public peek(offset: number = 0): T | undefined {
     if (this.isEmpty()) {
       return undefined;
     }
-    return this.elements[this._size - 1];
+    return this.elements[this._stackPointer - 1 + offset];
   }
 
   /**
    * Returns the newest element from the stack and removes it.
    * If the stack is empty, returns undefined.
+   * Also moves the stack pointer.
+   * @param offset TODO
    */
-  public pop(): T | undefined {
+  public pop(offset: number = 0): T | undefined {
     if (this.isEmpty()) {
       return undefined;
     }
-    return this.elements[--this._size];
+    const newPos = this._stackPointer + offset - 1;
+    if (newPos < 0 || newPos > this._size) {
+      return undefined;
+    }
+    if (newPos < this.protectedSize) {
+      this._stackPointer = this.protectedSize;
+    } else {
+      this._stackPointer = newPos;
+    }
+    return this.elements[newPos - 1];
   }
 
   /**
@@ -79,7 +116,7 @@ export class Stack<T> {
    */
   public find(test: (element: T) => (boolean)): T {
 
-    for (let i = this._size - 1; i >= 0; i--) {
+    for (let i = this._stackPointer - 1; i >= 0; i--) {
       const el = this.elements[i];
       if (test(el)) {
         return el;
@@ -87,6 +124,13 @@ export class Stack<T> {
     }
     return null;
 
+  }
+
+  /**
+   * TODO
+   */
+  public newerEntriesAmount(): number {
+    return this._size - this._stackPointer;
   }
 
   public size(): number {

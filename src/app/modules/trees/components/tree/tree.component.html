@@ -127,6 +127,26 @@
 
 <section class="content-cat">
   <div class="container">
+
+    <ut-cms-content *ngIf="treeContent"
+                    [contentPath]="treeContentPath"
+                    [contentLang]="treeContentLang"
+                    [content]="treeContent"
+                    [(viewMode)]="treeContentViewMode"></ut-cms-content>
+
+    <div class="text-center mt-2">
+      <button *ngIf="treeContentViewMode === ViewMode.CONTENT"
+         (action)="treeContentViewMode = ViewMode.EDIT_CONTENT"
+         class="link-btn">
+        {{treeContent?.historyId ? 'Edit tree description' : 'Add tree description'}}
+      </button>
+    </div>
+
+  </div>
+</section>
+
+<section class="content-cat">
+  <div class="container">
     <div *ngIf="tree.beacons && tree.beacons.length > 0">
       <ut-beacon-list
         [beacons]="tree.beacons"

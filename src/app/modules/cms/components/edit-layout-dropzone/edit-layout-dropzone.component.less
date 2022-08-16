@@ -1,0 +1,60 @@
+@import (reference) "../../../../../theme/variables";
+
+.cms-drop-zone-line {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+
+  margin: @gutter 0;
+
+  color: @subtleTextColor;
+  cursor: pointer;
+  user-select: none;
+
+  transition: @transitionDurationS color,
+              @transitionDurationS border-color,
+              @transitionDurationM border-width,
+              @transitionDurationM font-size,
+              @transitionDurationS font-weight,
+              @transitionDurationM margin;
+
+  .line {
+    flex-grow: 1;
+
+    height: 0.2em;
+    margin-left: @gutter;
+
+    background-color: lighten(@borderColor, 10%);
+
+    transition: @transitionDurationS height;
+  }
+
+  &:hover,
+  &.active {
+    border-color: #6293d6;
+    color: #6293d6;
+    font-weight: bold;
+
+    .line {
+      height: 1em;
+      background-color: #6293d6;
+    }
+  }
+
+  &.hiding {
+    margin: 0;
+    border-width: 0;
+    font-size: 0;
+    overflow: hidden;
+    pointer-events: none;
+
+    &.inserted {
+      margin: @gutter 0;
+
+      .line {
+        height: 3rem;
+        margin-left: 0;
+      }
+    }
+  }
+}

@@ -26,7 +26,7 @@
     "@auth0/angular-jwt": "5.0.2",
     "@ngx-translate/core": "14.0.0",
     "@ngx-translate/http-loader": "6.0.0",
-    "@swimlane/ngx-charts": "19.1.0",
+    "@swimlane/ngx-charts": "20.0.1",
     "bootstrap": "4.6.1",
     "popper.js": "1.16.1-lts",
     "core-js": "3.11.0",

@@ -1,4 +1,4 @@
-import {Injectable, NgZone} from '@angular/core';
+import {Inject, Injectable, NgZone} from '@angular/core';
 import {Log} from './log.service';
 import {EnvironmentService} from './environment.service';
 import {HttpClient, HttpErrorResponse, HttpResponse} from '@angular/common/http';
@@ -14,6 +14,7 @@ import {Observable, Subject} from 'rxjs';
 import {UserIdentity} from '../../trees/entities/user-identity.entity';
 import {UserPermissionRequest} from '../../trees/entities/user-permission-request.entity';
 import {AuthenticationToken} from '../../trees/entities/auth-token.entity';
+import {DOCUMENT} from '@angular/common';
 
 /**
  * Service for user authentication functionality.
@@ -26,7 +27,7 @@ export class AuthService extends AbstractService {
 
   private static LOG: Log = Log.newInstance(AuthService);
 
-  public static LOCAL_STORAGE_JWTTOKEN_KEY: string = 'jwt_access_token';
+  public static COOKIE_JWTTOKEN_KEY: string = 'jwt_access_token';
   public static LOCAL_STORAGE_APIKEY_KEY: string = 'api_key';
 
   /**
@@ -55,11 +56,12 @@ export class AuthService extends AbstractService {
   constructor(private http: HttpClient,
               private router: Router,
               private envService: EnvironmentService,
-              private zone: NgZone) {
+              private zone: NgZone,
+              @Inject(DOCUMENT) private document: Document) {
     super();
 
     // make auth tokens accessible to the app
-    window['getJWTToken'] = () => AuthService.getJWTTokenRaw();
+    // TODO window['getJWTToken'] = () => AuthService.getJWTTokenRaw();
     window['refreshLogin'] = () => this.zone.run(args => this.stateChanged());
   }
 
@@ -99,7 +101,7 @@ export class AuthService extends AbstractService {
   public getUsername(forExpiredAuth: boolean = false): string {
 
     if (forExpiredAuth) {
-        const potentiallyExpiredToken = AuthService.getJWTTokenRaw();
+        const potentiallyExpiredToken = this.getJWTTokenRaw();
         if (potentiallyExpiredToken) {
           return JWTToken.fromObject(this.jwtHelper.decodeToken(potentiallyExpiredToken)).sub;
         }
@@ -167,10 +169,10 @@ export class AuthService extends AbstractService {
                successCallback: () => void,
                errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void): void {
 
-    this.http.post(this.envService.endpoints.login, authToken, {observe: 'response'})
+    this.http.post(this.envService.endpoints.login, authToken, {observe: 'response', withCredentials: true})
       .subscribe((response: HttpResponse<any>) => {
-        this.setJWTToken(response.headers.get(AuthService.HEADER_AUTH_KEY));
-        AuthService.LOG.debug('Saved retrieved auth token to local storage.');
+        //TODO this.setJWTToken(response.headers.get(AuthService.HEADER_AUTH_KEY));
+        //TODO AuthService.LOG.debug('Saved retrieved auth token to local storage.');
         this.stateChanged();
         successCallback();
       }, (e: any) => {
@@ -361,7 +363,7 @@ export class AuthService extends AbstractService {
    */
   public getLogOutReason(backendForcedLogout: boolean = false): LoginAccessReason {
 
-    const token = AuthService.getJWTTokenRaw();
+    const token = this.getJWTTokenRaw();
 
     if (!token) {
       return LoginAccessReason.NOT_AUTHENTICATED;
@@ -453,18 +455,14 @@ export class AuthService extends AbstractService {
   }
 
   /**
-   * Set JWT token to local storage.
-   * @param {string} token token to set
-   */
-  private setJWTToken(token: string): void {
-    localStorage.setItem(AuthService.LOCAL_STORAGE_JWTTOKEN_KEY, token);
-  }
-
-  /**
    * Remove JWT token from local storage.
    */
   private deleteJWTToken(): void {
-    localStorage.removeItem(AuthService.LOCAL_STORAGE_JWTTOKEN_KEY);
+    let cookies = this.document.cookie.split('; ');
+    const tokenCookieIndex = cookies.findIndex(c => c.startsWith(AuthService.COOKIE_JWTTOKEN_KEY + '='));
+    cookies.splice(tokenCookieIndex, 1);
+    cookies.push(AuthService.COOKIE_JWTTOKEN_KEY + '=;Path=/;Secure;expires=Thu, 01 Jan 1970 00:00:00 GMT');
+    this.document.cookie = cookies.join('; ');
   }
 
   /**
@@ -472,7 +470,7 @@ export class AuthService extends AbstractService {
    * If the JWT token is expired, return undefined.
    */
   public getJWTToken(): JWTToken {
-    const storedToken = AuthService.getJWTTokenRaw();
+    const storedToken = this.getJWTTokenRaw();
     if (!storedToken) {
       return undefined;
     }
@@ -517,15 +515,22 @@ export class AuthService extends AbstractService {
   }
 
   /**
-   * Returns the JWT token like stored in localStorage.
+   * Returns the JWT token like stored in the cookie.
    * If not set, returns undefined.
    */
-  public static getJWTTokenRaw(): string {
-    const storedToken = localStorage.getItem(AuthService.LOCAL_STORAGE_JWTTOKEN_KEY);
-    if (!storedToken || storedToken === 'null') {
+  public getJWTTokenRaw(): string {
+    const cookie = this.document.cookie
+      .split('; ')
+      .find(row => row.startsWith(AuthService.COOKIE_JWTTOKEN_KEY + '='));
+    if (cookie === undefined) {
       return undefined;
     }
-    return storedToken;
+
+    const token = cookie.split('=')[1];
+    if (!token || token === 'null') {
+      return undefined;
+    }
+    return token;
   }
 
   /**

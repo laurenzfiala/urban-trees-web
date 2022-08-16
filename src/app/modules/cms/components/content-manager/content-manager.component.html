@@ -1,0 +1,145 @@
+
+<div *ngIf="hasStatus(StatusKey.LOAD_ACCESS, StatusValue.IN_PROGRESS)"
+     class="d-flex justify-content-center align-items-center m-5">
+  <i class="i i-load i-spin i-black"></i>
+</div>
+
+<div *ngIf="hasStatus(StatusKey.LOAD_ACCESS, StatusValue.FAILED)"
+     class="d-flex justify-content-center align-items-center text-danger m-5">
+  <i class="i i-warning-danger mr-2"></i>
+  {{getStatusError(StatusKey.LOAD_ACCESS).message}}
+</div>
+
+<div *ngIf="hasStatus(StatusKey.LOAD_ACCESS, StatusValue.SUCCESSFUL)" class="access-nav list-group p-0">
+  <div class="toggle list-group-item d-flex flex-row align-items-center"
+       [ngClass]="{'text-subtle': !selectedAccess}"
+       (action)="accessSelectCollapsed = !accessSelectCollapsed"
+       role="button"
+       tabindex="0">
+    <ng-container *ngIf="selectedAccess">
+      {{selectedAccess.toString()}}
+    </ng-container>
+    <ng-container *ngIf="!selectedAccess">
+      Select which content to {{mode === ContentManagerMode.VIEW ? 'view' : 'approve'}}
+    </ng-container>
+    <div class="flex-grow-1"></div>
+    <i class="i i-sm i-dark ml-2"
+       [ngClass]="{'i-chevron-down': accessSelectCollapsed, 'i-chevron-up': !accessSelectCollapsed}"></i>
+  </div>
+  <div [collapse]="accessSelectCollapsed">
+    <div *ngFor="let a of accessList"
+         (action)="selectAccess(a); accessSelectCollapsed = true"
+         class="list-group-item d-flex flex-row align-items-center"
+         [title]="a.toString()"
+         role="button"
+         tabindex="0">
+      <div class="description">
+        {{a.toString()}}
+        <div *ngIf="showAccessDetails"
+             class="text-subtle text-sm">
+          {{a.access.contentPath}}
+        </div>
+      </div>
+      <div class="flex-grow-1"></div>
+      <div *ngIf="mode === ContentManagerMode.VIEW"
+           class="badge badge-sm">
+        {{a.affectedContentAmount}} {{a.affectedContentAmount === 1 ? 'entry' : 'entries' }}
+      </div>
+      <div *ngIf="mode === ContentManagerMode.APPROVE"
+           class="badge badge-sm"
+           [ngClass]="{'warning': a.affectedContentAmount > 0}">
+        {{a.affectedContentAmount}} unapproved
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="selectedContentMeta"
+     class="content-container">
+  <div class="content-nav list-group">
+    <div class="list-group-item d-flex flex-row p-0">
+
+      <div class="arrow"
+           tabindex="0"
+           role="button"
+           [ngClass]="{'disabled': selectedContentIndex === 0}"
+           (action)="switchContent(-1)"
+           [tooltip]="'Previous content (' + selectedContentIndex + '/' + contentList.length + ')'">
+        <i class="i i-chevron-left i-black"></i>
+      </div>
+
+      <div class="flex-grow-1 d-flex flex-column justify-content-center p-2">
+        <div class="d-flex flex-row">
+          <div *ngIf="showTitle">{{selectedContentMeta.contentTitle ? selectedContentMeta.contentTitle : '(No title)'}}</div>
+          <div class="flex-grow-1"></div>
+          <div *ngIf="showStatus" class="badge info">{{selectedContentMeta.getStatusString()}}</div>
+        </div>
+        <div class="d-flex flex-row text-sm">
+          <div class="text-subtle">
+            {{selectedContentMeta.user.username}},
+            {{selectedContentMeta.saveDate | date:('app.date_format_angular' | translate)}}
+          </div>
+        </div>
+        <div *ngIf="mode === ContentManagerMode.APPROVE"
+             class="text-right">
+          <button class="btn btn-sm btn-default d-inline-flex align-items-center"
+                  [ngClass]="{'disabled': hasStatus(StatusKey.CONTENT_ACTION, StatusValue.IN_PROGRESS) || selectedContentMeta.isStatusPermanent()}"
+                  (action)="denyContent(selectedContentMeta)">
+            <i *ngIf="hasStatus(StatusKey.DENY_CONTENT, StatusValue.IN_PROGRESS)"
+               class="i i-xs i-load i-spin i-black mr-1"></i>
+            Deny
+          </button>
+          <button class="btn btn-sm btn-primary d-inline-flex align-items-center ml-1"
+                  [ngClass]="{'disabled': hasStatus(StatusKey.CONTENT_ACTION, StatusValue.IN_PROGRESS) || selectedContentMeta.isStatusPermanent()}"
+                  (action)="approveContent(selectedContentMeta)">
+            <i *ngIf="hasStatus(StatusKey.APPROVE_CONTENT, StatusValue.IN_PROGRESS)"
+               class="i i-xs i-load i-spin mr-1" ></i>
+            Approve
+          </button>
+        </div>
+      </div>
+
+      <div class="arrow"
+           tabindex="0"
+           role="button"
+           [ngClass]="{'disabled': selectedContentIndex >= contentList.length-1}"
+           (action)="switchContent(1)"
+           [tooltip]="'Next content (' + (selectedContentIndex+2) + '/' + contentList.length + ')'">
+        <i class="i i-chevron-right i-black"></i>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="hasStatus(StatusKey.LOAD_CONTENT, StatusValue.IN_PROGRESS)"
+       class="d-flex justify-content-center align-items-center m-5"
+       [ngStyle]="{'min-height': loadContentHeightPx + 'px'}">
+    <i class="i i-xl i-load i-spin i-black"></i>
+  </div>
+
+  <div #contentContainer
+       *ngIf="hasStatus(StatusKey.LOAD_CONTENT, StatusValue.SUCCESSFUL) && (selectedContentMeta.isStatusTransient() || mode === ContentManagerMode.VIEW)">
+    <ut-cms-content [contentPath]="selectedContent.contentPath"
+                    [content]="selectedCmsContent"
+                    [config]="contentConfig"
+                    [(viewMode)]="contentViewMode"></ut-cms-content>
+  </div>
+
+  <div *ngIf="hasStatus(StatusKey.LOAD_CONTENT, StatusValue.SUCCESSFUL) && selectedContentMeta.isStatusPermanent() && mode === ContentManagerMode.APPROVE"
+       class="d-flex justify-content-center align-items-center text-success m-5">
+    <i class="i i-check-success mr-2"></i>
+    Content was set to <span class="badge info ml-1">{{selectedContentMeta.status}}</span>.
+  </div>
+
+  <div *ngIf="hasStatus(StatusKey.LOAD_CONTENT, StatusValue.FAILED)"
+       class="d-flex justify-content-center align-items-center text-danger m-5">
+    <i class="i i-warning-danger mr-2"></i>
+    {{getStatusError(StatusKey.LOAD_CONTENT).message}}
+  </div>
+
+</div>
+
+<div *ngIf="hasStatus(StatusKey.LOAD_CONTENT_LIST, StatusValue.SUCCESSFUL) && contentList.length === 0"
+     class="d-flex justify-content-center align-items-center text-subtle m-5">
+  <i class="i i-info i-dark mr-2"></i>
+  No content to be {{mode === ContentManagerMode.VIEW ? 'viewed' : 'approved' }}
+</div>

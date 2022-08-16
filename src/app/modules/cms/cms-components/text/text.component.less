@@ -1,10 +1,30 @@
 @import (reference) "../../../../../theme/variables";
+@import (reference) "../../../../../theme/theme";
 
-::ng-deep .cms-viewmode-content-edit {
+.cms-text-container {
+  line-break: anywhere;
+  white-space: break-spaces;
+
+  &:focus {
+    outline: 0;
+    border-color: @primaryColorHighlight;
+  }
+}
+
+::ng-deep .cms-viewmode-content-edit,
+::ng-deep .cms-viewmode-insert-element,
+::ng-deep .cms-viewmode-layout-edit {
   .cms-text-container {
-    box-shadow: 0 2px 4px @medGrey;
     background-color: @white;
     line-break: anywhere;
     white-space: break-spaces;
+    min-height: 4em;
+    padding: (@gutter/2);
+  }
+}
+
+::ng-deep .cms-text-container {
+  a {
+    .link;
   }
 }

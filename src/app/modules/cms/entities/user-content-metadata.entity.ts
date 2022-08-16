@@ -4,23 +4,23 @@
 import * as moment from 'moment';
 import {EnvironmentService} from '../../shared/services/environment.service';
 import {UserIdentity} from '../../trees/entities/user-identity.entity';
-import {UserContentStatus} from './user-content-status.entity';
+import {UserContentStatus, UserContentStatusHelper} from './user-content-status.entity';
 import {User} from '../../trees/entities/user.entity';
 
 export class UserContentMetadata {
 
-  public readonly id: number;
-  public readonly contentPath: string;
-  public readonly contentTitle: string;
-  public readonly contentLanguage: string;
-  public readonly status: UserContentStatus;
-  public readonly saveDate: Date;
-  public readonly historyId: number;
-  public readonly previousId: number;
-  public readonly nextId: number;
-  public readonly user: UserIdentity;
-  public readonly approveDate: Date;
-  public readonly approveUser: UserIdentity;
+  public id: number;
+  public contentPath: string;
+  public contentTitle: string;
+  public contentLanguage: string;
+  public status: UserContentStatus;
+  public saveDate: Date;
+  public historyId: number;
+  public previousId: number;
+  public nextId: number;
+  public user: UserIdentity;
+  public approveDate: Date;
+  public approveUser: UserIdentity;
 
   constructor(id: number,
               contentPath: string,
@@ -56,6 +56,15 @@ export class UserContentMetadata {
     return UserContentStatus[this.getStatus()];
   }
 
+  public isStatusPermanent(): boolean {
+    return UserContentStatusHelper.isPermanent(this.status);
+  }
+
+  public isStatusTransient(): boolean {
+    return UserContentStatusHelper.isTransient(this.status);
+  }
+
+
   /**
    * Crete a new instance from an untyped object.
    * @param o untyped object of correct shape.
@@ -73,7 +82,7 @@ export class UserContentMetadata {
       o.id,
       o.contentPath,
       o.contentTitle,
-      o.contentLanguage,
+      o.contentLanguage.id,
       UserContentStatus[o.status],
       o.saveDate && moment.utc(o.saveDate, envService.outputDateFormat).toDate(),
       o.historyId,

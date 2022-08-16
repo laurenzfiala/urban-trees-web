@@ -1,4 +1,4 @@
-import {ChangeDetectorRef, Component, EventEmitter, Input, OnDestroy, OnInit, Output} from '@angular/core';
+import {ChangeDetectorRef, Component, Input, OnDestroy, OnInit} from '@angular/core';
 import {BeaconData} from '../../entities/beacon-data.entity';
 import {AbstractComponent} from '../../../shared/components/abstract.component';
 import {TreeService} from '../../services/tree.service';
@@ -14,8 +14,7 @@ import {LayoutConfig} from '../../config/layout.config';
 import {BreakpointObserver, BreakpointState} from '@angular/cdk/layout';
 import {SubscriptionManagerService} from '../../services/subscription-manager.service';
 import {EnvironmentService} from '../../../shared/services/environment.service';
-import {User} from '../../entities/user.entity';
-import {DomSanitizer, SafeUrl} from '@angular/platform-browser';
+import {DomSanitizer} from '@angular/platform-browser';
 
 @Component({
   selector: 'ut-beacon-list',

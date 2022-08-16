@@ -1,0 +1,68 @@
+@import (reference) "../../../../../theme/theme.less";
+@import (reference) "../../../shared/components/list/list.component";
+
+textarea {
+  width: 100%;
+}
+
+.experiment {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: @gutter2x;
+  margin: (@gutter/2);
+
+  background-color: @white;
+  border-radius: @borderRadiusSecondary;
+
+  &.active {
+    background-color: lighten(@secondaryColor, 60%);
+    outline: solid @secondaryColor @borderWidth;
+  }
+
+  img {
+    width: 125px;
+    height: 125px;
+    border-radius: 50%;
+
+    margin-bottom: @gutter2x;
+  }
+}
+
+.picture {
+  min-width: 125px;
+  min-height: 125px;
+  width: 250px;
+  height: 250px;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+::ng-deep .tabs-content-container{
+  .list-scroll-btn {
+    &.scroll-btn-right {
+      background-image: url("/assets/img/icon/dark/chevron-right.svg"),
+      linear-gradient(
+        to right,
+        fade(@lightBgColor, 0%) 0%,
+        fade(@lightBgColor, 85%) @scrollBtnBgGradientStop,
+        fade(@lightBgColor, 100%)
+      ) !important;
+    }
+
+    &.scroll-btn-left {
+      background-image: url("/assets/img/icon/dark/chevron-left.svg"),
+      linear-gradient(
+        to left,
+        fade(@lightBgColor, 0%) 0%,
+        fade(@lightBgColor, 85%) @scrollBtnBgGradientStop,
+        fade(@lightBgColor, 100%)
+      ) !important;
+    }
+  }
+}
+
+.save-toolbar {
+  border-top: solid 1px @lightBorderColor;
+}

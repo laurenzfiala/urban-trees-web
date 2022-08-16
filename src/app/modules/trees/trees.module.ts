@@ -42,7 +42,7 @@ import {LowercasePipe} from './pipes/lowercase.pipe';
 import {ReplacePipe} from './pipes/replace.pipe';
 import {DecimalPlacesPipe} from './pipes/decimal-places.pipe';
 import {FormsModule} from '@angular/forms';
-import {HTTP_INTERCEPTORS, HttpClient, HttpClientModule} from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import {LayoutModule} from '@angular/cdk/layout';
 import {BsDatepickerModule} from 'ngx-bootstrap/datepicker';
 import {ModalModule} from 'ngx-bootstrap/modal';
@@ -54,7 +54,7 @@ import {BsDropdownModule} from 'ngx-bootstrap/dropdown';
 import {CollapseModule} from 'ngx-bootstrap/collapse';
 import {TabsModule} from 'ngx-bootstrap/tabs';
 import {NgxChartsModule} from '@swimlane/ngx-charts';
-import {TranslateLoader, TranslateModule} from '@ngx-translate/core';
+import {TranslateModule} from '@ngx-translate/core';
 import {EnvironmentService} from '../shared/services/environment.service';
 import {SubscriptionManagerService} from './services/subscription-manager.service';
 import {AnnouncementService} from './services/announcement.service';
@@ -77,135 +77,136 @@ import {SharedModule} from '../shared/shared.module';
 import {AuthService} from '../shared/services/auth.service';
 import {TranslateInitService} from '../shared/services/translate-init.service';
 import {OtpManageComponent} from './components/otp-manage/otp-manage.component';
-import {AuthPipe} from '../shared/pipes/auth.pipe';
 import {OtpScratchCodePipe} from './pipes/otp-scratch-code.pipe';
-import {MultiTranslateHttpLoader} from '../shared/lib/multi-translate-http-loader';
 import {BeacontransferComponent} from './components/beacontransfer/beacontransfer.component';
 import {UserProgressComponent} from './components/user-progress/user-progress.component';
-import {ListComponent} from './components/list/list.component';
-import {MapEntriesPipe} from './pipes/map-entries.pipe';
 import {CmsModule} from '../cms/cms.module';
 import {JournalComponent} from './components/journal/journal.component';
 import {ExpDaysComponent} from './components/journal/exp-days/exp-days.component';
 import {SensorToAppComponent} from './components/journal/sensor-to-app/sensor-to-app.component';
 import {AppToAnalyseComponent} from './components/journal/app-to-analyse/app-to-analyse.component';
+import {ContentComponent} from './components/admin/content/content.component';
+import { JournalViewComponent } from './components/teacher/journal-view/journal-view.component';
 
 @NgModule({
-  declarations: [
-    // Components
-    TreesComponent,
-    HeaderComponent,
-    HomeComponent,
-    ObservationComponent,
-    MissingComponent,
-    ImprintComponent,
-    FooterComponent,
-    ReportComponent,
-    TreeComponent,
-    TreeListComponent,
-    ProjectLoginComponent,
-    PasswordChangeComponent,
-    AudioImgComponent,
-    AdminComponent,
-    AdminTreeComponent,
-    AdminBeaconComponent,
-    AdminBeaconManageComponent,
-    AdminUserComponent,
-    MapComponent,
-    BeaconListComponent,
-    BeaconSelectComponent,
-    TreeSelectComponent,
-    UsernameChangeComponent,
-    ProjectLoginKeyComponent,
-    StatisticsComponent,
-    MeasurementsComponent,
-    SettingsComponent,
-    LoadingStatusComponent,
-    MessagesComponent,
-    HelpComponent,
-    SlideshowComponent,
-    UserPermissionComponent,
-    AnnouncementsComponent,
-    NotificationsComponent,
-    OtpManageComponent,
-    ListComponent,
+    declarations: [
+        // Components
+        TreesComponent,
+        HeaderComponent,
+        HomeComponent,
+        ObservationComponent,
+        MissingComponent,
+        ImprintComponent,
+        FooterComponent,
+        ReportComponent,
+        TreeComponent,
+        TreeListComponent,
+        ProjectLoginComponent,
+        PasswordChangeComponent,
+        AudioImgComponent,
+        AdminComponent,
+        AdminTreeComponent,
+        AdminBeaconComponent,
+        AdminBeaconManageComponent,
+        AdminUserComponent,
+        MapComponent,
+        BeaconListComponent,
+        BeaconSelectComponent,
+        TreeSelectComponent,
+        UsernameChangeComponent,
+        ProjectLoginKeyComponent,
+        StatisticsComponent,
+        MeasurementsComponent,
+        SettingsComponent,
+        LoadingStatusComponent,
+        MessagesComponent,
+        HelpComponent,
+        SlideshowComponent,
+        UserPermissionComponent,
+        AnnouncementsComponent,
+        NotificationsComponent,
+        OtpManageComponent,
+        BeacontransferComponent,
+        UserProgressComponent,
+        JournalComponent,
+        ExpDaysComponent,
+        SensorToAppComponent,
+        AppToAnalyseComponent,
+        JournalViewComponent,
 
-    // Pipes
-    StringModificationPipe,
-    CapitalizationPipe,
-    LowercasePipe,
-    ReplacePipe,
-    DecimalPlacesPipe,
-    OtpScratchCodePipe,
-    BeacontransferComponent,
-    UserProgressComponent,
-    MapEntriesPipe,
-    JournalComponent,
-    ExpDaysComponent,
-    SensorToAppComponent,
-    AppToAnalyseComponent
-  ],
-  imports: [
-    // Core
-    CommonModule,
-    SharedModule,
-    TreesRoutingModule,
-    FormsModule,
-    HttpClientModule,
-    LayoutModule,
-    CmsModule,
+        // Pipes
+        StringModificationPipe,
+        CapitalizationPipe,
+        LowercasePipe,
+        ReplacePipe,
+        DecimalPlacesPipe,
+        OtpScratchCodePipe,
+        ContentComponent
+    ],
+    imports: [
+        // Core
+        CommonModule,
+        SharedModule,
+        TreesRoutingModule,
+        FormsModule,
+        HttpClientModule,
+        LayoutModule,
+        CmsModule,
 
-    // Ngx-Bootstrap
-    BsDatepickerModule.forRoot(),
-    ModalModule.forRoot(),
-    TimepickerModule.forRoot(),
-    ButtonsModule.forRoot(),
-    PopoverModule.forRoot(),
-    TooltipModule.forRoot(),
-    BsDropdownModule.forRoot(),
-    CollapseModule.forRoot(),
-    TabsModule.forRoot(),
+        // Ngx-Bootstrap
+        BsDatepickerModule.forRoot(),
+        ModalModule.forRoot(),
+        TimepickerModule.forRoot(),
+        ButtonsModule.forRoot(),
+        PopoverModule.forRoot(),
+        TooltipModule.forRoot(),
+        BsDropdownModule.forRoot(),
+        CollapseModule.forRoot(),
+        TabsModule.forRoot(),
 
-    // Translation
-    TranslateModule,
+        // Translation
+        TranslateModule,
 
-    // Charts
-    NgxChartsModule
-  ],
-  providers: [
-    // Core services
-    AuthService,
-    EnvironmentService,
-    SubscriptionManagerService,
+        // Charts
+        NgxChartsModule
+    ],
+    exports: [
+        ContentComponent
+    ],
+    providers: [
+        // Core services
+        AuthService,
+        EnvironmentService,
+        SubscriptionManagerService,
 
-    // Component-Services
-    AnnouncementService,
-    PhenologyObservationService,
-    TreeService,
-    BeaconService,
-    AdminService,
-    UserService,
-    UIService,
-    MessagesService,
-    SearchService,
-    NotificationsService,
-    AuthHelperService,
-    UserRewardService,
-    TranslateInitService,
+        // Component-Services
+        AnnouncementService,
+        PhenologyObservationService,
+        TreeService,
+        BeaconService,
+        AdminService,
+        UserService,
+        UIService,
+        MessagesService,
+        SearchService,
+        NotificationsService,
+        AuthHelperService,
+        UserRewardService,
+        TranslateInitService,
 
-    // Guards
-    ProjectLoginGuard,
-    AdminGuard,
+        // Guards
+        ProjectLoginGuard,
+        AdminGuard,
 
-    // Config classes
-    LayoutConfig,
+        // Config classes
+        LayoutConfig,
 
-    // Interceptors
-    {
-      provide: HTTP_INTERCEPTORS,
-      useClass: AuthInterceptor,
-      multi: true
-    }
-  ]
+        // Interceptors
+        {
+            provide: HTTP_INTERCEPTORS,
+            useClass: AuthInterceptor,
+            multi: true
+        }
+    ]
 })
 export class TreesModule { }

@@ -1,6 +1,5 @@
 import {
   AfterViewChecked,
-  AfterViewInit,
   ChangeDetectorRef,
   Component,
   ElementRef,
@@ -10,11 +9,9 @@ import {
   TemplateRef,
   ViewChild
 } from '@angular/core';
-import {LoadingStatusComponent} from '../loading-status/loading-status.component';
-import {SubscriptionManagerService} from '../../services/subscription-manager.service';
-import {PhenologyDatasetWithTree} from '../../entities/phenology-dataset-with-tree.entity';
+import {LoadingStatusComponent} from '../../../trees/components/loading-status/loading-status.component';
+import {SubscriptionManagerService} from '../../../trees/services/subscription-manager.service';
 import * as moment from 'moment';
-import {environment} from '../../../../../environments/environment';
 import {Moment} from 'moment';
 import * as $ from 'jquery';
 
@@ -59,6 +56,9 @@ export class ListComponent extends LoadingStatusComponent implements OnInit, OnD
   }
 
   public ngOnInit(): void {
+    if (!this.statusValues) {
+      super.noop();
+    }
     super.ngOnInit();
   }
 

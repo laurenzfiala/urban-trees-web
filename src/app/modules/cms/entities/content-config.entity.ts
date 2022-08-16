@@ -1,5 +1,3 @@
-import {CmsLayout} from '../interfaces/cms-layout.interface';
-import {CmsComponent} from '../interfaces/cms-component.interface';
 import {Type} from '@angular/core';
 
 /**
@@ -10,36 +8,63 @@ import {Type} from '@angular/core';
  */
 export class CmsContentConfig {
 
-  private layouts: Array<CmsLayoutConfig>;
-  private components: Array<CmsComponentConfig>;
+  private _layouts: Array<CmsLayoutConfig>;
+  private _components: Array<CmsComponentConfig>;
+  private _showToolbar: boolean;
 
-  constructor(layouts: Array<CmsLayoutConfig>, components: Array<CmsComponentConfig>) {
-    this.layouts = layouts;
-    this.components = components;
+  constructor(layouts: Array<CmsLayoutConfig>,
+              components: Array<CmsComponentConfig>,
+              showToolbar: boolean = true) {
+    this._layouts = layouts;
+    this._components = components;
+    this._showToolbar = showToolbar;
   }
 
+
+  get layouts(): Array<CmsLayoutConfig> {
+    return this._layouts;
+  }
+
+  get components(): Array<CmsComponentConfig> {
+    return this._components;
+  }
+
+  get showToolbar(): boolean {
+    return this._showToolbar;
+  }
 }
 
 export class CmsLayoutConfig {
 
-  private layout: Type<unknown>;
-  private slotConfig: Array<CmsLayoutSlotConfig> = new Array<CmsLayoutSlotConfig>();
+  private _layout: Type<unknown>;
+  private _slotConfig: Array<CmsLayoutSlotConfig> = new Array<CmsLayoutSlotConfig>();
 
   constructor(layout: Type<unknown>, slotConfig: Array<CmsLayoutSlotConfig>) {
-    this.layout = layout;
-    this.slotConfig = slotConfig;
+    this._layout = layout;
+    this._slotConfig = slotConfig;
   }
 
+
+  get layout(): Type<unknown> {
+    return this._layout;
+  }
+
+  get slotConfig(): Array<CmsLayoutSlotConfig> {
+    return this._slotConfig;
+  }
 }
 
 export class CmsComponentConfig {
 
-  private component: Type<unknown>;
+  private _component: Type<unknown>;
 
   constructor(component: Type<unknown>) {
-    this.component = component;
+    this._component = component;
   }
 
+  get component(): Type<unknown> {
+    return this._component;
+  }
 }
 
 /**

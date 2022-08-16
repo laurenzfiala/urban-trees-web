@@ -16,7 +16,7 @@ import {Subscription} from 'rxjs';
 export class AuthDirective implements OnInit, OnDestroy {
 
   @Input('auth')
-  private grantRoles: string[];
+  private grantRoles: string[] = [];
 
   @Input('authElse')
   private templateRefElse: TemplateRef<any>;

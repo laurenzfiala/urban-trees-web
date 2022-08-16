@@ -15,6 +15,7 @@ import {MutableWrapper} from '../../entities/mutable-wrapper.entity';
 import {ViewMode} from '../../enums/cms-layout-view-mode.enum';
 import {CmsValidationResults} from '../../entities/cms-validation-results.entity';
 import {CmsValidationResult} from '../../entities/cms-validation-result.entity';
+import {SubscriptionManagerService} from '../../../trees/services/subscription-manager.service';
 
 @Component({
   selector: 'ut-cms-two-column-layout',
@@ -44,7 +45,7 @@ export class TwoColumnLayout extends AbstractCmsLayout {
               protected contentService: ContentService,
               protected toolbar: ToolbarService,
               protected cdRef: ChangeDetectorRef,
-              protected resolver: ComponentFactoryResolver) {
+              protected subs: SubscriptionManagerService) {
     super();
   }
 

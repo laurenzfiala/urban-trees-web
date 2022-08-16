@@ -1,0 +1,13 @@
+
+<div class="cms-drop-zone-line"
+     [ngClass]="{'active': dragOver, 'hiding': hiding, 'inserted': inserted}"
+     role="button"
+     tabindex="0"
+     (action)="insert()"
+     (drop)="insert()"
+     (dragenter)="dragOver = true; $event.preventDefault()"
+     (dragover)="dragOver = true; $event.preventDefault()"
+     (dragleave)="dragOver = false">
+  <div>Insert here</div>
+  <div class="line"></div>
+</div>

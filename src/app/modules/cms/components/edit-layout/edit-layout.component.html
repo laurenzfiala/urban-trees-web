@@ -1,0 +1,14 @@
+<div class="dropzone"
+     tabindex="0"
+     role="button"
+     [ngClass]="{'insert-element': hasViewMode(ViewMode.INSERT_ELEMENT) && false}">
+  <ng-container *ngIf="!hasViewMode(ViewMode.INSERT_ELEMENT)">
+    <div (action)="remove()"
+         tabindex="0"
+         role="button"
+         class="d-flex flex-row align-items-center text-subtle">
+      <i class="i i-dark i-trash mr-1"></i>
+      Remove
+    </div>
+  </ng-container>
+</div>
