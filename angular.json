@@ -131,7 +131,6 @@
       }
     }
   },
-  "defaultProject": "urban-trees-web",
   "schematics": {
     "@schematics/angular:component": {
       "prefix": "ut",
