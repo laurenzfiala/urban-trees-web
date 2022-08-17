@@ -19,6 +19,13 @@ import {ContentService} from '../../services/content.service';
 import {DomSanitizer} from '@angular/platform-browser';
 import {fromEvent, ReplaySubject} from 'rxjs';
 import {SubscriptionManagerService} from '../../../trees/services/subscription-manager.service';
+import {EnvironmentService} from '../../../shared/services/environment.service';
+import {DOMParser, Schema} from 'prosemirror-model';
+import {addListNodes} from 'prosemirror-schema-list';
+import {EditorView} from 'prosemirror-view';
+import {EditorState} from 'prosemirror-state';
+import {exampleSetup} from 'prosemirror-example-setup';
+import {schema} from 'prosemirror-schema-basic';
 
 @Component({
   selector: 'ut-cms-text',
@@ -73,6 +80,7 @@ export class TextComponent extends AbstractCmsComponent implements OnInit, After
   constructor(protected contentService: ContentService,
               protected toolbar: ToolbarService,
               protected cdRef: ChangeDetectorRef,
+              private envService: EnvironmentService,
               private subs: SubscriptionManagerService,
               private sanitizer: DomSanitizer,
               private zone: NgZone) {
@@ -208,9 +216,9 @@ export class TextComponent extends AbstractCmsComponent implements OnInit, After
   private link(): void {
     const selection = window.getSelection();
     if (selection?.getRangeAt(0)?.toString().length === 0) {
-      window.alert('You must select text first');
+      window.alert('You must select some text first');
     }
-    let url = window.prompt('Enter the link');
-    document.execCommand('createLink', false, url);
+    let url = window.prompt('Enter link');
+    document.execCommand('createLink', false, this.envService.endpoints.webHost + '/' + url);
   }
 }

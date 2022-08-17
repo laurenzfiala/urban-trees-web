@@ -91,6 +91,10 @@ class EnvironmentEndpoints {
     return environment.host;
   }
 
+  get webHost() {
+    return environment.webHost;
+  }
+
   get mapHost() {
     return environment.mapHost;
   }
