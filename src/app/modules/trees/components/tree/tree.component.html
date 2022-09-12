@@ -8,120 +8,34 @@
 
 <section class="content-cat">
   <div class="container">
-    <h1 class="content-cat-heading">{{'tree.species.' + tree.species.name | lowercase | translate}}</h1>
-    <div class="content-cat-text">
-      <i>{{'tree.species.latin.' + tree.species.name | lowercase | translate}}</i>
-    </div>
-  </div>
-</section>
-
-<section class="content-cat">
-  <div class="container tree-image">
-    <h1 class="content-cat-heading">{{'tree.summary.title' | translate}}</h1>
-    <div class="content-cat-flex flex-md-nowrap">
-      <div class="content-cat-text flex-grow-1" [innerHTML]="'tree.summary.text' | translate">
+    <h1 class="content-cat-heading d-block">
+      {{'tree.species.' + tree.species.name | lowercase | translate}}
+      <div><small class="text-subtle"><em>{{'tree.species.latin.' + tree.species.name | lowercase | translate}}</em></small></div>
+    </h1>
+    <div class="d-flex flex-row align-items-center">
+      <i class="i i-md i-dark i-location mr-2"></i>
+      <div>
+        {{tree.location.street}}<br/>
+        {{tree.location.city.name}}<br/>
       </div>
-      <ut-zoom *ngIf="tree.id === 1"
-               [content]="treeImg"
-               [fullscreenContent]="treeImgFull"
-               [mode]="Mode.IMAGE">
-      </ut-zoom>
-      <ng-template #treeImg>
-        <img class="content-cat-img" src="../../../../../assets/content/img/tree_1.jpg"/>
-      </ng-template>
-      <ng-template #treeImgFull>
-        <img class="fullscreen-content" src="../../../../../assets/content/img/tree_1.jpg"/>
-      </ng-template>
+      <div class="flex-grow-1"></div>
+      <button class="link-btn link-btn-sm d-inline-flex flex-row align-items-center"
+         (action)="showMap = !showMap">
+        <i class="i i-xs i-dark my--1 mr-1"
+           [ngClass]="{'i-chevron-up': showMap, 'i-chevron-down': !showMap}"></i>
+        {{('tree.summary.location.' + (showMap ? 'map_close_btn' : 'map_open_btn')) | translate}}
+      </button>
     </div>
-  </div>
-</section>
 
-<section class="content-cat">
-  <div class="container tree-image">
-    <h1 class="content-cat-heading">{{'tree.through_year.title' | translate}}</h1>
-    <div class="content-cat-flex flex-md-nowrap">
-      <div class="content-cat-text flex-grow-1">
-        <div [innerHTML]="'tree.through_year.text' | translate"></div>
-        <div class="text-subtle text-xs mt-2">
-          {{'tree.through_year.update_month' | translate}}
-        </div>
-      </div>
-      <ut-slideshow #throughYearSlideshow [slides]="[
-                              {'url': '../../../assets/content/img/phenology_seasons/1.JPG', 'alt': 'tree.through_year.pictures_alt.1' | translate},
-                              {'url': '../../../assets/content/img/phenology_seasons/2.JPG', 'alt': 'tree.through_year.pictures_alt.2' | translate},
-                              {'url': '../../../assets/content/img/phenology_seasons/3.JPG', 'alt': 'tree.through_year.pictures_alt.3' | translate},
-                              {'url': '../../../assets/content/img/phenology_seasons/4.JPG', 'alt': 'tree.through_year.pictures_alt.4' | translate},
-                              {'url': '../../../assets/content/img/phenology_seasons/5.JPG', 'alt': 'tree.through_year.pictures_alt.5' | translate},
-                              {'url': '../../../assets/content/img/phenology_seasons/6.JPG', 'alt': 'tree.through_year.pictures_alt.6' | translate},
-                              {'url': '../../../assets/content/img/phenology_seasons/7.JPG', 'alt': 'tree.through_year.pictures_alt.7' | translate},
-                              {'url': '../../../assets/content/img/phenology_seasons/8.JPG', 'alt': 'tree.through_year.pictures_alt.8' | translate},
-                              {'url': '../../../assets/content/img/phenology_seasons/9.JPG', 'alt': 'tree.through_year.pictures_alt.9' | translate},
-                              {'url': '../../../assets/content/img/phenology_seasons/10.JPG', 'alt': 'tree.through_year.pictures_alt.10' | translate},
-                              {'url': '../../../assets/content/img/phenology_seasons/11.JPG', 'alt': 'tree.through_year.pictures_alt.11' | translate},
-                              {'url': '../../../assets/content/img/phenology_seasons/12.JPG', 'alt': 'tree.through_year.pictures_alt.12' | translate}
-                              ]"
-                    [slideTemplate]="treeSlide"
-                    [intervalMs]="2500">
-      </ut-slideshow>
-      <ng-template #treeSlide let-url="url" let-alt="alt">
-        <ut-zoom [content]="img"
-                 [fullscreenContent]="imgFull"
-                 [showViewControls]="true"
-                 [mode]="Mode.IMAGE"
-                 (previous)="throughYearSlideshow.previousSlide()"
-                 (next)="throughYearSlideshow.nextSlide()"
-                 (opening)="throughYearSlideshow.pause = true"
-                 (closed)="throughYearSlideshow.pause = false">
-        </ut-zoom>
-        <ng-template #img>
-          <img class="content-cat-img" [src]="url" [alt]="alt"/>
-        </ng-template>
-        <ng-template #imgFull>
-          <img class="fullscreen-content" [src]="url" [alt]="alt"/>
-        </ng-template>
-      </ng-template>
+    <div *ngIf="showMap" class="map-wrapper mt-2">
+      <ut-map
+        [enabled]="false"
+        [useActivator]="false"
+        [markers]="[tree]"
+        [selectedMarker]="tree">
+      </ut-map>
     </div>
-  </div>
-</section>
 
-<section class="content-cat">
-  <div class="container tree-image">
-    <h1 class="content-cat-heading">{{'tree.cooling_power.title' | translate}}</h1>
-    <div class="content-cat-flex flex-md-nowrap">
-      <div class="content-cat-text flex-grow-1">
-        <div [innerHTML]="'tree.cooling_power.text' | translate"></div>
-        <div class="text-subtle text-xs">
-          {{'tree.cooling_power.update_month' | translate}}
-        </div>
-      </div>
-      <img class="content-cat-img" src="../../../../../assets/content/img/tree-temp.svg"/>
-    </div>
-  </div>
-</section>
-
-<section class="content-cat">
-  <div class="container tree-image">
-    <h1 class="content-cat-heading">{{'tree.leaf_development.title' | translate}}</h1>
-    <div class="content-cat-flex flex-lg-nowrap">
-      <div class="content-cat-text flex-grow-1">
-        {{'tree.leaf_development.text' | translate}}
-        <div class="text-subtle text-xs mt-2">
-          {{'tree.leaf_development.update_month' | translate}}
-        </div>
-      </div>
-      <ut-audio-img
-        *lang="'de-DE'"
-        image="../../../assets/content/img/blattentfaltung_2018_10.jpeg"
-        audio="../../../assets/content/audio/blattentfaltung_2018_10.mp3"
-        class="content-cat-img-lg">
-      </ut-audio-img>
-      <ut-audio-img
-        *lang="'en-GB'"
-        image="../../../assets/content/img/blattentfaltung_2018_10_en.jpeg"
-        audio="../../../assets/content/audio/blattentfaltung_2018_10.mp3"
-        class="content-cat-img-lg">
-      </ut-audio-img>
-    </div>
   </div>
 </section>
 
@@ -132,13 +46,15 @@
                     [contentPath]="treeContentPath"
                     [contentLang]="treeContentLang"
                     [content]="treeContent"
-                    [(viewMode)]="treeContentViewMode"></ut-cms-content>
+                    [(viewMode)]="treeContentViewMode"
+                    (reloadContent)="loadTreeContent()"></ut-cms-content>
 
-    <div class="text-center mt-2">
+    <div *auth="envService.security.rolesTreeEditor" class="text-center mt-2">
       <button *ngIf="treeContentViewMode === ViewMode.CONTENT"
-         (action)="treeContentViewMode = ViewMode.EDIT_CONTENT"
-         class="link-btn">
-        {{treeContent?.historyId ? 'Edit tree description' : 'Add tree description'}}
+              (action)="treeContentViewMode = ViewMode.EDIT_CONTENT"
+              class="link-btn d-inline-flex justify-content-center">
+        <i class="i i-xs i-edit i-dark mr-1"></i>
+        {{('tree.edit_tree.' + (treeContent?.historyId ? 'edit_btn' : 'add_btn')) | translate}}
       </button>
     </div>
 
@@ -178,7 +94,137 @@
   </div>
 </section>
 
+<section class="content-cat">
+  <div class="text-center">
+    <button *ngIf="!showMore"
+            (action)="showMore = true"
+            class="link-btn d-inline-flex justify-content-center">
+      <i class="i i-xs i-chevron-down i-dark mr-1"></i>
+      {{'tree.more_info.btn_label' | translate}}
+    </button>
+    <div *ngIf="showMore"
+         class="status-img">
+      <div>
+        {{'tree.more_info.scroll' | translate}}
+      </div>
+      <img src="/assets/img/icon/scroll_down.svg" />
+    </div>
+  </div>
+</section>
 
+<ng-container *ngIf="showMore">
+
+  <section class="content-cat">
+    <div class="container tree-image">
+      <h1 class="content-cat-heading">{{'tree.summary.title' | translate}}</h1>
+      <div class="content-cat-flex flex-md-nowrap">
+        <div class="content-cat-text flex-grow-1" [innerHTML]="'tree.summary.text' | translate">
+        </div>
+        <ut-zoom *ngIf="tree.id === 1"
+                 [content]="treeImg"
+                 [fullscreenContent]="treeImgFull"
+                 [mode]="Mode.IMAGE">
+        </ut-zoom>
+        <ng-template #treeImg>
+          <img class="content-cat-img" src="../../../../../assets/content/img/tree_1.jpg"/>
+        </ng-template>
+        <ng-template #treeImgFull>
+          <img class="fullscreen-content" src="../../../../../assets/content/img/tree_1.jpg"/>
+        </ng-template>
+      </div>
+    </div>
+  </section>
+
+  <section class="content-cat">
+    <div class="container tree-image">
+      <h1 class="content-cat-heading">{{'tree.through_year.title' | translate}}</h1>
+      <div class="content-cat-flex flex-md-nowrap">
+        <div class="content-cat-text flex-grow-1">
+          <div [innerHTML]="'tree.through_year.text' | translate"></div>
+          <div class="text-subtle text-xs mt-2">
+            {{'tree.through_year.update_month' | translate}}
+          </div>
+        </div>
+        <ut-slideshow #throughYearSlideshow [slides]="[
+                              {'url': '../../../assets/content/img/phenology_seasons/1.JPG', 'alt': 'tree.through_year.pictures_alt.1' | translate},
+                              {'url': '../../../assets/content/img/phenology_seasons/2.JPG', 'alt': 'tree.through_year.pictures_alt.2' | translate},
+                              {'url': '../../../assets/content/img/phenology_seasons/3.JPG', 'alt': 'tree.through_year.pictures_alt.3' | translate},
+                              {'url': '../../../assets/content/img/phenology_seasons/4.JPG', 'alt': 'tree.through_year.pictures_alt.4' | translate},
+                              {'url': '../../../assets/content/img/phenology_seasons/5.JPG', 'alt': 'tree.through_year.pictures_alt.5' | translate},
+                              {'url': '../../../assets/content/img/phenology_seasons/6.JPG', 'alt': 'tree.through_year.pictures_alt.6' | translate},
+                              {'url': '../../../assets/content/img/phenology_seasons/7.JPG', 'alt': 'tree.through_year.pictures_alt.7' | translate},
+                              {'url': '../../../assets/content/img/phenology_seasons/8.JPG', 'alt': 'tree.through_year.pictures_alt.8' | translate},
+                              {'url': '../../../assets/content/img/phenology_seasons/9.JPG', 'alt': 'tree.through_year.pictures_alt.9' | translate},
+                              {'url': '../../../assets/content/img/phenology_seasons/10.JPG', 'alt': 'tree.through_year.pictures_alt.10' | translate},
+                              {'url': '../../../assets/content/img/phenology_seasons/11.JPG', 'alt': 'tree.through_year.pictures_alt.11' | translate},
+                              {'url': '../../../assets/content/img/phenology_seasons/12.JPG', 'alt': 'tree.through_year.pictures_alt.12' | translate}
+                              ]"
+                      [slideTemplate]="treeSlide"
+                      [intervalMs]="2500">
+        </ut-slideshow>
+        <ng-template #treeSlide let-url="url" let-alt="alt">
+          <ut-zoom [content]="img"
+                   [fullscreenContent]="imgFull"
+                   [showViewControls]="true"
+                   [mode]="Mode.IMAGE"
+                   (previous)="throughYearSlideshow.previousSlide()"
+                   (next)="throughYearSlideshow.nextSlide()"
+                   (opening)="throughYearSlideshow.pause = true"
+                   (closed)="throughYearSlideshow.pause = false">
+          </ut-zoom>
+          <ng-template #img>
+            <img class="content-cat-img" [src]="url" [alt]="alt"/>
+          </ng-template>
+          <ng-template #imgFull>
+            <img class="fullscreen-content" [src]="url" [alt]="alt"/>
+          </ng-template>
+        </ng-template>
+      </div>
+    </div>
+  </section>
+
+  <section class="content-cat">
+    <div class="container tree-image">
+      <h1 class="content-cat-heading">{{'tree.cooling_power.title' | translate}}</h1>
+      <div class="content-cat-flex flex-md-nowrap">
+        <div class="content-cat-text flex-grow-1">
+          <div [innerHTML]="'tree.cooling_power.text' | translate"></div>
+          <div class="text-subtle text-xs">
+            {{'tree.cooling_power.update_month' | translate}}
+          </div>
+        </div>
+        <img class="content-cat-img" src="../../../../../assets/content/img/tree-temp.svg"/>
+      </div>
+    </div>
+  </section>
+
+  <section class="content-cat">
+    <div class="container tree-image">
+      <h1 class="content-cat-heading">{{'tree.leaf_development.title' | translate}}</h1>
+      <div class="content-cat-flex flex-lg-nowrap">
+        <div class="content-cat-text flex-grow-1">
+          {{'tree.leaf_development.text' | translate}}
+          <div class="text-subtle text-xs mt-2">
+            {{'tree.leaf_development.update_month' | translate}}
+          </div>
+        </div>
+        <ut-audio-img
+          *lang="'de-DE'"
+          image="../../../assets/content/img/blattentfaltung_2018_10.jpeg"
+          audio="../../../assets/content/audio/blattentfaltung_2018_10.mp3"
+          class="content-cat-img-lg">
+        </ut-audio-img>
+        <ut-audio-img
+          *lang="'en-GB'"
+          image="../../../assets/content/img/blattentfaltung_2018_10_en.jpeg"
+          audio="../../../assets/content/audio/blattentfaltung_2018_10.mp3"
+          class="content-cat-img-lg">
+        </ut-audio-img>
+      </div>
+    </div>
+  </section>
+
+</ng-container>
 
 </ng-container>
 

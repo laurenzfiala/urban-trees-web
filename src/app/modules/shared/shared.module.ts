@@ -18,6 +18,7 @@ import {AuthPipe} from './pipes/auth.pipe';
 import {CastDirective} from './directives/cast.directive';
 import {ListComponent} from './components/list/list.component';
 import {MapEntriesPipe} from './pipes/map-entries.pipe';
+import {Async2Pipe} from './pipes/async2.pipe';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import {MapEntriesPipe} from './pipes/map-entries.pipe';
 
     // Pipes
     AuthPipe,
-    MapEntriesPipe
+    MapEntriesPipe,
+    Async2Pipe
   ],
   imports: [
     CommonModule,
@@ -66,7 +68,8 @@ import {MapEntriesPipe} from './pipes/map-entries.pipe';
 
     // Pipes
     AuthPipe,
-    MapEntriesPipe
+    MapEntriesPipe,
+    Async2Pipe
   ],
   providers: [
     // Interceptors

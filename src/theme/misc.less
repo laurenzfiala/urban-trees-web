@@ -482,14 +482,14 @@ a.link {
 }
 
 // feature pointers
-.feature-pointer {
+.feature-pointer, .warning-pointer, .danger-pointer {
   display: inline-block;
   width: 0.5rem;
   height: 0.5rem;
   background-color: @warning;
   border-radius: (@fontSizeBase/2);
 
-  animation-name: feature-pointer-anim;
+  animation-name: warning-pointer-anim;
   animation-iteration-count: infinite;
   animation-direction: normal;
   animation-duration: 2s;
@@ -506,6 +506,11 @@ a.link {
     font-size: @fontSizeExtraSmall;
     font-style: normal;
   }
+
+  &.danger-pointer {
+    background-color: @danger;
+    animation-name: danger-pointer-anim;
+  }
 }
 
 .enabled-pointer {
@@ -518,12 +523,21 @@ a.link {
   margin-top: 0.175em;
 }
 
-@keyframes feature-pointer-anim {
+@keyframes warning-pointer-anim {
   0% {
-    box-shadow: 0 0 0 0px rgba(255, 191, 43, 0.65);
+    box-shadow: 0 0 0 0px fade(lighten(@warning, 7%), 65%);
   }
   100% {
-    box-shadow: 0 0 0 7px rgba(255, 191, 43, 0);
+    box-shadow: 0 0 0 7px fade(lighten(@warning, 7%), 0%);
+  }
+}
+
+@keyframes danger-pointer-anim {
+  0% {
+    box-shadow: 0 0 0 0px fade(lighten(@danger, 10%), 65%);
+  }
+  100% {
+    box-shadow: 0 0 0 7px fade(lighten(@danger, 10%), 0%);
   }
 }
 

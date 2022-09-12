@@ -47,9 +47,27 @@ Fix for ugly-looking border between popover and arrow.
 
 /**
 
-Apply correct z-index to tooltips.
+Apply z-index.
+
+ */
+.popover {
+  z-index: @popoverZIndex;
+}
+
+/**
+
+Apply correct z-index to tooltips
+and fix small gap on tooltip arrows.
 
  */
 .tooltip {
   z-index: @tooltipZIndex;
+
+  &.top > .tooltip-arrow::before {
+    top: -0.5px;
+  }
+
+  > .tooltip-arrow {
+    z-index: 1;
+  }
 }

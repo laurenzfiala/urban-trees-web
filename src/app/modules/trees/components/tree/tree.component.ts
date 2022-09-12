@@ -9,6 +9,7 @@ import {CmsContent} from '../../../cms/entities/cms-content.entity';
 import {ViewMode} from '../../../cms/enums/cms-layout-view-mode.enum';
 import {ContentService} from '../../../cms/services/content.service';
 import {UserContent} from '../../../cms/entities/user-content.entity';
+import {TreeFrontend} from '../../entities/tree-frontend.entity';
 
 @Component({
   selector: 'ut-tree',
@@ -28,6 +29,8 @@ export class TreeComponent extends AbstractComponent implements OnInit {
   public treeContentLang: string;
   public treeContent: CmsContent;
   public treeContentViewMode: ViewMode = ViewMode.CONTENT;
+  public showMap: boolean = false;
+  public showMore: boolean = false;
 
   /**
    * If the route param does not hold a tree ID, this may hold the fallback.
@@ -38,7 +41,7 @@ export class TreeComponent extends AbstractComponent implements OnInit {
   /**
    * Tree to display.
    */
-  public tree: Tree;
+  public tree: TreeFrontend;
 
   constructor(private route: ActivatedRoute,
               private treeService: TreeService,
@@ -74,7 +77,7 @@ export class TreeComponent extends AbstractComponent implements OnInit {
 
     this.setStatus(StatusKey.TREE_LOADING, StatusValue.IN_PROGRESS);
     this.treeService.loadTree(treeId, (tree: Tree) => {
-      this.tree = tree;
+      this.tree = TreeFrontend.fromTree(tree);
       this.loadTreeContent();
       this.setStatus(StatusKey.TREE_LOADING, StatusValue.SUCCESSFUL);
     }, (error, apiError) => {

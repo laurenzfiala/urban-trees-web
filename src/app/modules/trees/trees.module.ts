@@ -25,7 +25,6 @@ import {BeaconListComponent} from './components/beacon-list/beacon-list.componen
 import {BeaconSelectComponent} from './components/beacon-select/beacon-select.component';
 import {TreeSelectComponent} from './components/tree-select/tree-select.component';
 import {UsernameChangeComponent} from './components/project-username-change/project-username-change.component';
-import {ProjectLoginKeyComponent} from './components/project-login-key/project-login-key.component';
 import {StatisticsComponent} from './components/statistics/statistics.component';
 import {MeasurementsComponent} from './components/measurements/measurements.component';
 import {SettingsComponent} from './components/settings/settings.component';
@@ -114,7 +113,6 @@ import { JournalViewComponent } from './components/teacher/journal-view/journal-
         BeaconSelectComponent,
         TreeSelectComponent,
         UsernameChangeComponent,
-        ProjectLoginKeyComponent,
         StatisticsComponent,
         MeasurementsComponent,
         SettingsComponent,

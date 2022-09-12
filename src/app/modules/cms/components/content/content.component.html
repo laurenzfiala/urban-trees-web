@@ -3,12 +3,11 @@
   <div *ngIf="config?.showToolbar && hasViewMode(ViewMode.EDIT_LAYOUT, ViewMode.EDIT_CONTENT, ViewMode.INSERT_ELEMENT)"
        class="toolbar-wrapper">
 
-    <div class="toolbar justify-content-between flex-wrap-reverse">
+    <div class="toolbar toolbar-top justify-content-between flex-wrap-reverse">
       <div class="toolbar-group">
         <button
           class="primary"
           [tooltip]="'toolbar.publish_tooltip' | translate"
-          container="body"
           (action)="publish()">
           {{'toolbar.publish' | translate}}
         </button>
@@ -23,8 +22,12 @@
         <div class="toolbar-align toolbar-close"
              role="button"
              tabindex="0"
+             #closeBtnTooltip="bs-tooltip"
+             #closeBtnPopover="bs-popover"
              [tooltip]="'toolbar.close' | translate"
-             container="body"
+             [popover]="closeBtnPopoverContent"
+             [outsideClick]="true"
+             triggers=""
              (action)="close()">
           <i class="i i-sm i-dark i-cross"></i>
         </div>
@@ -43,3 +46,36 @@
   </div>
 
 </div>
+
+<ng-template #closeBtnPopoverContent>
+  <div class="d-flex flex-column" (action)="$event.stopPropagation()">
+    {{'toolbar.close.title' | translate}}
+    <div class="text-subtle text-sm">{{'toolbar.close.subtitle' | translate}}</div>
+    <div class="d-flex flex-row flex-sm-wrap flex-md-nowrap mb--1 mx--1">
+      <button *ngIf="!hasStatus(StatusKey.DISCARD_DRAFT, StatusValue.IN_PROGRESS)"
+              class="btn btn-outline-dark flex-shrink-0 m-1"
+              [disabled]="hasStatus(StatusKey.SAVE, StatusValue.IN_PROGRESS)"
+              (action)="discard()">
+        {{'toolbar.close.discard_btn' | translate}}
+      </button>
+      <button *ngIf="hasStatus(StatusKey.DISCARD_DRAFT, StatusValue.IN_PROGRESS)"
+              class="btn btn-primary flex-shrink-0 m-1"
+              disabled>
+        <i class="i i-sm i-spin i-load float-left"></i>
+        {{'toolbar.close.discard_btn_progress' | translate}}
+      </button>
+      <button *ngIf="!hasStatus(StatusKey.SAVE, StatusValue.IN_PROGRESS)"
+              class="btn btn-primary flex-shrink-0 m-1"
+              [disabled]="hasStatus(StatusKey.DISCARD_DRAFT, StatusValue.IN_PROGRESS)"
+              (action)="save()">
+        {{'toolbar.close.save_btn' | translate}}
+      </button>
+      <button *ngIf="hasStatus(StatusKey.SAVE, StatusValue.IN_PROGRESS)"
+              class="btn btn-primary flex-shrink-0 m-1"
+              disabled>
+        <i class="i i-sm i-spin i-load float-left"></i>
+        {{'toolbar.close.save_btn_progress' | translate}}
+      </button>
+    </div>
+  </div>
+</ng-template>

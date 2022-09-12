@@ -12,7 +12,19 @@
       "failed": "Could not publish",
       "failed_draft": "Could not save draft"
     },
-    "close": "Save Draft & Close"
+    "close": {
+      "title": "Save draft?",
+      "subtitle": "Discard draft or save it.",
+      "discard_btn": "Discard draft",
+      "discard_btn_progress": "Discarding",
+      "save_btn": "Save draft",
+      "save_btn_progress": "Saving"
+    },
+    "undo": "Undo",
+    "redo": "Redo",
+    "edit_content": "Edit content",
+    "edit_layout": "Edit layout",
+    "edit_content_hint": "Edit content here"
   },
   "errors": {
     "components": {
@@ -26,10 +38,55 @@
   },
   "components": {
     "img": {
-      "upload_tooltip": "Upload new image"
+      "name": "New image",
+      "description": "Add a new image",
+      "upload_tooltip": "Upload new image",
+      "validation": {
+        "empty": "Image may not be empty"
+      }
     },
     "file": {
-      "placeholder": "Upload a file"
+      "name": "New file",
+      "description": "Add a new file",
+      "placeholder": "Upload a file",
+      "validation": {
+        "empty": "File may not be empty"
+      }
+    },
+    "text": {
+      "name": "New text passage",
+      "description": "Add a new text passage",
+      "bold": {
+        "name": "Bold",
+        "description": "Toggle bold text"
+      },
+      "italic": {
+        "name": "Italic",
+        "description": "Toggle italic text"
+      },
+      "heading": {
+        "name": "Heading",
+        "text": "Paragraph",
+        "h1": "Heading",
+        "h2": "Sub-Heading"
+      },
+      "link": {
+        "name": "Link",
+        "description": "Insert link",
+        "modal": {
+          "text_label": "Text",
+          "text_placeholder": "Google",
+          "href_label": "Link",
+          "href_placeholder": "google.com",
+          "insert_btn": "Insert link"
+        }
+      },
+      "validation": {
+        "empty": "Text may not be empty"
+      }
     }
+  },
+  "edit_layout": {
+    "remove_btn": "Remove"
   }
 }

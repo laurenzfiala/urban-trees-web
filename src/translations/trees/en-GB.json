@@ -239,7 +239,7 @@
     "change_password": "Change password",
     "changing_password": "Changing password...",
     "status_connection_insecure": "You may not log in using an insecure connection",
-    "status_bad_credentials": "Username and password were not recognized",
+    "status_bad_credentials": "Credentials are incorrect",
     "status_successful": "Logged in successfully",
     "status_failed": "Login failed, please retry",
     "status_expired": "Your login expired, please log in again",
@@ -250,7 +250,7 @@
     "status_insufficient_permissions": "You are not allowed to access the requested page",
     "description": "Your personal project account enables you to access your journal, enter phenology observations, collect XP and much more.",
     "disclaimer": "We don't store any personal data except those uploaded by you directly (or people you have given permission to do so).<br/>By logging in you agree to store your personal login information inside your browser (so you only have to enter your password once a day).",
-    "reset_info": "Your new password must meet these requirements:<ul><li>Contains at least 1 lowercase letter (a-z)</li><li>Contains at least 1 UPPERCASE letter (A-Z)</li><li>Contains at least 1 number (0-9)</li><li>Contains at least 1 symbol (!§$%&/()=?\"'+#<>,..-*~)</li><li>Is at least 10 characters long</li></ul>",
+    "reset_info": "Your new password must meet these requirements:<ul><li>Contains at least 1 lowercase letter (a-z)</li><li>Contains at least 1 UPPERCASE letter (A-Z)</li><li>Contains at least 1 number (0-9)</li><li>Is at least 10 characters long</li></ul>",
     "username_change_info": "Your new username must meet these requirements:<ul><li>Is at least 5 characters long</li><li>Is different to your current username</li><li>Does not already exist</li></ul>",
     "already_logged_in": "You are already logged in.",
     "username_new_placeholder": "New username",
@@ -271,7 +271,11 @@
     "go_to_login": "Go to login",
     "learn_more": "Learn more",
     "otp_placeholder": "Two-factor code",
-    "otp_info": "Please enter the two-factor code from your authenticator app."
+    "otp_info": "Please enter the two-factor code from your authenticator app.",
+    "pin_placeholder_new": "Your new PIN",
+    "pin_info_new": "Please enter a PIN code to use with your QR code login.",
+    "pin_placeholder": "Your PIN",
+    "pin_info": "Please enter your PIN code to log in."
   },
   "otp_manage": {
     "checking_state": "Checking two-factor state",
@@ -304,7 +308,11 @@
     "loading": "Loading tree...",
     "summary": {
       "title": "Information",
-      "text": "„Urban Trees as climate messengers“: in this project researchers and students, experts and teachers from Austria, Germany and Hungary collaborate. By monitoring, measuring and modelling phenological phases and microclimate data, we aim to answer the following research questions: How do urban trees affect urban climate? How does urban climate influence the trees? How can these trees affect our future?<br/><br/>The following visualisations show selected aspects of this research."
+      "text": "„Urban Trees as climate messengers“: in this project researchers and students, experts and teachers from Austria, Germany and Hungary collaborate. By monitoring, measuring and modelling phenological phases and microclimate data, we aim to answer the following research questions: How do urban trees affect urban climate? How does urban climate influence the trees? How can these trees affect our future?<br/><br/>The following visualisations show selected aspects of this research.",
+      "location": {
+        "map_open_btn": "Open map",
+        "map_close_btn": "Close map"
+      }
     },
     "through_year": {
       "title": "Trees through the seasons",
@@ -445,10 +453,18 @@
       },
       "incompatible": "Your browser unfortunately does not support this audio format."
     },
+    "more_info": {
+      "btn_label": "Show more info",
+      "scroll": "More info is below"
+    },
     "admin": {
       "title": "Admin-Tools",
       "desc": "Shortcuts to the admin console",
       "edit_link": "Edit tree"
+    },
+    "edit_tree": {
+      "edit_btn": "Edit tree description",
+      "add_btn": "Add tree description"
     }
   },
   "general": {
@@ -569,7 +585,6 @@
   "imprint": {
     "title": "Imprint",
     "title_disclaimer": "Some of the information below is only available in german",
-    "partners_coming_soon": "The other project partners will be added soon.",
     "partners": "Partners",
     "license": "License",
     "os_projects": "Open Source Projects",

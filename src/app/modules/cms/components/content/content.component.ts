@@ -15,7 +15,6 @@ import {
 import {TextComponent} from '../../cms-components/text/text.component';
 import {SerializationService} from '../../services/serialization.service';
 import {ContentService} from '../../services/content.service';
-import {TranslateInitService} from '../../../shared/services/translate-init.service';
 import {AuthService} from '../../../shared/services/auth.service';
 import {CmsContentConfig} from '../../entities/content-config.entity';
 import {SubscriptionManagerService} from '../../../trees/services/subscription-manager.service';
@@ -44,6 +43,10 @@ import {CmsContentChangeState} from '../../entities/cms-content-change-state';
 import {SerializedCmsElement} from '../../entities/serialized-cms-element.entity';
 import {NotificationsService} from '../../../trees/services/notifications.service';
 import {Notification, NotificationType} from '../../../trees/entities/notification.entity';
+import {TooltipDirective} from 'ngx-bootstrap/tooltip';
+import {PopoverDirective} from 'ngx-bootstrap/popover';
+import {TranslateService} from '@ngx-translate/core';
+import {CmsValidationResult} from '../../entities/cms-validation-result.entity';
 
 @Component({
   selector: 'ut-cms-content',
@@ -108,6 +111,9 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, OnDes
   }
 
   @Output()
+  private reloadContent: EventEmitter<void> = new EventEmitter<void>();
+
+  @Output()
   private contentSave: EventEmitter<CmsContent> = new EventEmitter<CmsContent>();
 
   @Output()
@@ -115,6 +121,12 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, OnDes
 
   @ViewChild('contentSlot', {read: ViewContainerRef, static: true})
   public contentSlot: ViewContainerRef;
+
+  @ViewChild('closeBtnTooltip', {read: TooltipDirective})
+  public closeBtnTooltip: TooltipDirective;
+
+  @ViewChild('closeBtnPopover', {read: PopoverDirective})
+  public closeBtnPopover: PopoverDirective;
 
   /**
    * Holds all state values related to change tracking.
@@ -147,7 +159,12 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, OnDes
   /**
    * When the user navigates away from the page and there
    * are still unsaved changes, we want to confirm leaving.
+   *
    * TODO also implement app-internal nav check
+   * NOTE: there is currently no way to check deactivation on children,
+   *       therefore we must wait for this feature to be implemented in
+   *       a future Angular release.
+   *       See https://github.com/angular/angular/issues/11836
    */
   @HostListener('window:beforeunload')
   public onBeforeUnload(): any {
@@ -155,11 +172,11 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, OnDes
   }
 
   constructor(protected cdRef: ChangeDetectorRef,
-              private translateInit: TranslateInitService,
               private authService: AuthService,
               protected contentService: ContentService,
               private serializationService: SerializationService,
               protected subs: SubscriptionManagerService,
+              public translate: TranslateService,
               public toolbar: ToolbarService,
               private router: Router,
               private notifications: NotificationsService,
@@ -176,8 +193,8 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, OnDes
         EDBuilder.new()
           .type(TextComponent)
           .toolbarBtn(
-            'New text passage',
-            'Add a new text passage to the content',
+            this.translate.get('components.text.name'),
+            this.translate.get('components.text.description'),
             '/assets/img/icon/cms/cmp-text.svg')
           .onAction({next: self => { this.addComponent(TextComponent, self); }}, sub => this.subs.reg(sub))
           .build()
@@ -187,8 +204,8 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, OnDes
         EDBuilder.new()
           .type(FileComponent)
           .toolbarBtn(
-            'New file',
-            'Add a new file to the content',
+            this.translate.get('components.file.name'),
+            this.translate.get('components.file.description'),
             '/assets/img/icon/cms/cmp-file.svg')
           .onAction({next: self => this.addComponent(FileComponent, self)}, sub => this.subs.reg(sub))
           .build()
@@ -198,8 +215,8 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, OnDes
         EDBuilder.new()
           .type(ImageComponent)
           .toolbarBtn(
-            'New image',
-            'Add a new image to the content',
+            this.translate.get('components.img.name'),
+            this.translate.get('components.img.description'),
             '/assets/img/icon/cms/cmp-image.svg')
           .onAction({next: self => this.addComponent(ImageComponent, self)}, sub => this.subs.reg(sub))
           .build()
@@ -218,7 +235,7 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, OnDes
           .onAction({next: (value) => window.alert('block')}, sub => this.subs.reg(sub))
           .build()
         )
-      .set(
+      /*.set(
         'TwoColumnLayout',
         EDBuilder.new()
           .type(TwoColumnLayout)
@@ -228,7 +245,7 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, OnDes
             '/assets/img/icon/dark/cms-cmp-text.svg')
           .onAction({next: (value) => window.alert('two col')}, sub => this.subs.reg(sub))
           .build()
-      )
+      )*/
       .set(
         'ExpDaysLayout',
         EDBuilder.new()
@@ -285,14 +302,15 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, OnDes
    * @param base (optional) the CmsContent the newly serialized content is based off.
    *             this determines e.g. the historyId. if the base is not given, we instead use
    *             the last cms content in the #changes stack as the base.
-   * @param checkLastChangeDate TODO
-   * @param force TODO
+   * @param checkLastChangeDate (default true) if false, a change is registered regardless of time since last change
+   * @param force (default false) if true, registers a new change even if no change has occurred since last
    */
   private trackChange(checkLastChangeDate: boolean = true,
                       force: boolean = false): void {
 
     this.changeConfig.unsavedChanges++;
-    if (checkLastChangeDate && this.changeConfig.lastTrackedChange.getTime() > new Date().getTime() - 10000) { // TODO make configurable
+    if (checkLastChangeDate &&
+        this.changeConfig.lastTrackedChange.getTime() > new Date().getTime() - this.envService.contentUndoHistoryDebounceMs) {
       ContentComponent.LOG.trace('Not tracking content change since 10s debounce has not yet been reached.');
       return;
     }
@@ -317,6 +335,10 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, OnDes
    */
   private async saveContent(force: boolean = false,
                             publish: boolean = false): Promise<CmsContent> {
+
+    if (this.elements.length === 0) {
+      return;
+    }
 
     const now = Date.now();
     const lastSavedContent = this.changeConfig.lastSavedContent;
@@ -347,6 +369,14 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, OnDes
       return Promise.resolve(content);
     } else if (!content) {
       return Promise.reject(new Error('Unexpected state: nothing found to save'));
+    } else {
+      const results = this.validate();
+      if (results.hasErrors()) {
+        if (force) {
+          results.highlight();
+        }
+        return Promise.reject(new Error('Content invalid'));
+      }
     }
     ContentComponent.LOG.debug('Saving content...');
     this.setStatus(StatusKey.SAVE, StatusValue.IN_PROGRESS);
@@ -375,7 +405,7 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, OnDes
         this.contentSave.emit(content);
         if (force) {
           this.notifications.showNotification(new Notification(
-            'Your content was ' + (publish ? 'published' : 'saved'),
+            'Your ' + (publish ? 'content' : 'draft') + ' was ' + (publish ? 'published' : 'saved'), // TODO i18n
             null,
             NotificationType.success
           ));
@@ -482,7 +512,7 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, OnDes
 
   private undo(backwards: boolean): void {
     if (backwards && this.changeConfig.hasUntrackedChange && this.changeConfig.changes.newerEntriesAmount() === 0) {
-      this.trackChange(undefined, false);
+      this.trackChange(false, false);
     }
     const content = this.changeConfig.changes.pop(backwards ? 0 : 2);
     this.changeConfig.hasUntrackedChange = backwards;
@@ -500,10 +530,12 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, OnDes
     throw new Error('serialize() is not supported');
   }
 
-  public validate(results: CmsValidationResults) {
+  public validate(): CmsValidationResults {
+    const results = new CmsValidationResults();
     this.elements.forEach(e => {
       e.validate(results);
     });
+    return results;
   }
 
   /**
@@ -521,18 +553,53 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, OnDes
     });
   }
 
+
   /**
    * Close the content edit mode.
    * Saves the content draft and displays the content
    * without editing UI.
    */
   public close(): void {
+    this.closeBtnTooltip.hide();
+    this.closeBtnPopover.show();
+  }
+
+  /**
+   * Discard draft.
+   */
+  public discard(): void {
+    this.setStatus(StatusKey.DISCARD_DRAFT, StatusValue.IN_PROGRESS);
+    this.contentService.deleteContent(
+      this.contentService.content.historyId,
+      true,
+      () => {
+        this.setStatus(StatusKey.DISCARD_DRAFT, StatusValue.SUCCESSFUL);
+        this.notifications.showNotification(new Notification(
+          'Your draft was discarded', // TODO i18n
+          null,
+          NotificationType.success
+        ));
+        this.viewMode = ViewMode.CONTENT;
+        this.toolbar.reset();
+        this.reloadContent.emit();
+      },
+      (error, apiError) => {
+        this.setStatus(StatusKey.DISCARD_DRAFT, StatusValue.FAILED, apiError);
+      });
+  }
+
+  /**
+   * Save the current content as draft
+   * and display the content without editing UI.
+   */
+  public save(): void {
     this.saveContent(true).then(value => {
       this.contentService.viewMode = ViewMode.CONTENT;
       this.toolbar.reset();
     }).catch(reason => {
       ContentComponent.LOG.error(reason);
     }).finally(() => {
+      this.closeBtnPopover.hide();
       this.cdRef.markForCheck();
     });
   }
@@ -553,13 +620,17 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, OnDes
   }
 
   private onViewModeChange(viewMode: ViewMode) {
+    if (this.elements.length === 0 && viewMode === ViewMode.EDIT_CONTENT) {
+      this.contentService.viewMode = ViewMode.EDIT_LAYOUT;
+    }
     this.viewModeChange.emit(viewMode);
   }
 }
 
 export enum StatusKey {
 
-  SAVE
+  SAVE,
+  DISCARD_DRAFT
 
 }
 

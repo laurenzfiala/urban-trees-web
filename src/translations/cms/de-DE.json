@@ -9,10 +9,22 @@
       "last_saved_minute_ago": "Zuletzt vor einer Minute gespeichert",
       "last_saved_minutes_ago": "Zuletzt vor {{minutes}} Minuten gespeichert",
       "last_saved_more_than_hour_ago": "Zuletzt vor mehr als einer Stunde gespeichert",
-      "failed": "Entwurf konnte nicht gespeichert werden",
-      "failed_draft": "Inhalt konnte nicht veröffentlicht werden"
+      "failed": "Inhalt konnte nicht veröffentlicht werden",
+      "failed_draft": "Entwurf konnte nicht gespeichert werden"
     },
-    "close": "Entwurf speichern & schließen"
+    "close": {
+      "title": "Entwurf speichern?",
+      "subtitle": "Entwurf verwerfen oder speichern.",
+      "discard_btn": "Entwurf verwerfen",
+      "discard_btn_progress": "Verwerfe",
+      "save_btn": "Entwurf speichern",
+      "save_btn_progress": "Speichere"
+    },
+    "undo": "Rückgängig",
+    "redo": "Wiederherstellen",
+    "edit_content": "Inhalt bearbeiten",
+    "edit_layout": "Layout bearbeiten",
+    "edit_content_hint": "Hier Inhalt bearbeiten"
   },
   "errors": {
     "components": {
@@ -23,10 +35,55 @@
   },
   "components": {
     "img": {
-      "upload_tooltip": "Neues Bild hochladen"
+      "name": "Neues Bild",
+      "description": "Neues Bild hinzufügen",
+      "upload_tooltip": "Neues Bild hochladen",
+      "validation": {
+        "empty": "Hier muss ein Bild hochgeladen werden"
+      }
     },
     "file": {
-      "placeholder": "Datei hochladen"
+      "name": "Neue Datei",
+      "description": "Neue Datei hinzufügen",
+      "placeholder": "Datei hochladen",
+      "validation": {
+        "empty": "Hier muss eine Datei hochgeladen werden"
+      }
+    },
+    "text": {
+      "name": "Neue Textpassage",
+      "description": "Neue Textpassage hinzufügen",
+      "bold": {
+        "name": "Fett",
+        "description": "Text fett formatieren"
+      },
+      "italic": {
+        "name": "Kursiv",
+        "description": "Text kursiv formatieren"
+      },
+      "heading": {
+        "name": "Überschrift",
+        "text": "Absatz",
+        "h1": "Überschrift",
+        "h2": "Überschrift 2"
+      },
+      "link": {
+        "name": "Link",
+        "description": "Link einfügen",
+        "modal": {
+          "text_label": "Text",
+          "text_placeholder": "Google",
+          "href_label": "Link",
+          "href_placeholder": "google.com",
+          "insert_btn": "Link einfügen"
+        }
+      },
+      "validation": {
+        "empty": "Text darf nicht leer sein"
+      }
     }
+  },
+  "edit_layout": {
+    "remove_btn": "Entfernen"
   }
 }

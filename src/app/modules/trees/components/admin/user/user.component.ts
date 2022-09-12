@@ -45,6 +45,8 @@ export class AdminUserComponent extends AbstractComponent implements OnInit {
   private newUserModalRef: BsModalRef;
   private bulkActionModalRef: BsModalRef;
 
+  public test: string;
+
   /**
    * Holds search result received from backend.
    */
@@ -263,10 +265,8 @@ export class AdminUserComponent extends AbstractComponent implements OnInit {
    * Select the secure login link and copy it to the clipboard.
    */
   public copySecureLink(user: User): void {
-
     this.secureLoginLinkTextfield.nativeElement.select();
     document.execCommand('copy');
-
   }
 
   /**

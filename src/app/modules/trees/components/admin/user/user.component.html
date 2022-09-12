@@ -10,12 +10,12 @@
   <div class="content-cat">
   <div class="container">
 
-    <h4 class="d-flex align-items-center">
+    <h1 class="d-flex align-items-center">
       <i class="i i-dark i-lg i-user mr-2"></i>
       Manage Users
-    </h4>
+    </h1>
 
-    <div class="d-flex mt-1">
+    <div class="d-flex">
       <input
         name="userSearchInput"
         class="form-control search-input"
@@ -228,6 +228,11 @@
                 <i class="i i-xs i-dark i-link mr-1"></i>
                 Create login links &amp; download
               </button>
+              <button class="link-btn link-btn-sm bulk-action-btn"
+                      (action)="confirmBulkAction(BulkAction.CREATE_LOGIN_LINKS_PERMANENT)">
+                <i class="i i-xs i-dark i-qr mr-1"></i>
+                Create QR codes &amp; download
+              </button>
             </div>
           </div>
           <div class="search-info-group">
@@ -294,7 +299,7 @@
           <div class="info-container">
             {{u.username}}
             <span *ngIf="u.deleteStatus === StatusValue.SUCCESSFUL"> &ndash; deleted</span>
-            <div class="text-subtle text-xs">
+            <div class="text-subtle text-xs word-break-all">
               User ID: {{u.id}}
               &ndash; Roles: {{u?.roles?.length > 0 ? u.roles : '(none granted)'}}
               &ndash; Created on {{u?.creationDate | date:('app.date_format_day_full_ng' | translate) }}
@@ -486,9 +491,10 @@
       Credentials expired
     </div>
     <hr/>
-    Get one-time login link?
+    Get login link?
     <div class="text-subtle text-sm">
-      Give the link to a user who's forgotten their password.
+      Give the link to a user who's forgotten their password a one-time link valid for 30 days.
+      Optionally you can set the link to be permanent and download a QR code.
     </div>
     <button *ngIf="!u.secureLoginKey && !hasStatus(StatusKey.LOGIN_LINK, StatusValue.IN_PROGRESS)"
             class="btn btn-outline-primary btn-block mt-2"
@@ -505,16 +511,24 @@
       <i class="i i-sm i-check-success mr-2"></i>
       Link created
     </div>
-    <input #secureLoginLinkTextfield
-           *ngIf="u.secureLoginKey"
-           type="text"
-           readonly=true
-           class="get-link-copy-field form-control form-control-sm"
-           [ngModel]="envService.endpoints.loginKeyUrl(u.secureLoginKey)"
-           (click)="copySecureLink(u)"
-           tooltip="Copied link to clipboard!"
-           container="body"
-           triggers="focus" />
+
+    <div *ngIf="u.secureLoginKey"
+         class="d-flex flex-row">
+      <input #secureLoginLinkTextfield
+             type="text"
+             readonly=true
+             class="get-link-copy-field form-control form-control-sm flex-grow-1 mt-0 mr-1"
+             [ngModel]="envService.endpoints.loginKeyUrl(u.secureLoginKey)"
+             (click)="copySecureLink(u)"
+             tooltip="Copied link to clipboard!"
+             triggers="focus"
+             container="body" />
+      <a [href]="adminService.getLoginQrUrl(u.id)"
+         tooltip="Generate permanent QR code"
+         container="body">
+        <i class="i i-sm i-black i-qr"></i>
+      </a>
+    </div>
 
   </ng-template>
 
@@ -598,7 +612,7 @@
   <ng-template #newUserModal>
 
     <div class="modal-header">
-      <h4 class="modal-title pull-left">Add new user{{addUserMultiple ? 's' : ''}}</h4>
+      <h1 class="modal-title pull-left my-0">Add new user{{addUserMultiple ? 's' : ''}}</h1>
     </div>
     <div class="modal-body">
       <div class="form-group">
@@ -676,7 +690,7 @@
   <ng-template #bulkActionModal>
 
     <div class="modal-header">
-      <h4 class="modal-title pull-left">Confirm bulk action</h4>
+      <h1 class="modal-title pull-left my-0">Confirm bulk action</h1>
     </div>
     <div class="modal-body">
       Are you sure you want to
@@ -715,6 +729,14 @@
           Download generated login links
         </a>
       </div>
+      <div *ngIf="bulkAction === BulkAction.CREATE_LOGIN_LINKS_PERMANENT"
+           class="mt-2">
+        <a class="link-btn link-btn-sm"
+           [href]="getStatusContext(StatusKey.BULK_ACTION)">
+          <i class="i i-xxs i-dark i-download mr-1"></i>
+          Download generated QR codes as ZIP-file
+        </a>
+      </div>
     </div>
 
     <div *ngIf="hasStatus(StatusKey.BULK_ACTION, StatusValue.FAILED)"
@@ -731,6 +753,7 @@
               class="btn"
               [ngClass]="{'btn-primary': bulkAction === BulkAction.EXPIRE_CREDENTIALS ||
                                          bulkAction === BulkAction.CREATE_LOGIN_LINKS ||
+                                         bulkAction === BulkAction.CREATE_LOGIN_LINKS_PERMANENT ||
                                          bulkAction === BulkAction.ADD_ROLES,
                           'btn-success': bulkAction === BulkAction.ACTIVATE,
                           'btn-danger': bulkAction === BulkAction.INACTIVATE ||
@@ -753,6 +776,9 @@
       </ng-container>
       <ng-container *ngSwitchCase="BulkAction.CREATE_LOGIN_LINKS">
         create login links for
+      </ng-container>
+      <ng-container *ngSwitchCase="BulkAction.CREATE_LOGIN_QR">
+        create QR codes for
       </ng-container>
       <ng-container *ngSwitchCase="BulkAction.ADD_ROLES">
         add role {{bulkActionData.roles[0].name}} to

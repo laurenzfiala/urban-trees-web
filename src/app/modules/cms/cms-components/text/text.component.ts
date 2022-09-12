@@ -4,28 +4,36 @@ import {
   ChangeDetectorRef,
   Component,
   ElementRef,
-  NgZone,
+  Injector,
   OnDestroy,
   OnInit,
-  SecurityContext,
+  TemplateRef,
   ViewChild
 } from '@angular/core';
-import {ToolbarBtn, ToolbarDropdown, ToolbarElement, ToolbarSection} from '../../entities/toolbar.entity';
+import {ToolbarDropdown, ToolbarElement, ToolbarSection, ToolbarToggleBtn} from '../../entities/toolbar.entity';
 import {AbstractCmsComponent} from '../../entities/abstract-cms-component.entity';
 import {ToolbarService} from '../../services/toolbar.service';
 import {CmsValidationResults} from '../../entities/cms-validation-results.entity';
 import {CmsValidationResult} from '../../entities/cms-validation-result.entity';
 import {ContentService} from '../../services/content.service';
 import {DomSanitizer} from '@angular/platform-browser';
-import {fromEvent, ReplaySubject} from 'rxjs';
 import {SubscriptionManagerService} from '../../../trees/services/subscription-manager.service';
 import {EnvironmentService} from '../../../shared/services/environment.service';
-import {DOMParser, Schema} from 'prosemirror-model';
-import {addListNodes} from 'prosemirror-schema-list';
-import {EditorView} from 'prosemirror-view';
-import {EditorState} from 'prosemirror-state';
-import {exampleSetup} from 'prosemirror-example-setup';
-import {schema} from 'prosemirror-schema-basic';
+import {Editor} from '@tiptap/core';
+import {Paragraph} from '@tiptap/extension-paragraph';
+import {Bold} from '@tiptap/extension-bold';
+import {Italic} from '@tiptap/extension-italic';
+import {Heading} from '@tiptap/extension-heading';
+import {Document} from '@tiptap/extension-document';
+import {Text} from '@tiptap/extension-text';
+import {Level} from '@tiptap/extension-heading/src/heading';
+import CmsTextLinkComponentExtension from '../../components/cms-text-link/cms-text-link.extension';
+import {HardBreak} from '@tiptap/extension-hard-break';
+import {TranslateService} from '@ngx-translate/core';
+import {Observable} from 'rxjs/Observable';
+import {TooltipDirective} from 'ngx-bootstrap/tooltip';
+import {once} from 'events';
+import {Async2Pipe} from '../../../shared/pipes/async2.pipe';
 
 @Component({
   selector: 'ut-cms-text',
@@ -36,54 +44,60 @@ import {schema} from 'prosemirror-schema-basic';
 })
 export class TextComponent extends AbstractCmsComponent implements OnInit, AfterViewInit, OnDestroy {
 
-  private onSelectionChangeSubject: ReplaySubject<any> = new ReplaySubject<any>();
+  private boldToggleBtn!: ToolbarToggleBtn;
+  private italicsToggleBtn!: ToolbarToggleBtn;
+  private headingDropdown!: ToolbarDropdown;
+  private linkToggleBtn!: ToolbarToggleBtn;
+  private toolbarContextual!: ToolbarSection<ToolbarElement>;
 
-  private toolbarContextual = new ToolbarSection<ToolbarElement>(
-    new ToolbarBtn(
-      'Toggle bolded text',
-      'Toggle bold font for the selected text',
-      '/assets/img/icon/cms/font-bold.svg'
-    )
-    .setAction(value => this.bold())
-    .destroyOn(this.onDestroy()),
-    new ToolbarBtn(
-      'Toggle italic text',
-      'Toggle italic font for the selected text',
-      '/assets/img/icon/cms/font-italic.svg'
-    )
-    .setAction(value => this.italic())
-    .destroyOn(this.onDestroy()),
-    new ToolbarDropdown('Test name', 'text', new Map<string, any>(
-      [
-        ['Text body', 'text'],
-        ['Heading', 'H1'],
-        ['Sub-Heading', 'H2']
-      ]
-    ))
-    .setChange(this.onTextStyleDropdownChange())
-    .setValueOn(this.onSelectionChangeSubject.asObservable())
-    .destroyOn(this.onDestroy()),
-    new ToolbarBtn(
-      'Create link',
-      'Create a new inline link',
-      '/assets/img/icon/cms/link.svg'
-    )
-    .setAction(value => this.link())
-    .destroyOn(this.onDestroy())
-  );
-
-  public text: string;
+  public text!: string;
 
   @ViewChild('textEditElement')
   private textEditElement: ElementRef<HTMLDivElement>;
+
+  @ViewChild('textEditElementTooltip', {read: TooltipDirective})
+  private textEditElementTooltip: TooltipDirective;
+
+  @ViewChild('linkModalTemplate')
+  private linkModalTemplate: TemplateRef<any>;
+
+  @ViewChild('linkModalTitleRef')
+  private linkModalTitleRef: TemplateRef<any>;
+
+  @ViewChild('linkModalHrefRef')
+  private linkModalHrefRef: TemplateRef<any>;
+
+  public editor = new Editor({
+    extensions: [
+      Document,
+      Paragraph,
+      HardBreak,
+      Text,
+      Bold,
+      Italic,
+      Heading.configure({
+        levels: [1, 2],
+      }),
+      CmsTextLinkComponentExtension(this.injector)
+    ],
+    editorProps: {
+      attributes: {
+        class: 'cms-text-container cms-element-border'
+      }
+    },
+    onFocus: () => this.focus(),
+    onUpdate: () => this.onUpdate(),
+    onSelectionUpdate: () => this.onSelectionchange()
+  });
 
   constructor(protected contentService: ContentService,
               protected toolbar: ToolbarService,
               protected cdRef: ChangeDetectorRef,
               private envService: EnvironmentService,
               private subs: SubscriptionManagerService,
+              private translate: TranslateService,
               private sanitizer: DomSanitizer,
-              private zone: NgZone) {
+              private injector: Injector) {
     super();
   }
 
@@ -92,35 +106,21 @@ export class TextComponent extends AbstractCmsComponent implements OnInit, After
   }
 
   ngAfterViewInit() {
-
-    this.subs.reg(fromEvent(this.textEditElement.nativeElement, 'focus')
-      .subscribe(e => this.focus()));
-    this.subs.reg(fromEvent(this.textEditElement.nativeElement, 'input')
-      .subscribe(e => this.updateText()));
-    this.subs.reg(fromEvent(this.textEditElement.nativeElement, 'paste')
-      .subscribe(e => this.onPaste(e as ClipboardEvent)));
-    this.subs.reg(fromEvent(this.textEditElement.nativeElement, 'keydown')
-      .subscribe(e => this.onKeydown(e as KeyboardEvent)));
-    this.subs.reg(fromEvent(document, 'selectionchange')
-      .subscribe(e => this.onSelectionchange(e as Event)));
-
     this.subs.reg(this.contentService.onViewModeChange()
       .subscribe(mode => this.update()));
 
-    document.execCommand('styleWithCSS', false, 'false');
-
     this.cdRef.detach();
-
   }
 
   ngOnDestroy() {
     super.ngOnDestroy();
     this.subs.unsubAll();
+    this.editor.destroy();
   }
 
   public async deserialize(serialized: any): Promise<void> {
     const state = serialized;
-    this.text = this.sanitizer.sanitize(SecurityContext.HTML, state.text);
+    this.text = state.text;
     this.update();
   }
 
@@ -134,91 +134,145 @@ export class TextComponent extends AbstractCmsComponent implements OnInit, After
     return this.constructor.name;
   }
 
-  public updateText() {
-    this.text = this.textEditElement.nativeElement.innerHTML;
+  public onUpdate() {
+    this.text = this.editor.getHTML();
+    if (this.validationResults.hasErrors() && this.validationResults.hasHighlighted()) {
+      this.validate().highlight();
+      this.cdRef.detectChanges();
+    }
     this.changed();
   }
 
   public getToolbarContextual(): ToolbarSection<ToolbarElement> {
+    if (!this.toolbarContextual) {
+      this.boldToggleBtn = new ToolbarToggleBtn(
+        this.translate.get('components.text.bold.name'),
+        this.translate.get('components.text.bold.description'),
+        '/assets/img/icon/cms/font-bold.svg'
+      )
+      .setAction(value => this.bold())
+      .destroyOn(this.onDestroy()) as ToolbarToggleBtn;
+
+      this.italicsToggleBtn = new ToolbarToggleBtn(
+        this.translate.get('components.text.italic.name'),
+        this.translate.get('components.text.italic.description'),
+        '/assets/img/icon/cms/font-italic.svg'
+      )
+      .setAction(value => this.italic())
+      .destroyOn(this.onDestroy()) as ToolbarToggleBtn;
+
+      this.headingDropdown = new ToolbarDropdown(
+        this.translate.get('components.text.heading.name'),
+        0,
+        new Map<string | Observable<string>, any>(
+          [
+            [this.translate.get('components.text.heading.text'), 0],
+            [this.translate.get('components.text.heading.h1'), 1],
+            [this.translate.get('components.text.heading.h2'), 2]
+          ]
+        ))
+      .setChange(value => this.onTextStyleDropdownChange(value))
+      .destroyOn(this.onDestroy());
+
+      this.linkToggleBtn = new ToolbarToggleBtn(
+        this.translate.get('components.text.link.name'),
+        this.translate.get('components.text.link.description'),
+        '/assets/img/icon/cms/link.svg'
+      )
+      .setAction(value => this.link(value))
+      .destroyOn(this.onDestroy()) as ToolbarToggleBtn;
+
+      this.toolbarContextual = new ToolbarSection<ToolbarElement>(
+        this.boldToggleBtn,
+        this.italicsToggleBtn,
+        this.headingDropdown,
+        this.linkToggleBtn
+      );
+    }
     return this.toolbarContextual;
   }
 
-  public validate(results: CmsValidationResults): void {
+  public validate(results?: CmsValidationResults): CmsValidationResults {
 
-    if (this.text.trim() === '') {
-      const r = results.addResult(new CmsValidationResult(true, 'errors.components.text.empty'));
-      r.onHighlight().subscribe(value => {
-        window.alert('highlight error in text component');
+    this.validationResults.reset();
+    if (this.editor.state.doc.textContent.trim() === '') {
+      const result = new CmsValidationResult(true, this.translate.get('components.text.validation.empty'));
+      result.onHighlight().subscribe(value => {
+        this.cdRef.detectChanges();
       });
+
+      this.validationResults.addResult(result);
+      results?.addResult(result);
     }
+    return this.validationResults;
 
   }
 
-  public onPaste(event: ClipboardEvent): boolean {
-    const text = event.clipboardData.getData('text/plain');
-    document.execCommand('insertText', false, text);
-    this.updateText();
-    event.preventDefault();
-    return true;
-  }
+  public onSelectionchange(): boolean {
 
-  public onKeydown(event: KeyboardEvent): boolean {
-    if (event.ctrlKey && event.key === 'z') {
-      this.contentService.undo();
-      event.preventDefault();
-    } else if (event.ctrlKey && event.key === 'y') {
-      this.contentService.undo(false);
-      event.preventDefault();
+    if (this.boldToggleBtn) {
+      this.boldToggleBtn.active = this.editor.isActive('bold');
     }
-    return true;
-  }
+    if (this.italicsToggleBtn) {
+      this.italicsToggleBtn.active = this.editor.isActive('italic');
+    }
 
-  public onSelectionchange(event: Event): boolean {
-    const selection = window.getSelection();
-    if (!selection?.anchorNode) {
-      return true;
-    }
-    let textType = 'text';
-    let el = selection.anchorNode.parentElement;
-    while (true) {
-      if (!el) {
-        break;
+    if (this.headingDropdown && this.editor.isActive('heading')) {
+      let prevLevel = this.editor.getAttributes('heading')?.level;
+      if (!prevLevel) {
+        prevLevel = 0;
       }
-      if (el.tagName === 'H1' || el.tagName === 'H2') {
-        textType = el.tagName;
-        break;
-      }
-      el = el.parentElement;
+      this.headingDropdown.selectedValue = prevLevel;
     }
-    this.onSelectionChangeSubject.next(textType);
+
     this.toolbar.update();
     return true;
+
   }
 
-  private onTextStyleDropdownChange() {
-    return function (value: any) {
-      if (value === 'text') {
-        document.execCommand('formatBlock', false, 'div');
-      } else {
-        document.execCommand('formatBlock', false, value);
-      }
-    };
+  private onTextStyleDropdownChange(value: any) {
+
+    const selectedLevel = Number.parseInt(value, 10);
+    const hasHeading = this.editor.isActive('heading');
+    if (hasHeading && selectedLevel === 0) {
+      const prevLevel = this.editor.getAttributes('heading').level;
+      this.editor.chain().focus().toggleHeading({level: prevLevel}).run();
+    } else if (selectedLevel > 0) {
+      this.editor.chain().focus().setHeading({level: selectedLevel as Level}).run();
+    }
+
   }
 
   private bold(): void {
-    document.execCommand('bold', false, null);
+    this.editor.chain().focus().toggleBold().run();
   }
 
   private italic(): void {
-    document.execCommand('italic', false, null);
+    this.editor.chain().focus().toggleItalic().run();
   }
 
-  private link(): void {
-    const selection = window.getSelection();
-    if (selection?.getRangeAt(0)?.toString().length === 0) {
-      window.alert('You must select some text first');
-    }
-    let url = window.prompt('Enter link');
-    document.execCommand('createLink', false, this.envService.endpoints.webHost + '/' + url);
+  private link(toolbarBtn: ToolbarToggleBtn): void {
+    const buttonEl = toolbarBtn.element;
+    const arrowPos = buttonEl.offsetLeft + (buttonEl.offsetWidth / 2);
+    this.toolbar.modal({template: this.linkModalTemplate, show: toolbarBtn.active, arrowPos: arrowPos + 'px'});
+  }
+
+  public insertLink(text: string, href: string): void {
+
+    this.editor.chain()
+      .focus()
+      .insertContent([
+        {
+          type: 'cmsTextLink',
+          attrs: {
+            'href': href,
+            'text': text
+          }
+        }
+      ])
+      .run();
+    this.linkToggleBtn.active = false;
+    this.toolbar.modal({template: this.linkModalTemplate, show: false});
+
   }
 }

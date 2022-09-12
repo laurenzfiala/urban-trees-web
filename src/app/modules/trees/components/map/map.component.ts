@@ -59,9 +59,25 @@ export class MapComponent extends AbstractComponent implements OnInit {
     }
   }
 
-
   get userSetPin(): boolean {
     return this.userSetPinInternal;
+  }
+
+  /**
+   * Whether a marker can be set at all (true, default)
+   * or not (false).
+   */
+  public enabledInternal: boolean = true;
+
+  @Input()
+  set enabled(value: boolean) {
+    if (value !== this.enabledInternal) {
+      this.enabledInternal = value;
+    }
+  }
+
+  get enabled(): boolean {
+    return this.enabledInternal;
   }
 
   /**
@@ -325,14 +341,20 @@ export class MapComponent extends AbstractComponent implements OnInit {
   }
 
   public onMapMouseDown(event: MouseEvent) {
+    if (!this.enabled) {
+      return;
+    }
     this.mouseDownCoords = [event.clientX, event.clientY];
   }
 
   public onMapMouseUp(event: MouseEvent) {
+    if (!this.enabled) {
+      return;
+    }
+
     if (!this.mouseDownCoords || (this.mouseDownCoords[0] === event.clientX && this.mouseDownCoords[1] === event.clientY)) {
       this.onMapClick(event);
     }
-
     this.mouseDownCoords = undefined;
   }
 

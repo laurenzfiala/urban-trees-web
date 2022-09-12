@@ -4,7 +4,12 @@ import {AbstractComponent} from '../../../shared/components/abstract.component';
 import {ActivatedRoute, Router} from '@angular/router';
 import {LoginAccessReason} from './logout-reason.enum';
 import {LoginStatus} from './login-status.enum';
-import {UserAuthenticationToken, UserOtpAuthenticationToken} from '../../entities/auth-token.entity';
+import {
+  TokenAuthenticationToken,
+  UserAuthenticationToken,
+  UserOtpAuthenticationToken
+} from '../../entities/auth-token.entity';
+import {NgForm} from '@angular/forms';
 
 @Component({
   selector: 'ut-project-login',
@@ -17,10 +22,10 @@ export class ProjectLoginComponent extends AbstractComponent implements OnInit, 
    * Header key to check additional requirements for login.
    */
   public static HTTP_HEADER_AUTH_REQUIRES_KEY: string = 'Authentication-Requires';
-
+  private static PATH_PARAMS_TOKEN: string = 'token';
   private static QUERY_PARAMS_LOGIN_REASON_KEY: string = 'reason';
-
   private static QUERY_PARAMS_REDIRECT_KEY: string = 'redirect';
+  private static QUERY_PARAMS_PIN: string = 'pin';
 
   public LoginAccessReason = LoginAccessReason;
   public StatusKey = StatusKey;
@@ -50,6 +55,9 @@ export class ProjectLoginComponent extends AbstractComponent implements OnInit, 
   @Output()
   public loggedin: EventEmitter<any> = new EventEmitter<any>();
 
+  @ViewChild('loginForm')
+  private loginForm: NgForm;
+
   @ViewChild('usernameInput')
   private usernameInput: ElementRef;
 
@@ -77,9 +85,18 @@ export class ProjectLoginComponent extends AbstractComponent implements OnInit, 
    */
   public showOtp: boolean = false;
 
+  /**
+   * Whether to show the PIN input or not.
+   */
+  public showPin: boolean = false;
+
   public username: string;
   public password: string;
   public otp: string;
+  public token: string;
+  public pin: string;
+  public mustEnterPin: boolean = false;
+  public isPinSet: boolean = true;
 
   public consecutiveFailedLoginAttempts: number = 0;
 
@@ -92,6 +109,15 @@ export class ProjectLoginComponent extends AbstractComponent implements OnInit, 
   public ngOnInit(): void {
 
     this.setStatus(StatusKey.LOGIN, StatusValue.PENDING);
+
+    this.route.params.subscribe((params: any) => {
+
+      const tokenVal = params[ProjectLoginComponent.PATH_PARAMS_TOKEN];
+      if (tokenVal) {
+        this.token = tokenVal;
+      }
+
+    });
 
     this.route.queryParams.subscribe((params: any) => {
 
@@ -108,6 +134,14 @@ export class ProjectLoginComponent extends AbstractComponent implements OnInit, 
         }
       } else if (!this.relog) {
         this.redirectTo = '/home';
+      }
+
+      if (this.token) {
+        const pinVal = params[ProjectLoginComponent.QUERY_PARAMS_PIN];
+        if (pinVal) {
+          this.mustEnterPin = true;
+        }
+        this.login();
       }
 
     });
@@ -144,11 +178,20 @@ export class ProjectLoginComponent extends AbstractComponent implements OnInit, 
     if (this.otp && this.otp.length > 0) {
       const otp = this.otp.replace(' ', '').replace('-', '');
       loginEntity = new UserOtpAuthenticationToken(this.username, this.password, otp);
+    } else if (this.token) {
+      loginEntity = new TokenAuthenticationToken(this.token, this.pin);
     } else {
       loginEntity = new UserAuthenticationToken(this.username, this.password);
     }
 
     this.authService.login(loginEntity, () => {
+      if (loginEntity instanceof TokenAuthenticationToken && !loginEntity.secureLoginKeyPin && this.mustEnterPin) {
+        this.isPinSet = false;
+        this.showPin = true;
+        this.setStatus(StatusKey.LOGIN, StatusValue.ENTER_PIN);
+        return;
+      }
+
       this.setStatus(StatusKey.LOGIN, StatusValue.SUCCESSFUL);
       this.consecutiveFailedLoginAttempts = 0;
 
@@ -164,6 +207,10 @@ export class ProjectLoginComponent extends AbstractComponent implements OnInit, 
         this.showOtp = true;
         this.setStatus(StatusKey.LOGIN, StatusValue.ENTER_OTP);
         return;
+      } else if (t === 'OTK') {
+        this.showPin = true;
+        this.setStatus(StatusKey.LOGIN, StatusValue.ENTER_PIN);
+        return;
       }
 
       this.consecutiveFailedLoginAttempts++;
@@ -172,7 +219,7 @@ export class ProjectLoginComponent extends AbstractComponent implements OnInit, 
       } else {
         this.setStatus(StatusKey.LOGIN, StatusValue.FAILED);
       }
-    });
+    }, this.mustEnterPin && !loginEntity.secureLoginKeyPin);
 
   }
 
@@ -218,6 +265,7 @@ export enum StatusValue {
   SUCCESSFUL,
   BAD_CREDENTIALS,
   FAILED,
-  ENTER_OTP
+  ENTER_OTP,
+  ENTER_PIN
 
 }

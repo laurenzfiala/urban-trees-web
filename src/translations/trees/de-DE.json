@@ -216,7 +216,7 @@
     }
   },
   "login": {
-    "heading": "Dein Projekt-Account",
+    "heading": "Dein Projekt-Konto",
     "username_placeholder": "Anmeldename",
     "password_placeholder": "Passwort",
     "password_old_placeholder": "Derzeitiges Passwort",
@@ -227,7 +227,7 @@
     "change_password": "Passwort ändern",
     "changing_password": "Passwort wird geändert...",
     "status_connection_insecure": "Anmelden über eine unsichere Verbindung ist nicht erlaubt",
-    "status_bad_credentials": "Anmeldename und Passwort wurden nicht erkannt",
+    "status_bad_credentials": "Anmeldedaten sind nicht richtig",
     "status_successful": "Erfolgreich eingeloggt",
     "status_failed": "Anmeldung fehlgeschlagen, bitte versuche es erneut",
     "status_expired": "Anmeldedaten abgelaufen, bitte melde dich erneut an",
@@ -236,9 +236,9 @@
     "status_user_logout": "Erfolgreich abgemeldet",
     "status_not_authenticated": "Bitte anmelden, um diese Seite aufzurufen",
     "status_insufficient_permissions": "Du bist nicht berechtigt, die angefragte Seite anzuzeigen",
-    "description": "Dein persönlicher Projekt-Account ermöglicht es Dir Dein Forschungstagebuch zu bearbeiten, Phänologiebeobachtungen einzutragen, XP zu sammeln und vieles mehr.",
+    "description": "Dein persönliches Projekt-Konto ermöglicht es Dir Dein Forschungstagebuch zu bearbeiten, Phänologiebeobachtungen einzutragen, XP zu sammeln und vieles mehr.",
     "disclaimer": "Wir speichern keine persönlichen Daten, außer solche, die direkt durch Dich hochgeladen werden (oder Anderen, denen Du eine entsprechende Berechtigung erteilt hast).<br/>Durch das Anmelden erlaubst Du, Deine Anmeldedaten lokal zu speichern (dadurch muss das Passwort nur einmal am Tag eingegeben werden).",
-    "reset_info": "Dein neues Passwort muss Folgendes erfüllen:<ul><li>Enthält mindestens 1 kleinbuchstaben (a-z)</li><li>Enthält mindestens 1 GROSSBUCHSTABEN (A-Z)</li><li>Enthält mindestens 1 Zahl (0-9)</li><li>Enthält mindestens 1 Symbol (!§$%&/()=?\"'+#<>,..-*~)</li><li>Ist mindestens 10 Zeichen lang</li></ul>",
+    "reset_info": "Dein neues Passwort muss Folgendes erfüllen:<ul><li>Enthält mindestens 1 kleinbuchstaben (a-z)</li><li>Enthält mindestens 1 GROSSBUCHSTABEN (A-Z)</li><li>Enthält mindestens 1 Zahl (0-9)</li><li>Ist mindestens 10 Zeichen lang</li></ul>",
     "username_change_info": "Dein neues Passwort muss Folgendes erfüllen:<ul><li>Ist mindestens 10 Zeichen lang</li><li>Ist nicht gleich dem jetzigen Anmeldenamen</li><li>Existiert nicht bereits</li></ul>",
     "already_logged_in": "Du bist bereits angemeldet.",
     "username_new_placeholder": "Neuer Anmeldename",
@@ -259,7 +259,11 @@
     "go_to_login": "Zum Login",
     "learn_more": "Mehr erfahren",
     "otp_placeholder": "Zwei-Faktor Code",
-    "otp_info": "Bitte trage den Code aus deiner Zwei-Faktor-Authentifizierungsapp ein."
+    "otp_info": "Bitte trage den Code aus deiner Zwei-Faktor-Authentifizierungsapp ein.",
+    "pin_placeholder_new": "Dein neuer PIN-Code",
+    "pin_info_new": "Bitte gib einen neuen PIN-Code zur Anmeldung mit mit Deinem QR-Code ein.",
+    "pin_placeholder": "Dein PIN-Code",
+    "pin_info": "Bitte gib deinen PIN-Code zur Anmeldung ein."
   },
   "otp_manage": {
     "checking_state": "Frage Zwei-Faktor Status ab...",
@@ -292,7 +296,11 @@
     "loading": "Lade Baum...",
     "summary": {
       "title": "Information",
-      "text": "„Stadtbäume als Klimabotschafter“: in diesem Projekt forschen Wissenschaftlerinnen und Wissenschaftler, Expertinnen und Experten, Lehrpersonen sowie Schülerinnen und Schüler aus Österreich, Deutschland und Ungarn gemeinsam. Durch Beobachtungen, Messungen und Modellierung phänologischer Phasen und mikroklimatischer Daten werden folgende Forschungsfragen bearbeitet: Wie beeinflussen Stadtbäume das Stadtklima? Wie beeinflusst das Stadtklima die Stadtbäume? Was bedeutet das für uns und die Bäume in Zukunft?<br/><br/>Die folgenden Visualisierungen zeigen ausgewählte Aspekte dieser Forschungsarbeiten."
+      "text": "„Stadtbäume als Klimabotschafter“: in diesem Projekt forschen Wissenschaftlerinnen und Wissenschaftler, Expertinnen und Experten, Lehrpersonen sowie Schülerinnen und Schüler aus Österreich, Deutschland und Ungarn gemeinsam. Durch Beobachtungen, Messungen und Modellierung phänologischer Phasen und mikroklimatischer Daten werden folgende Forschungsfragen bearbeitet: Wie beeinflussen Stadtbäume das Stadtklima? Wie beeinflusst das Stadtklima die Stadtbäume? Was bedeutet das für uns und die Bäume in Zukunft?<br/><br/>Die folgenden Visualisierungen zeigen ausgewählte Aspekte dieser Forschungsarbeiten.",
+      "location": {
+        "map_open_btn": "Karte öffnen",
+        "map_close_btn": "Karte schließen"
+      }
     },
     "through_year": {
       "title": "Bäume in den Jahreszeiten",
@@ -433,10 +441,18 @@
       },
       "incompatible": "Dein Browser unterstützt unglücklicherweise dieses Audio-Format nicht."
     },
+    "more_info": {
+      "btn_label": "Mehr Info anzeigen",
+      "scroll": "Mehr Infos sind weiter unten"
+    },
     "admin": {
       "title": "Administratorfunktionen",
       "desc": "Abkürzungen zur Adminkonsole",
       "edit_link": "Baum konfigurieren"
+    },
+    "edit_tree": {
+      "edit_btn": "Baum-Beschreibung bearbeiten",
+      "add_btn": "Baum-Beschreibung hinzufügen"
     }
   },
   "general": {
@@ -558,7 +574,6 @@
     "title": "Impressum",
     "title_disclaimer": "Some of the information below is only available in german",
     "partners": "Partner",
-    "partners_coming_soon": "Bald werden die restlichen Projektpartner*innen hinzugefügt.",
     "license": "Lizenz",
     "os_projects": "Open-Source Projekte",
     "os_projects_text": "Nachfolgend eine Liste der in dieser App benutzten Open-Source Projekte."

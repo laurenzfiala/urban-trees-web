@@ -164,13 +164,15 @@ export class AuthService extends AbstractService {
    * @param {AuthenticationToken} authToken any valid authentication token
    * @param {() => void} successCallback called when login was successful
    * @param {(error: HttpErrorResponse, apiError?: ApiError) => void} errorCallback when login failed
+   * @param dryrun (default = false) if true, does not apply auth credentials
    */
   public login(authToken: AuthenticationToken,
                successCallback: () => void,
-               errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void): void {
+               errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void,
+               dryrun: boolean = false): void {
 
-    this.http.post(this.envService.endpoints.login, authToken, {observe: 'response', withCredentials: true})
-      .subscribe((response: HttpResponse<any>) => {
+    this.http.post(this.envService.endpoints.login, authToken, {observe: 'response', withCredentials: !dryrun})
+      .subscribe(() => {
         //TODO this.setJWTToken(response.headers.get(AuthService.HEADER_AUTH_KEY));
         //TODO AuthService.LOG.debug('Saved retrieved auth token to local storage.');
         this.stateChanged();

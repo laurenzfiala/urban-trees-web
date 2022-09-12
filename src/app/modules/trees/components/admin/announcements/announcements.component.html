@@ -8,12 +8,12 @@
 
 <div class="container my-4">
 
-  <h4 class="d-flex align-items-center">
+  <h1 class="d-flex align-items-center">
     <i class="i i-dark i-lg i-announce mr-2"></i>
     Announcements
-  </h4>
+  </h1>
 
-  <div class="d-flex mt-3 justify-content-end">
+  <div class="d-flex justify-content-end">
     <button class="btn btn-default d-flex justify-content-center align-items-center"
             (click)="showNewAnnouncementModal(newAnnouncementModal)">
       <i class="i i-sm i-dark i-plus mr-2"></i>
@@ -119,7 +119,7 @@
 <ng-template #newAnnouncementModal>
   <form #newAnnouncementForm="ngForm" (ngSubmit)="newAnnouncementForm.valid && addAnnouncement()" class="validate-on-submit" [ngClass]="{'submitted': newAnnouncementForm.submitted}">
     <div class="modal-header">
-      <h4 class="modal-title pull-left">Add new announcment</h4>
+      <h1 class="modal-title pull-left my-0">Add new announcment</h1>
     </div>
     <div class="modal-body">
       <div class="form-group">

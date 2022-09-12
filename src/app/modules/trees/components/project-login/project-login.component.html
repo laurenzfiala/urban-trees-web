@@ -31,28 +31,35 @@
       {{'login.heading' | translate}}
     </h1>
 
-    <form (submit)="login()">
+    <form #loginForm="ngForm"
+          (ngSubmit)="loginForm.valid && login()">
       <fieldset [attr.disabled]="!isSslConnection() ? true : null">
-        <div class="form-group fp-group">
+        <div *ngIf="!token"
+             class="form-group fp-group">
           <div class="fp">{{'login.username_placeholder' | translate}}</div>
           <input #usernameInput
                  type="text"
                  class="form-control"
                  name="username"
                  [(ngModel)]="this.username"
+                 #usernameModel="ngModel"
+                 [ngClass]="{ 'is-invalid': loginForm.submitted && usernameModel.invalid }"
                  required
                  autofocus>
         </div>
-        <div class="form-group fp-group">
+        <div *ngIf="!token"
+             class="form-group fp-group">
           <div class="fp">{{'login.password_placeholder' | translate}}</div>
           <input #passwordInput
                  type="password"
                  class="form-control"
                  name="password"
                  [(ngModel)]="this.password"
+                 #passwordModel="ngModel"
+                 [ngClass]="{ 'is-invalid': loginForm.submitted && passwordModel.invalid }"
                  required>
         </div>
-        <div *ngIf="showOtp"
+        <div *ngIf="!token && showOtp"
              class="form-group fp-group">
           <div class="fp">{{'login.otp_placeholder' | translate}}</div>
           <input #otpInput
@@ -60,6 +67,8 @@
                  class="form-control code"
                  name="otp"
                  [(ngModel)]="this.otp"
+                 #otpModel="ngModel"
+                 [ngClass]="{ 'is-invalid': loginForm.submitted && otpModel.invalid }"
                  maxlength="11"
                  required
                  focusOnDisplay>
@@ -70,7 +79,29 @@
             </div>
           </div>
         </div>
-        <button type="submit" class="btn btn-block btn-primary" [attr.disabled]="hasStatus(StatusKey.LOGIN, StatusValue.IN_PROGRESS) ? true : null">
+        <div *ngIf="showPin"
+             class="form-group fp-group">
+          <div class="fp">{{('login.pin_placeholder' + (isPinSet ? '' : '_new')) | translate}}</div>
+          <input #pinInput
+                 type="text"
+                 class="form-control code"
+                 name="pin"
+                 [(ngModel)]="this.pin"
+                 #pinModel="ngModel"
+                 [ngClass]="{ 'is-invalid': loginForm.submitted && pinModel.invalid }"
+                 minlength="4"
+                 maxlength="6"
+                 required
+                 focusOnDisplay>
+          <div class="otp-info mt-2">
+            <i class="i i-xs i-dark i-qr mr-2 flex-shrink-0"></i>
+            <div class="flex-grow-1">
+              {{('login.pin_info' + (isPinSet ? '' : '_new')) | translate}}
+            </div>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-block btn-primary"
+                [attr.disabled]="(loginForm.submitted && loginForm.invalid) || hasStatus(StatusKey.LOGIN, StatusValue.IN_PROGRESS) ? true : null">
           <span *ngIf="!hasStatus(StatusKey.LOGIN, StatusValue.IN_PROGRESS)">
             {{'login.log_in' | translate}}
           </span>

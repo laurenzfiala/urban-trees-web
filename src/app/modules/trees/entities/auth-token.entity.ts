@@ -48,12 +48,14 @@ export class UserOtpAuthenticationToken extends UserAuthenticationToken implemen
  * @author Laurenz Fiala
  * @since 2020/05/04
  */
-export class TokenAuthenticationToken implements AuthenticationToken{
+export class TokenAuthenticationToken implements AuthenticationToken {
 
   public secureLoginKey: string;
+  public secureLoginKeyPin: string;
 
-  constructor (secureLoginKey: string) {
+  constructor (secureLoginKey: string, secureLoginKeyPin: string) {
     this.secureLoginKey = secureLoginKey;
+    this.secureLoginKeyPin = secureLoginKeyPin;
   }
 
 }

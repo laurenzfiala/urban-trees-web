@@ -1,9 +1,11 @@
-import {ChangeDetectorRef, Component, OnDestroy, OnInit} from '@angular/core';
-import {ToolbarBtn, ToolbarDropdown} from '../../entities/toolbar.entity';
+import {ChangeDetectorRef, Component, OnDestroy, OnInit, ViewChild} from '@angular/core';
+import {ToolbarBtn, ToolbarDropdown, ToolbarToggleBtn} from '../../entities/toolbar.entity';
 import {ToolbarService} from '../../services/toolbar.service';
 import {Subscription} from 'rxjs';
 import {ContentService} from '../../services/content.service';
 import {ViewMode} from '../../enums/cms-layout-view-mode.enum';
+import {CmsToolbarModal} from '../../interfaces/cms-toolbar-modal.interface';
+import {TooltipDirective} from 'ngx-bootstrap/tooltip';
 
 @Component({
   selector: 'ut-content-toolbar',
@@ -13,10 +15,19 @@ import {ViewMode} from '../../enums/cms-layout-view-mode.enum';
 export class ContentToolbarComponent implements OnInit, OnDestroy {
 
   ViewMode = ViewMode;
-  public ToolbarDropdown = ToolbarDropdown;
   public ToolbarBtn = ToolbarBtn;
+  public ToolbarToggleBtn = ToolbarToggleBtn;
+  public ToolbarDropdown = ToolbarDropdown;
+
+  public modal: CmsToolbarModal | null;
 
   private onUpdateSub: Subscription;
+  private onModalSub: Subscription;
+  private onViewModeChangeSub: Subscription;
+  private onElementDroppedSub: Subscription;
+
+  @ViewChild('editToggleBtn', {read: TooltipDirective})
+  private editToggleBtn: TooltipDirective;
 
   constructor(public toolbar: ToolbarService,
               public contentService: ContentService,
@@ -26,14 +37,32 @@ export class ContentToolbarComponent implements OnInit, OnDestroy {
     this.onUpdateSub = this.toolbar.onUpdate.subscribe(value => {
       this.cdRef.detectChanges();
     });
+
+    this.onModalSub = this.toolbar.onModal.subscribe(modal => {
+      this.modal = modal;
+      this.cdRef.detectChanges();
+    });
+
+    this.onViewModeChangeSub = this.contentService.onViewModeChange().subscribe(value => {
+      if (!this.editToggleBtn) {
+        return;
+      }
+      if (value !== ViewMode.EDIT_LAYOUT) {
+        this.editToggleBtn.hide();
+      }
+      this.cdRef.detectChanges();
+    });
+
+    this.onElementDroppedSub = this.contentService.onElementDropped().subscribe(value => {
+      this.editToggleBtn.show();
+    });
   }
 
   ngOnDestroy() {
     this.onUpdateSub.unsubscribe();
-  }
-
-  public doBtnAction(btn: ToolbarBtn): void {
-    btn.action();
+    this.onModalSub.unsubscribe();
+    this.onViewModeChangeSub.unsubscribe();
+    this.onElementDroppedSub.unsubscribe();
   }
 
   public undo(): void {
@@ -44,7 +73,7 @@ export class ContentToolbarComponent implements OnInit, OnDestroy {
     this.contentService.undo(false);
   }
 
-  public editLayout(): void {
+  public toggleViewMode(): void {
     if (this.contentService.viewMode === ViewMode.EDIT_LAYOUT
         || this.contentService.viewMode === ViewMode.INSERT_ELEMENT) {
       this.contentService.viewMode = ViewMode.EDIT_CONTENT;

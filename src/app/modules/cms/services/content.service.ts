@@ -231,6 +231,28 @@ export class ContentService extends AbstractService {
 
   }
 
+  public deleteContent(contentUid: number,
+                       draftOnly: boolean,
+                       successCallback: () => void,
+                       errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void): void {
+
+    const url = this.envService.endpoints.deleteContent(contentUid, draftOnly);
+
+    ContentService.LOG.debug('Deleting content ' + contentUid + '...');
+
+    this.http.delete(url)
+      .subscribe(() => {
+        ContentService.LOG.debug('Deleted content ' + contentUid + '.');
+        successCallback();
+      }, e => {
+        ContentService.LOG.error('Could not delete content ' + contentUid + ': ' + e.message, e);
+        if (errorCallback) {
+          errorCallback(e, this.safeApiError(e));
+        }
+      });
+
+  }
+
   /**
    * TODO
    * @param contentId

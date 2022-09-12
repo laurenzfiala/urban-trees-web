@@ -39,6 +39,8 @@ export abstract class AbstractCmsComponent
   protected abstract toolbar: ToolbarService;
   protected abstract cdRef: ChangeDetectorRef;
 
+  public validationResults: CmsValidationResults = new CmsValidationResults();
+
   constructor() {
     super();
     this.onDestroySubject = new ReplaySubject<CmsComponent>();
@@ -129,7 +131,7 @@ export abstract class AbstractCmsComponent
   abstract serialize(): any;
   abstract deserialize(data: any): Promise<void>;
   abstract getName(): string;
-  abstract validate(results: CmsValidationResults): void;
+  abstract validate(results?: CmsValidationResults): CmsValidationResults;
   abstract getToolbarContextual(): ToolbarSection<ToolbarElement>;
 
 }

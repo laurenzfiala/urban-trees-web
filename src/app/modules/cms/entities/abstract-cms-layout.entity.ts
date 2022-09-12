@@ -34,6 +34,8 @@ export abstract class AbstractCmsLayout
   private onChangedSubject: Subject<CmsElement>;
   private onUpdateSubject: Subject<CmsLayout>;
 
+  public validationResults: CmsValidationResults = new CmsValidationResults();
+
   protected constructor() {
     super();
     this.onChangedSubject = new Subject<CmsElement>();
@@ -200,6 +202,6 @@ export abstract class AbstractCmsLayout
   abstract getName(): string;
   abstract serialize(): any;
   abstract deserialize(data: any): Promise<void>;
-  abstract validate(results: CmsValidationResults): void;
+  abstract validate(results?: CmsValidationResults): CmsValidationResults;
 
 }

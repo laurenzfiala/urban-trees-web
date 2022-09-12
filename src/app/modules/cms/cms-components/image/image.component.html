@@ -1,5 +1,11 @@
 <div class="cms-component position-relative w-100 h-100">
   <div *ngIf="!hasViewMode(ViewMode.CONTENT); else viewContent"
+       [tooltip]="validationErrorTooltipTemplate"
+       [tooltipIsOpen]="validationResults.hasHighlighted() && hasViewMode(ViewMode.EDIT_CONTENT)"
+       [adaptivePosition]="false"
+       placement="top"
+       tooltipTrigger=""
+       [ngClass]="{'is-invalid': validationResults.hasErrors()}"
        (focus)="focus()"
        (focusout)="focusOut()"
        class="w-100 h-100 cms-element-border">
@@ -13,6 +19,7 @@
          (click)="selectImage()">
       <img *ngIf="!hasStatus(StatusKey.UPLOAD, StatusValue.IN_PROGRESS) && fileUid"
            [src]="getFileUrl()"/>
+      <div class="cms-img-bg" [ngStyle]="{'background-image': 'url(' + getFileUrl() + ')'}"></div>
     </div>
 
     <input
@@ -27,7 +34,15 @@
 
 <ng-template #viewContent>
   <div class="cms-img-wrapper">
+    <div class="cms-img-bg" [ngStyle]="{'background-image': 'url(' + getFileUrl() + ')'}"></div>
     <img *ngIf="!hasStatus(StatusKey.UPLOAD, StatusValue.IN_PROGRESS) && fileUid"
          [src]="getFileUrl()"/>
+  </div>
+</ng-template>
+
+<ng-template #validationErrorTooltipTemplate>
+  <div class="d-flex flex-row align-items-center">
+    <i class="danger-pointer mr-1"></i>
+    {{validationResults.errorString() | async2}}
   </div>
 </ng-template>

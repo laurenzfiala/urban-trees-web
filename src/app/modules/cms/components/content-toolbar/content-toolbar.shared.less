@@ -6,7 +6,9 @@
   width: 2em;
   height: 2em;
 }
-@iconSmPadding: 0.5em;
+@iconSmPadding:   0.5em;
+@modalBoxShadow:  0 10px 10px -10px rgba(0, 0, 0, 0.5);
+@highlightBorderColor: @primaryColorHighlight;
 
 .toolbar {
   display: flex;
@@ -19,17 +21,63 @@
     border-top: @toolbarBorder;
   }
 
+  .save-status {
+    color: @subtleTextColor;
+    font-size: @fontSizeExtraSmall;
+  }
+}
+
+
+.toolbar-modal {
+  position: absolute;
+  top: 100%;
+  width: 100%;
+  margin-top: @gutter;
+  padding: @gutter;
+
+  background-color: @bgColor;
+  box-shadow: @modalBoxShadow;
+  border: solid @highlightBorderColor @borderWidth;
+
+  &::before, &::after {
+    content: " ";
+
+    position: absolute;
+    bottom: 100%;
+    left: var(--modal-arrow-left);
+    height: 0;
+    width: 0;
+
+    pointer-events: none;
+    border: solid transparent;
+    border-color: rgba(0, 0, 0, 0);
+    border-bottom-color: @highlightBorderColor;
+
+    border-width: @gutter;
+    margin-left: -@gutter;
+  }
+
+  &::after {
+    border-bottom-color: @bgColor;
+
+    left: calc(var(--modal-arrow-left) + @borderWidth + 0.5px);
+    border-width: calc(@gutter - @borderWidth - 0.5px);
+  }
+}
+
+.toolbar, .toolbar-modal {
+
   .toolbar-section,
   .toolbar-align {
     display: flex;
     flex-direction: row;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
   }
 
   .toolbar-section.contextual {
     &,
     button {
-      box-shadow: 0 -@borderWidth 0 0 @primaryColorHighlight inset;
+      box-shadow: 0 -@borderWidth 0 0 @highlightBorderColor inset;
     }
   }
 
@@ -42,7 +90,7 @@
     }
   }
 
-  button,
+  button:not(.btn),
   .toolbar-close {
     padding: (@gutter/2);
 
@@ -52,7 +100,7 @@
     }
   }
 
-  button {
+  button:not(.btn) {
     padding-right: @gutter;
     padding-left: @gutter;
 
@@ -82,11 +130,6 @@
       .iconDimensions();
       vertical-align: center;
     }
-  }
-
-  .save-status {
-    color: @subtleTextColor;
-    font-size: @fontSizeExtraSmall;
   }
 
   @selectArrowWidth: 0.95em;

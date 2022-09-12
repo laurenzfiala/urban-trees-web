@@ -121,6 +121,14 @@ export class AdminService extends AbstractService {
 
   }
 
+  public getLoginQrUrl(userId: number): string {
+    return this.envService.endpoints.loginQr(userId);
+  }
+
+  public getBulkLoginQrUrl(): string {
+    return this.envService.endpoints.bulkLoginQr();
+  }
+
   /**
    * Submit modified tree to the backend.
    * @param tree the tree to be submitted
@@ -512,6 +520,7 @@ export enum BulkAction {
 
   EXPIRE_CREDENTIALS,
   CREATE_LOGIN_LINKS,
+  CREATE_LOGIN_LINKS_PERMANENT,
   ADD_ROLES,
   REMOVE_ROLES,
   ACTIVATE,

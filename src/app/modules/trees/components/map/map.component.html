@@ -16,7 +16,12 @@
   <div class="osm-copyright">&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>
     contributors
   </div>
-  <div class="activator" [ngClass]="{'disabled': isMapEnabled || hasStatus(StatusKey.MAP, StatusValue.IN_PROGRESS)}" (click)="isMapEnabled = true" (mousedown)="$event.stopPropagation()" (mouseup)="$event.stopPropagation()">
+  <div *ngIf="useActivator"
+       class="activator"
+       [ngClass]="{'disabled': isMapEnabled || hasStatus(StatusKey.MAP, StatusValue.IN_PROGRESS)}"
+       (click)="isMapEnabled = true"
+       (mousedown)="$event.stopPropagation()"
+       (mouseup)="$event.stopPropagation()">
     <div class="d-has-cursor">
       {{'map.activator' | translate}}
     </div>

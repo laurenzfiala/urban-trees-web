@@ -58,14 +58,18 @@ export class BlockLayout extends AbstractCmsLayout {
     return this.constructor.name;
   }
 
-  public validate(results: CmsValidationResults) {
+  public validate(results?: CmsValidationResults): CmsValidationResults {
 
+    this.validationResults.reset();
     if (!this.slotMainElement.get()) {
-      const r = results.addResult(new CmsValidationResult(true, 'Slot may not be empty'));
-      r.onHighlight().subscribe(value => {
-        window.alert('highlight error in text component');
-      });
+      const result = new CmsValidationResult(true, 'Slot may not be empty');
+
+      this.validationResults.addResult(result);
+      results?.addResult(result);
+    } else {
+      this.slotMainElement.get().validate(results);
     }
+    return this.validationResults;
 
   }
 

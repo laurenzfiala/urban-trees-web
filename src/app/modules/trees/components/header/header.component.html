@@ -119,7 +119,8 @@
 
 <!-- Content of NAV & dropdown -->
 <ng-template #navContent>
-  <li *auth="envService.security.rolesUser" class="nav-item"
+  <li *auth="envService.security.rolesUser"
+      class="nav-item"
       routerLinkActive="active">
     <a class="nav-link link-container" routerLink="/home">
       <div class="link">{{'navigation.home' | translate}}</div>

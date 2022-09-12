@@ -36,9 +36,11 @@ export interface CmsElement {
    * Check validity of the element (and its children).
    * This does not trigger any visual output by the corresponding elements.
    * For user-interaction, use CmsValidationResult#highlight().
-   * @param results use this to add more results
+   * @param results (optional) global results to add to
+   * @returns a separate validation results object only containing this
+   *          components' results
    */
-  validate(results: CmsValidationResults): void;
+  validate(results?: CmsValidationResults): CmsValidationResults;
 
   /**
    * The returned observable is triggered every time the element

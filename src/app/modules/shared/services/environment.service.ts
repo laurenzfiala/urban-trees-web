@@ -21,6 +21,10 @@ export class EnvironmentService {
     return this.context.contentSaveDebounceMs;
   }
 
+  get contentUndoHistoryDebounceMs() {
+    return this.context.contentUndoHistoryDebounceMs;
+  }
+
   get searchDebounceMs() {
     return this.context.searchDebounceMs;
   }
@@ -586,6 +590,25 @@ class EnvironmentEndpoints {
     );
   }
 
+  public loginQr(userId: number): string {
+    let replacements: any[] = [
+      { placeholder: 'userId', replacement: userId }
+    ];
+
+    return this.prependCommonPath(
+      this.replaceParams(
+        this.context.loginQr,
+        replacements
+      )
+    );
+  }
+
+  public bulkLoginQr(): string {
+    return this.prependCommonPath(
+      this.context.bulkLoginQr
+    );
+  }
+
   public loginKeyUrl(token: string): string {
     let replacements: any[] = [
       { placeholder: 'token', replacement: token }
@@ -699,6 +722,25 @@ class EnvironmentEndpoints {
     let replacements: any[] = [
       { placeholder: 'contentPath', replacement: contentPath },
       { placeholder: 'contentLang', replacement: contentLang }
+    ];
+
+    return this.prependCommonPath(
+      this.replaceParams(
+        url,
+        replacements
+      )
+    );
+
+  }
+
+  public deleteContent(contentUid: number,
+                       draftOnly: boolean): string {
+
+    const url = this.context.deleteContent;
+
+    let replacements: any[] = [
+      { placeholder: 'contentUid', replacement: contentUid },
+      { placeholder: 'draftOnly', replacement: draftOnly }
     ];
 
     return this.prependCommonPath(

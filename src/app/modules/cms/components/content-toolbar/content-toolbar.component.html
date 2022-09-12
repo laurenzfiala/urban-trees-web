@@ -4,19 +4,27 @@
   <div *ngFor="let element of toolbar.getContextual()?.elements; let i = index" class="toolbar-section contextual">
 
     <div *ngIf="i > 0" class="toolbar-separator sm"></div>
-    <div *cast="{in: element, castTo: ToolbarBtn}; let btn = out">
-      <button
-        (action)="btn.action()"
-        [tooltip]="btn.description">
-        <img [src]="btn.iconPath" draggable="false" />
-      </button>
-    </div>
+    <button
+      *cast="{in: element, castTo: ToolbarBtn, exact: true}; let btn = out"
+      #el
+      (action)="btn.action(el)"
+      [tooltip]="btn.description | async2">
+      <img [src]="btn.iconPath" draggable="false" />
+    </button>
+    <button
+      *cast="{in: element, castTo: ToolbarToggleBtn}; let btn = out"
+      #el
+      [ngClass]="{'active': btn?.active}"
+      (action)="btn.action(el)"
+      [tooltip]="btn.description | async2">
+      <img [src]="btn.iconPath" draggable="false" />
+    </button>
     <select *cast="{in: element, castTo: ToolbarDropdown}; let dropdown = out"
-            [(ngModel)]="dropdown.selectedKey"
-            (change)="dropdown.changed()">
+            [ngModel]="dropdown.selectedValue"
+            (ngModelChange)="dropdown.changed($event)">
       <option *ngFor="let option of dropdown.options | keyvalue"
               [value]="option.value">
-        {{option.key}}
+        {{option.key | async2}}
       </option>
     </select>
 
@@ -26,14 +34,24 @@
   <div *ngIf="toolbar.getContextual()?.elements.length > 0" class="toolbar-separator"></div>
   <div class="toolbar-section">
 
+    <ng-template #viewModeToggleTooltipContent>
+      <div class="d-flex flex-row align-items-center">
+        <i class="feature-pointer mr-1"></i>
+        {{ 'toolbar.edit_content_hint' | translate }}
+      </div>
+    </ng-template>
+
     <button
       class="d-flex flex-row align-items-center text-muted"
-      (action)="editLayout()"
-      [tooltip]="viewMode === ViewMode.EDIT_CONTENT ? 'Edit layout' : 'Edit content'"
+      (action)="toggleViewMode()"
+      #editToggleBtn="bs-tooltip"
+      [tooltip]="viewModeToggleTooltipContent"
+      containerClass="view-mode-toggle-tooltip"
+      triggers=""
       draggable="false">
       <img [src]="'/assets/img/icon/cms/' + (viewMode === ViewMode.EDIT_CONTENT ? 'edit-layout.svg' : 'edit-layout-active.svg')"
            class="mr-1" />
-      {{hasViewMode(ViewMode.EDIT_CONTENT) ? 'Edit layout' : 'Edit content'}}
+      {{('toolbar.edit_' + (hasViewMode(ViewMode.EDIT_CONTENT) ? 'layout' : 'content')) | translate}}
     </button>
 
     <div *ngIf="hasViewMode(ViewMode.EDIT_LAYOUT, ViewMode.INSERT_ELEMENT)"
@@ -43,10 +61,11 @@
         <div class="toolbar-separator sm"></div>
         <ng-container *ngFor="let btn of section.elements; let i = index">
           <button
+            #cmsToolbarBtn
             [ngClass]="{'active': btn.data?.active}"
-            (dragstart)="!btn.data?.active ? doBtnAction(btn) : null"
-            (action)="doBtnAction(btn)"
-            [tooltip]="btn.description"
+            (dragstart)="!btn.data?.active ? btn.action(cmsToolbarBtn) : null"
+            (action)="btn.action(cmsToolbarBtn)"
+            [tooltip]="btn.description | async2"
             draggable="true">
             <img [src]="btn.iconPath" [alt]="btn.description" draggable="false" />
           </button>
@@ -63,15 +82,21 @@
 
     <button
       (action)="undo()"
-      tooltip="Undo">
+      [tooltip]="'toolbar.undo' | translate">
       <img src="/assets/img/icon/cms/undo.svg" />
     </button>
     <div class="toolbar-separator sm"></div>
     <button
       (action)="redo()"
-      tooltip="Redo">
+      [tooltip]="'toolbar.redo' | translate">
       <img src="/assets/img/icon/cms/redo.svg" />
     </button>
 
   </div>
+</div>
+
+<div *ngIf="modal?.show"
+     class="toolbar-modal"
+     [cssvar]="{name: '--modal-arrow-left', value: modal.arrowPos ? modal.arrowPos : '50%'}">
+  <ng-template [ngTemplateOutlet]="modal.template"></ng-template>
 </div>

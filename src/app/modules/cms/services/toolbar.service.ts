@@ -1,4 +1,4 @@
-import {Injectable, Type} from '@angular/core';
+import {Injectable, TemplateRef, Type} from '@angular/core';
 import {Log} from '../../shared/services/log.service';
 import {ToolbarBtn, ToolbarElement, ToolbarSection} from '../entities/toolbar.entity';
 import {CmsComponent} from '../interfaces/cms-component.interface';
@@ -7,6 +7,7 @@ import {CmsElement} from '../interfaces/cms-element.interface';
 import {ContentService} from './content.service';
 import {Observable, Subject} from 'rxjs';
 import {SubscriptionManagerService} from '../../trees/services/subscription-manager.service';
+import {CmsToolbarModal} from '../interfaces/cms-toolbar-modal.interface';
 
 /**
  * Handles communication of toolbar content from CMS elements
@@ -31,6 +32,11 @@ export class ToolbarService {
    * Subject used to instruct toolbar component to update itself.
    */
   private updateSubject: Subject<void> = new Subject<void>();
+
+  /**
+   * Subject used to instruct toolbar component to show/hide modal.
+   */
+  private modalSubject: Subject<CmsToolbarModal> = new Subject<CmsToolbarModal>();
 
   constructor(private contentService: ContentService,
               private subs: SubscriptionManagerService) {
@@ -66,11 +72,11 @@ export class ToolbarService {
     }
 
     element.onChanged().subscribe(comp => {
-      this.updateSubject.next();
+      this.update();
     });
     element.onFocus().subscribe(comp => {
       this.activeComponent = comp;
-      this.updateSubject.next();
+      this.update();
     });
 
   }
@@ -99,12 +105,20 @@ export class ToolbarService {
     return this.updateSubject.asObservable();
   }
 
+  get onModal(): Observable<CmsToolbarModal> {
+    return this.modalSubject.asObservable();
+  }
+
   public update(): void {
     this.updateSubject.next();
   }
 
   public reset(): void {
     this.activeComponent = undefined;
+  }
+
+  public modal(modal: CmsToolbarModal): void {
+    this.modalSubject.next(modal);
   }
 
 }

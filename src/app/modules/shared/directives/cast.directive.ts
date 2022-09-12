@@ -12,7 +12,7 @@ import {Directive, ElementRef, Input, OnInit, TemplateRef, Type, ViewContainerRe
 export class CastDirective implements OnInit {
 
   @Input('cast')
-  private options: { in: any, castTo: Type<any> };
+  private options: { in: any, castTo: Type<any>, exact?: boolean };
 
   constructor(
     private element: ElementRef,
@@ -21,16 +21,15 @@ export class CastDirective implements OnInit {
   ) {}
 
   public ngOnInit(): void {
-
     this.do();
-
   }
 
   private do(): void {
 
     this.viewContainer.clear();
 
-    if (this.options.in instanceof this.options.castTo) {
+    if (this.options.in instanceof this.options.castTo &&
+        (!this.options.exact || this.options.in.constructor.name === this.options.castTo.name)) {
       const viewRef = this.viewContainer.createEmbeddedView(this.templateRef);
       viewRef.context.out = this.options.in;
     } else {

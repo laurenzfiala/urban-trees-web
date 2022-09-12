@@ -11,7 +11,6 @@ import {StatisticsComponent} from './components/statistics/statistics.component'
 import {TreeListComponent} from './components/tree-list/tree-list.component';
 import {TreeComponent} from './components/tree/tree.component';
 import {ProjectLoginComponent} from './components/project-login/project-login.component';
-import {ProjectLoginKeyComponent} from './components/project-login-key/project-login-key.component';
 import {PasswordChangeComponent} from './components/project-password-change/project-password-change.component';
 import {ProjectLoginGuard} from './components/project-login/project-login.guard';
 import {environment} from '../../../environments/environment';
@@ -84,7 +83,7 @@ const routes: Routes = [
       },
       {
         path: 'login/:token',
-        component: ProjectLoginKeyComponent
+        component: ProjectLoginComponent
       },
       {
         path: 'account/changepassword',

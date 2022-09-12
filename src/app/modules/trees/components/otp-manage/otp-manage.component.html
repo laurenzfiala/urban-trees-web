@@ -45,12 +45,12 @@
     <div *ngIf="isActivateFlow"
          class="col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto login-container">
 
-      <h4 class="mb-3">
+      <h1 class="mb-3">
         {{'otp_manage.activate_title' | translate}}
         <span class="text-sm text-subtle">
           &ndash; {{username()}}
         </span>
-      </h4>
+      </h1>
 
       <!-- ACTIVATION PAGE 1 -->
       <ng-container *ngIf="!hasStatus(StatusKey.ACTIVATE, StatusValue.SUCCESSFUL)">
@@ -121,12 +121,12 @@
     <div *ngIf="!isActivateFlow"
          class="col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto login-container">
 
-      <h4 class="mb-3">
+      <h1 class="mb-3">
         {{'otp_manage.deactivate_title' | translate}}
         <span class="text-sm text-subtle">
           &ndash; {{username()}}
         </span>
-      </h4>
+      </h1>
 
       <form #form="ngForm"
             (ngSubmit)="form.valid && deactivate()"

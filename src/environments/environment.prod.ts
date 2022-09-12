@@ -60,6 +60,8 @@ export const environment = {
     addRoles:                         '/admin/users/{userId}/roles/add',
     removeRoles:                      '/admin/users/{userId}/roles/remove',
     loginKey:                         '/admin/users/{userId}/loginkey',
+    loginQr:                          '/admin/users/{userId}/loginkey/qr',
+    bulkLoginQr:                      '/admin/users/loginkey/qr',
     loginKeyUrl:                      '/login/{token}',
     allAnnouncements:                 '/admin/announcements',
     addAnnouncement:                  '/admin/announcement',
@@ -88,6 +90,7 @@ export const environment = {
     loadContentFile:                  '/content/file/{fileUid}?path={contentPath}&filename={filename}',
     saveContentFile:                  '/content/file?path={contentPath}',
     publishContent:                   '/content/{contentLang}?path={contentPath}',
+    deleteContent:                    '/content/{contentUid}',
     loadContentUserHistory:           '/user/{userId}/content?path={path}',
 
     // CMS Manager
@@ -101,6 +104,7 @@ export const environment = {
   },
 
   contentSaveDebounceMs:              120_000,
+  contentUndoHistoryDebounceMs:       10_000,
   searchDebounceMs:                   200,
   searchDebounceApiMs:                500,
 

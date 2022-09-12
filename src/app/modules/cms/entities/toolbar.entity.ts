@@ -1,4 +1,5 @@
 import {Observable, Subject} from 'rxjs';
+import {ToolbarService} from '../services/toolbar.service';
 
 /**
  * A group of toolbar elements belonging to a component.
@@ -19,9 +20,9 @@ export class ToolbarSection<T extends ToolbarElement> {
  */
 export abstract class ToolbarElement {
 
-  public readonly description: string;
+  public readonly description: string | Observable<string>;
 
-  constructor(description: string) {
+  constructor(description: string | Observable<string>) {
     this.description = description;
   }
 
@@ -40,13 +41,14 @@ export abstract class ToolbarElement {
  */
 export class ToolbarBtn extends ToolbarElement {
 
-  public readonly name: string;
+  public readonly name: string | Observable<string>;
   public readonly iconPath: string;
   public readonly actionSubject: Subject<ToolbarBtn>;
   public data: any;
+  public element!: HTMLButtonElement;
 
-  constructor(name: string,
-              description: string,
+  constructor(name: string | Observable<string>,
+              description: string | Observable<string>,
               iconPath: string,
               data: any = {}) {
     super(description);
@@ -68,8 +70,10 @@ export class ToolbarBtn extends ToolbarElement {
   /**
    * Notify all observers that this buttons'
    * action should be executed and pass self.
+   * @param element the buttons' current html element for access to state
    */
-  public action() {
+  public action(element: HTMLButtonElement) {
+    this.element = element;
     this.actionSubject.next(this);
   }
 
@@ -83,18 +87,44 @@ export class ToolbarBtn extends ToolbarElement {
 }
 
 /**
+ * A single toggle button to display in the toolbar
+ * with an associated action handled by the corresponding component.
+ * TODO
+ */
+export class ToolbarToggleBtn extends ToolbarBtn {
+
+  public active: boolean;
+
+  constructor(name: string | Observable<string>,
+              description: string | Observable<string>,
+              iconPath: string,
+              data: any = {}) {
+    super(name, description, iconPath, data);
+    this.active = false;
+  }
+
+  public action(element: HTMLButtonElement) {
+    this.active = !this.active;
+    super.action(element);
+  }
+
+}
+
+/**
  * A single dropdown to display in the toolbar.
  * Action is triggered when the value changes.
  */
 export class ToolbarDropdown extends ToolbarElement {
 
-  public selectedKey: any;
-  private readonly options: Map<string, any> = new Map<string, any>();
+  public selectedValue: any;
+  private readonly options: Map<string | Observable<string>, any> = new Map<string | Observable<string>, any>();
   private readonly changedSubject: Subject<any>;
 
-  constructor(description: string, selectedKey: any, options: Map<string, any>) {
+  constructor(description: string | Observable<string>,
+              selectedValue: any,
+              options: Map<string | Observable<string>, any>) {
     super(description);
-    this.selectedKey = selectedKey;
+    this.selectedValue = selectedValue;
     this.options = options;
     this.changedSubject = new Subject<any>();
   }
@@ -108,13 +138,15 @@ export class ToolbarDropdown extends ToolbarElement {
     return this;
   }
 
-  public changed() {
-    this.changedSubject.next(this.selectedKey);
+  public changed(selectedValue: any) {
+    this.selectedValue = selectedValue;
+    this.changedSubject.next(selectedValue);
   }
 
-  public setValueOn(observable: Observable<any>): ToolbarDropdown {
+  public setValueOn(observable: Observable<any>, toolbarService: ToolbarService): ToolbarDropdown {
     observable.subscribe(value => {
-      this.selectedKey = value;
+      this.selectedValue = value;
+      toolbarService.update();
     });
     return this;
   }

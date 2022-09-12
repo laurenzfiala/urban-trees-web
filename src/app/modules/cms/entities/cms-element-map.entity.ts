@@ -1,6 +1,7 @@
 import {Type} from '@angular/core';
 import {ToolbarBtn, ToolbarSection} from './toolbar.entity';
 import {PartialObserver} from 'rxjs';
+import {Observable} from 'rxjs/Observable';
 
 /**
  * CMS element map that holds the mapping from element names
@@ -119,7 +120,9 @@ export class EDBuilder {
     return this;
   }
 
-  public toolbarBtn(name: string, description: string, iconPath: string): EDToolbarBtnBuilder {
+  public toolbarBtn(name: string | Observable<string>,
+                    description: string | Observable<string>,
+                    iconPath: string): EDToolbarBtnBuilder {
 
     if (!this.descriptor.toolbarSection) {
       this.descriptor.toolbarSection = new ToolbarSection<ToolbarBtn>();

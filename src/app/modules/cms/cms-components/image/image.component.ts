@@ -14,6 +14,7 @@ import {CmsValidationResult} from '../../entities/cms-validation-result.entity';
 import {ContentService} from '../../services/content.service';
 import {EnvironmentService} from '../../../shared/services/environment.service';
 import {FileComponent} from '../file/file.component';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'ut-cms-img',
@@ -29,8 +30,9 @@ export class ImageComponent extends FileComponent {
   constructor(contentService: ContentService,
               toolbar: ToolbarService,
               cdRef: ChangeDetectorRef,
+              translate: TranslateService,
               envService: EnvironmentService) {
-    super(contentService, toolbar, cdRef, envService);
+    super(contentService, toolbar, cdRef, translate, envService);
   }
 
   public selectImage(): void {
@@ -39,6 +41,22 @@ export class ImageComponent extends FileComponent {
 
   public getName(): string {
     return this.constructor.name;
+  }
+
+  public validate(results?: CmsValidationResults): CmsValidationResults {
+
+    this.validationResults.reset();
+    if (!this.fileUid) {
+      const result = new CmsValidationResult(true, this.translate.get('components.img.validation.empty'));
+      result.onHighlight().subscribe(value => {
+        this.cdRef.detectChanges();
+      });
+
+      this.validationResults.addResult(result);
+      results?.addResult(result);
+    }
+    return this.validationResults;
+
   }
 
 }

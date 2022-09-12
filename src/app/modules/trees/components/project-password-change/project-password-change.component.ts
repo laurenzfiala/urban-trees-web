@@ -72,16 +72,13 @@ export class PasswordChangeComponent extends AbstractComponent implements OnInit
 
     let passwordValid = false;
 
-    // lowercase alphabetic chars
     let lowerLetterChars = (newPassword.match(/[a-z]/g) || []).length;
     let upperLetterChars = (newPassword.match(/[A-Z]/g) || []).length;
     let numericChars = (newPassword.match(/[0-9]/g) || []).length;
-    let specialChars = (newPassword.match(/[^a-zA-Z0-9]/g) || []).length;
 
     if (lowerLetterChars !== 0 &&
       upperLetterChars !== 0 &&
       numericChars !== 0 &&
-      specialChars !== 0 &&
       newPassword.length >= this.envService.security.minPasswordLength) {
       passwordValid = true;
     }

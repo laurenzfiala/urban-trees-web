@@ -6,6 +6,7 @@ import {CmsValidationResults} from '../../entities/cms-validation-results.entity
 import {CmsValidationResult} from '../../entities/cms-validation-result.entity';
 import {ContentService} from '../../services/content.service';
 import {EnvironmentService} from '../../../shared/services/environment.service';
+import {TranslateService} from '@ngx-translate/core';
 
 @Component({
   selector: 'ut-cms-file',
@@ -24,6 +25,7 @@ export class FileComponent extends AbstractCmsComponent {
   constructor(protected contentService: ContentService,
               protected toolbar: ToolbarService,
               protected cdRef: ChangeDetectorRef,
+              protected translate: TranslateService,
               private envService: EnvironmentService) {
     super();
   }
@@ -93,14 +95,19 @@ export class FileComponent extends AbstractCmsComponent {
     return new ToolbarSection<ToolbarElement>();
   }
 
-  public validate(results: CmsValidationResults): void {
+  public validate(results?: CmsValidationResults): CmsValidationResults {
 
+    this.validationResults.reset();
     if (!this.fileUid) {
-      const r = results.addResult(new CmsValidationResult(true, 'errors.components.file.fileUid_is_falsy'));
-      r.onHighlight().subscribe(value => {
-        window.alert('highlight error in file component');
+      const result = new CmsValidationResult(true, this.translate.get('components.file.validation.empty'));
+      result.onHighlight().subscribe(value => {
+        this.cdRef.detectChanges();
       });
+
+      this.validationResults.addResult(result);
+      results?.addResult(result);
     }
+    return this.validationResults;
 
   }
 

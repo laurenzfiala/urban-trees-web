@@ -70,21 +70,23 @@ export class TwoColumnLayout extends AbstractCmsLayout {
     return this.constructor.name;
   }
 
-  public validate(results: CmsValidationResults) {
+  public validate(results?: CmsValidationResults): CmsValidationResults {
 
-    if (!this.slotLeftElement.get()) {
+    /*if (!this.slotLeftElement.get()) {
       const r = results.addResult(new CmsValidationResult(true, 'Left slot may not be empty'));
       r.onHighlight().subscribe(value => {
-        window.alert('highlight error'); // TODO
+        window.alert('highlight error');
       });
     }
 
     if (!this.slotRightElement.get()) {
       const r = results.addResult(new CmsValidationResult(true, 'Right slot may not be empty'));
       r.onHighlight().subscribe(value => {
-        window.alert('highlight error'); // TODO
+        window.alert('highlight error');
       });
-    }
+    } TODO */
+
+    return results;
 
   }
 

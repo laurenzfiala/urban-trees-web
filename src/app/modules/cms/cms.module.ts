@@ -20,10 +20,12 @@ import {ImageComponent} from './cms-components/image/image.component';
 import {ContentManagerComponent} from './components/content-manager/content-manager.component';
 import {CollapseModule} from 'ngx-bootstrap/collapse';
 import {ExpDaysLayout} from './cms-layouts/exp-days/exp-days.component';
-import {SensorToAppLayout} from './cms-layouts/sensor-to-app/sensor-to-app.component';
-import { ContentToolbarComponent } from './components/content-toolbar/content-toolbar.component';
-import { EditLayoutDropzoneComponent } from './components/edit-layout-dropzone/edit-layout-dropzone.component';
-import { EditLayoutComponent } from './components/edit-layout/edit-layout.component';
+import {ContentToolbarComponent} from './components/content-toolbar/content-toolbar.component';
+import {EditLayoutDropzoneComponent} from './components/edit-layout-dropzone/edit-layout-dropzone.component';
+import {EditLayoutComponent} from './components/edit-layout/edit-layout.component';
+import {NgxTiptapModule} from 'ngx-tiptap';
+import {CmsTextLinkComponent} from './components/cms-text-link/cms-text-link.component';
+import {RouterModule} from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -43,13 +45,14 @@ import { EditLayoutComponent } from './components/edit-layout/edit-layout.compon
     BlockLayout,
     TwoColumnLayout,
     ExpDaysLayout,
-    SensorToAppLayout,
     ContentToolbarComponent,
     EditLayoutDropzoneComponent,
-    EditLayoutComponent
+    EditLayoutComponent,
+    CmsTextLinkComponent
   ],
   imports: [
     CommonModule,
+    RouterModule,
     SharedModule,
     TooltipModule,
 
@@ -58,6 +61,9 @@ import { EditLayoutComponent } from './components/edit-layout/edit-layout.compon
     TooltipModule,
     BsDropdownModule,
     FormsModule,
+
+    // Ngx-Tiptap
+    NgxTiptapModule,
 
     // Translation
     TranslateModule,
@@ -81,8 +87,7 @@ import { EditLayoutComponent } from './components/edit-layout/edit-layout.compon
     FileComponent,
     ImageComponent,
     ContentManagerComponent,
-    ExpDaysLayout,
-    SensorToAppLayout
+    ExpDaysLayout
   ]
 })
 export class CmsModule { }

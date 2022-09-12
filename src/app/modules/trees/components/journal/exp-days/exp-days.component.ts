@@ -32,7 +32,6 @@ export class ExpDaysComponent extends AbstractComponent implements AfterViewInit
   constructor(protected contentService: ContentService,
               protected serializationService: SerializationService,
               private authService: AuthService,
-              private translateService: TranslateService,
               protected envService: EnvironmentService,
               protected toolbar: ToolbarService,
               protected cdRef: ChangeDetectorRef) {

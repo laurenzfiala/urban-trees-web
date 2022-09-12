@@ -1,7 +1,7 @@
 @import (reference) "../../../../../theme/variables";
 @import (reference) "../../../../../theme/theme";
 
-.cms-text-container {
+::ng-deep .cms-text-container {
   line-break: anywhere;
   white-space: break-spaces;
 
@@ -20,10 +20,15 @@
     white-space: break-spaces;
     min-height: 4em;
     padding: (@gutter/2);
+
+    &:focus {
+      outline: 0;
+      border-color: @primaryColorHighlight;
+    }
   }
 }
 
-::ng-deep .cms-text-container {
+::ng-deep .ProseMirror {
   a {
     .link;
   }

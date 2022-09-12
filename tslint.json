@@ -115,7 +115,7 @@
     "directive-selector": [
       true,
       "attribute",
-      "ut",
+      ["", "ut"],
       "camelCase"
     ],
     "component-selector": [
@@ -128,8 +128,8 @@
     "no-inputs-metadata-property": true,
     "no-outputs-metadata-property": true,
     "no-host-metadata-property": true,
-    "no-input-rename": true,
-    "no-output-rename": true,
+    "no-input-rename": false,
+    "no-output-rename": false,
     "use-lifecycle-interface": true,
     "use-pipe-transform-interface": true,
     /*

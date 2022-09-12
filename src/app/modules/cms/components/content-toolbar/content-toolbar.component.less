@@ -1,2 +1,17 @@
 @import (reference) "../../../../../theme/variables";
 
+@keyframes -anim-view-mode-toggle-tooltip {
+  0% { transform: translateY(0px); }
+  50% { transform: translateY(-5px); }
+  100% { transform: translateY(0px); }
+}
+
+::ng-deep .view-mode-toggle-tooltip {
+
+  &.show {
+
+    > * {
+      animation: -anim-view-mode-toggle-tooltip 1s infinite ease-in-out;
+    }
+  }
+}

@@ -74,7 +74,8 @@ export class ExpDaysLayout extends AbstractCmsLayout implements AfterViewInit {
     return this.constructor.name;
   }
 
-  public validate(results: CmsValidationResults) {
+  public validate(results?: CmsValidationResults): CmsValidationResults {
+    return results;
   }
 
 }

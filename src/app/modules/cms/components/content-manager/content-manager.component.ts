@@ -105,7 +105,7 @@ export class ContentManagerComponent extends AbstractComponent implements OnInit
   }
 
   public deleteContent(content: UserContentMetadata): void {
-
+    // TODO
   }
 
   public denyContent(content: UserContentMetadata): void {

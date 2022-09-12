@@ -1,0 +1,25 @@
+<a *ngIf="isOnSiteLink"
+   [routerLink]="href">{{text}}</a>
+<ng-container *ngIf="!isOnSiteLink">
+  <a [href]="href"
+     [popover]="confirmExternalLinkPopover"
+     #confirmExternalLink="bs-popover"
+     placement="right"
+     outsideClick=true
+     triggers=""
+     container="body"
+     (action)="confirmExternalLink.toggle(); $event.preventDefault()">{{text}}</a>
+
+  <ng-template #confirmExternalLinkPopover>
+    <div class="d-flex flex-column">
+      External Link
+      <div class="text-subtle text-sm">Confirm to visit external site</div>
+      <a class="text-center link-container py-2"
+         [href]="href"
+         (action)="confirmExternalLink.hide()"
+         target="_blank">
+        <a class="link">{{domain}}</a>
+      </a>
+    </div>
+  </ng-template>
+</ng-container>
