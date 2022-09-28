@@ -37,7 +37,7 @@ export class FileComponent extends AbstractCmsComponent {
 
     this.setStatus(StatusKey.UPLOAD, StatusValue.IN_PROGRESS);
     this.contentService.saveContentFile(
-      this.contentPath().value,
+      this.contentPath(),
       file,
       fileId => {
         this.fileUid = fileId;
@@ -60,7 +60,7 @@ export class FileComponent extends AbstractCmsComponent {
   }
 
   public getFileUrl(): string {
-    return this.envService.endpoints.loadContentFile(this.fileUid, this.contentPath().value, this.filename);
+    return this.envService.endpoints.loadContentFile(this.fileUid, this.contentPath(), this.filename);
   }
 
   /**

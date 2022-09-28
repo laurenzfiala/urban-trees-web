@@ -61,7 +61,7 @@ export class AuthService extends AbstractService {
     super();
 
     // make auth tokens accessible to the app
-    // TODO window['getJWTToken'] = () => AuthService.getJWTTokenRaw();
+    window['getJWTToken'] = () => this.getJWTTokenRaw();
     window['refreshLogin'] = () => this.zone.run(args => this.stateChanged());
   }
 
@@ -73,11 +73,12 @@ export class AuthService extends AbstractService {
    *               Therefore unauthorized users may access some pages, but they can't execute any server-side
    *               functions.
    *               TODO add backend lookup to validate apiKey
+   * @param ignoreExpired (default false) true to get token even if it is expired
    * @returns {Array<String>} List of the current users' roles.
    */
-  public getUserRoles(): Array<string> {
+  public getUserRoles(ignoreExpired: boolean = false): Array<string> {
 
-    const token: JWTToken = this.getJWTToken();
+    const token: JWTToken = this.getJWTToken(ignoreExpired);
     const apiKey = AuthService.getApiKeyRaw();
 
     if (!token) {
@@ -93,25 +94,17 @@ export class AuthService extends AbstractService {
 
   /**
    * Returns the logged in users' username.
+   * Also returns the username for expired JWT token.
    * If the user is not logged in or login is anonymous (=> not JWT),
    * return undefined.
-   * @param forExpiredAuth  (optional; defaults to false) also returns a username
-   *                        when the token has expired
    */
-  public getUsername(forExpiredAuth: boolean = false): string {
+  public getUsername(): string {
 
-    if (forExpiredAuth) {
-        const potentiallyExpiredToken = this.getJWTTokenRaw();
-        if (potentiallyExpiredToken) {
-          return JWTToken.fromObject(this.jwtHelper.decodeToken(potentiallyExpiredToken)).sub;
-        }
-        return undefined;
-      }
-    let token = this.getJWTToken();
-    if (!token) {
-      return undefined;
+    const tokenRaw = this.getJWTTokenRaw();
+    if (tokenRaw) {
+      return JWTToken.fromObject(this.jwtHelper.decodeToken(tokenRaw)).sub;
     }
-    return token.sub;
+    return undefined;
 
   }
 
@@ -137,10 +130,11 @@ export class AuthService extends AbstractService {
    * - If grantRoles is empty, return false (deny access).
    * - Else, return false (deny access).
    * @param grantRoles Roles to grant access to (any match).
+   * @param ignoreExpired (default false) true to get token even if it is expired
    */
-  public isUserRoleAccessGranted(grantRoles: String[]): boolean {
+  public isUserRoleAccessGranted(grantRoles: String[], ignoreExpired: boolean = false): boolean {
 
-    const userRoles = this.getUserRoles();
+    const userRoles = this.getUserRoles(ignoreExpired);
 
     if (!userRoles) {
       return false;
@@ -173,8 +167,7 @@ export class AuthService extends AbstractService {
 
     this.http.post(this.envService.endpoints.login, authToken, {observe: 'response', withCredentials: !dryrun})
       .subscribe(() => {
-        //TODO this.setJWTToken(response.headers.get(AuthService.HEADER_AUTH_KEY));
-        //TODO AuthService.LOG.debug('Saved retrieved auth token to local storage.');
+        AuthService.LOG.debug('Logged in successfully.');
         this.stateChanged();
         successCallback();
       }, (e: any) => {
@@ -337,18 +330,18 @@ export class AuthService extends AbstractService {
   /**
    * Check the users' login status.
    * Note: Also deletes the authentication token if it has become invalid.
+   * @param ignoreExpired (default false) true to get token even if it is expired
    * @returns {LoginStatus} if logged in and using which method
    */
-  public getLogInStatus(): LoginStatus {
+  public getLogInStatus(ignoreExpired: boolean = false): LoginStatus {
 
-    const token: JWTToken = this.getJWTToken();
+    const token: JWTToken = this.getJWTToken(ignoreExpired);
     const apiKey = AuthService.getApiKeyRaw();
 
     if (token) {
       return LoginStatus.LOGGED_IN_JWT;
     }
 
-    this.deleteJWTToken(); // delete possible left-overs
     if (apiKey) {
       return LoginStatus.LOGGED_IN_API_KEY;
     }
@@ -366,12 +359,17 @@ export class AuthService extends AbstractService {
   public getLogOutReason(backendForcedLogout: boolean = false): LoginAccessReason {
 
     const token = this.getJWTTokenRaw();
+    const isLoginLinkLogin = this.isUserRoleAccessGranted([this.envService.security.roleTempLoginLink], true);
+    this.logout();
 
     if (!token) {
       return LoginAccessReason.NOT_AUTHENTICATED;
     }
 
     if (this.jwtHelper.isTokenExpired(token)) {
+      if (isLoginLinkLogin) {
+        return LoginAccessReason.FORCE_LOGOUT_EXPIRED_LOGIN_LINK;
+      }
       return LoginAccessReason.FORCE_LOGOUT_EXPIRED;
     } else if (this.isAdmin() && backendForcedLogout) {
       return LoginAccessReason.FORCE_CREDENTIALS_CONFIRM;
@@ -405,6 +403,15 @@ export class AuthService extends AbstractService {
   public isTempChangePasswordAuth(): boolean {
     let roles = this.getUserRoles();
     return roles && roles.indexOf(this.envService.security.roleTempChangePassword) !== -1;
+  }
+
+  /**
+   * Return true if the current user has the
+   * temporary no password role.
+   */
+  public isTempNoPasswordAuth(): boolean {
+    let roles = this.getUserRoles();
+    return roles && roles.indexOf(this.envService.security.roleTempNoPassword) !== -1;
   }
 
   /**
@@ -463,22 +470,23 @@ export class AuthService extends AbstractService {
     let cookies = this.document.cookie.split('; ');
     const tokenCookieIndex = cookies.findIndex(c => c.startsWith(AuthService.COOKIE_JWTTOKEN_KEY + '='));
     cookies.splice(tokenCookieIndex, 1);
-    cookies.push(AuthService.COOKIE_JWTTOKEN_KEY + '=;Path=/;Secure;expires=Thu, 01 Jan 1970 00:00:00 GMT');
+    cookies.push(AuthService.COOKIE_JWTTOKEN_KEY + '=;Path=/;expires=Thu, 01 Jan 1970 00:00:00 GMT');
     this.document.cookie = cookies.join('; ');
   }
 
   /**
    * Returns the decoded JWT token object.
    * If the JWT token is expired, return undefined.
+   * @param ignoreExpired (default false) true to get token even if it is expired
    */
-  public getJWTToken(): JWTToken {
+  public getJWTToken(ignoreExpired: boolean = false): JWTToken {
     const storedToken = this.getJWTTokenRaw();
     if (!storedToken) {
       return undefined;
     }
 
     const token: JWTToken = JWTToken.fromObject(this.jwtHelper.decodeToken(storedToken));
-    if (!token || this.jwtHelper.isTokenExpired(storedToken)) {
+    if (!token || (this.jwtHelper.isTokenExpired(storedToken) && !ignoreExpired)) {
       return undefined;
     }
     return token;

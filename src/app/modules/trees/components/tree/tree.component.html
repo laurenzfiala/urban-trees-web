@@ -42,19 +42,18 @@
 <section class="content-cat">
   <div class="container">
 
-    <ut-cms-content *ngIf="treeContent"
-                    [contentPath]="treeContentPath"
-                    [contentLang]="treeContentLang"
-                    [content]="treeContent"
-                    [(viewMode)]="treeContentViewMode"
+    <ut-cms-content *ngIf="tree"
+                    [content]="content"
+                    [(viewMode)]="contentViewMode"
+                    (contentSave)="content = $event"
                     (reloadContent)="loadTreeContent()"></ut-cms-content>
 
     <div *auth="envService.security.rolesTreeEditor" class="text-center mt-2">
-      <button *ngIf="treeContentViewMode === ViewMode.CONTENT"
-              (action)="treeContentViewMode = ViewMode.EDIT_CONTENT"
+      <button *ngIf="contentViewMode === ViewMode.CONTENT"
+              (action)="contentViewMode = ViewMode.EDIT_CONTENT"
               class="link-btn d-inline-flex justify-content-center">
         <i class="i i-xs i-edit i-dark mr-1"></i>
-        {{('tree.edit_tree.' + (treeContent?.historyId ? 'edit_btn' : 'add_btn')) | translate}}
+        {{('tree.edit_tree.' + (content?.id ? 'edit_btn' : 'add_btn')) | translate}}
       </button>
     </div>
 

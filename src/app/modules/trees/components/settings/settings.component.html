@@ -21,7 +21,7 @@
   </div>
 </div>
 
-<div *auth="[envService.security.rolesUser]"
+<div *auth="envService.security.rolesUser"
      class="content-cat">
   <div class="container">
     <h1 class="content-cat-heading">{{'settings.one_time_token.title' | translate}}</h1>
@@ -44,24 +44,29 @@
         </i>
       </div>
     </div>
-    <div class="d-flex flex-row text-subtle text-info mb-1">
-      <i class="i i-xs i-info-info flex-shrink-0 ppin-info-icon mr-2"></i>
-      {{'settings.one_time_token.info' | translate}}
-    </div>
-    <hr class="my-1"/>
     <div class="content-cat-text">
       {{'settings.one_time_token.desc' | translate}}
+    </div>
+    <div class="d-flex flex-row text-subtle text-info mt-1">
+      <i class="i i-xs i-info-info flex-shrink-0 ppin-info-icon mr-2"></i>
+      {{'settings.one_time_token.info' | translate}}
     </div>
   </div>
 </div>
 
-<div *auth="[envService.security.rolesUser]"
+<div *auth="envService.security.rolesUser"
      class="content-cat">
   <div class="container">
     <h1 class="content-cat-heading">{{'settings.account.title' | translate}}</h1>
     <div class="content-cat-text">
       {{'settings.account.desc' | translate:{'username': user?.username} }}<br/>
       {{'settings.account.desc_2' | translate}}
+
+      <div *ngIf="loggedInWithLoginLink"
+           class="d-flex flex-row text-subtle text-info mt-1">
+        <i class="i i-xs i-info-info flex-shrink-0 ppin-info-icon mr-2"></i>
+        {{'settings.account.login_link_note' | translate}}
+      </div>
 
       <div>
         <a class="d-inline-flex flex-row align-items-center mt-2 link-container"

@@ -123,20 +123,20 @@ export class CmsContent {
    */
   public static fromUserContent(userContent: UserContent, envService: EnvironmentService): CmsContent {
 
-    if (!userContent) {
+    if (!userContent || !userContent.id) {
       return new CmsContent();
     }
 
     const cmsContent = JSON.parse(userContent.content);
 
     return new CmsContent(
-      userContent.id, // TODO check if swapping hist_id <-> id is okay here
+      userContent.id,
       userContent.previousId,
       userContent.nextId,
-      cmsContent.saved && moment.utc(cmsContent.saved, envService.outputDateFormat).toDate(),
-      cmsContent.sent && moment.utc(cmsContent.sent, envService.outputDateFormat).toDate(),
-      userContent.saveDate && moment.utc(userContent.saveDate, envService.outputDateFormat).toDate(),
-      cmsContent && SerializedCmsContent.fromObject(cmsContent.content, envService)
+      cmsContent.saved ? moment.utc(cmsContent.saved, envService.outputDateFormat).toDate() : null,
+      cmsContent.sent ? moment.utc(cmsContent.sent, envService.outputDateFormat).toDate() : null,
+      userContent.saveDate ? moment.utc(userContent.saveDate, envService.outputDateFormat).toDate() : null,
+      cmsContent ? SerializedCmsContent.fromObject(cmsContent.content, envService) : null
     );
 
   }

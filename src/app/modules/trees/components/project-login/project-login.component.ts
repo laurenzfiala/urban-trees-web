@@ -97,6 +97,7 @@ export class ProjectLoginComponent extends AbstractComponent implements OnInit, 
   public pin: string;
   public mustEnterPin: boolean = false;
   public isPinSet: boolean = true;
+  public showLogin: boolean = true;
 
   public consecutiveFailedLoginAttempts: number = 0;
 
@@ -126,6 +127,10 @@ export class ProjectLoginComponent extends AbstractComponent implements OnInit, 
 
       if (reasonVal) {
         this.accessReason = reasonVal;
+        if (reasonVal === LoginAccessReason.FORCE_LOGOUT_EXPIRED_LOGIN_LINK) {
+          this.showLogin = false;
+          this.disclaimer = false;
+        }
       }
       if (redirectVal) {
         this.redirectTo = redirectVal;
@@ -147,7 +152,7 @@ export class ProjectLoginComponent extends AbstractComponent implements OnInit, 
     });
 
     // pre-fill username if a token exists
-    let username = this.authService.getUsername(true);
+    let username = this.authService.getUsername();
     if (username) {
       this.username = username;
     }
@@ -213,6 +218,11 @@ export class ProjectLoginComponent extends AbstractComponent implements OnInit, 
         return;
       }
 
+      if (!this.isPinSet) {
+        this.showPin = false;
+        this.token = undefined;
+      }
+
       this.consecutiveFailedLoginAttempts++;
       if (apiError.statusCode === 403) {
         this.setStatus(StatusKey.LOGIN, StatusValue.BAD_CREDENTIALS);
@@ -221,6 +231,18 @@ export class ProjectLoginComponent extends AbstractComponent implements OnInit, 
       }
     }, this.mustEnterPin && !loginEntity.secureLoginKeyPin);
 
+  }
+
+  public onOtpChanged(): void {
+    if (this.loginForm.valid && this.otp?.length === 6) {
+      this.login();
+    }
+  }
+
+  public onPinChanged(): void {
+    if (this.pin?.length === 4 && this.isPinSet) {
+      this.login();
+    }
   }
 
   /**

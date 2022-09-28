@@ -9,16 +9,20 @@ import {Role} from './role.entity';
  */
 export class UserData {
 
-  public newMessagesAmount: number;
+  public unresolvedReportsAmount: number;
+  public unapprovedContentAmount: number;
 
-  constructor(newMessagesAmount?: number) {
-    this.newMessagesAmount = newMessagesAmount;
+  constructor(unresolvedReportsAmount?: number,
+              unapprovedContentAmount?: number) {
+    this.unresolvedReportsAmount = unresolvedReportsAmount;
+    this.unapprovedContentAmount = unapprovedContentAmount;
   }
 
   public static fromObject(o: any): UserData {
 
     return new UserData(
-      o.newMessagesAmount
+      o.unresolvedReportsAmount,
+      o.unapprovedContentAmount
     );
 
   }

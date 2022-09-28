@@ -23,6 +23,8 @@ export class SettingsComponent extends AbstractComponent implements OnInit {
    */
   public user: User;
 
+  public loggedInWithLoginLink!: boolean;
+
   get ppin(): string {
     return this.authService.getPPIN();
   }
@@ -42,6 +44,7 @@ export class SettingsComponent extends AbstractComponent implements OnInit {
     } else {
       this.setStatus(StatusKey.PPIN, StatusValue.SUCCESSFUL);
     }
+    this.loggedInWithLoginLink = this.authService.isUserRoleAccessGranted([this.envService.security.roleTempLoginLink]);
 
   }
 

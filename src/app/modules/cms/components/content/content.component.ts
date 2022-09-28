@@ -25,7 +25,6 @@ import {Log} from '../../../shared/services/log.service';
 import {BlockLayout} from '../../cms-layouts/block-layout/block-layout.component';
 import {CmsElementMap, EDBuilder} from '../../entities/cms-element-map.entity';
 import {ViewMode} from '../../enums/cms-layout-view-mode.enum';
-import {TwoColumnLayout} from '../../cms-layouts/two-column-layout/two-column-layout.component';
 import {EnvironmentService} from '../../../shared/services/environment.service';
 import {CmsContent} from '../../entities/cms-content.entity';
 import {Observable} from 'rxjs/Observable';
@@ -46,7 +45,8 @@ import {Notification, NotificationType} from '../../../trees/entities/notificati
 import {TooltipDirective} from 'ngx-bootstrap/tooltip';
 import {PopoverDirective} from 'ngx-bootstrap/popover';
 import {TranslateService} from '@ngx-translate/core';
-import {CmsValidationResult} from '../../entities/cms-validation-result.entity';
+import {UserContent} from '../../entities/user-content.entity';
+import {UserContentStatus} from '../../entities/user-content-status.entity';
 
 @Component({
   selector: 'ut-cms-content',
@@ -63,38 +63,32 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, OnDes
   public StatusValue = StatusValue;
 
   /**
-   * Content path which the given CmsContent belongs to.
-   * May not be undefined/null.
-   */
-  // tslint:disable-next-line:no-input-rename
-  @Input('contentPath')
-  set contentPathInput(contentPath: string) {
-    this.contentService.setContentPath(contentPath);
-  }
-
-  /**
-   * Content language to display, may no be null/undefined.
-   */
-  @Input()
-  private contentLang: string;
-
-  /**
    * Must be set upon initialization and must not be undefined/null.
    * Changes to the same instance are ignored. Once a new instance is given, the component rerenders.
    * Note: Use CmsContent#fromUserContent() to convert backend response to CmsContent, but make
    *       sure to cache the instance so this component does not rerender all the time.
    * @see #_content
+   * TODO doc
    */
   @Input('content')
-  set contentInput(content: CmsContent) {
-    if (content === this.content) {
+  set contentInput(input: UserContent) {
+    if (!input || this.userContent === input) {
       return;
     }
-    this.content = content;
+    this.userContent = input;
+    let cmsContent = CmsContent.fromUserContent(input, this.envService);
+    this.content = cmsContent;
     this.onAfterViewInit().then(() => {
       this.reset();
-      this.fillContentSlot(content.content.elements);
-      this.changeConfig.changes.push(CmsContentChange.fromCmsContent(content, this.envService));
+      if (!cmsContent.content?.elements) {
+        this.fillContentSlot([]);
+      } else {
+        this.fillContentSlot(cmsContent.content.elements);
+        const initialContentChange = CmsContentChange.fromCmsContent(cmsContent, this.envService);
+        initialContentChange.stored = cmsContent.stored;
+        initialContentChange.isDraft = input.status === UserContentStatus.DRAFT;
+        this.changeConfig.changes.push(initialContentChange);
+      }
     });
   }
 
@@ -114,7 +108,7 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, OnDes
   private reloadContent: EventEmitter<void> = new EventEmitter<void>();
 
   @Output()
-  private contentSave: EventEmitter<CmsContent> = new EventEmitter<CmsContent>();
+  private contentSave: EventEmitter<UserContent> = new EventEmitter<UserContent>();
 
   @Output()
   private viewModeChange: EventEmitter<ViewMode> = new EventEmitter<ViewMode>();
@@ -140,7 +134,8 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, OnDes
   private saveTimeoutId: number = 0;
 
   /**
-   * Holds all CmsElement-instances that are filled in this component.
+   * Holds all CmsElement-instances that are currently
+   * filled in this component.
    */
   private elements: Array<CmsElement>;
 
@@ -235,17 +230,6 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, OnDes
           .onAction({next: (value) => window.alert('block')}, sub => this.subs.reg(sub))
           .build()
         )
-      /*.set(
-        'TwoColumnLayout',
-        EDBuilder.new()
-          .type(TwoColumnLayout)
-          .toolbarBtn(
-            'Two-column layout',
-            'Two components are displayed besides each other',
-            '/assets/img/icon/dark/cms-cmp-text.svg')
-          .onAction({next: (value) => window.alert('two col')}, sub => this.subs.reg(sub))
-          .build()
-      )*/
       .set(
         'ExpDaysLayout',
         EDBuilder.new()
@@ -336,16 +320,12 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, OnDes
   private async saveContent(force: boolean = false,
                             publish: boolean = false): Promise<CmsContent> {
 
-    if (this.elements.length === 0) {
-      return;
-    }
-
     const now = Date.now();
-    const lastSavedContent = this.changeConfig.lastSavedContent;
-    if (!force && lastSavedContent && lastSavedContent.sent.getTime() > now - this.envService.contentSaveDebounceMs) {
+    const lastSentContent = this.changeConfig.lastSentContent;
+    if (!force && lastSentContent && lastSentContent.sent.getTime() > now - this.envService.contentSaveDebounceMs) {
       ContentComponent.LOG.trace('Saving is not yet allowed.');
       if (this.saveTimeoutId === 0) {
-        const saveWaitMs = this.envService.contentSaveDebounceMs - now + lastSavedContent.sent.getTime();
+        const saveWaitMs = this.envService.contentSaveDebounceMs - now + lastSentContent.sent.getTime();
         await new Promise((resolve, reject) => {
           this.saveTimeoutId = window.setTimeout(resolve, saveWaitMs);
           ContentComponent.LOG.trace('Deferred save for ' + saveWaitMs / 1000 + 's using timeout handle ' + this.saveTimeoutId);
@@ -364,8 +344,17 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, OnDes
       contentChange = this.changeConfig.changes.peek();
       content = contentChange.toCmsContent(this.content);
     }
+
     if (content.sent !== undefined && !publish) {
       ContentComponent.LOG.info('Content was already saved. Skipping save.');
+      return Promise.resolve(content);
+    } else if (this.userContent &&
+               (
+                 this.userContent.status === UserContentStatus.DRAFT_AWAITING_APPROVAL ||
+                 this.userContent.status === UserContentStatus.APPROVED
+               ) &&
+               this.changeConfig.unsavedChanges === 0) {
+      ContentComponent.LOG.info('Content was not changed. Skipping save.');
       return Promise.resolve(content);
     } else if (!content) {
       return Promise.reject(new Error('Unexpected state: nothing found to save'));
@@ -378,34 +367,33 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, OnDes
         return Promise.reject(new Error('Content invalid'));
       }
     }
+
     ContentComponent.LOG.debug('Saving content...');
     this.setStatus(StatusKey.SAVE, StatusValue.IN_PROGRESS);
     window.clearTimeout(this.saveTimeoutId);
     this.saveTimeoutId = 0;
     content.sent = new Date();
-    this.changeConfig.lastSavedContent = content;
     this.changeConfig.isLastSaveDraft = !publish;
-    const unsavedChangedBefore = this.changeConfig.unsavedChanges;
+    const unsavedChangesBefore = this.changeConfig.unsavedChanges;
 
     return new Promise((resolve, reject) => {
-      this.contentService.saveContent(this.contentPath().value,
-                                      this.contentLang,
-                                      !publish,
+      this.contentService.saveContent(!publish,
                                       content,
-                                      cmsContent => {
+                          (cmsContent, userContent) => {
         ContentComponent.LOG.debug('Content successfully ' + (publish ? 'published' : 'saved') + '.');
         content.stored = cmsContent.stored;
         if (contentChange) {
           contentChange.stored = cmsContent.stored;
         }
-        if (this.changeConfig.unsavedChanges === unsavedChangedBefore) {
+        if (this.changeConfig.unsavedChanges === unsavedChangesBefore) {
           this.changeConfig.unsavedChanges = 0;
         }
         this.setStatus(StatusKey.SAVE, StatusValue.SUCCESSFUL);
-        this.contentSave.emit(content);
+        this.userContent = userContent;
+        this.contentSave.emit(userContent);
         if (force) {
           this.notifications.showNotification(new Notification(
-            'Your ' + (publish ? 'content' : 'draft') + ' was ' + (publish ? 'published' : 'saved'), // TODO i18n
+            this.translate.instant('toolbar.save.success_' + (publish ? 'publish' : 'draft')), // TODO use get
             null,
             NotificationType.success
           ));
@@ -413,7 +401,7 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, OnDes
         resolve(content);
       }, (error, apiError) => {
         ContentComponent.LOG.warn('Failed to save content.');
-        this.changeConfig.lastSavedContent = undefined;
+        this.changeConfig.unsavedChanges = unsavedChangesBefore;
         content.sent = undefined;
         this.setStatus(StatusKey.SAVE, StatusValue.FAILED);
         reject(apiError.message);
@@ -422,7 +410,13 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, OnDes
 
   }
 
-  // TODO
+  /**
+   * Register the given cms element type for insertion.
+   * Handles calling #fillContentSlotForComponentInsert and toggling the
+   * given button visually, as well as toggling layout.
+   * @param type cms element type to insert
+   * @param btn toolbar button that is associated with the element
+   */
   private async addComponent(type: Type<unknown>, btn: ToolbarBtn) {
     if (this.addComponentBtn === btn) {
       this.contentService.viewMode = ViewMode.EDIT_LAYOUT;
@@ -441,6 +435,10 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, OnDes
     await this.fillContentSlotForComponentInsert();
   }
 
+  /**
+   * Show the insert-component layout and
+   * add drop zones between all components.
+   */
   private async fillContentSlotForComponentInsert() {
     this.contentService.viewMode = ViewMode.INSERT_ELEMENT;
 
@@ -475,14 +473,6 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, OnDes
     this.addComponentBtn = undefined;
     this.contentService.viewMode = ViewMode.EDIT_LAYOUT;
     await this.fillContentSlot();
-  }
-
-  async deserialize(data: any): Promise<void> {
-    throw new Error('deserialize() is not supported');
-  }
-
-  getName(): string {
-    throw new Error('getName() is not supported');
   }
 
   onElementAdd(element: CmsElement): void {
@@ -522,14 +512,14 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, OnDes
     this.fillContentSlot(content.content.elements);
   }
 
-  public onSaved(): Observable<CmsContent> {
+  public onSaved(): Observable<UserContent> {
     return this.contentSave.asObservable();
   }
 
-  serialize(): any {
-    throw new Error('serialize() is not supported');
-  }
-
+  /**
+   * Validate all elements in #elements
+   * and return results.
+   */
   public validate(): CmsValidationResults {
     const results = new CmsValidationResults();
     this.elements.forEach(e => {
@@ -553,13 +543,20 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, OnDes
     });
   }
 
-
   /**
    * Close the content edit mode.
    * Saves the content draft and displays the content
    * without editing UI.
    */
   public close(): void {
+    if ((
+          this.contentService.userContent.status === UserContentStatus.DRAFT_AWAITING_APPROVAL ||
+          this.contentService.userContent.status === UserContentStatus.APPROVED
+        ) &&
+        this.changeConfig.unsavedChanges === 0) {
+      this.viewMode = ViewMode.CONTENT;
+      return;
+    }
     this.closeBtnTooltip.hide();
     this.closeBtnPopover.show();
   }
@@ -568,6 +565,13 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, OnDes
    * Discard draft.
    */
   public discard(): void {
+    // TODO await saving
+    if (this.changeConfig.lastStoredContent && !this.changeConfig.lastStoredContent.isDraft) {
+      this.viewMode = ViewMode.CONTENT;
+      this.toolbar.reset();
+      this.reloadContent.emit();
+      return;
+    }
     this.setStatus(StatusKey.DISCARD_DRAFT, StatusValue.IN_PROGRESS);
     this.contentService.deleteContent(
       this.contentService.content.historyId,
@@ -575,7 +579,7 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, OnDes
       () => {
         this.setStatus(StatusKey.DISCARD_DRAFT, StatusValue.SUCCESSFUL);
         this.notifications.showNotification(new Notification(
-          'Your draft was discarded', // TODO i18n
+          this.translate.instant('toolbar.close.discard_notification_success'),
           null,
           NotificationType.success
         ));
@@ -611,6 +615,14 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, OnDes
     });
   }
 
+  set userContent(userContent: UserContent) {
+    this.contentService.userContent = userContent;
+  }
+
+  get userContent(): UserContent {
+    return this.contentService.userContent;
+  }
+
   set content(content: CmsContent) {
     this.contentService.content = content;
   }
@@ -625,6 +637,19 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, OnDes
     }
     this.viewModeChange.emit(viewMode);
   }
+
+  async deserialize(data: any): Promise<void> {
+    throw new Error('deserialize() is not supported');
+  }
+
+  getName(): string {
+    throw new Error('getName() is not supported');
+  }
+
+  serialize(): any {
+    throw new Error('serialize() is not supported');
+  }
+
 }
 
 export enum StatusKey {

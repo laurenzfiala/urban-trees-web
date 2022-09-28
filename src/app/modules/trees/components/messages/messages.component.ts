@@ -44,7 +44,7 @@ export class MessagesComponent extends AbstractComponent implements OnInit {
     this.setStatus(StatusKey.REPORTS, StatusValue.IN_PROGRESS);
     this.messagesService.loadReports((reports: Array<ReportFrontend>) => {
       this.availableReports = reports;
-      this.userService.getUserData().newMessagesAmount = reports.length;
+      this.userService.getUserData().unresolvedReportsAmount = reports.length;
       this.setStatus(StatusKey.REPORTS, StatusValue.SUCCESSFUL);
       if (successCallback) {
         successCallback();
@@ -78,7 +78,7 @@ export class MessagesComponent extends AbstractComponent implements OnInit {
 
     this.messagesService.resolveReport(report, () => {
 
-      this.userService.getUserData().newMessagesAmount--;
+      this.userService.getUserData().unresolvedReportsAmount--;
       report.wasResolved = true;
       this.editingReport = null;
     }, (error, apiError) => {
@@ -91,7 +91,7 @@ export class MessagesComponent extends AbstractComponent implements OnInit {
 
     this.messagesService.unresolveReport(report, () => {
 
-      this.userService.getUserData().newMessagesAmount++;
+      this.userService.getUserData().unresolvedReportsAmount++;
       report.wasResolved = false;
       this.editingReport = null;
     }, (error, apiError) => {

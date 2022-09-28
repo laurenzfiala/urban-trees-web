@@ -1,8 +1,8 @@
 <section *auth="envService.security.rolesUser" class="content-cat">
-  <div class="container p-3">
+  <div class="container">
 
     <div class="profile-wrapper">
-      <div>
+      <div class="pb-2">
         <ut-user-progress (levelUpOutput)="setStatus(StatusKey.USER_LEVEL_UP, StatusValue.LEVELLED_UP)"
                           (status)="setStatus(StatusKey.USER_ACHIEVEMENTS, $event[0], $event[1])"></ut-user-progress>
       </div>
@@ -10,7 +10,7 @@
       <div>
 
         <div class="mb-4">
-          <h1 class="content-cat-heading d-block" [innerHTML]="'home.title_user' | translate:{'username': getUsername()}"></h1>
+          <h1 class="content-cat-heading d-block" [innerHTML]="'home.title_user' | translate:{'username': username}"></h1>
           <p [innerHTML]="'home.desc_user' | translate"></p>
         </div>
 
@@ -44,14 +44,12 @@
 <section *auth="envService.security.rolesTeacher" class="content-cat">
   <div class="container clearfix">
 
-    <div class="responsive-float m--2">
-      <div class="m-2">
-        <h1 class="content-cat-heading">Lehrende</h1>
+      <h1 class="content-cat-heading">Lehrende</h1>
+      <p class="mb-3">
         Inhalte und Links für Lehrpersonen.
-      </div>
-    </div>
+      </p>
 
-    <a class="content-cat-link d-flex flex-row align-items-center link-container mt-4"
+    <a class="content-cat-link d-flex flex-row align-items-center link-container"
        routerLink="/teacher/journal">
       <div class="link">
         Forschungstagebücher ansehen
@@ -74,12 +72,12 @@
   <div class="container clearfix">
 
     <div class="responsive-float m--2">
-      <img class="journal float-right m-2" src="/assets/img/icon/special/placeholder.svg" />
+      <img class="journal float-right m-2" src="/assets/img/journal/icon.png" />
 
       <div class="m-2">
         <h1 class="content-cat-heading">Mein Forschungstagebuch</h1>
-        In Deinem Forschungstagebuch findest Du Arbeitsblätter und Aufgaben zum Üben.
-        Mit diesen Aufgaben wird es dir leichter fallen dir den Inhalt der Workshops zu merken.
+        In Dein Forschungstagebuch kannst Du schreiben, wie Dir der Experimentiertag
+        gefallen hat.
       </div>
     </div>
 

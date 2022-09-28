@@ -8,10 +8,10 @@
  * @since 2022/06/21
  */
 import {SerializedCmsContent} from './serialized-cms-content.entity';
-import {UserContent} from './user-content.entity';
 import {EnvironmentService} from '../../shared/services/environment.service';
 import * as moment from 'moment';
 import {CmsContent} from './cms-content.entity';
+import {UserContentStatus} from './user-content-status.entity';
 
 export class CmsContentChange {
 
@@ -32,6 +32,8 @@ export class CmsContentChange {
    */
   public stored: Date;
 
+  public isDraft: boolean;
+
   /**
    * Serialized content (that is stored untyped in the backend).
    */
@@ -40,10 +42,12 @@ export class CmsContentChange {
   constructor(saved?: Date,
               sent?: Date,
               stored?: Date,
+              isDraft?: boolean,
               content?: SerializedCmsContent) {
     this.saved = saved;
     this.sent = sent;
     this.stored = stored;
+    this.isDraft = isDraft;
     this.content = content;
   }
 
@@ -87,6 +91,7 @@ export class CmsContentChange {
     return new CmsContentChange(
       cmsContent.saved && moment.utc(cmsContent.saved, envService.outputDateFormat).toDate(),
       cmsContent.sent && moment.utc(cmsContent.sent, envService.outputDateFormat).toDate(),
+      undefined,
       undefined,
       cmsContent && SerializedCmsContent.fromObject(cmsContent.content, envService)
     );

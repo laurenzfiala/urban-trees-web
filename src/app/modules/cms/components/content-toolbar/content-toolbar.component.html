@@ -1,38 +1,42 @@
 <div class="toolbar">
 
   <!-- Contextual -->
-  <div *ngFor="let element of toolbar.getContextual()?.elements; let i = index" class="toolbar-section contextual">
+  <div *ngIf="toolbar.getContextual()?.elements"
+       class="toolbar-section contextual">
 
-    <div *ngIf="i > 0" class="toolbar-separator sm"></div>
-    <button
-      *cast="{in: element, castTo: ToolbarBtn, exact: true}; let btn = out"
-      #el
-      (action)="btn.action(el)"
-      [tooltip]="btn.description | async2">
-      <img [src]="btn.iconPath" draggable="false" />
-    </button>
-    <button
-      *cast="{in: element, castTo: ToolbarToggleBtn}; let btn = out"
-      #el
-      [ngClass]="{'active': btn?.active}"
-      (action)="btn.action(el)"
-      [tooltip]="btn.description | async2">
-      <img [src]="btn.iconPath" draggable="false" />
-    </button>
-    <select *cast="{in: element, castTo: ToolbarDropdown}; let dropdown = out"
-            [ngModel]="dropdown.selectedValue"
-            (ngModelChange)="dropdown.changed($event)">
-      <option *ngFor="let option of dropdown.options | keyvalue"
-              [value]="option.value">
-        {{option.key | async2}}
-      </option>
-    </select>
+    <ng-container *ngFor="let element of toolbar.getContextual()?.elements; let i = index">
+
+      <div *ngIf="i > 0" class="toolbar-separator sm"></div>
+      <button
+        *cast="{in: element, castTo: ToolbarBtn, exact: true}; let btn = out"
+        #el
+        (action)="btn.action(el)"
+        [tooltip]="btn.description | async2">
+        <img [src]="btn.iconPath" draggable="false" />
+      </button>
+      <button
+        *cast="{in: element, castTo: ToolbarToggleBtn}; let btn = out"
+        #el
+        [ngClass]="{'active': btn?.active}"
+        (action)="btn.action(el)"
+        [tooltip]="btn.description | async2">
+        <img [src]="btn.iconPath" draggable="false" />
+      </button>
+      <select *cast="{in: element, castTo: ToolbarDropdown}; let dropdown = out"
+              [ngModel]="dropdown.selectedValue"
+              (ngModelChange)="dropdown.changed($event)">
+        <option *ngFor="let option of dropdown.options | keyvalue"
+                [value]="option.value">
+          {{option.key | async2}}
+        </option>
+      </select>
+
+    </ng-container>
 
   </div>
 
   <!-- Components -->
-  <div *ngIf="toolbar.getContextual()?.elements.length > 0" class="toolbar-separator"></div>
-  <div class="toolbar-section">
+  <div class="toolbar-section layout">
 
     <ng-template #viewModeToggleTooltipContent>
       <div class="d-flex flex-row align-items-center">
@@ -54,32 +58,33 @@
       {{('toolbar.edit_' + (hasViewMode(ViewMode.EDIT_CONTENT) ? 'layout' : 'content')) | translate}}
     </button>
 
-    <div *ngIf="hasViewMode(ViewMode.EDIT_LAYOUT, ViewMode.INSERT_ELEMENT)"
-         class="toolbar-section">
-      <ng-container *ngFor="let section of toolbar.getComponents(); let i = index">
+  </div>
 
-        <div class="toolbar-separator sm"></div>
-        <ng-container *ngFor="let btn of section.elements; let i = index">
-          <button
-            #cmsToolbarBtn
-            [ngClass]="{'active': btn.data?.active}"
-            (dragstart)="!btn.data?.active ? btn.action(cmsToolbarBtn) : null"
-            (action)="btn.action(cmsToolbarBtn)"
-            [tooltip]="btn.description | async2"
-            draggable="true">
-            <img [src]="btn.iconPath" [alt]="btn.description" draggable="false" />
-          </button>
-        </ng-container>
+  <!-- Components -->
+  <div *ngIf="hasViewMode(ViewMode.EDIT_LAYOUT, ViewMode.INSERT_ELEMENT)"
+       class="toolbar-section components">
 
+    <ng-container *ngFor="let section of toolbar.getComponents(); let i = index">
+
+      <div *ngIf="i !== 0" class="toolbar-separator sm"></div>
+      <ng-container *ngFor="let btn of section.elements; let i = index">
+        <button
+          #cmsToolbarBtn
+          [ngClass]="{'active': btn.data?.active}"
+          (dragstart)="!btn.data?.active ? btn.action(cmsToolbarBtn) : null"
+          (action)="btn.action(cmsToolbarBtn)"
+          [tooltip]="btn.description | async2"
+          draggable="true">
+          <img [src]="btn.iconPath" [alt]="btn.description" draggable="false" />
+        </button>
       </ng-container>
-    </div>
+
+    </ng-container>
 
   </div>
 
   <!-- Undo/Redo -->
-  <div class="toolbar-separator"></div>
-  <div class="toolbar-section">
-
+  <div class="toolbar-section control flex-nowrap">
     <button
       (action)="undo()"
       [tooltip]="'toolbar.undo' | translate">

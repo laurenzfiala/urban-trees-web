@@ -86,6 +86,8 @@ import {SensorToAppComponent} from './components/journal/sensor-to-app/sensor-to
 import {AppToAnalyseComponent} from './components/journal/app-to-analyse/app-to-analyse.component';
 import {ContentComponent} from './components/admin/content/content.component';
 import { JournalViewComponent } from './components/teacher/journal-view/journal-view.component';
+import { MethodboxComponent } from './components/methodbox/methodbox.component';
+import {ProjectLoginExpiredGuard} from './components/project-login/project-login-expired.guard';
 
 @NgModule({
     declarations: [
@@ -139,7 +141,8 @@ import { JournalViewComponent } from './components/teacher/journal-view/journal-
         ReplacePipe,
         DecimalPlacesPipe,
         OtpScratchCodePipe,
-        ContentComponent
+        ContentComponent,
+        MethodboxComponent
     ],
     imports: [
         // Core
@@ -194,6 +197,7 @@ import { JournalViewComponent } from './components/teacher/journal-view/journal-
 
         // Guards
         ProjectLoginGuard,
+        ProjectLoginExpiredGuard,
         AdminGuard,
 
         // Config classes

@@ -3,7 +3,7 @@
   <div
     *ngIf="isAlreadyLoggedIn() && !relog"
     class="login-container"
-    [ngClass]="{'col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto max-width': !embed}">
+    [ngClass]="{'col-xs-12 col-sm-8 col-md-6 col-lg-5 col-xl-3 mx-auto max-width': !embed}">
 
     <h1 class="mb-3 mt-0">
       {{'login.heading' | translate}}
@@ -25,13 +25,37 @@
   <div
     *ngIf="!isAlreadyLoggedIn() || relog"
     class="login-container fp-bg-medlight"
-    [ngClass]="{'col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto max-width': !embed}">
+    [ngClass]="{'col-xs-12 col-sm-8 col-md-6 col-lg-5 col-xl-3 mx-auto max-width': !embed}">
 
     <h1 class="mb-3 mt-0">
       {{'login.heading' | translate}}
     </h1>
 
+    <div *ngIf="accessReason === LoginAccessReason.FORCE_LOGOUT_EXPIRED_LOGIN_LINK && !showLogin"
+         class="d-block text-center mt-2">
+      <img src="/assets/img/icon/qr_scan.svg" class="explainer-icon lg mb-1">
+
+      <div class="mt-2">
+        {{'login.rescan_qr' | translate}}
+
+        <div>
+          <a *ngIf="!showLogin"
+             class="d-inline-flex flex-row align-items-center link-container mt-1"
+             role="button"
+             tabindex="0"
+             (action)="showLogin = true">
+            <div class="link text-xs">
+              {{'login.rescan_qr_show_login' | translate}}
+            </div>
+            <i class="i i-xxs i-dark i-login align-middle ml-1"
+               aria-hidden="true"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+
     <form #loginForm="ngForm"
+          *ngIf="showLogin"
           (ngSubmit)="loginForm.valid && login()">
       <fieldset [attr.disabled]="!isSslConnection() ? true : null">
         <div *ngIf="!token"
@@ -66,13 +90,14 @@
                  type="text"
                  class="form-control code"
                  name="otp"
-                 [(ngModel)]="this.otp"
+                 [ngModel]="this.otp"
+                 (ngModelChange)="this.otp = $event; onOtpChanged()"
                  #otpModel="ngModel"
                  [ngClass]="{ 'is-invalid': loginForm.submitted && otpModel.invalid }"
                  maxlength="11"
                  required
                  focusOnDisplay>
-          <div class="otp-info mt-2">
+          <div class="login-info mt-2">
             <i class="i i-xs i-dark i-info mr-2 flex-shrink-0"></i>
             <div class="flex-grow-1">
               {{'login.otp_info' | translate}}
@@ -86,15 +111,16 @@
                  type="text"
                  class="form-control code"
                  name="pin"
-                 [(ngModel)]="this.pin"
+                 [ngModel]="this.pin"
+                 (ngModelChange)="this.pin = $event; onPinChanged()"
                  #pinModel="ngModel"
                  [ngClass]="{ 'is-invalid': loginForm.submitted && pinModel.invalid }"
                  minlength="4"
-                 maxlength="6"
+                 maxlength="4"
                  required
                  focusOnDisplay>
-          <div class="otp-info mt-2">
-            <i class="i i-xs i-dark i-qr mr-2 flex-shrink-0"></i>
+          <div class="login-info d-block text-center mt-2">
+            <img src="/assets/img/icon/qr_pin.svg" class="explainer-icon mb-1">
             <div class="flex-grow-1">
               {{('login.pin_info' + (isPinSet ? '' : '_new')) | translate}}
             </div>
@@ -117,7 +143,7 @@
 
   <div *ngIf="!isSslConnection()"
        class="login-annotation-container login-annotation-danger"
-       [ngClass]="{'col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto max-width': !embed}">
+       [ngClass]="{'col-xs-12 col-sm-8 col-md-6 col-lg-5 col-xl-3 mx-auto max-width': !embed}">
 
     {{'login.status_connection_insecure' | translate}}
 
@@ -126,7 +152,7 @@
   <div
     *ngIf="hasStatus(StatusKey.LOGIN, StatusValue.BAD_CREDENTIALS)"
     class="login-annotation-container login-annotation-danger"
-    [ngClass]="{'col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto max-width': !embed}">
+    [ngClass]="{'col-xs-12 col-sm-8 col-md-6 col-lg-5 col-xl-3 mx-auto max-width': !embed}">
 
     {{'login.status_bad_credentials' | translate}}
 
@@ -135,7 +161,7 @@
   <!--<div
     *ngIf="hasStatus(StatusKey.LOGIN, StatusValue.SUCCESSFUL)"
     class="login-annotation-container login-annotation-success"
-    [ngClass]="{'col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto': !embed}">
+    [ngClass]="{'col-xs-12 col-sm-8 col-md-6 col-lg-5 col-xl-3 mx-auto': !embed}">
 
     {{'login.status_successful' | translate}}
 
@@ -144,7 +170,7 @@
   <div
     *ngIf="hasStatus(StatusKey.LOGIN, StatusValue.FAILED)"
     class="login-annotation-container login-annotation-danger"
-    [ngClass]="{'col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto max-width': !embed}">
+    [ngClass]="{'col-xs-12 col-sm-8 col-md-6 col-lg-5 col-xl-3 mx-auto max-width': !embed}">
 
     {{'login.status_failed' | translate}}
 
@@ -153,7 +179,7 @@
   <div
     *ngIf="hasManyFailedAttempts()"
     class="login-annotation-container login-annotation-info"
-    [ngClass]="{'col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto max-width': !embed}">
+    [ngClass]="{'col-xs-12 col-sm-8 col-md-6 col-lg-5 col-xl-3 mx-auto max-width': !embed}">
 
     <div>
       {{'login.failed_attempts_info' | translate}}
@@ -167,16 +193,16 @@
   <div
     *ngIf="accessReason === LoginAccessReason.FORCE_CREDENTIALS_CONFIRM && hasStatus(StatusKey.LOGIN, StatusValue.PENDING)"
     class="login-annotation-container login-annotation-warning"
-    [ngClass]="{'col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto max-width': !embed}">
+    [ngClass]="{'col-xs-12 col-sm-8 col-md-6 col-lg-5 col-xl-3 mx-auto max-width': !embed}">
 
     {{'login.status_force_credentials_confirm' | translate}}
 
   </div>
 
   <div
-    *ngIf="accessReason === LoginAccessReason.FORCE_LOGOUT_EXPIRED && hasStatus(StatusKey.LOGIN, StatusValue.PENDING)"
+    *ngIf="(accessReason === LoginAccessReason.FORCE_LOGOUT_EXPIRED || accessReason === LoginAccessReason.FORCE_LOGOUT_EXPIRED_LOGIN_LINK) && hasStatus(StatusKey.LOGIN, StatusValue.PENDING)"
     class="login-annotation-container login-annotation-warning"
-    [ngClass]="{'col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto max-width': !embed}">
+    [ngClass]="{'col-xs-12 col-sm-8 col-md-6 col-lg-5 col-xl-3 mx-auto max-width': !embed}">
 
     {{'login.status_expired' | translate}}
 
@@ -185,7 +211,7 @@
   <div
     *ngIf="accessReason === LoginAccessReason.FORCE_LOGOUT && hasStatus(StatusKey.LOGIN, StatusValue.PENDING)"
     class="login-annotation-container login-annotation-info"
-    [ngClass]="{'col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto max-width': !embed}">
+    [ngClass]="{'col-xs-12 col-sm-8 col-md-6 col-lg-5 col-xl-3 mx-auto max-width': !embed}">
 
     {{'login.status_force_logout' | translate}}
 
@@ -194,7 +220,7 @@
   <div
     *ngIf="accessReason === LoginAccessReason.INSUFFICIENT_PERMISSIONS && hasStatus(StatusKey.LOGIN, StatusValue.PENDING)"
     class="login-annotation-container login-annotation-warning"
-    [ngClass]="{'col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto max-width': !embed}">
+    [ngClass]="{'col-xs-12 col-sm-8 col-md-6 col-lg-5 col-xl-3 mx-auto max-width': !embed}">
 
     {{'login.status_insufficient_permissions' | translate}}
 
@@ -203,7 +229,7 @@
   <div
     *ngIf="accessReason === LoginAccessReason.USER_LOGOUT && hasStatus(StatusKey.LOGIN, StatusValue.PENDING)"
     class="login-annotation-container login-annotation-success"
-    [ngClass]="{'col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto max-width': !embed}">
+    [ngClass]="{'col-xs-12 col-sm-8 col-md-6 col-lg-5 col-xl-3 mx-auto max-width': !embed}">
 
     {{'login.status_user_logout' | translate}}
 
@@ -212,7 +238,7 @@
   <div
     *ngIf="accessReason === LoginAccessReason.NOT_AUTHENTICATED"
     class="login-annotation-container login-annotation-info"
-    [ngClass]="{'col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto max-width': !embed}">
+    [ngClass]="{'col-xs-12 col-sm-8 col-md-6 col-lg-5 col-xl-3 mx-auto max-width': !embed}">
 
     {{'login.status_not_authenticated' | translate}}
 
@@ -220,7 +246,7 @@
 
   <div *ngIf="disclaimer"
        class="login-annotation-container"
-       [ngClass]="{'col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto max-width': !embed}">
+       [ngClass]="{'col-xs-12 col-sm-8 col-md-6 col-lg-5 col-xl-3 mx-auto max-width': !embed}">
 
     <p>
       {{'login.description' | translate}}

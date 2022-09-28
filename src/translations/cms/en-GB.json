@@ -10,13 +10,16 @@
       "last_saved_minutes_ago": "Last saved {{minutes}} minutes ago",
       "last_saved_more_than_hour_ago": "Last saved more than an hour ago",
       "failed": "Could not publish",
-      "failed_draft": "Could not save draft"
+      "failed_draft": "Could not save draft",
+      "success_draft": "Your draft was saved",
+      "success_publish": "Your content was published"
     },
     "close": {
       "title": "Save draft?",
       "subtitle": "Discard draft or save it.",
-      "discard_btn": "Discard draft",
+      "discard_btn": "Discard",
       "discard_btn_progress": "Discarding",
+      "discard_notification_success": "Your draft was discarded",
       "save_btn": "Save draft",
       "save_btn_progress": "Saving"
     },
@@ -87,6 +90,7 @@
     }
   },
   "edit_layout": {
-    "remove_btn": "Remove"
+    "remove_btn": "Remove",
+    "insert_here": "Insert here"
   }
 }

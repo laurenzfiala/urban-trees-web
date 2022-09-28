@@ -14,7 +14,7 @@
 
   <ng-container *ngIf="hasStatus(StatusKey.CHECK_STATE, StatusValue.SUCCESSFUL)">
 
-    <div *ngIf="forceLogout && isActivateFlow && !isActive; else stateInfo" class="col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto p-0">
+    <div *ngIf="forceLogout && isActivateFlow && !isActive; else stateInfo" class="col-xs-12 col-sm-8 col-md-6 col-lg-5 col-xl-3 mx-auto p-0">
       <div class="alert alert-light justify-content-between m-0">
         <i class="i i-dark i-info flex-shrink-0 mr-3"></i>
         <div>
@@ -24,7 +24,7 @@
     </div>
 
     <ng-template #stateInfo>
-      <div class="col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto p-0">
+      <div class="col-xs-12 col-sm-8 col-md-6 col-lg-5 col-xl-3 mx-auto p-0">
         <div *ngIf="isActive" class="otp-status alert alert-success justify-content-between m-0">
           <i class="i i-shield-active-success flex-shrink-0 mr-3"></i>
           <div>
@@ -43,7 +43,7 @@
 
     <!-- ACTIVATION -->
     <div *ngIf="isActivateFlow"
-         class="col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto login-container">
+         class="col-xs-12 col-sm-8 col-md-6 col-lg-5 col-xl-3 mx-auto login-container">
 
       <h1 class="mb-3">
         {{'otp_manage.activate_title' | translate}}
@@ -119,7 +119,7 @@
 
     <!-- DEACTIVATION -->
     <div *ngIf="!isActivateFlow"
-         class="col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto login-container">
+         class="col-xs-12 col-sm-8 col-md-6 col-lg-5 col-xl-3 mx-auto login-container">
 
       <h1 class="mb-3">
         {{'otp_manage.deactivate_title' | translate}}
@@ -164,7 +164,7 @@
   </ng-container>
 
   <div *ngIf="hasStatus(StatusKey.ACTIVATE, StatusValue.SUCCESSFUL)"
-             class="col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto login-annotation-container centered login-annotation-success">
+             class="col-xs-12 col-sm-8 col-md-6 col-lg-5 col-xl-3 mx-auto login-annotation-container centered login-annotation-success">
 
     <div class="d-flex align-items-center justify-content-between flex-grow-1">
       {{'otp_manage.activation_success_info' | translate}}
@@ -184,7 +184,7 @@
 
   <div
     *ngIf="hasStatus(StatusKey.ACTIVATE, StatusValue.FAILED)"
-    class="col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto login-annotation-container login-annotation-danger">
+    class="col-xs-12 col-sm-8 col-md-6 col-lg-5 col-xl-3 mx-auto login-annotation-container login-annotation-danger">
 
     {{'otp_manage.activation_error_info' | translate}}
 
@@ -192,14 +192,14 @@
 
   <div
     *ngIf="hasStatus(StatusKey.ACTIVATE, StatusValue.FAILED_CONNECTION)"
-    class="col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto login-annotation-container login-annotation-danger">
+    class="col-xs-12 col-sm-8 col-md-6 col-lg-5 col-xl-3 mx-auto login-annotation-container login-annotation-danger">
 
     {{'otp_manage.activation_connection_error_info' | translate}}
 
   </div>
 
   <div *ngIf="hasStatus(StatusKey.DEACTIVATE, StatusValue.SUCCESSFUL)"
-       class="col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto login-annotation-container centered login-annotation-success">
+       class="col-xs-12 col-sm-8 col-md-6 col-lg-5 col-xl-3 mx-auto login-annotation-container centered login-annotation-success">
 
     <div class="d-flex align-items-center justify-content-between flex-grow-1">
       {{'otp_manage.deactivation_success_info' | translate}}
@@ -214,7 +214,7 @@
 
   <div
     *ngIf="hasStatus(StatusKey.DEACTIVATE, StatusValue.FAILED)"
-    class="col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto login-annotation-container login-annotation-danger">
+    class="col-xs-12 col-sm-8 col-md-6 col-lg-5 col-xl-3 mx-auto login-annotation-container login-annotation-danger">
 
     {{'otp_manage.deactivation_error_info' | translate}}
 
@@ -222,7 +222,7 @@
 
   <div
     *ngIf="hasStatus(StatusKey.DEACTIVATE, StatusValue.FAILED_CONNECTION)"
-    class="col-xs-12 col-sm-8 col-md-5 col-lg-4 col-xl-3 mx-auto login-annotation-container login-annotation-danger">
+    class="col-xs-12 col-sm-8 col-md-6 col-lg-5 col-xl-3 mx-auto login-annotation-container login-annotation-danger">
 
     {{'otp_manage.deactivation_connection_error_info' | translate}}
 

@@ -263,6 +263,10 @@
   opacity: 0.5;
 }
 
-::ng-deep .popover {
+::ng-deep ut-admin-user .popover {
   max-width: 400px;
+
+  @media @xs {
+    max-width: calc(100vw - @gutter2x);
+  }
 }

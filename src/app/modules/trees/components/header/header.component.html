@@ -67,16 +67,16 @@
         </ul>
 
         <ul class="navbar-nav navbar-right">
-          <li *auth="envService.security.rolesAdmin"
+          <li *auth="envService.security.rolesAdmin.concat(envService.security.rolesAdminLocked)"
             class="nav-item pointer">
           <a routerLink="/admin"
              routerLinkActive="active"
              class="nav-link nav-reports d-flex align-items-center"
              [title]="'navigation.admin' | translate">
-            <div *ngIf="userdata && userdata?.newMessagesAmount > 0"
+            <div *ngIf="userdata && (userdata?.unresolvedReportsAmount + userdata?.unapprovedContentAmount > 0)"
                  class="nav-badge mr-1"
                  aria-hidden="true">
-              {{userdata?.newMessagesAmount}}
+              {{userdata?.unresolvedReportsAmount + userdata?.unapprovedContentAmount}}
               <span class="sr-only">{{'navigation.reports' | translate}}</span>
             </div>
             <i class="i i-admin i-dark" aria-hidden="true"></i>

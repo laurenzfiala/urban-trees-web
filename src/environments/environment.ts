@@ -51,7 +51,7 @@ export const environment = {
     deleteBeacon:                     '/admin/beacon/{beaconId}',
     loadBeaconLogs:                   '/admin/beacon/logs',
     loadUsers:                        '/admin/users?offset={offset}{limit}',
-    usersBulkAction:                  '/admin/users/bulk/{action}',
+    usersBulkAction:                  '/admin/users/bulk/{action}?tid={tid}',
     loadRole:                         '/admin/users/roles',
     deleteUser:                       '/admin/users/{userId}',
     expireCredentials:                '/admin/users/{userId}/expireCredentials',
@@ -61,7 +61,7 @@ export const environment = {
     removeRoles:                      '/admin/users/{userId}/roles/remove',
     loginKey:                         '/admin/users/{userId}/loginkey',
     loginQr:                          '/admin/users/{userId}/loginkey/qr',
-    bulkLoginQr:                      '/admin/users/loginkey/qr',
+    bulkLoginQr:                      '/admin/users/loginkey/qr?tid={tid}',
     loginKeyUrl:                      '/login/{token}',
     allAnnouncements:                 '/admin/announcements',
     addAnnouncement:                  '/admin/announcement',
@@ -110,6 +110,7 @@ export const environment = {
 
   defaultTimeout:                     30_000,
   imageUploadTimeout:                 60_000,
+  bulkTimeout:                        240_000,
 
   userDataRefreshIntervalMs:          30_000,
 
@@ -122,7 +123,7 @@ export const environment = {
   security: {
     minUsernameLength:                  5,
     minPasswordLength:                  10,
-    jwtTokenExpireMs:                   86400000,
+    jwtTokenExpireMs:                   432000000,
     adminTimeoutMs:                     3600000,
 
     interceptorRedirectExclusions:      ['/login'],
@@ -131,11 +132,14 @@ export const environment = {
       user:                             ['ROLE_USER'],
       treeEditor:                       ['ROLE_TREE_EDITOR'],
       journal:                          ['ROLE_JOURNAL', 'ROLE_PUPIL'],
-      teacher:                          ['ROLE_TEACHER'],
+      teacher:                          ['ROLE_TEACHER', 'ROLE_ADMIN'],
       phenObs:                          ['ROLE_PHENOBS'],
       allData:                          ['ROLE_ALL_DATA', 'ROLE_ADMIN'],
       admin:                            ['ROLE_ADMIN'],
+      adminLocked:                      ['ROLE_ADMIN_LOCKED'],
       tempChangePassword:               'ROLE_TEMP_CHANGE_PASSWORD',
+      tempNoPassword:                   'ROLE_TEMP_NO_PASSWORD',
+      tempLoginLink:                    'ROLE_TEMP_LOGIN_LINK',
       tempActivateOTP:                  'ROLE_TEMP_ACTIVATE_OTP'
     }
   }

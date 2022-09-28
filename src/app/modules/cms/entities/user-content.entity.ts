@@ -74,4 +74,22 @@ export class UserContent extends UserContentMetadata {
 
   }
 
+  public static create(contentPath: string, contentLang: string): UserContent {
+    return new UserContent(
+      null,
+      contentPath,
+      null,
+      contentLang,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null,
+      null
+    );
+  }
+
 }

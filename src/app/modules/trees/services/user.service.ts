@@ -24,7 +24,7 @@ export class UserService extends AbstractService implements OnDestroy {
 
   private static LOG: Log = Log.newInstance(UserService);
 
-  private cachedUserData: UserData = new UserData();
+  private cachedUserData!: UserData;
   private loadingUserData: boolean = false;
 
   constructor(private http: HttpClient,

@@ -5,7 +5,6 @@ import * as moment from 'moment';
 import {EnvironmentService} from '../../shared/services/environment.service';
 import {UserIdentity} from '../../trees/entities/user-identity.entity';
 import {UserContentStatus, UserContentStatusHelper} from './user-content-status.entity';
-import {User} from '../../trees/entities/user.entity';
 
 export class UserContentMetadata {
 

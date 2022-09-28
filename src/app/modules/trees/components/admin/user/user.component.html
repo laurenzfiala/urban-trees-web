@@ -312,8 +312,7 @@
                  [popover]="loginInfoPopover"
                  [popoverContext]="{user: u}"
                  placement="left"
-                 outsideClick=true
-                 container="body">
+                 outsideClick=true>
               <i class="i i-sm i-info-info"></i>
             </div>
 
@@ -321,8 +320,7 @@
                  [popover]="statusPopover"
                  [popoverContext]="{user: u}"
                  placement="left"
-                 outsideClick=true
-                 container="body">
+                 outsideClick=true>
               <i *ngIf="!u.active; else status2" class="i i-sm i-cross-danger"></i>
               <ng-template #status2>
                 <i *ngIf="!u.nonLocked; else status3" class="i i-sm i-warning-danger"></i>
@@ -340,8 +338,7 @@
                  (onShown)="deleteStatus(StatusKey.LOGIN_LINK)"
                  [popoverContext]="{user: u}"
                  placement="left"
-                 outsideClick=true
-                 container="body">
+                 outsideClick=true>
               <i class="i i-sm i-dark i-password-reset"></i>
             </div>
 
@@ -349,8 +346,7 @@
                  [popover]="lockPopover"
                  [popoverContext]="{user: u}"
                  placement="left"
-                 outsideClick=true
-                 container="body">
+                 outsideClick=true>
               <i class="i i-sm i-dark i-document-protect"></i>
             </div>
 
@@ -358,8 +354,7 @@
                  [popover]="userDeletePopover"
                  [popoverContext]="{user: u}"
                  placement="left"
-                 outsideClick=true
-                 container="body">
+                 outsideClick=true>
               <i class="i i-sm i-trash"></i>
             </div>
 
@@ -521,12 +516,11 @@
              [ngModel]="envService.endpoints.loginKeyUrl(u.secureLoginKey)"
              (click)="copySecureLink(u)"
              tooltip="Copied link to clipboard!"
-             triggers="focus"
-             container="body" />
-      <a [href]="adminService.getLoginQrUrl(u.id)"
-         tooltip="Generate permanent QR code"
-         container="body">
-        <i class="i i-sm i-black i-qr"></i>
+             triggers="focus" />
+      <a [href]="loginQrUrl(u)"
+         class="d-flex align-items-center"
+         tooltip="Download permanent QR code">
+        <i class="i i-xs i-dark i-qr"></i>
       </a>
     </div>
 
@@ -777,7 +771,7 @@
       <ng-container *ngSwitchCase="BulkAction.CREATE_LOGIN_LINKS">
         create login links for
       </ng-container>
-      <ng-container *ngSwitchCase="BulkAction.CREATE_LOGIN_QR">
+      <ng-container *ngSwitchCase="BulkAction.CREATE_LOGIN_LINKS_PERMANENT">
         create QR codes for
       </ng-container>
       <ng-container *ngSwitchCase="BulkAction.ADD_ROLES">

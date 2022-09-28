@@ -63,6 +63,12 @@ export class AdminUserComponent extends AbstractComponent implements OnInit {
   public bulkAction: BulkAction;
 
   /**
+   * Transaction ID of the currently shown search.
+   * To be sent with all bulk actions.
+   */
+  private searchTransactionId!: string;
+
+  /**
    * Holds optional additional data to send alongside the
    * bulk action request.
    */
@@ -112,6 +118,7 @@ export class AdminUserComponent extends AbstractComponent implements OnInit {
         } else {
           this.searchResult = result;
         }
+        this.searchTransactionId = result.transactionId;
         this.setStatus(StatusKey.USERS, StatusValue.SUCCESSFUL);
     }, error => {
         this.setStatus(StatusKey.USERS, StatusValue.FAILED);
@@ -177,6 +184,10 @@ export class AdminUserComponent extends AbstractComponent implements OnInit {
       this.setStatus(StatusKey.INACTIVATE, StatusValue.FAILED);
     });
 
+  }
+
+  public loginQrUrl(u: User): string {
+    return this.adminService.getLoginQrUrl(u.id);
   }
 
   public showNewUserModal(modalTemplateRef: TemplateRef<any>): void {
@@ -388,7 +399,10 @@ export class AdminUserComponent extends AbstractComponent implements OnInit {
 
     const action = this.bulkAction;
     const data = this.bulkActionData;
-    this.adminService.bulkAction(this.searchFilters, action, data, (affectedUsers: Array<User>) => {
+    this.adminService.bulkAction(action,
+                                 this.searchTransactionId,
+                                 data,
+                                 (affectedUsers: Array<User>) => {
       let context;
       if (action === BulkAction.CREATE_LOGIN_LINKS) {
         const affectedUserIds = affectedUsers.map(au => au.id);
@@ -405,6 +419,9 @@ export class AdminUserComponent extends AbstractComponent implements OnInit {
             this.unloadNotice(true);
           });
       } else {
+        if (action === BulkAction.CREATE_LOGIN_LINKS_PERMANENT) {
+          context = this.adminService.getBulkLoginQrUrl(this.searchTransactionId);
+        }
         this.unloadNotice(true);
         this.setStatus(StatusKey.BULK_ACTION, StatusValue.SUCCESSFUL, context);
         this.loadUsers();

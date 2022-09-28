@@ -31,6 +31,8 @@ import {BeacontransferComponent} from './components/beacontransfer/beacontransfe
 import {JournalComponent} from './components/journal/journal.component';
 import {ContentComponent} from './components/admin/content/content.component';
 import {JournalViewComponent} from './components/teacher/journal-view/journal-view.component';
+import {MethodboxComponent} from './components/methodbox/methodbox.component';
+import {ProjectLoginExpiredGuard} from './components/project-login/project-login-expired.guard';
 
 const routes: Routes = [
   {
@@ -40,6 +42,7 @@ const routes: Routes = [
   {
     path: '',
     component: TreesComponent,
+    canActivateChild: [ProjectLoginExpiredGuard],
     children: [
       {
         path: 'home',
@@ -79,7 +82,7 @@ const routes: Routes = [
       },
       {
         path: 'login',
-        component: ProjectLoginComponent
+        component: ProjectLoginComponent,
       },
       {
         path: 'login/:token',
@@ -113,7 +116,7 @@ const routes: Routes = [
         path: 'admin',
         component: AdminComponent,
         canActivate: [ProjectLoginGuard, AdminGuard],
-        data: {roles: environment.security.roles.admin}
+        data: {roles: [...environment.security.roles.admin, ...environment.security.roles.adminLocked]}
       },
       {
         path: 'admin/tree',
@@ -197,6 +200,16 @@ const routes: Routes = [
         canActivate: [ProjectLoginGuard],
         canActivateChild: [ProjectLoginGuard],
         data: {showAuthTimeout: true}
+      },
+      {
+        path: 'methodbox',
+        component: MethodboxComponent,
+        canActivate: [ProjectLoginGuard],
+        canActivateChild: [ProjectLoginGuard],
+        data: {
+          roles: [...environment.security.roles.teacher, ...environment.security.roles.admin],
+          showAuthTimeout: true
+        }
       },
       {
         path: 'journal',

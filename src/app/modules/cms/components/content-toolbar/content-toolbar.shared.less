@@ -11,11 +11,13 @@
 @highlightBorderColor: @primaryColorHighlight;
 
 .toolbar {
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-
   background-color: @bgColor;
+
+  &.toolbar-top {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
 
   &:not(:first-child) {
     border-top: @toolbarBorder;
@@ -74,10 +76,10 @@
     flex-wrap: wrap;
   }
 
-  .toolbar-section.contextual {
-    &,
-    button {
-      box-shadow: 0 -@borderWidth 0 0 @highlightBorderColor inset;
+  .toolbar-section {
+
+    > * {
+      flex-shrink: 1;
     }
   }
 
@@ -148,6 +150,10 @@
 
     &:hover {
       background-image: url('/assets/img/icon/black/chevron-down.svg');
+    }
+
+    @media @xs {
+      max-width: 100px;
     }
   }
 }

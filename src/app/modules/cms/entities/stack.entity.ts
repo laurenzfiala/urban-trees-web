@@ -112,12 +112,18 @@ export class Stack<T> {
    * Find and return a matching element. Search starts with #peek()
    * and looks though the stack from newest to oldest elements.
    * @param test testing function: return true to match the given element; false to look further.
+   * @param (default false) true to search from oldest to newest entry
    * @return T or null if no element matched.
    */
-  public find(test: (element: T) => (boolean)): T {
+  public find(test: (element: T) => (boolean), reverse: boolean = false): T {
+
+    let elements = this.elements;
+    if (reverse) {
+      elements = this.elements.reverse();
+    }
 
     for (let i = this._stackPointer - 1; i >= 0; i--) {
-      const el = this.elements[i];
+      const el = elements[i];
       if (test(el)) {
         return el;
       }

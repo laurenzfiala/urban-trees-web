@@ -1,93 +1,153 @@
-<div class="content-cat">
+<div class="content-cat"
+     *auth="envService.security.rolesAdminLocked; else content">
   <div class="container">
-    <h1 class="content-cat-heading">
-      Reports
-      <div *ngIf="userdata && userdata?.newMessagesAmount > 0"
-           class="badge badge-sm warning ml-1"
-           aria-hidden="true">
-        {{userdata?.newMessagesAmount}} unresolved
+
+    <div class="alert alert-warning">
+      <i class="i i-warning-warning flex-shrink-0 mr-3"></i>
+      <div>
+        You're logged in using a less secure method and can't use the admin console.<br/>
+        <b>Log in again using username/password.</b>
       </div>
-    </h1>
-    <div class="content-cat-text">
-      View and resolve application reports. This includes user reports &amp; automatic system error reports.
     </div>
-
-    <a class="content-cat-link" routerLink="report">
-      View &amp; resolve reports
-    </a>
 
   </div>
 </div>
 
-<div class="content-cat">
-  <div class="container">
-    <h1 class="content-cat-heading">User Content</h1>
-    <div class="content-cat-text">
-      View, approve &amp; manage user generated content.
+<ng-template #content>
+
+  <div class="content-cat">
+    <div class="container">
+
+      <div class="action-bar">
+        <a class="action"
+           [ngClass]="{'warning': userdata?.unresolvedReportsAmount > 0}"
+           routerLink="report">
+          <i class="i i-dark i-question"></i>
+          <div>Reports</div>
+        </a>
+        <a class="action"
+           [ngClass]="{'warning': userdata?.unapprovedContentAmount > 0}"
+           routerLink="content">
+          <i class="i i-dark i-send"></i>
+          <div>User content</div>
+        </a>
+        <a class="action"
+             routerLink="tree">
+          <i class="i i-dark i-tree"></i>
+          <div>Trees</div>
+        </a>
+        <a class="action"
+             routerLink="beacon">
+          <i class="i i-dark i-beacon"></i>
+          <div>Beacons</div>
+        </a>
+        <a class="action"
+             routerLink="user">
+          <i class="i i-dark i-user"></i>
+          <div>Users</div>
+        </a>
+        <a class="action"
+             routerLink="announcements">
+          <i class="i i-dark i-announce"></i>
+          <div>Announcements</div>
+        </a>
+      </div>
+
     </div>
-
-    <a class="content-cat-link" routerLink="content">
-      Manage user content
-    </a>
-
   </div>
-</div>
 
-<div class="content-cat">
-  <div class="container">
-    <h1 class="content-cat-heading">Trees</h1>
-    <div class="content-cat-text">
-      Add new trees and modify existing ones.
+  <div class="content-cat">
+    <div class="container">
+      <h1 class="content-cat-heading">
+        Reports
+        <div *ngIf="userdata && userdata?.newMessagesAmount > 0"
+             class="badge badge-sm warning ml-1"
+             aria-hidden="true">
+          {{userdata?.newMessagesAmount}} unresolved
+        </div>
+      </h1>
+      <div class="content-cat-text">
+        View and resolve application reports. This includes user reports &amp; automatic system error reports.
+      </div>
+
+      <a class="content-cat-link" routerLink="report">
+        View &amp; resolve reports
+      </a>
+
     </div>
-
-    <a class="content-cat-link" routerLink="tree">
-      Manage trees
-    </a>
-
   </div>
-</div>
 
-<div class="content-cat">
-  <div class="container">
-    <h1 class="content-cat-heading">Beacons</h1>
-    <div class="content-cat-text">
-      Add and remove beacons and modify their properties.
+  <div class="content-cat">
+    <div class="container">
+      <h1 class="content-cat-heading">User Content</h1>
+      <div class="content-cat-text">
+        View, approve &amp; manage user generated content.
+      </div>
+
+      <a class="content-cat-link" routerLink="content">
+        Manage user content
+      </a>
+
     </div>
-
-    <a class="content-cat-link" routerLink="beacon">
-      Manage  beacons
-    </a>
-
   </div>
-</div>
 
-<div class="content-cat">
-  <div class="container">
-    <h1 class="content-cat-heading">Users</h1>
-    <div class="content-cat-text">
-      Add new users, delete existing ones, create one-time login links, disable accounts or modify user specific
-      access roles.<br/>
-      <i class="feature-pointer mr-1 offset"></i>
-      You can now bulk-create users &amp; execute bulk actions!
+  <div class="content-cat">
+    <div class="container">
+      <h1 class="content-cat-heading">Trees</h1>
+      <div class="content-cat-text">
+        Add new trees and modify existing ones.
+      </div>
+
+      <a class="content-cat-link" routerLink="tree">
+        Manage trees
+      </a>
+
     </div>
-
-    <a class="content-cat-link" routerLink="user">
-      Manage users
-    </a>
-
   </div>
-</div>
 
-<div class="content-cat">
-  <div class="container">
-    <h1 class="content-cat-heading">Announcements</h1>
-    <div class="content-cat-text">
-      Show announcements to all site users if any news are important.
+  <div class="content-cat">
+    <div class="container">
+      <h1 class="content-cat-heading">Beacons</h1>
+      <div class="content-cat-text">
+        Add and remove beacons and modify their properties.
+      </div>
+
+      <a class="content-cat-link" routerLink="beacon">
+        Manage  beacons
+      </a>
+
     </div>
-
-    <a class="content-cat-link" routerLink="announcements">
-      Manage announcements
-    </a>
-
   </div>
-</div>
+
+  <div class="content-cat">
+    <div class="container">
+      <h1 class="content-cat-heading">Users</h1>
+      <div class="content-cat-text">
+        Add new users, delete existing ones, create one-time login links, disable accounts or modify user specific
+        access roles.<br/>
+        <i class="feature-pointer mr-1 offset"></i>
+        You can now bulk-create users &amp; execute bulk actions!
+      </div>
+
+      <a class="content-cat-link" routerLink="user">
+        Manage users
+      </a>
+
+    </div>
+  </div>
+
+  <div class="content-cat">
+    <div class="container">
+      <h1 class="content-cat-heading">Announcements</h1>
+      <div class="content-cat-text">
+        Show announcements to all site users if any news are important.
+      </div>
+
+      <a class="content-cat-link" routerLink="announcements">
+        Manage announcements
+      </a>
+
+    </div>
+  </div>
+
+</ng-template>

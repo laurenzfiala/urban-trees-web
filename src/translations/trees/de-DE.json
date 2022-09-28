@@ -209,8 +209,7 @@
       "PHENOLOGY_IMAGE_UPLOAD": "Bild für Phänologie hochgeladen",
       "PHENOLOGY_OBSERVATION": "Phänologiebeobachtung",
       "USER_EXP_DAYS_SUBMIT": "Experimentiertage abgeschickt",
-      "USER_MODULE_SENSOR2APP_SUBMIT": "Sensor2App abgeschickt",
-      "USER_MODULE_APP2ANALYSE_SUBMIT": "App2Analyse abgeschickt",
+      "USER_TREE_CONTENT_SUBMIT": "Baum-Beschreibung eingetragen",
       "UPGRADE_ACCOUNT": "Veralteter Account erneuert",
       "ADMIN_THANKYOU": "Belohnung fürs Helfen (Danke!)"
     }
@@ -231,6 +230,8 @@
     "status_successful": "Erfolgreich eingeloggt",
     "status_failed": "Anmeldung fehlgeschlagen, bitte versuche es erneut",
     "status_expired": "Anmeldedaten abgelaufen, bitte melde dich erneut an",
+    "rescan_qr": "Scanne deinen QR-Code erneut",
+    "rescan_qr_show_login": "Stattdessen mit Username anmelden",
     "status_force_logout": "Du wurdest abgemeldet",
     "status_force_credentials_confirm": "Bitte bestätige Dein Passwort, um diese Seite aufzurufen",
     "status_user_logout": "Erfolgreich abgemeldet",
@@ -270,7 +271,7 @@
     "checking_state_failed": "Konnte Status nicht abfragen",
     "state_info_enabled": "Zwei-Faktor Authentifizierung ist EIN",
     "state_info_disabled": "Zwei-Faktor Authentifizierung ist AUS",
-    "qr_scan_info": "Scanne den QR-Code mit einer Authenticator-App wie <a class=\"link\" href=\"https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2\" target=\"_blank\">Google Authenticator</a> oder <a class=\"link\" href=\"https://play.google.com/store/apps/details?id=org.fedorahosted.freeotp\" target=\"_blank\">FreeOTP</a>.",
+    "qr_scan_info": "Scanne den QR-Code mit einer Authenticator-App wie <a class=\"link\" href=\"https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2\" target=\"_blank\">Google Authenticator</a> oder <a class=\"link\" href=\"https://play.google.com/store/apps/details?id=com.beemdevelopment.aegis\" target=\"_blank\">Aegis</a>.",
     "activate_title": "Zwei-Faktor Authentifizierung aktivieren",
     "activate_btn": "Jetzt aktivieren",
     "activating_btn": "Aktiviere...",
@@ -475,15 +476,16 @@
     "one_time_token": {
       "title": "Dein Berechtigungs-PIN",
       "desc": "Dieser PIN-Code kann bei anderen Nutzer_innen eingegeben werden, um mit ihnen Phänologiebeobachtungnen zu teilen.",
-      "info": "Kann nur einmal benutzt werden und wird nach falscher Eingabe invalidiert.",
+      "info": "Kann nur einmal benutzt werden und wird nach falscher Eingabe ungültig.",
       "refresh": "Einen neuen Berechtigungs-PIN anzeigen"
     },
     "account": {
       "title": "Konto verwalten",
-      "desc":  "Du bist als {{username}} angemeldet.",
-      "desc_2":  "Ändere Deinen Nutznamen oder Dein Passwort hier oder bearbeite Einstellungen zur Zwei-Faktor Authentifizierung.",
-      "change_username":  "Anmeldename ändern",
-      "change_password":  "Passwort ändern",
+      "desc": "Du bist als {{username}} angemeldet.",
+      "desc_2": "Ändere Deinen Nutznamen oder Dein Passwort hier oder bearbeite Einstellungen zur Zwei-Faktor Authentifizierung.",
+      "login_link_note": "Nach dem Ändern dieser Einstellungen ist keine Anmeldung mit deinem QR-Code möglich.",
+      "change_username": "Anmeldename ändern",
+      "change_password": "Passwort ändern",
       "manage_2fa": "Zwei-Faktor Authentifizierung"
     },
     "support": {
@@ -497,7 +499,7 @@
       "warning": "Das kann nicht rückgängig gemacht werden.",
       "btn": "Konto löschen",
       "popover_title": "Konto löschen?",
-      "popover_desc": "Löschung kann nicht rückgängig gemacht werden.",
+      "popover_desc": "Löschung kann nicht rückgängig gemacht werden. Deine Inhalte werden nicht gelöscht.",
       "popover_btn": "Konto jetzt löschen",
       "popover_btn_progress": "Konto wird gelöscht",
       "popover_btn_success": "Erfolgreich gelöscht",
@@ -834,7 +836,7 @@
     "content": {
       "status": {
         "DRAFT": "Entwurf",
-        "AWAITING_APPROVAL": "Wird veröffentlicht",
+        "DRAFT_AWAITING_APPROVAL": "Wird veröffentlicht",
         "APPROVED": "Veröffentlicht",
         "APPROVED_AWAITING_DELETION": "Wird gelöscht",
         "UNAPPROVED_AWAITING_DELETION": "Wird gelöscht",

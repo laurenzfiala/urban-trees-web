@@ -125,8 +125,8 @@ export class AdminService extends AbstractService {
     return this.envService.endpoints.loginQr(userId);
   }
 
-  public getBulkLoginQrUrl(): string {
-    return this.envService.endpoints.bulkLoginQr();
+  public getBulkLoginQrUrl(transactionId: string): string {
+    return this.envService.endpoints.bulkLoginQr(transactionId);
   }
 
   /**
@@ -489,19 +489,19 @@ export class AdminService extends AbstractService {
 
   }
 
-  public bulkAction(searchFilters: Map<string, any | any[]>,
-                   action: BulkAction,
+  public bulkAction(action: BulkAction,
+                   transactionId: string,
                    data: any,
                    successCallback: (affectedUsers: Array<User>) => void,
                    errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void) {
 
-    let url = this.envService.endpoints.usersBulkAction(BulkAction[action]);
-    AdminService.LOG.debug('Sending bulk action execution order for action ' + action + '...');
+    let url = this.envService.endpoints.usersBulkAction(BulkAction[action], transactionId);
+    AdminService.LOG.debug('Sending bulk action execution order for action ' + action + ' with tid ' + transactionId + '...');
 
-    const payload = Object.assign({filters: this.searchFiltersToPayload(searchFilters)}, data);
+    const payload = Object.assign({}, data);
 
     this.http.post<Array<User>>(url, payload)
-      .timeout(this.envService.defaultTimeout)
+      .timeout(this.envService.bulkTimeout)
       .map(users => users && users.map(u => User.fromObject(u)))
       .subscribe((affectedUsers: Array<User>) => {
         successCallback(affectedUsers);

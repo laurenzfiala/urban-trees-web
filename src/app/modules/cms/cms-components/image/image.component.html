@@ -4,7 +4,7 @@
        [tooltipIsOpen]="validationResults.hasHighlighted() && hasViewMode(ViewMode.EDIT_CONTENT)"
        [adaptivePosition]="false"
        placement="top"
-       tooltipTrigger=""
+       triggers=""
        [ngClass]="{'is-invalid': validationResults.hasErrors()}"
        (focus)="focus()"
        (focusout)="focusOut()"
@@ -17,9 +17,10 @@
          [tooltip]="'components.img.upload_tooltip' | translate"
          triggers="hover"
          (click)="selectImage()">
-      <img *ngIf="!hasStatus(StatusKey.UPLOAD, StatusValue.IN_PROGRESS) && fileUid"
-           [src]="getFileUrl()"/>
-      <div class="cms-img-bg" [ngStyle]="{'background-image': 'url(' + getFileUrl() + ')'}"></div>
+      <ng-container *ngIf="!hasStatus(StatusKey.UPLOAD, StatusValue.IN_PROGRESS) && fileUid">
+        <img [src]="getFileUrl()"/>
+        <div class="cms-img-bg" [ngStyle]="{'background-image': 'url(' + getFileUrl() + ')'}"></div>
+      </ng-container>
     </div>
 
     <input
@@ -33,10 +34,10 @@
 </div>
 
 <ng-template #viewContent>
-  <div class="cms-img-wrapper">
+  <div *ngIf="!hasStatus(StatusKey.UPLOAD, StatusValue.IN_PROGRESS) && fileUid"
+       class="cms-img-wrapper">
     <div class="cms-img-bg" [ngStyle]="{'background-image': 'url(' + getFileUrl() + ')'}"></div>
-    <img *ngIf="!hasStatus(StatusKey.UPLOAD, StatusValue.IN_PROGRESS) && fileUid"
-         [src]="getFileUrl()"/>
+    <img [src]="getFileUrl()" />
   </div>
 </ng-template>
 

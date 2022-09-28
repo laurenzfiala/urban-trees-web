@@ -5,11 +5,11 @@ import {Tree} from '../../entities/tree.entity';
 import {EnvironmentService} from '../../../shared/services/environment.service';
 import {Mode} from '../../../shared/components/zoom/zoom.component';
 import {AbstractComponent} from '../../../shared/components/abstract.component';
-import {CmsContent} from '../../../cms/entities/cms-content.entity';
 import {ViewMode} from '../../../cms/enums/cms-layout-view-mode.enum';
 import {ContentService} from '../../../cms/services/content.service';
 import {UserContent} from '../../../cms/entities/user-content.entity';
 import {TreeFrontend} from '../../entities/tree-frontend.entity';
+import {UserContents} from '../../../cms/entities/user-contents.entity';
 
 @Component({
   selector: 'ut-tree',
@@ -25,10 +25,8 @@ export class TreeComponent extends AbstractComponent implements OnInit {
   public Mode = Mode;
   public ViewMode = ViewMode;
 
-  public treeContentPath: string;
-  public treeContentLang: string;
-  public treeContent: CmsContent;
-  public treeContentViewMode: ViewMode = ViewMode.CONTENT;
+  public content!: UserContent;
+  public contentViewMode: ViewMode = ViewMode.CONTENT;
   public showMap: boolean = false;
   public showMore: boolean = false;
 
@@ -87,10 +85,8 @@ export class TreeComponent extends AbstractComponent implements OnInit {
   }
 
   private loadTreeContent(): void {
-    this.treeContentPath = '/tree/' + this.tree.id;
-    this.treeContentLang = 'de-DE';
-    this.contentService.loadContent(this.treeContentPath, this.treeContentLang, content => {
-      this.treeContent = CmsContent.fromUserContent(content[0], this.envService);
+    this.contentService.loadContent('/tree/' + this.tree.id, 'de-DE', contents => {
+      this.content = UserContents.single(contents);
     });
   }
 

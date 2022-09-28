@@ -1,14 +1,49 @@
-<div class="d-flex align-items-center">
+<div class="d-flex flex-row">
 
-  <ng-container *ngIf="saveTimer.content && hasStatus(StatusKey.SAVE, StatusValue.SUCCESSFUL)">
-    {{ this.saveTimer.msgKey | translate:{'minutes': this.saveTimer.durationSinceSave?.minutes()} }}
-  </ng-container>
-  <ng-container *ngIf="hasStatus(StatusKey.SAVE, StatusValue.IN_PROGRESS)">
-    {{'toolbar.save.in_progress' | translate}} <i class="i i-xs ml-1 i-dark i-save"></i>
-  </ng-container>
-  <ng-container *ngIf="hasStatus(StatusKey.SAVE, StatusValue.FAILED)">
-    <span class="text-danger">{{(isDraft ? 'toolbar.save.failed_draft' : 'toolbar.save.failed') | translate}}</span>
-    <i class="ml-1  flex-shrink-0 i i-xxs i-warning-danger"></i>
-  </ng-container>
+  <div class="d-flex d-sm-none flex-row align-items-center">
+    <i *ngIf="saveTimer.content && hasStatus(StatusKey.SAVE, StatusValue.SUCCESSFUL)"
+       class="i i-xs i-saved i-dark"
+       [tooltip]="successMsg"
+       placement="left"
+
+    ></i>
+    <i *ngIf="hasStatus(StatusKey.SAVE, StatusValue.IN_PROGRESS)"
+       class="i i-xs i-save i-dark"
+       [tooltip]="inProgressMsg"
+       placement="left"
+    ></i>
+    <i *ngIf="hasStatus(StatusKey.SAVE, StatusValue.FAILED)"
+       class="i i-xs i-warning-danger"
+       [tooltip]="failedMsg"
+       placement="left"
+    ></i>
+  </div>
+
+  <div class="d-none d-sm-flex flex-row align-items-center">
+    <ng-container *ngIf="saveTimer.content && hasStatus(StatusKey.SAVE, StatusValue.SUCCESSFUL)">
+      <ng-template [ngTemplateOutlet]="successMsg"></ng-template>
+    </ng-container>
+    <ng-container *ngIf="hasStatus(StatusKey.SAVE, StatusValue.IN_PROGRESS)">
+      <i class="i i-xs ml-1 i-dark i-save"></i>
+      <ng-template [ngTemplateOutlet]="inProgressMsg"></ng-template>
+    </ng-container>
+    <ng-container *ngIf="hasStatus(StatusKey.SAVE, StatusValue.FAILED)">
+      <span class="text-danger"><ng-template [ngTemplateOutlet]="failedMsg"></ng-template></span>
+      <i class="ml-1  flex-shrink-0 i i-xxs i-warning-danger"></i>
+    </ng-container>
+  </div>
+
 
 </div>
+
+<ng-template #successMsg>
+  {{ this.saveTimer.msgKey | translate:{'minutes': this.saveTimer.durationSinceSave?.minutes()} }}
+</ng-template>
+
+<ng-template #inProgressMsg>
+  {{'toolbar.save.in_progress' | translate}}
+</ng-template>
+
+<ng-template #failedMsg>
+  {{(isDraft ? 'toolbar.save.failed_draft' : 'toolbar.save.failed') | translate}}
+</ng-template>

@@ -1,4 +1,5 @@
 @import (reference) "../../../../../theme/variables";
+@import (reference) "../content-toolbar/content-toolbar.shared";
 
 .cms-drop-zone-line {
   display: flex;
@@ -7,7 +8,7 @@
 
   margin: @gutter 0;
 
-  color: @subtleTextColor;
+  color: @highlightBorderColor;
   cursor: pointer;
   user-select: none;
 
@@ -24,20 +25,20 @@
     height: 0.2em;
     margin-left: @gutter;
 
-    background-color: lighten(@borderColor, 10%);
+    background-color: fade(@highlightBorderColor, 60%);
 
     transition: @transitionDurationS height;
   }
 
   &:hover,
   &.active {
-    border-color: #6293d6;
-    color: #6293d6;
+    border-color: @highlightBorderColor;
+    color: darken(@highlightBorderColor, 5%);
     font-weight: bold;
 
     .line {
       height: 1em;
-      background-color: #6293d6;
+      background-color: @highlightBorderColor;
     }
   }
 

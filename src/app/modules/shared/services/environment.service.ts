@@ -37,6 +37,10 @@ export class EnvironmentService {
     return this.context.defaultTimeout;
   }
 
+  get bulkTimeout() {
+    return this.context.bulkTimeout;
+  }
+
   get imageUploadTimeout() {
     return this.context.imageUploadTimeout;
   }
@@ -478,9 +482,10 @@ class EnvironmentEndpoints {
     );
   }
 
-  public usersBulkAction(action: string) {
+  public usersBulkAction(action: string, tid: string) {
     let replacements: any[] = [
-      { placeholder: 'action', replacement: action }
+      { placeholder: 'action', replacement: action },
+      { placeholder: 'tid', replacement: tid }
     ];
 
     return this.prependCommonPath(
@@ -603,9 +608,16 @@ class EnvironmentEndpoints {
     );
   }
 
-  public bulkLoginQr(): string {
+  public bulkLoginQr(transactionId: string): string {
+    let replacements: any[] = [
+      { placeholder: 'tid', replacement: transactionId }
+    ];
+
     return this.prependCommonPath(
-      this.context.bulkLoginQr
+      this.replaceParams(
+        this.context.bulkLoginQr,
+        replacements
+      )
     );
   }
 
@@ -927,8 +939,20 @@ class Security {
     return this.context.roles.admin;
   }
 
+  get rolesAdminLocked() {
+    return this.context.roles.adminLocked;
+  }
+
   get roleTempChangePassword() {
     return this.context.roles.tempChangePassword;
+  }
+
+  get roleTempNoPassword() {
+    return this.context.roles.tempNoPassword;
+  }
+
+  get roleTempLoginLink() {
+    return this.context.roles.tempLoginLink;
   }
 
   get roleTempActivateOTP() {

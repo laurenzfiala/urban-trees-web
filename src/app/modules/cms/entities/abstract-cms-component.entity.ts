@@ -110,11 +110,11 @@ export abstract class AbstractCmsComponent
   }
 
   /**
-   * Shortcut to the content path subject provided by
+   * Shortcut to the content path provided by
    * ContentService.
    */
-  public contentPath(): BehaviorSubject<string> {
-    return this.contentService.contentPath();
+  public contentPath(): string {
+    return this.contentService.userContent.contentPath;
   }
 
   /**

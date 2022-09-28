@@ -44,11 +44,6 @@ export class HomeComponent extends AbstractComponent implements OnInit, OnDestro
   public treeCmsHistory: Array<CmsContentContextRef<Tree>>;
   public phenObsHistory: Array<PhenologyDatasetWithTree>;
 
-  /**
-   * Statistics regarding the system overall.
-   */
-  public statistics: SystemStatistics;
-
   constructor(private uiService: UIService,
               private phenObsService: PhenologyObservationService,
               private contentService: ContentService,
@@ -149,7 +144,7 @@ export class HomeComponent extends AbstractComponent implements OnInit, OnDestro
     return ListComponent.historyCategorizer(date);
   }
 
-  public getUsername(): string {
+  get username(): string {
     return this.authService.getUsername();
   }
 

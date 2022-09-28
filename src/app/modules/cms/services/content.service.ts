@@ -16,7 +16,7 @@ import {CmsContent} from '../entities/cms-content.entity';
 import {UserContent} from '../entities/user-content.entity';
 import {UserContentMetadata} from '../entities/user-content-metadata.entity';
 import {ViewMode} from '../enums/cms-layout-view-mode.enum';
-import {User} from '../../trees/entities/user.entity';
+import {UserContents} from '../entities/user-contents.entity';
 
 /**
  * Handles loading and saving of CMS content.
@@ -31,10 +31,19 @@ export class ContentService extends AbstractService {
   private static LOG: Log = Log.newInstance(ContentService);
 
   /**
+   * User content displayed by the content component
+   * that this service is scoped to.
+   * Set by the component.
+   */
+  public userContent: UserContent | undefined;
+
+  /**
    * Content displayed by the content component
    * that this service is scoped to.
+   * Set by the component.
+   * TODO move to component
    */
-  public content: CmsContent;
+  public content!: CmsContent;
 
   /**
    * Holds the mapping from string to type for all cms
@@ -72,11 +81,6 @@ export class ContentService extends AbstractService {
   private viewModeChangeSubject: Subject<ViewMode>;
 
   /**
-   * TODO
-   */
-  private contentPathSubject: BehaviorSubject<string>;
-
-  /**
    * How to display the associated content.
    */
   private _viewMode: ViewMode;
@@ -88,25 +92,6 @@ export class ContentService extends AbstractService {
     this.viewModeChangeSubject = new BehaviorSubject<ViewMode>(this._viewMode);
   }
 
-  public contentPath(): BehaviorSubject<string> {
-    if (!this.contentPathSubject) {
-      throw new Error('CMS element requested content path, but it was not set.');
-    }
-    return this.contentPathSubject;
-  }
-
-  /**
-   * TODO
-   * @param contentPath
-   */
-  public setContentPath(contentPath: string) {
-    if (this.contentPathSubject) {
-      this.contentPathSubject.next(contentPath);
-    } else {
-      this.contentPathSubject = new BehaviorSubject<string>(contentPath);
-    }
-  }
-
   /**
    * Load contents by id and language from the backend.
    * @param contentPath content path
@@ -116,15 +101,15 @@ export class ContentService extends AbstractService {
    */
   public loadContent(contentPath: string,
                      contentLang: string,
-                     successCallback: (content: Array<UserContent>) => void,
+                     successCallback: (contents: UserContents) => void,
                      errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void): void {
 
     ContentService.LOG.debug('Loading content at ' + contentPath + '...');
     this.http.get<Array<UserContent>>(this.envService.endpoints.loadContent(contentPath, contentLang))
       .map(contents => contents && contents.map(c => UserContent.fromObject(c, this.envService)))
-      .subscribe((content: Array<UserContent>) => {
+      .subscribe((contents: Array<UserContent>) => {
         ContentService.LOG.debug('Loaded content at ' + contentPath + ' successfully.');
-        successCallback(content);
+        successCallback(new UserContents(contentPath, contentLang, contents));
       }, (e: any) => {
         ContentService.LOG.error('Could not load content at ' + contentPath + ': ' + e.message, e);
         if (errorCallback) {
@@ -197,31 +182,30 @@ export class ContentService extends AbstractService {
   }
 
   /**
-   * Save the given content for the given content id on the backend.
-   * @param contentPath content path
-   * @param contentLang language id of the content
+   * Save the given content with #userContent as base on backend.
    * @param isDraft whether the given content should be saved as draft or published
    * @param content serialized content to persist
    * @param successCallback called upon successful retrieval of the content
    * @param errorCallback called upon failed retrieval of the content
    */
-  public saveContent(contentPath: string,
-                     contentLang: string,
-                     isDraft: boolean,
+  public saveContent(isDraft: boolean,
                      content: CmsContent,
-                     successCallback: (cmsContent: CmsContent) => void,
+                     successCallback: (cmsContent: CmsContent, userContent: UserContent) => void,
                      errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void): void {
 
+    const contentPath = this.userContent.contentPath;
+    const contentLang = this.userContent.contentLanguage;
     const url = this.envService.endpoints.saveContent(contentPath, contentLang, isDraft);
 
     ContentService.LOG.debug('Saving content at ' + contentPath + '...');
 
     this.http.post<UserContent>(url, content.toJSONObject(this.envService))
+      .map(uc => UserContent.fromObject(uc, this.envService))
       .subscribe((uc: UserContent) => {
         ContentService.LOG.debug('Saved content at ' + contentPath + ' successfully.');
         this.content = CmsContent.fromUserContent(uc, this.envService);
         this.content.historyId = uc.id;
-        successCallback(content);
+        successCallback(content, uc);
       }, (e: any) => {
         ContentService.LOG.error('Could not save content at ' + contentPath + ': ' + e.message, e);
         if (errorCallback) {

@@ -10,13 +10,16 @@
       "last_saved_minutes_ago": "Zuletzt vor {{minutes}} Minuten gespeichert",
       "last_saved_more_than_hour_ago": "Zuletzt vor mehr als einer Stunde gespeichert",
       "failed": "Inhalt konnte nicht veröffentlicht werden",
-      "failed_draft": "Entwurf konnte nicht gespeichert werden"
+      "failed_draft": "Entwurf konnte nicht gespeichert werden",
+      "success_draft": "Dein Entwurf wurde gespeichert",
+      "success_publish": "Erfolgreich veröffentlicht"
     },
     "close": {
       "title": "Entwurf speichern?",
       "subtitle": "Entwurf verwerfen oder speichern.",
-      "discard_btn": "Entwurf verwerfen",
+      "discard_btn": "Verwerfen",
       "discard_btn_progress": "Verwerfe",
+      "discard_notification_success": "Entwurf erfolgreich gespeichert",
       "save_btn": "Entwurf speichern",
       "save_btn_progress": "Speichere"
     },
@@ -84,6 +87,7 @@
     }
   },
   "edit_layout": {
-    "remove_btn": "Entfernen"
+    "remove_btn": "Entfernen",
+    "insert_here": "Hier einfügen"
   }
 }

@@ -1,4 +1,55 @@
 @import (reference) "../../../../../theme/variables";
+@import (reference) "./content-toolbar.shared";
+
+.toolbar {
+  display: grid;
+
+  grid-template-areas:
+    "contextual layout components control";
+  justify-content: start;
+
+  @media @xs {
+    grid-template-areas:
+      "layout control"
+      "components components"
+      "contextual contextual";
+    justify-content: space-between;
+  }
+
+  @media @sm {
+    grid-template-areas:
+      "layout components control"
+      "contextual contextual contextual";
+    justify-content: space-between;
+  }
+
+  .contextual {
+    grid-area: contextual;
+
+    &,
+    button {
+      box-shadow: 0 -@borderWidth 0 0 @highlightBorderColor inset;
+    }
+  }
+
+  .control {
+    grid-area: control;
+  }
+
+  .components {
+    grid-area: components;
+
+    &,
+    button {
+      box-shadow: 0 -@borderWidth 0 0 @highlightBorderColor inset;
+    }
+  }
+
+  .layout {
+    grid-area: layout;
+    justify-content: start;
+  }
+}
 
 @keyframes -anim-view-mode-toggle-tooltip {
   0% { transform: translateY(0px); }

@@ -26,6 +26,7 @@ import {EditLayoutComponent} from './components/edit-layout/edit-layout.componen
 import {NgxTiptapModule} from 'ngx-tiptap';
 import {CmsTextLinkComponent} from './components/cms-text-link/cms-text-link.component';
 import {RouterModule} from '@angular/router';
+import { ContentsComponent } from './components/contents/contents.component';
 
 @NgModule({
   declarations: [
@@ -48,7 +49,8 @@ import {RouterModule} from '@angular/router';
     ContentToolbarComponent,
     EditLayoutDropzoneComponent,
     EditLayoutComponent,
-    CmsTextLinkComponent
+    CmsTextLinkComponent,
+    ContentsComponent
   ],
   imports: [
     CommonModule,

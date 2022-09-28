@@ -118,8 +118,7 @@
 
   <div #contentContainer
        *ngIf="hasStatus(StatusKey.LOAD_CONTENT, StatusValue.SUCCESSFUL) && (selectedContentMeta.isStatusTransient() || mode === ContentManagerMode.VIEW)">
-    <ut-cms-content [contentPath]="selectedContent.contentPath"
-                    [content]="selectedCmsContent"
+    <ut-cms-content [content]="selectedContent"
                     [config]="contentConfig"
                     [(viewMode)]="contentViewMode"></ut-cms-content>
   </div>

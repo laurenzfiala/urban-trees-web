@@ -4,10 +4,10 @@
                [ngModel]="text"
                [disabled]="!hasViewMode(ViewMode.EDIT_CONTENT)"
                [tooltip]="validationErrorTooltipTemplate"
-               [tooltipIsOpen]="validationResults.hasHighlighted() && hasViewMode(ViewMode.EDIT_CONTENT)"
+               [isOpen]="validationResults.hasHighlighted() && hasViewMode(ViewMode.EDIT_CONTENT)"
                [adaptivePosition]="false"
                placement="top"
-               tooltipTrigger=""
+               triggers=""
                [ngClass]="{'is-invalid': validationResults.hasErrors()}"></tiptap-editor>
 
 <ng-template #validationErrorTooltipTemplate>

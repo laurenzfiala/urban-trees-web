@@ -221,8 +221,7 @@
       "PHENOLOGY_IMAGE_UPLOAD": "Phenology image uploaded",
       "PHENOLOGY_OBSERVATION": "Phenology observation",
       "USER_EXP_DAYS_SUBMIT": "Experimentation days submitted",
-      "USER_MODULE_SENSOR2APP_SUBMIT": "Sensor2App submitted",
-      "USER_MODULE_APP2ANALYSE_SUBMIT": "App2Analyse submitted",
+      "USER_TREE_CONTENT_SUBMIT": "Tree description submitted",
       "UPGRADE_ACCOUNT": "Legacy account upgraded",
       "ADMIN_THANKYOU": "Reward for helping (Thank you!)"
     }
@@ -243,6 +242,8 @@
     "status_successful": "Logged in successfully",
     "status_failed": "Login failed, please retry",
     "status_expired": "Your login expired, please log in again",
+    "rescan_qr": "Scan your QR code again",
+    "rescan_qr_show_login": "Login with username",
     "status_force_logout": "You have been logged out",
     "status_force_credentials_confirm": "Please confirm your password to access the requested page",
     "status_user_logout": "Logged out successfully",
@@ -282,7 +283,7 @@
     "checking_state_failed": "Could not check two-factor state",
     "state_info_enabled": "Two-Factor Authentication is ON",
     "state_info_disabled": "Two-Factor Authentication is OFF",
-    "qr_scan_info": "Scan this QR-code using an Authenticator-App like <a class=\"link\" href=\"https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2\" target=\"_blank\">Google Authenticator</a> or <a class=\"link\" href=\"https://play.google.com/store/apps/details?id=org.fedorahosted.freeotp\" target=\"_blank\">FreeOTP</a>.",
+    "qr_scan_info": "Scan this QR-code using an Authenticator-App like <a class=\"link\" href=\"https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2\" target=\"_blank\">Google Authenticator</a> or <a class=\"link\" href=\"https://play.google.com/store/apps/details?id=com.beemdevelopment.aegis\" target=\"_blank\">Aegis</a>.",
     "activate_title": "Activate Two-Factor Authentication",
     "activate_btn": "Activate now",
     "activating_btn": "Activating...",
@@ -492,10 +493,11 @@
     },
     "account": {
       "title": "Manage Account",
-      "desc":  "You are logged in as {{username}}.",
-      "desc_2":  "Change your username or password here or manage two-factor authentication.",
-      "change_username":  "Change username",
-      "change_password":  "Change password",
+      "desc": "You are logged in as {{username}}.",
+      "desc_2": "Change your username or password here or manage two-factor authentication.",
+      "login_link_note": "If you change any of these settings, your QR code will become invalid.",
+      "change_username": "Change username",
+      "change_password": "Change password",
       "manage_2fa": "Two-Factor Authentication"
     },
     "support": {
@@ -509,7 +511,7 @@
       "warning": "This action can't be undone.",
       "btn": "Delete Account",
       "popover_title": "Delete Account?",
-      "popover_desc": "Deletion can't be undone.",
+      "popover_desc": "Deletion can't be undone. Your content will not be deleted.",
       "popover_btn": "Delete account now",
       "popover_btn_progress": "Deleting account",
       "popover_btn_success": "Deleted successfully",
@@ -844,7 +846,7 @@
     "content": {
       "status": {
         "DRAFT": "Draft",
-        "AWAITING_APPROVAL": "Publishing",
+        "DRAFT_AWAITING_APPROVAL": "Publishing",
         "APPROVED": "Published",
         "APPROVED_AWAITING_DELETION": "Deleting",
         "UNAPPROVED_AWAITING_DELETION": "Deleting",

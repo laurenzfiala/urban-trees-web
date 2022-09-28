@@ -10,6 +10,7 @@ import {UserContentMetadata} from '../../entities/user-content-metadata.entity';
 import {AbstractComponent} from '../../../shared/components/abstract.component';
 import {UserContentStatus} from '../../entities/user-content-status.entity';
 import {ExpDaysLayout} from '../../cms-layouts/exp-days/exp-days.component';
+import {UserService} from '../../../trees/services/user.service';
 
 @Component({
   selector: 'ut-content-manager',
@@ -46,7 +47,6 @@ export class ContentManagerComponent extends AbstractComponent implements OnInit
   public selectedContentIndex: number;
   public loadContentHeightPx: number = 0;
   public selectedContent: UserContent;
-  public selectedCmsContent: CmsContent;
 
   /**
    * Only show content for content access that matches the given expression.
@@ -87,6 +87,7 @@ export class ContentManagerComponent extends AbstractComponent implements OnInit
   public contentContainer: ElementRef;
 
   constructor(private managerService: ContentManagerService,
+              private userService: UserService,
               private envService: EnvironmentService) {
     super();
   }
@@ -114,6 +115,7 @@ export class ContentManagerComponent extends AbstractComponent implements OnInit
     this.managerService.denyContent(content.id, status => {
       content.status = status;
       this.selectedAccess.affectedContentAmount--;
+      this.userService.getUserData().unapprovedContentAmount--;
       this.setStatus(StatusKey.CONTENT_ACTION, StatusValue.SUCCESSFUL);
       this.setStatus(StatusKey.DENY_CONTENT, StatusValue.SUCCESSFUL);
     }, (error, apiError) => {
@@ -128,6 +130,7 @@ export class ContentManagerComponent extends AbstractComponent implements OnInit
     this.managerService.approveContent(content.id, status => {
       content.status = status;
       this.selectedAccess.affectedContentAmount--;
+      this.userService.getUserData().unapprovedContentAmount--;
       this.setStatus(StatusKey.CONTENT_ACTION, StatusValue.SUCCESSFUL);
       this.setStatus(StatusKey.APPROVE_CONTENT, StatusValue.SUCCESSFUL);
     }, (error, apiError) => {
@@ -183,7 +186,6 @@ export class ContentManagerComponent extends AbstractComponent implements OnInit
     this.setStatus(StatusKey.LOAD_CONTENT, StatusValue.IN_PROGRESS);
     this.managerService.loadContent(meta.id, content => {
       this.selectedContent = content;
-      this.selectedCmsContent = CmsContent.fromUserContent(content, this.envService);
       this.setStatus(StatusKey.LOAD_CONTENT, StatusValue.SUCCESSFUL);
     }, (error, apiError) => {
       this.setStatus(StatusKey.LOAD_CONTENT, StatusValue.FAILED, apiError);

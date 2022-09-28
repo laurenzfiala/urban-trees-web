@@ -12,6 +12,7 @@ import {SubscriptionManagerService} from '../../../services/subscription-manager
 import {ViewMode} from '../../../../cms/enums/cms-layout-view-mode.enum';
 import {AbstractComponent} from '../../../../shared/components/abstract.component';
 import {ExpDaysLayout} from '../../../../cms/cms-layouts/exp-days/exp-days.component';
+import {UserContents} from '../../../../cms/entities/user-contents.entity';
 
 @Component({
   selector: 'ut-exp-days',
@@ -24,8 +25,6 @@ export class ExpDaysComponent extends AbstractComponent implements AfterViewInit
   public StatusKey = StatusKey;
   public StatusValue = StatusValue;
 
-  private baseContent: UserContent;
-
   @ViewChild('expDaysLayout')
   private expDaysLayout: ExpDaysLayout;
 
@@ -37,41 +36,39 @@ export class ExpDaysComponent extends AbstractComponent implements AfterViewInit
               protected cdRef: ChangeDetectorRef) {
     super();
 
-    this.contentService.setContentPath('/user/' + this.authService.getUserId() + '/expdays');
     this.contentService.viewMode = ViewMode.EDIT_CONTENT;
   }
 
   ngAfterViewInit() {
     this.setStatus(StatusKey.MODEL, StatusValue.IN_PROGRESS);
     this.contentService.loadContent(
-      this.contentService.contentPath().value,
-      'de-DE'/*this.translateService.currentLang*/,
-      content => {
-        this.baseContent = content[0];
-        if (content[0]) {
-          this.expDaysLayout.deserialize(this.serializationService.deserializeElement(CmsContent.fromUserContent(content[0], this.envService).content.elements[0]));
+      '/user/' + this.authService.getUserId() + '/expdays',
+      'de-DE',
+      contents => {
+        this.baseContent = UserContents.single(contents);
+        if (contents.contents.length === 1) {
+          this.expDaysLayout.deserialize(
+            this.serializationService.deserializeElement(CmsContent.fromUserContent(this.baseContent, this.envService).content.elements[0])
+          );
         }
-        // TODO this.expDaysLayout.update();
         this.setStatus(StatusKey.MODEL, StatusValue.SUCCESSFUL);
       }, (error, apiError) => {
-        this.setStatus(StatusKey.MODEL, StatusValue.FAILED, apiError);
-      });
+      this.setStatus(StatusKey.MODEL, StatusValue.FAILED, apiError);
+    });
   }
 
   public save(): void {
 
     this.setStatus(StatusKey.SAVE, StatusValue.IN_PROGRESS);
     this.contentService.saveContent(
-      this.contentService.contentPath().value,
-      this.baseContent ? this.baseContent.contentLanguage : 'de-DE'/*this.translateService.currentLang*/,
       false,
       this.getContent(),
-      userContent => {
+      (content, userContent) => {
+        this.baseContent = userContent;
         this.setStatus(StatusKey.SAVE, StatusValue.SUCCESSFUL);
       }, (error, apiError) => {
         this.setStatus(StatusKey.SAVE, StatusValue.FAILED, apiError);
-      }
-      );
+      });
 
   }
 
@@ -87,6 +84,14 @@ export class ExpDaysComponent extends AbstractComponent implements AfterViewInit
 
   public ngOnDestroy() {
     this.save();
+  }
+
+  get baseContent(): UserContent {
+    return this.contentService.userContent;
+  }
+
+  set baseContent(baseContent: UserContent) {
+    this.contentService.userContent = baseContent;
   }
 
 }

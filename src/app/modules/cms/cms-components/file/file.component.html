@@ -1,11 +1,11 @@
 <div class="cms-component">
-  <div *ngIf="!hasViewMode(ViewMode.CONTENT)"
+  <div *ngIf="!hasViewMode(ViewMode.CONTENT) && fileUid"
        class="cms-file-container custom-file"
        [tooltip]="validationErrorTooltipTemplate"
        [tooltipIsOpen]="validationResults.hasHighlighted() && hasViewMode(ViewMode.EDIT_CONTENT)"
        [adaptivePosition]="false"
        placement="top"
-       tooltipTrigger=""
+       triggers=""
        (focus)="focus()"
        (focusout)="focusOut()">
     <div class="custom-file d-flex flex-row">

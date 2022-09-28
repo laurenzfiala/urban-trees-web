@@ -2,9 +2,6 @@ import {Injectable} from '@angular/core';
 import {Log} from './log.service';
 import {TranslateService} from '@ngx-translate/core';
 import {Title} from '@angular/platform-browser';
-import {SubscriptionManagerService} from '../../trees/services/subscription-manager.service';
-import {Subscription} from 'rxjs';
-import {MultiTranslateHttpLoader} from '../lib/multi-translate-http-loader';
 
 /**
  * Service to initialize ngx-translate properly.
@@ -35,12 +32,13 @@ export class TranslateInitService {
       return;
     }
 
-    this.translate.addLangs(['en-GB', 'de-DE']);
+    this.translate.setDefaultLang('de-DE');
+    this.translate.addLangs(['de-DE']);
 
     let userLang = this.translate.getBrowserLang();
     let userCultureLang = this.translate.getBrowserCultureLang();
 
-    let guessed;
+    /*let guessed;
     for (let lang of this.translate.getLangs()) {
       if (lang === userCultureLang) {
         guessed = lang;
@@ -54,7 +52,7 @@ export class TranslateInitService {
       this.translate.use(guessed);
     } else {
       this.translate.setDefaultLang('en-GB');
-    }
+    }*/
 
     const titleSub = this.translate.get('app.title').subscribe((translatedTitle: string) => {
       this.setTitle(translatedTitle);

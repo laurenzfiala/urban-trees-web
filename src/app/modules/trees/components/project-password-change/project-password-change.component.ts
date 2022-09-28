@@ -48,6 +48,10 @@ export class PasswordChangeComponent extends AbstractComponent implements OnInit
 
     this.setStatus(StatusKey.CHANGE_PASSWORD, StatusValue.IN_PROGRESS);
 
+    if (this.authService.isTempNoPasswordAuth()) {
+      this.hasStatus(StatusKey.FORCE_LOGOUT, StatusValue.YES);
+    }
+
     this.authService.changePassword(this.passwordReset, () => {
       PasswordChangeComponent.LOG.info('Successfully changed password');
       this.setStatus(StatusKey.CHANGE_PASSWORD, StatusValue.SUCCESSFUL);
@@ -94,7 +98,10 @@ export class PasswordChangeComponent extends AbstractComponent implements OnInit
   }
 
   public showOldPasswordInput(): boolean {
-    return !this.authService.isTempChangePasswordAuth() &&
+    return !(
+              this.authService.isTempChangePasswordAuth() ||
+              this.authService.isTempNoPasswordAuth()
+           ) &&
            this.authService.getLogInStatus() === LoginStatus.LOGGED_IN_JWT;
   }
 
