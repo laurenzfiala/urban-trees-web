@@ -322,10 +322,10 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, OnDes
 
     const now = Date.now();
     const lastSentContent = this.changeConfig.lastSentContent;
-    if (!force && lastSentContent && lastSentContent.sent.getTime() > now - this.envService.contentSaveDebounceMs) {
+    if (!force && lastSentContent?.getTime() > now - this.envService.contentSaveDebounceMs) {
       ContentComponent.LOG.trace('Saving is not yet allowed.');
       if (this.saveTimeoutId === 0) {
-        const saveWaitMs = this.envService.contentSaveDebounceMs - now + lastSentContent.sent.getTime();
+        const saveWaitMs = this.envService.contentSaveDebounceMs - now + lastSentContent.getTime();
         await new Promise((resolve, reject) => {
           this.saveTimeoutId = window.setTimeout(resolve, saveWaitMs);
           ContentComponent.LOG.trace('Deferred save for ' + saveWaitMs / 1000 + 's using timeout handle ' + this.saveTimeoutId);
@@ -372,7 +372,7 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, OnDes
     this.setStatus(StatusKey.SAVE, StatusValue.IN_PROGRESS);
     window.clearTimeout(this.saveTimeoutId);
     this.saveTimeoutId = 0;
-    content.sent = new Date();
+    this.changeConfig.lastSentContent = content;
     this.changeConfig.isLastSaveDraft = !publish;
     const unsavedChangesBefore = this.changeConfig.unsavedChanges;
 
@@ -381,7 +381,6 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, OnDes
                                       content,
                           (cmsContent, userContent) => {
         ContentComponent.LOG.debug('Content successfully ' + (publish ? 'published' : 'saved') + '.');
-        content.stored = cmsContent.stored;
         if (contentChange) {
           contentChange.stored = cmsContent.stored;
         }
@@ -402,7 +401,6 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, OnDes
       }, (error, apiError) => {
         ContentComponent.LOG.warn('Failed to save content.');
         this.changeConfig.unsavedChanges = unsavedChangesBefore;
-        content.sent = undefined;
         this.setStatus(StatusKey.SAVE, StatusValue.FAILED);
         reject(apiError.message);
       });

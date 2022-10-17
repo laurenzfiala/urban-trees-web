@@ -88,6 +88,7 @@ import {ContentComponent} from './components/admin/content/content.component';
 import { JournalViewComponent } from './components/teacher/journal-view/journal-view.component';
 import { MethodboxComponent } from './components/methodbox/methodbox.component';
 import {ProjectLoginExpiredGuard} from './components/project-login/project-login-expired.guard';
+import { PrivacyComponent } from './components/privacy/privacy.component';
 
 @NgModule({
     declarations: [
@@ -133,6 +134,7 @@ import {ProjectLoginExpiredGuard} from './components/project-login/project-login
         SensorToAppComponent,
         AppToAnalyseComponent,
         JournalViewComponent,
+        PrivacyComponent,
 
         // Pipes
         StringModificationPipe,

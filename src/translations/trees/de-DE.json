@@ -25,6 +25,7 @@
     "footer": {
       "report": "Problem melden",
       "imprint": "Impressum",
+      "privacy": "Datenschutz",
       "madeby": "Entwickelt vom ",
       "madeby_team": "CO₂BS-Team"
     },
@@ -579,6 +580,10 @@
     "license": "Lizenz",
     "os_projects": "Open-Source Projekte",
     "os_projects_text": "Nachfolgend eine Liste der in dieser App benutzten Open-Source Projekte."
+  },
+  "privacy": {
+    "title": "Datenschutzerklärung",
+    "title_disclaimer": "The information below is only available in german"
   },
   "home": {
     "title": "Willkommen bei&nbsp;<b>Coole Bäume &amp; Sensoren</b>!",

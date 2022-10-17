@@ -11,7 +11,6 @@ import {SerializedCmsContent} from './serialized-cms-content.entity';
 import {EnvironmentService} from '../../shared/services/environment.service';
 import * as moment from 'moment';
 import {CmsContent} from './cms-content.entity';
-import {UserContentStatus} from './user-content-status.entity';
 
 export class CmsContentChange {
 
@@ -52,15 +51,15 @@ export class CmsContentChange {
   }
 
   public isSaved(): boolean {
-    return this.saved !== undefined;
+    return !!this.saved;
   }
 
   public isSent(): boolean {
-    return this.sent !== undefined;
+    return !!this.sent;
   }
 
   public isStored(): boolean {
-    return this.stored !== undefined;
+    return !!this.stored;
   }
 
   /**

@@ -53,8 +53,8 @@ export class ExpDaysComponent extends AbstractComponent implements AfterViewInit
         }
         this.setStatus(StatusKey.MODEL, StatusValue.SUCCESSFUL);
       }, (error, apiError) => {
-      this.setStatus(StatusKey.MODEL, StatusValue.FAILED, apiError);
-    });
+        this.setStatus(StatusKey.MODEL, StatusValue.FAILED, apiError);
+      });
   }
 
   public save(): void {

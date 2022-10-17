@@ -58,7 +58,7 @@
   </div>
 </div>
 
-<div *ngIf="displayBeacons?.length === 0"
+<div *ngIf="availableBeacons?.length > 0 && displayBeacons?.length === 0"
      class="status-img my-4">
   <img src="/assets/img/icon/no_results.svg" />
   <div>

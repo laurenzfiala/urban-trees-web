@@ -42,7 +42,7 @@
 <section class="content-cat">
   <div class="container">
 
-    <ut-cms-content *ngIf="tree"
+    <ut-cms-content *ngIf="tree && content"
                     [content]="content"
                     [(viewMode)]="contentViewMode"
                     (contentSave)="content = $event"

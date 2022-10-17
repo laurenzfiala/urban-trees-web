@@ -464,7 +464,7 @@ export class AuthService extends AbstractService {
   }
 
   /**
-   * Remove JWT token from local storage.
+   * Remove JWT token cookie.
    */
   private deleteJWTToken(): void {
     let cookies = this.document.cookie.split('; ');

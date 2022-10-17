@@ -194,6 +194,7 @@ export class ProjectLoginComponent extends AbstractComponent implements OnInit, 
         this.isPinSet = false;
         this.showPin = true;
         this.setStatus(StatusKey.LOGIN, StatusValue.ENTER_PIN);
+        this.authService.logout();
         return;
       }
 
@@ -258,7 +259,8 @@ export class ProjectLoginComponent extends AbstractComponent implements OnInit, 
    * JWT login.
    */
   public isAlreadyLoggedIn(): boolean {
-    return this.authService.getLogInStatus() === LoginStatus.LOGGED_IN_JWT && this.accessReason !== LoginAccessReason.FORCE_CREDENTIALS_CONFIRM;
+    return this.authService.getLogInStatus() === LoginStatus.LOGGED_IN_JWT
+      && this.accessReason !== LoginAccessReason.FORCE_CREDENTIALS_CONFIRM;
   }
 
   /**

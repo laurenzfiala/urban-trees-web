@@ -7,8 +7,8 @@ export const environment = {
 
   production:                         true,
 
-  webHost:                            'https://urban-tree-climate.sbg.ac.at',
-  host:                               'https://urban-tree-climate.sbg.ac.at:8443',
+  webHost:                            'https://cobs.laurenz.dev',
+  host:                               'https://cobs.laurenz.dev/api',
   mapHost:                            'http://urban-tree-climate.sbg.ac.at:80',
 
   endpoints: {
@@ -85,12 +85,12 @@ export const environment = {
     loadPPIN:                         '/account/permission/pin',
 
     // CMS
-    loadContent:                      '/content/{contentId}/{contentLang}',
-    saveContentDraft:                 '/content/{contentLang}/draft?path={contentPath}',
+    loadContent:                      '/content?path={contentPath}&lang={contentLang}',
+    saveContentDraft:                 '/content/draft?path={contentPath}&lang={contentLang}',
     loadContentFile:                  '/content/file/{fileUid}?path={contentPath}&filename={filename}',
     saveContentFile:                  '/content/file?path={contentPath}',
-    publishContent:                   '/content/{contentLang}?path={contentPath}',
-    deleteContent:                    '/content/{contentUid}',
+    publishContent:                   '/content?path={contentPath}&lang={contentLang}',
+    deleteContent:                    '/content/{contentUid}?draftOnly={draftOnly}',
     loadContentUserHistory:           '/user/{userId}/content?path={path}',
 
     // CMS Manager

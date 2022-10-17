@@ -6,6 +6,8 @@ import {CmsContent} from '../../entities/cms-content.entity';
 import {StatusKey, StatusValue} from '../content/content.component';
 import * as moment from 'moment';
 import {Log} from '../../../shared/services/log.service';
+import {UserContent} from '../../entities/user-content.entity';
+import {EnvironmentService} from '../../../shared/services/environment.service';
 
 @Component({
   selector: 'ut-content-save-status',
@@ -30,7 +32,7 @@ export class ContentSaveStatusComponent extends AbstractComponent implements OnI
   private status: Observable<StatusValue>;
 
   @Input()
-  private saved: Observable<CmsContent>;
+  private saved: Observable<UserContent>;
 
   /**
    * Data for the save timer.
@@ -38,6 +40,7 @@ export class ContentSaveStatusComponent extends AbstractComponent implements OnI
   public saveTimer: {content: CmsContent, msgKey: string, durationSinceSave: any} = {content: undefined, msgKey: undefined, durationSinceSave: undefined};
 
   constructor(private subs: SubscriptionManagerService,
+              private envService: EnvironmentService,
               private cdRef: ChangeDetectorRef) {
     super();
   }
@@ -47,7 +50,7 @@ export class ContentSaveStatusComponent extends AbstractComponent implements OnI
     this.saveTimerSubscriptionTag = undefined;
     this.updateStatus(StatusValue.NONE);
     this.subs.reg(this.status.subscribe(status => this.updateStatus(status)));
-    this.subs.reg(this.saved.subscribe(savedContent => this.startSaveTimer(savedContent)));
+    this.subs.reg(this.saved.subscribe(savedUserContent => this.startSaveTimer(CmsContent.fromUserContent(savedUserContent, this.envService))));
 
   }
 

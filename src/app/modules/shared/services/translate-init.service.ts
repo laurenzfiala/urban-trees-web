@@ -34,6 +34,7 @@ export class TranslateInitService {
 
     this.translate.setDefaultLang('de-DE');
     this.translate.addLangs(['de-DE']);
+    this.translate.use('de-DE');
 
     let userLang = this.translate.getBrowserLang();
     let userCultureLang = this.translate.getBrowserCultureLang();

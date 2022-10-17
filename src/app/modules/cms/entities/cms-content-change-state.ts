@@ -8,6 +8,7 @@ import {Stack} from './stack.entity';
 import {CmsContentChange} from './cms-content-change';
 import {CmsContent} from './cms-content.entity';
 import {UserContent} from './user-content.entity';
+import {UserContents} from './user-contents.entity';
 
 export class CmsContentChangeState {
 
@@ -30,6 +31,11 @@ export class CmsContentChangeState {
   public lastTrackedChange: Date;
 
   /**
+   * Stores the last sent cms content.
+   */
+  public lastSentContent: Date;
+
+  /**
    * Whether the displayed content has any untracked change not yet
    * reflected in #changes.
    */
@@ -46,10 +52,6 @@ export class CmsContentChangeState {
     this.isLastSaveDraft = true;
     this.hasUntrackedChange = false;
     this.unsavedChanges = 0;
-  }
-
-  get lastSentContent(): CmsContentChange {
-    return this.changes.find(c => c.isSent());
   }
 
   get lastSavedContent(): CmsContentChange {

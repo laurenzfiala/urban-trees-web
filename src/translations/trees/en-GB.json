@@ -25,6 +25,7 @@
     "footer": {
       "report": "Report a problem",
       "imprint": "Imprint",
+      "privacy": "Privacy",
       "home": "Home page",
       "madeby": "Made by the ",
       "madeby_team": "CO₂BS-Team"
@@ -591,6 +592,10 @@
     "license": "License",
     "os_projects": "Open Source Projects",
     "os_projects_text": "Following is a list of open source projects used to create this website."
+  },
+  "privacy": {
+    "title": "Privacy statement",
+    "title_disclaimer": "The information below is only available in german"
   },
   "home": {
     "title": "Welcome to&nbsp;<b>Cool Trees &amp; Sensors</b>!",

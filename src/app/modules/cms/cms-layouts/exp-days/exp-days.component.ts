@@ -23,9 +23,9 @@ export class ExpDaysLayout extends AbstractCmsLayout implements AfterViewInit {
   public experiments: any[] = [
     {img: '/assets/img/journal/expdays/experiments/leaves_in_plastic.JPG', name: 'Blätter im Plastiksack', active: false},
     {img: '/assets/img/journal/expdays/experiments/co2_pour.JPG', name: 'CO₂ Gießen', active: false},
-    {img: '/assets/img/journal/expdays/experiments/co2_air.JPG', name: 'CO₂ in der Atemluft', active: false},
+    // {img: '/assets/img/journal/expdays/experiments/co2_air.JPG', name: 'CO₂ in der Atemluft', active: false},
     {img: '/assets/img/journal/expdays/experiments/co2_mass.JPG', name: 'CO₂ Masse abwiegen', active: false},
-    {img: '/assets/img/journal/expdays/experiments/co2_lake.JPG', name: 'CO₂ See', active: false},
+    // {img: '/assets/img/journal/expdays/experiments/co2_lake.JPG', name: 'CO₂ See', active: false},
     {img: '/assets/img/journal/expdays/experiments/hands.JPG', name: 'Die getäuschten Hände', active: false},
     {img: '/assets/img/journal/expdays/experiments/priestley.JPG', name: 'Priestley Experiment', active: false},
     {img: '/assets/img/journal/expdays/experiments/gap.JPG', name: 'Spaltöffnungen', active: false}
