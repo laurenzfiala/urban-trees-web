@@ -26,4 +26,5 @@ AddOutputFilterByType DEFLATE application/x-javascript
   </IfModule>
 </FilesMatch>
 
-Header add Content-Security-Policy "default-src 'self';"
+#Header add Content-Security-Policy "default-src 'self';"
+Header add Content-Security-Policy "default-src 'self'; style-src 'self' 'unsafe-inline'; script-src 'self' 'sha256-j8yXBDpBnwBDpBnwcyw0ezazJIX+khfeDBNpItQtaqDe05ltQ='; img-src 'self' data: blob: *.openstreetmap.org;"

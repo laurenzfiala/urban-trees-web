@@ -1,4 +1,14 @@
-import {AfterViewInit, Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectorRef,
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  ViewChild
+} from '@angular/core';
 import {AuthService} from '../../../shared/services/auth.service';
 import {AbstractComponent} from '../../../shared/components/abstract.component';
 import {ActivatedRoute, Router} from '@angular/router';
@@ -103,6 +113,7 @@ export class ProjectLoginComponent extends AbstractComponent implements OnInit, 
 
   constructor(private router: Router,
               private route: ActivatedRoute,
+              private cdRef: ChangeDetectorRef,
               private authService: AuthService) {
     super();
   }
@@ -205,6 +216,7 @@ export class ProjectLoginComponent extends AbstractComponent implements OnInit, 
         this.isPinSet = false;
         this.showPin = true;
         this.setStatus(StatusKey.LOGIN, StatusValue.ENTER_PIN);
+        this.cdRef.detectChanges();
         return;
       }
 
