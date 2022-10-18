@@ -111,44 +111,55 @@ export class ProjectLoginComponent extends AbstractComponent implements OnInit, 
 
     this.setStatus(StatusKey.LOGIN, StatusValue.PENDING);
 
-    this.route.params.subscribe((params: any) => {
+    const params$ = new Promise<void>(resolve => {
+      this.route.params.subscribe((params: any) => {
 
-      const tokenVal = params[ProjectLoginComponent.PATH_PARAMS_TOKEN];
-      if (tokenVal) {
-        this.token = tokenVal;
-      }
+        const tokenVal = params[ProjectLoginComponent.PATH_PARAMS_TOKEN];
+        if (tokenVal) {
+          this.token = tokenVal;
+        }
 
+        resolve();
+
+      });
     });
 
-    this.route.queryParams.subscribe((params: any) => {
+    const queryParams$ = new Promise<void>(resolve => {
+      this.route.queryParams.subscribe((params: any) => {
 
-      const reasonVal = params[ProjectLoginComponent.QUERY_PARAMS_LOGIN_REASON_KEY];
-      const redirectVal = params[ProjectLoginComponent.QUERY_PARAMS_REDIRECT_KEY];
-
-      if (reasonVal) {
-        this.accessReason = reasonVal;
-        if (reasonVal === LoginAccessReason.FORCE_LOGOUT_EXPIRED_LOGIN_LINK) {
-          this.showLogin = false;
-          this.disclaimer = false;
-        }
-      }
-      if (redirectVal) {
-        this.redirectTo = redirectVal;
-        if (this.isAlreadyLoggedIn()) {
-          this.router.navigateByUrl(this.redirectTo);
-        }
-      } else if (!this.relog) {
-        this.redirectTo = '/home';
-      }
-      if (this.token) {
-        this.authService.logout();
+        const reasonVal = params[ProjectLoginComponent.QUERY_PARAMS_LOGIN_REASON_KEY];
+        const redirectVal = params[ProjectLoginComponent.QUERY_PARAMS_REDIRECT_KEY];
         const pinVal = params[ProjectLoginComponent.QUERY_PARAMS_PIN];
+
+        if (reasonVal) {
+          this.accessReason = reasonVal;
+          if (reasonVal === LoginAccessReason.FORCE_LOGOUT_EXPIRED_LOGIN_LINK) {
+            this.showLogin = false;
+            this.disclaimer = false;
+          }
+        }
+        if (redirectVal) {
+          this.redirectTo = redirectVal;
+          if (this.isAlreadyLoggedIn()) {
+            this.router.navigateByUrl(this.redirectTo);
+          }
+        } else if (!this.relog) {
+          this.redirectTo = '/home';
+        }
         if (pinVal) {
           this.mustEnterPin = true;
         }
+
+        resolve();
+
+      });
+    });
+
+    Promise.all([params$, queryParams$]).then(() => {
+      if (this.token) {
+        this.authService.logout();
         this.login();
       }
-
     });
 
     // pre-fill username if a token exists
