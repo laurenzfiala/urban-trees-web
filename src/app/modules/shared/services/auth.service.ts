@@ -158,14 +158,12 @@ export class AuthService extends AbstractService {
    * @param {AuthenticationToken} authToken any valid authentication token
    * @param {() => void} successCallback called when login was successful
    * @param {(error: HttpErrorResponse, apiError?: ApiError) => void} errorCallback when login failed
-   * @param dryrun (default = false) if true, does not apply auth credentials
    */
   public login(authToken: AuthenticationToken,
                successCallback: () => void,
-               errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void,
-               dryrun: boolean = false): void {
+               errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void): void {
 
-    this.http.post(this.envService.endpoints.login, authToken, {observe: 'response', withCredentials: !dryrun})
+    this.http.post(this.envService.endpoints.login, authToken, {observe: 'response', withCredentials: true})
       .subscribe(() => {
         AuthService.LOG.debug('Logged in successfully.');
         this.stateChanged();

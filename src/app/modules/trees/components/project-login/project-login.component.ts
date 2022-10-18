@@ -113,7 +113,6 @@ export class ProjectLoginComponent extends AbstractComponent implements OnInit, 
 
   constructor(private router: Router,
               private route: ActivatedRoute,
-              private cdRef: ChangeDetectorRef,
               private authService: AuthService) {
     super();
   }
@@ -168,7 +167,6 @@ export class ProjectLoginComponent extends AbstractComponent implements OnInit, 
 
     Promise.all([params$, queryParams$]).then(() => {
       if (this.token) {
-        this.authService.logout();
         this.login();
       }
     });
@@ -213,10 +211,10 @@ export class ProjectLoginComponent extends AbstractComponent implements OnInit, 
 
     this.authService.login(loginEntity, () => {
       if (loginEntity instanceof TokenAuthenticationToken && !loginEntity.secureLoginKeyPin && this.mustEnterPin) {
+        this.authService.logout();
         this.isPinSet = false;
         this.showPin = true;
         this.setStatus(StatusKey.LOGIN, StatusValue.ENTER_PIN);
-        this.cdRef.detectChanges();
         return;
       }
 
@@ -252,7 +250,7 @@ export class ProjectLoginComponent extends AbstractComponent implements OnInit, 
       } else {
         this.setStatus(StatusKey.LOGIN, StatusValue.FAILED);
       }
-    }, this.mustEnterPin && !loginEntity.secureLoginKeyPin);
+    });
 
   }
 
