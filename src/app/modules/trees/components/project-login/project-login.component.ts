@@ -140,8 +140,8 @@ export class ProjectLoginComponent extends AbstractComponent implements OnInit, 
       } else if (!this.relog) {
         this.redirectTo = '/home';
       }
-
       if (this.token) {
+        this.authService.logout();
         const pinVal = params[ProjectLoginComponent.QUERY_PARAMS_PIN];
         if (pinVal) {
           this.mustEnterPin = true;
@@ -194,7 +194,6 @@ export class ProjectLoginComponent extends AbstractComponent implements OnInit, 
         this.isPinSet = false;
         this.showPin = true;
         this.setStatus(StatusKey.LOGIN, StatusValue.ENTER_PIN);
-        this.authService.logout();
         return;
       }
 

@@ -790,7 +790,13 @@
     "download_all_data_now": "Daten jetzt herunterladen",
     "beacon_diagram": {
       "temperature": "Temperatur",
-      "humidity": "Luftfeuchte"
+      "humidity": "Luftfeuchte",
+      "temperature_max": "Maximale Temperatur",
+      "temperature_avg": "Durchschnittliche Temperatur",
+      "temperature_min": "Minimale Temperatur",
+      "humidity_max": "Maximale Luftfeuchte",
+      "humidity_avg": "Durchschnittliche Luftfeuchte",
+      "humidity_min": "Minimale Luftfeuchte"
     }
   },
   "notifications": {

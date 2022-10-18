@@ -802,7 +802,13 @@
     "download_all_data_now": "Download data now",
     "beacon_diagram": {
       "temperature": "Temperature",
-      "humidity": "Humidity"
+      "humidity": "Humidity",
+      "temperature_max": "Maximum Temperature",
+      "temperature_avg": "Average Temperature",
+      "temperature_min": "Minimum Temperature",
+      "humidity_max": "Maximum Humidity",
+      "humidity_avg": "Average Humidity",
+      "humidity_min": "Minimum Humidity"
     }
   },
   "notifications": {

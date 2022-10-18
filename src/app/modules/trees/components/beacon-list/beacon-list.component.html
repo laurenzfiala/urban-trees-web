@@ -55,52 +55,57 @@
        [ngClass]="{'status-shown': openStatus}">
 
     <div class="beacon-info-container">
-      <h1 class="content-cat-heading d-inline-flex flex-row m-0">
-        Beacon {{selectedBeacon.deviceId}}
 
-        <div *ngIf="showAssociations && selectedBeacon.tree"
-             [routerLink]="['/tree', selectedBeacon.tree.id]"
-             class="badge badge-xs d-flex flex-row align-items-center ml-1 link-container"
-             role="link"
-             tabindex="0">
-          <i class="i i-xxs i-dark i-link mr-1"></i>
-          {{'map.tree_assoc' | translate}}&nbsp;
-          <a class="link">#{{selectedBeacon.tree.id}}</a>
-        </div>
+      <div class="d-flex flex-row justify-content-between flex-wrap">
 
-        <i *ngIf="selectedBeacon.status === BeaconStatus.LOCKED"
-           class="i i-dark i-xs i-lock-closed-sm ml-1 flex-shrink-0"
-           [tooltip]="'tree.beacon.details.status_locked' | translate"></i>
+        <h1 class="content-cat-heading d-inline-flex flex-row m-0">
+          Beacon {{selectedBeacon.deviceId}}
 
-        <i *ngIf="selectedBeacon.status === BeaconStatus.INVALID_SETTINGS"
-           class="i i-dark i-xs i-signal-issue-sm ml-1 flex-shrink-0"
-           [tooltip]="'tree.beacon.details.status_invalid_settings' | translate"></i>
+          <div *ngIf="showAssociations && selectedBeacon.tree"
+               [routerLink]="['/tree', selectedBeacon.tree.id]"
+               class="badge badge-xs d-flex flex-row align-items-center ml-1 link-container"
+               role="link"
+               tabindex="0">
+            <i class="i i-xxs i-dark i-link mr-1"></i>
+            {{'map.tree_assoc' | translate}}&nbsp;
+            <a class="link">#{{selectedBeacon.tree.id}}</a>
+          </div>
 
-        <ut-loading-status
-          errorDescription="tree.beacon.data.error"
-          [statusValues]="StatusValue"
-          [status]="getStatusObservable(StatusKey.BEACON_DATA)"
-          [error]="getStatusErrorObservable(StatusKey.BEACON_DATA)"></ut-loading-status>
+          <i *ngIf="selectedBeacon.status === BeaconStatus.LOCKED"
+             class="i i-dark i-xs i-lock-closed-sm ml-1 flex-shrink-0"
+             [tooltip]="'tree.beacon.details.status_locked' | translate"></i>
 
-      </h1>
-      <div *ngIf="showData"
-           class="float-right">
-        <div dropdown class="btn-group">
-          <button dropdownToggle
-                  type="button"
-                  class="btn btn-sm btn-outline-dark dropdown-toggle">
-            {{currentBeaconDataMode | translate}}
-          </button>
-          <div *dropdownMenu class="dropdown-menu dropdown-menu-right">
-            <a *ngFor="let mode of BEACON_DATA_MODE_KEYS;"
-               class="dropdown-item"
-               tabindex="0"
-               role="button"
-               (action)="loadBeaconData(BeaconDataMode[mode]);">
-              {{BeaconDataMode[mode] | translate}}
-            </a>
+          <i *ngIf="selectedBeacon.status === BeaconStatus.INVALID_SETTINGS"
+             class="i i-dark i-xs i-signal-issue-sm ml-1 flex-shrink-0"
+             [tooltip]="'tree.beacon.details.status_invalid_settings' | translate"></i>
+
+          <ut-loading-status
+            errorDescription="tree.beacon.data.error"
+            [statusValues]="StatusValue"
+            [status]="getStatusObservable(StatusKey.BEACON_DATA)"
+            [error]="getStatusErrorObservable(StatusKey.BEACON_DATA)"></ut-loading-status>
+
+        </h1>
+        <div *ngIf="showData" class="d-flex flex-row flex-grow-1 flex-shrink-0">
+          <div class="flex-grow-1"></div>
+          <div dropdown class="btn-group">
+            <button dropdownToggle
+                    type="button"
+                    class="btn btn-sm btn-outline-dark dropdown-toggle">
+              {{currentBeaconDataMode | translate}}
+            </button>
+            <div *dropdownMenu class="dropdown-menu dropdown-menu-right">
+              <a *ngFor="let mode of BEACON_DATA_MODE_KEYS;"
+                 class="dropdown-item"
+                 tabindex="0"
+                 role="button"
+                 (action)="loadBeaconData(BeaconDataMode[mode]);">
+                {{BeaconDataMode[mode] | translate}}
+              </a>
+            </div>
           </div>
         </div>
+
       </div>
 
       <div *ngIf="!showStatus && selectedBeacon.status === BeaconStatus.INITIAL"

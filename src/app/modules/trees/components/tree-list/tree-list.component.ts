@@ -107,6 +107,14 @@ export class TreeListComponent extends AbstractComponent implements OnInit {
         this.cities.push(t.location.city);
       }
     }
+    this.cities.sort((a, b) => {
+      if (a.name < b.name) {
+        return -1;
+      } else if (a.name > b.name) {
+        return 1;
+      }
+      return 0;
+    });
   }
 
   /**
