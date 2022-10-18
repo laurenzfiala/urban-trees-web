@@ -167,6 +167,7 @@ export class ProjectLoginComponent extends AbstractComponent implements OnInit, 
 
     Promise.all([params$, queryParams$]).then(() => {
       if (this.token) {
+        this.authService.logout();
         this.login();
       }
     });
