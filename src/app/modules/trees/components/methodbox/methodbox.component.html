@@ -3,20 +3,21 @@
 
     <h1 class="content-cat-heading">
       Die digitale Methodenbox
+
+      <div *auth="envService.security.rolesTeacher">
+        <button *ngIf="content && contentViewMode === ViewMode.CONTENT"
+                (action)="contentViewMode = ViewMode.EDIT_CONTENT"
+                class="btn btn-outline-primary btn-sm btn-flex ml-2">
+          Bearbeiten
+        </button>
+      </div>
+
     </h1>
 
     <ut-cms-content [content]="content"
                     [(viewMode)]="contentViewMode"
                     (contentSave)="content = $event"
                     (reloadContent)="loadContent()"></ut-cms-content>
-
-    <div *auth="envService.security.rolesTeacher" class="mt-2">
-      <button *ngIf="content && contentViewMode === ViewMode.CONTENT"
-              (action)="contentViewMode = ViewMode.EDIT_CONTENT"
-              class="btn link-btn">
-        Methodenbox bearbeiten
-      </button>
-    </div>
 
   </div>
 </section>

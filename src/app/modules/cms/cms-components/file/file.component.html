@@ -1,5 +1,5 @@
 <div class="cms-component">
-  <div *ngIf="!hasViewMode(ViewMode.CONTENT) && fileUid"
+  <div *ngIf="!hasViewMode(ViewMode.CONTENT)"
        class="cms-file-container custom-file"
        [tooltip]="validationErrorTooltipTemplate"
        [tooltipIsOpen]="validationResults.hasHighlighted() && hasViewMode(ViewMode.EDIT_CONTENT)"
@@ -17,7 +17,7 @@
           [ngClass]="{'is-invalid': validationResults.hasErrors()}"
           (change)="uploadFile($event);">
         <label class="custom-file-label">
-          {{filename ? filename : ('components.file.placeholder' | translate)}}
+          {{filename ?? ('components.file.placeholder' | translate)}}
         </label>
       </div>
     </div>

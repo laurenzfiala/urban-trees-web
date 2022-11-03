@@ -59,10 +59,10 @@
     <div class="container">
       <h1 class="content-cat-heading">
         Reports
-        <div *ngIf="userdata && userdata?.newMessagesAmount > 0"
+        <div *ngIf="userdata && userdata?.unresolvedReportsAmount > 0"
              class="badge badge-sm warning ml-1"
              aria-hidden="true">
-          {{userdata?.newMessagesAmount}} unresolved
+          {{userdata?.unresolvedReportsAmount}} unresolved
         </div>
       </h1>
       <div class="content-cat-text">
@@ -78,7 +78,14 @@
 
   <div class="content-cat">
     <div class="container">
-      <h1 class="content-cat-heading">User Content</h1>
+      <h1 class="content-cat-heading">
+        User Content
+        <div *ngIf="userdata && userdata?.unapprovedContentAmount > 0"
+             class="badge badge-sm info ml-1"
+             aria-hidden="true">
+          {{userdata?.unapprovedContentAmount}} unresolved
+        </div>
+      </h1>
       <div class="content-cat-text">
         View, approve &amp; manage user generated content.
       </div>

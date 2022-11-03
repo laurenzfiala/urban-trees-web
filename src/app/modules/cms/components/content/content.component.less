@@ -10,7 +10,7 @@
   z-index: (@navZIndex - 1);
 }
 
-::ng-deep {
+.content-wrapper::ng-deep {
 
   .popover {
     max-width: 100vw;
@@ -88,6 +88,7 @@
 
     .cms-element-border {
       border: @borderWidth solid @borderColor;
+      border-radius: @borderRadius;
     }
   }
 

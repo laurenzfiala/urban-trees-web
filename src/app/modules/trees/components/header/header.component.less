@@ -20,9 +20,12 @@
   }
 }
 
-.navbar-bg {
+.navbar-container {
   position: relative;
-  z-index: @navZIndex;
+  z-index: 40; // i do not understand why, but this did not work with the variable
+}
+
+.navbar-bg {
   background-color: @navBgColor;
 }
 
