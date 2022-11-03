@@ -61,7 +61,7 @@ input.code {
   .fp {
     position: absolute;
     top: -0.45rem;
-    left: max(@borderRadiusNew, @gutter);
+    left: max(@borderRadius, @gutter);
     z-index: 1;
     padding: 0 (@gutter / 2);
     color: @darkGrey;
@@ -100,4 +100,24 @@ input[type="number"] {
     -webkit-appearance: none;
     margin: 0;
   }
+}
+
+// overwrite focus outline & border
+textarea:focus,
+textarea.form-control:focus,
+.form-control:focus,
+.custom-file-input:focus + .custom-file-label {
+  box-shadow: 0 0 0 @focusOutlineWidth @focusOutlineColor;
+  border-color: @focusBorderColor;
+  outline: 0;
+}
+
+.btn.btn-default:focus {
+  box-shadow: 0 0 0 @focusOutlineWidth fade(@borderColor, 40%);
+  border-color: @borderColor;
+}
+
+.btn.btn-plain:focus {
+  outline: 0;
+  box-shadow: none;
 }

@@ -48,11 +48,17 @@ export class TreeSelectComponent extends AbstractComponent implements OnInit, On
   }
 
   /**
-   * Whether or not to preselect the first tree in the list.
+   * Whether to preselect the first tree in the list.
    * Input "selectedTree" overrides this if it has an id != 0 and is non-falsy.
    */
   @Input()
   public preselectFirstTree: boolean = false;
+
+  /**
+   * Whether to show the list when nothing is selected.
+   */
+  @Input()
+  public showList: boolean = true;
 
   /**
    * Once loaded, contains all trees available for observation.

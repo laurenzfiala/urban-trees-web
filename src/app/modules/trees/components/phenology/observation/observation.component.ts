@@ -83,7 +83,7 @@ export class ObservationComponent extends AbstractComponent implements OnInit, O
     return this.observationService.dataset;
   }
 
-  constructor(private observationService: PhenologyObservationService,
+  constructor(public observationService: PhenologyObservationService,
               private subs: SubscriptionManagerService,
               private treeService: TreeService,
               public rewardService: UserRewardService,

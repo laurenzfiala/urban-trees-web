@@ -3,11 +3,21 @@
 @maxAnnotations:  10;
 @maxWidth:        400px;
 
+::ng-deep .content-cat:nth-child(even) {
+  .login-container {
+    background-color: @white;
+  }
+}
+
 .login-container {
-  border-radius: @borderRadiusOuterNew;
-  background-color: @medLightBgColor;
+  border-radius: @borderRadiusOuter;
+  background: @loginBg;
   padding: @gutter2x;
   z-index: @maxAnnotations + 1;
+
+  &.fp-bg {
+    background: @loginBg;
+  }
 
   .login-info {
     display: flex;
@@ -19,6 +29,7 @@
     background-color: @lightBgColor;
     color: @subtleTextColor;
     font-size: @fontSizeSmall;
+    border-radius: @borderRadius;
   }
 
   .explainer-icon {
@@ -31,13 +42,12 @@
 }
 
 .login-annotation-container {
-  background-color: @lightBgColor;
   color: @darkGrey;
   font-size: @fontSizeSmall;
-  border-bottom-left-radius: @borderRadiusOuterNew;
-  border-bottom-right-radius: @borderRadiusOuterNew;
-  padding: (@gutter2x + @borderRadiusOuterNew) @gutter2x @gutter2x @gutter2x;
-  margin-top: -@borderRadiusOuterNew;
+  border-bottom-left-radius: @borderRadiusOuter;
+  border-bottom-right-radius: @borderRadiusOuter;
+  padding: calc(@gutter2x + @borderRadiusOuter) @gutter2x @gutter2x @gutter2x;
+  margin-top: -@borderRadiusOuter;
 
   &.centered {
     align-items: center;
@@ -126,8 +136,8 @@
 .info {
   color: @darkGrey;
   font-size: @fontSizeExtraSmall;
-  border-bottom-left-radius: @borderRadiusOuterNew;
-  border-bottom-right-radius: @borderRadiusOuterNew;
+  border-bottom-left-radius: @borderRadiusOuter;
+  border-bottom-right-radius: @borderRadiusOuter;
 
   ::ng-deep ul {
     padding: 0.2rem 0 0 0.75rem;

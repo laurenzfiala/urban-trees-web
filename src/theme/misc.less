@@ -87,16 +87,16 @@
 }
 
 .round-top {
-  border-top-left-radius: @borderRadiusNew;
-  border-top-right-radius: @borderRadiusNew;
+  border-top-left-radius: @borderRadius;
+  border-top-right-radius: @borderRadius;
 }
 
 .round-left {
-  border-bottom-left-radius: @borderRadiusNew;
+  border-bottom-left-radius: @borderRadius;
 }
 
 .round-right {
-  border-bottom-right-radius: @borderRadiusNew;
+  border-bottom-right-radius: @borderRadius;
 }
 
 .round-children {
@@ -108,16 +108,6 @@
   > *:last-child {
     .round-right();
   }
-}
-
-// overwrite focus outline & border
-textarea:focus,
-textarea.form-control:focus,
-.form-control:focus,
-.btn:focus {
-  box-shadow: 0 0 0 @focusOutlineWidth @focusOutlineColor;
-  border-color: @focusBorderColor;
-  outline: 0;
 }
 
 // utilities
@@ -134,7 +124,7 @@ body .border {
   padding: (@gutter*3) 0;
 
   &:nth-child(even) {
-    background-color: @lightBgColor;
+    background-color: @contentCatBg;
   }
 }
 
@@ -548,8 +538,8 @@ a.link {
 
 // nav path
 .nav-path {
-  background-color: @medLightBgColor;
-  border-top: solid @lightBorderColor 1px;
+  background-color: @navPathBgColor;
+  border-top: @navPathBorderTop;
   font-size: @fontSizeSmall;
 }
 
@@ -611,4 +601,8 @@ ul.list {
 
 .pointer-events-none {
   pointer-events: none;
+}
+
+.flex-basis-0 {
+  flex-basis: 0;
 }

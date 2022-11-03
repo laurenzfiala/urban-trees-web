@@ -213,4 +213,9 @@ import { PrivacyComponent } from './components/privacy/privacy.component';
         }
     ]
 })
-export class TreesModule { }
+export class TreesModule {
+  constructor() {
+    console.log('Module init');
+  }
+
+}

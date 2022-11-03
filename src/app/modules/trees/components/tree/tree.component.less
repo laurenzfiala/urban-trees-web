@@ -7,7 +7,7 @@
 
   height: 16rem;
   background-color: @medLightBgColor;
-  border-radius: @borderRadiusOuterNew;
+  border-radius: @borderRadiusOuter;
 }
 
 .beacon-id {
@@ -24,7 +24,7 @@
 
   height: 100%;
   padding: @statusPadding;
-  border-radius: @borderRadiusNew;
+  border-radius: @borderRadius;
 }
 
 .beacon-status {
@@ -40,10 +40,24 @@
 
   padding: @statusPadding;
   background-color: @bgColor;
-  border-radius: @borderRadiusNew;
+  border-radius: @borderRadius;
 
   &.bg-success,
   &.bg-danger {
     color: @white;
+  }
+}
+
+@media @xs {
+  .location-bar {
+
+    &,
+    * {
+      font-size: @fontSizeSmall;
+    }
+
+    i.i-location {
+      margin: 0 (@gutter/4) 0 -(@gutter/4) !important;
+    }
   }
 }

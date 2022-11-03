@@ -1,7 +1,6 @@
 import {Directive, Input} from '@angular/core';
 import {
   AbstractControl,
-  ControlValueAccessor,
   NG_VALIDATORS,
   ValidationErrors,
   Validator

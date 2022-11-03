@@ -1,4 +1,4 @@
-<div [ngClass]="{'container-fluid mt-2 mt-lg-5 mb-5': !embed}">
+<div [ngClass]="{'container-fluid mt-3 mt-lg-5 mb-5': !embed}">
 
   <div
     *ngIf="isAlreadyLoggedIn() && !relog"
@@ -24,7 +24,7 @@
 
   <div
     *ngIf="!isAlreadyLoggedIn() || relog"
-    class="login-container fp-bg-medlight"
+    class="login-container fp-bg"
     [ngClass]="{'col-xs-12 col-sm-8 col-md-6 col-lg-5 col-xl-3 mx-auto max-width': !embed}">
 
     <h1 class="mb-3 mt-0">

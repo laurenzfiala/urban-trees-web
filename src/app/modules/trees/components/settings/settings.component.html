@@ -117,7 +117,7 @@
       {{'settings.delete_account.desc' | translate}}<br/>
       <span class="font-italic">{{'settings.delete_account.warning' | translate}}</span><br/>
     </div>
-    <a class="content-cat-link danger"
+    <button class="btn btn-danger mt-3"
        [popover]="deleteAccountPopover"
        #deleteAccountPopoverTrigger="bs-popover"
        placement="right"
@@ -126,12 +126,12 @@
        tabindex="0"
        (action)="deleteAccountPopoverTrigger.toggle()">
       {{'settings.delete_account.btn' | translate}}
-    </a>
+    </button>
   </div>
 </div>
 
 <ng-template #deleteAccountPopover>
-  <div *ngIf="user" class="d-flex flex-column" (action)="$event.stopPropagation()">
+  <div *ngIf="user" (action)="$event.stopPropagation()">
     {{'settings.delete_account.popover_title' | translate}}
     <div class="text-subtle text-sm">{{'settings.delete_account.popover_desc' | translate}}</div>
     <button *ngIf="user.deleteStatus === undefined"

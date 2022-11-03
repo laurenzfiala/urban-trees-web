@@ -5,17 +5,17 @@
     </span>
 
     <a class="link sr-only sr-only-focusable my-2"
-       (action)="document.getElementById('firstHeaderLink').focus()"
+       (action)="focusHeader()"
        tabindex="0">
       {{'navigation.accessibility.go_to.header' | translate}}
     </a>
     <a class="link sr-only sr-only-focusable my-2"
-       (action)="$('#content').find('button, a, input, select, textarea, [tabindex]:not([tabindex=\'-1\'])')[0].focus()"
+       (action)="focusContent()"
        tabindex="0">
       {{'navigation.accessibility.go_to.content' | translate}}
     </a>
     <a class="link sr-only sr-only-focusable my-2"
-       (action)="document.getElementById('firstFooterLink').focus()"
+       (action)="focusFooter()"
        tabindex="0">
       {{'navigation.accessibility.go_to.footer' | translate}}
     </a>
@@ -32,7 +32,7 @@
 
 <div class="navbar-bg">
   <div class="container">
-    <nav class="navbar navbar-expand navbar-light navbar-bg pl-0">
+    <nav class="navbar navbar-expand navbar-light navbar-bg">
         <a id="firstHeaderLink"
            class="navbar-brand"
            routerLink="/"
@@ -42,74 +42,57 @@
           </div>
         </a>
 
-        <ul class="navbar-nav navbar-left mr-auto">
-          <ng-template [ngTemplateOutlet]="navContent"></ng-template>
-          <li dropdown
-              #navLinksDropdown="bs-dropdown"
-              class="nav-item dropdown">
-            <a dropdownToggle
-               class="nav-link pointer"
-               (click)="false"
-               role="button"
-               href
-               [title]="'navigation.accessibility.' + (navLinksDropdown.isOpen ? 'less' : 'more') + '_items' | translate">
-              <i class="i i-xxs i-dark i-dots align-middle"></i>
-              <span *ngIf="!navLinksDropdown.isOpen" class="sr-only">{{'navigation.accessibility.more_items' | translate}}</span>
-              <span *ngIf="navLinksDropdown.isOpen" class="sr-only">{{'navigation.accessibility.less_items' | translate}}</span>
-            </a>
-            <div *dropdownMenu
-                 id="nav-dropdown-menu"
-                 role="menu"
-                 class="dropdown-menu dropdown-menu-right">
-              <ng-template [ngTemplateOutlet]="navContent"></ng-template>
-            </div>
-          </li>
-        </ul>
+        <ul class="navbar-nav flex-grow-1">
+          <ng-template *ngIf="!small" [ngTemplateOutlet]="navContent"></ng-template>
+          <ng-template *ngIf="small" [ngTemplateOutlet]="navContentSm"></ng-template>
 
-        <ul class="navbar-nav navbar-right">
+          <div class="flex-grow-1"></div>
+
           <li *auth="envService.security.rolesAdmin.concat(envService.security.rolesAdminLocked)"
-            class="nav-item pointer">
-          <a routerLink="/admin"
-             routerLinkActive="active"
-             class="nav-link nav-reports d-flex align-items-center"
-             [title]="'navigation.admin' | translate">
-            <div *ngIf="userdata && (userdata?.unresolvedReportsAmount + userdata?.unapprovedContentAmount > 0)"
-                 class="nav-badge mr-1"
-                 aria-hidden="true">
-              {{userdata?.unresolvedReportsAmount + userdata?.unapprovedContentAmount}}
-              <span class="sr-only">{{'navigation.reports' | translate}}</span>
-            </div>
-            <i class="i i-admin i-dark" aria-hidden="true"></i>
-            <span class="sr-only">{{'navigation.admin' | translate}}</span>
-          </a>
+              routerLinkActive="active"
+              class="nav-item nav-reports pointer nav-item-admin">
+            <a routerLink="/admin"
+               class="nav-link d-flex align-items-center"
+               [title]="'navigation.admin' | translate">
+              <div *ngIf="userdata && (userdata?.unresolvedReportsAmount + userdata?.unapprovedContentAmount > 0)"
+                   class="nav-badge mr-1"
+                   aria-hidden="true">
+                {{userdata?.unresolvedReportsAmount + userdata?.unapprovedContentAmount}}
+                <span class="sr-only">{{'navigation.reports' | translate}}</span>
+              </div>
+              <i class="i i-text i-admin i-dark" aria-hidden="true"></i>
+              <span class="sr-only">{{'navigation.admin' | translate}}</span>
+            </a>
           </li>
-          <li class="nav-item pointer">
-          <a routerLink="/settings"
-             routerLinkActive="active"
-             class="nav-link nav-settings d-flex align-items-center"
-             [title]="'navigation.settings' + (isLoggedIn() ? '_logged_in' : '') | translate">
-            <i class="i i-cog i-dark" aria-hidden="true"></i>
-            <span class="sr-only">{{'navigation.settings' | translate}}</span>
-          </a>
+          <li class="nav-item nav-settings pointer nav-item-settings"
+              [ngClass]="{'hide-if-not-active': !isLoggedIn()}"
+              routerLinkActive="active">
+            <a routerLink="/settings"
+               class="nav-link d-flex align-items-center"
+               [title]="'navigation.settings' | translate">
+              <i class="i i-text i-cog i-dark" aria-hidden="true"></i>
+              <span class="sr-only">{{'navigation.settings' | translate}}</span>
+            </a>
           </li>
           <li *ngIf="!authService.isUserAnonymous()"
-              class="nav-item pointer">
-          <a (action)="logout()"
-             class="nav-link d-flex align-items-center"
-             tabindex="0"
-             [title]="'navigation.logout' | translate">
-            <i class="i i-logout i-dark" aria-hidden="true"></i>
-            <span class="sr-only">{{'navigation.logout' | translate}}</span>
-          </a>
+              class="nav-item pointer nav-item-logout">
+            <a (action)="logout()"
+               class="nav-link d-flex align-items-center"
+               tabindex="0"
+               [title]="'navigation.logout' | translate">
+              <i class="i i-text i-logout i-dark" aria-hidden="true"></i>
+              <span class="sr-only">{{'navigation.logout' | translate}}</span>
+            </a>
           </li>
           <li *ngIf="authService.isUserAnonymous()"
-              class="nav-item pointer">
+              routerLinkActive="d-none"
+              class="nav-item pointer nav-item-login">
             <a routerLink="/login"
                class="nav-link d-flex align-items-center"
                tabindex="0"
                [title]="'navigation.login' | translate">
               {{'navigation.login' | translate}}
-              <i class="i i-login i-dark ml-1" aria-hidden="true"></i>
+              <i class="i i-text i-login i-dark ml-1" aria-hidden="true"></i>
             </a>
           </li>
         </ul>
@@ -118,45 +101,112 @@
 </div>
 
 <!-- Content of NAV & dropdown -->
-<ng-template #navContent>
+<ng-template #navContent let-inDropdown="inDropdown">
   <li *auth="envService.security.rolesUser"
       class="nav-item"
       routerLinkActive="active">
     <a class="nav-link link-container" routerLink="/home">
-      <div class="link">{{'navigation.home' | translate}}</div>
+      {{'navigation.home' | translate}}
     </a>
   </li>
   <li class="nav-item"
       routerLinkActive="active">
     <a class="nav-link link-container" routerLink="/trees">
-      <div class="link">
-        {{'navigation.tree_list' | translate}}
-      </div>
+      {{'navigation.tree_list' | translate}}
     </a>
   </li>
   <li *auth="envService.security.rolesPhenObs"
       class="nav-item"
       routerLinkActive="active">
     <a class="nav-link link-container" routerLink="/project/phenology">
-      <div class="link">
-        {{'navigation.phenology' | translate}}
-      </div>
+      {{'navigation.phenology' | translate}}
     </a>
   </li>
   <li class="nav-item"
       routerLinkActive="active">
     <a class="nav-link link-container" routerLink="/measurements">
-      <div class="link">
-        {{'navigation.measurements' | translate}}
-      </div>
+      {{'navigation.measurements' | translate}}
     </a>
   </li>
   <li *noauth class="nav-item"
       routerLinkActive="active">
     <a class="nav-link link-container" routerLink="/statistics">
-      <div class="link">
-        {{'navigation.statistics' | translate}}
-      </div>
+      {{'navigation.statistics' | translate}}
     </a>
+  </li>
+  <li *ngIf="!inDropdown"
+      dropdown
+      #navLinksDropdown="bs-dropdown"
+      class="nav-item dropdown dropdown-more">
+    <button dropdownToggle
+            class="btn btn-plain nav-link pointer d-flex flex-row align-items-center"
+            role="button"
+            [title]="'navigation.accessibility.' + (navLinksDropdown.isOpen ? 'less' : 'more') + '_items' | translate">
+      <i class="i i-xs i-dark i-chevron-down align-middle"></i>
+      <span *ngIf="!navLinksDropdown.isOpen" class="sr-only">{{'navigation.accessibility.more_items' | translate}}</span>
+      <span *ngIf="navLinksDropdown.isOpen" class="sr-only">{{'navigation.accessibility.less_items' | translate}}</span>
+    </button>
+    <div *dropdownMenu
+         id="nav-dropdown-menu"
+         role="menu"
+         class="dropdown-menu dropdown-menu-right">
+      <ng-template [ngTemplateOutlet]="navContent" [ngTemplateOutletContext]="{inDropdown: true}"></ng-template>
+    </div>
+  </li>
+</ng-template>
+
+
+<ng-template #navContentSm>
+  <li dropdown
+      #navLinksDropdown="bs-dropdown"
+      class="nav-item dropdown">
+    <button dropdownToggle
+            class="btn btn-plain nav-link pointer d-flex flex-row align-items-center"
+            role="button"
+            [title]="'navigation.accessibility.' + (navLinksDropdown.isOpen ? 'less' : 'more') + '_items' | translate">
+      {{navKey | translate}}
+      <i class="i i-xs i-dark i-chevron-down align-middle ml-1"></i>
+    </button>
+    <div *dropdownMenu
+         id="nav-dropdown-menu2"
+         role="menu"
+         class="dropdown-menu dropdown-menu-left">
+
+      <ul class="list-unstyled">
+        <ng-template [ngTemplateOutlet]="navContent" [ngTemplateOutletContext]="{inDropdown: true}"></ng-template>
+
+        <hr/>
+
+        <li class="nav-item nav-settings pointer"
+            routerLinkActive="active">
+          <a routerLink="/settings"
+             class="nav-link d-flex align-items-center">
+            {{'navigation.settings' | translate}}
+            <div class="flex-grow-1"></div>
+            <i class="i i-text i-cog i-dark ml-1" aria-hidden="true"></i>
+          </a>
+        </li>
+        <li *ngIf="!authService.isUserAnonymous()"
+            class="nav-item d-flex flex-row">
+          <button (action)="logout()"
+                  class="btn btn-plain nav-link d-flex align-items-center flex-grow-1">
+            {{'navigation.logout' | translate}}
+            <div class="flex-grow-1"></div>
+            <i class="i i-text i-logout i-dark ml-1" aria-hidden="true"></i>
+          </button>
+        </li>
+        <li *ngIf="authService.isUserAnonymous()"
+            routerLinkActive="active"
+            class="nav-item d-flex flex-row">
+          <button routerLink="/login"
+                  class="btn btn-plain nav-link d-flex align-items-center flex-grow-1">
+            {{'navigation.login' | translate}}
+            <div class="flex-grow-1"></div>
+            <i class="i i-text i-login i-dark ml-1" aria-hidden="true"></i>
+          </button>
+        </li>
+      </ul>
+
+    </div>
   </li>
 </ng-template>

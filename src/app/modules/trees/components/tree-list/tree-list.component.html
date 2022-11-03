@@ -1,23 +1,18 @@
 <section class="content-cat">
-  <div class="container map-wrapper">
-    <ut-map
-      [markers]="availableTrees"
-      [selectedMarker]="selectedTree"
-      (selectedMarkerChange)="selectTreeOnMap($event)"
-      errorText="phenology.observation.step1.map_error_text"></ut-map>
-  </div>
-</section>
-
-<section class="content-cat">
   <div class="container">
+    <div class="map-wrapper">
+      <ut-map
+        [markers]="availableTrees"
+        [selectedMarker]="selectedTree"
+        (selectedMarkerChange)="selectTreeOnMap($event)"
+        errorText="phenology.observation.step1.map_error_text"></ut-map>
+    </div>
+
     <input
       [ngModel]="treeSearchInput"
       (ngModelChange)="setTreeSearchInput($event)"
-      class="form-control form-control-lg search-input"
+      class="form-control form-control-lg search-input mt-2"
       [placeholder]="'phenology.observation.step1.tree_search_placeholder' | translate" />
-    <div class="text-xs text-subtle">
-      {{'general.input_annotation' | translate}}
-    </div>
   </div>
 </section>
 
@@ -33,9 +28,9 @@
   {{'tree_list.none_found' | translate}}
 </div>
 
-<section *ngFor="let city of cities"
-         class="content-cat">
-  <div class="container">
+<section>
+  <div *ngFor="let city of cities; let i = index"
+       class="container mb-4">
 
     <h1 class="content-cat-heading mb-2">
       {{city.name}}

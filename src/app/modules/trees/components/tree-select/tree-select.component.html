@@ -7,7 +7,23 @@
     [placeholder]="'phenology.observation.step1.tree_search_placeholder' | translate" />
 </div>
 
-<div *ngIf="displayTrees"
+<div *ngIf="availableTrees?.length === 0"
+     class="status-img my-4">
+  <img src="/assets/img/icon/no_store.svg" />
+  <div>
+    {{'tree_select.none_exist' | translate}}
+  </div>
+</div>
+
+<div *ngIf="displayTrees?.length === 0"
+     class="status-img my-4">
+  <img src="/assets/img/icon/no_results.svg" />
+  <div>
+    {{'tree_select.none_found' | translate}}
+  </div>
+</div>
+
+<div *ngIf="(showList || (!showList && (selectedTree || treeSearchInput))) && displayTrees"
      class="m--1 pt-2">
 
   <div *ngFor="let tree of displayTrees[currentDisplayPage]"
@@ -47,58 +63,43 @@
     </div>
   </div>
 
+  <nav *ngIf="displayTreePagination">
+    <ul class="pagination mt-2 mb-0">
+      <li class="page-item">
+        <a class="page-link"
+           (action)="displayTreePage(0)"
+           tabindex="0">
+          <i class="i i-arrow-left-double i-dark"></i>
+        </a>
+      </li>
+      <li class="page-item">
+        <a class="page-link"
+           (action)="displayTreePage(currentDisplayPage-1)"
+           tabindex="0">
+          <i class="i i-arrow-left i-dark" aria-hidden="true"></i>
+        </a>
+      </li>
+      <li class="page-item">
+        <a class="page-link disabled">
+          {{currentDisplayPage + 1}}
+        </a>
+      </li>
+      <li class="page-item">
+        <a class="page-link"
+           (action)="displayTreePage(currentDisplayPage+1)"
+           tabindex="0">
+          <i class="i i-arrow-right i-dark"></i>
+        </a>
+      </li>
+      <li class="page-item">
+        <a class="page-link"
+           (action)="displayTreePage(currentDisplayPages-1)"
+           tabindex="0">
+          <i class="i i-arrow-right-double i-dark"></i>
+        </a>
+      </li>
+    </ul>
+  </nav>
+
 </div>
 
-<div *ngIf="availableTrees?.length === 0"
-     class="status-img my-4">
-  <img src="/assets/img/icon/no_store.svg" />
-  <div>
-    {{'tree_select.none_exist' | translate}}
-  </div>
-</div>
-
-<div *ngIf="displayTrees?.length === 0"
-     class="status-img my-4">
-  <img src="/assets/img/icon/no_results.svg" />
-  <div>
-    {{'tree_select.none_found' | translate}}
-  </div>
-</div>
-
-<nav *ngIf="displayTreePagination">
-  <ul class="pagination mt-2 mb-0">
-    <li class="page-item">
-      <a class="page-link"
-         (action)="displayTreePage(0)"
-         tabindex="0">
-        <i class="i i-arrow-left-double i-dark"></i>
-      </a>
-    </li>
-    <li class="page-item">
-      <a class="page-link"
-         (action)="displayTreePage(currentDisplayPage-1)"
-         tabindex="0">
-        <i class="i i-arrow-left i-dark" aria-hidden="true"></i>
-      </a>
-    </li>
-    <li class="page-item">
-      <a class="page-link disabled">
-        {{currentDisplayPage + 1}}
-      </a>
-    </li>
-    <li class="page-item">
-      <a class="page-link"
-         (action)="displayTreePage(currentDisplayPage+1)"
-         tabindex="0">
-        <i class="i i-arrow-right i-dark"></i>
-      </a>
-    </li>
-    <li class="page-item">
-      <a class="page-link"
-         (action)="displayTreePage(currentDisplayPages-1)"
-         tabindex="0">
-        <i class="i i-arrow-right-double i-dark"></i>
-      </a>
-    </li>
-  </ul>
-</nav>

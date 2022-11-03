@@ -18,6 +18,10 @@ export class UserData {
     this.unapprovedContentAmount = unapprovedContentAmount;
   }
 
+  get newMessagesAmount(): number {
+    return this.unapprovedContentAmount + this.unresolvedReportsAmount;
+  }
+
   public static fromObject(o: any): UserData {
 
     return new UserData(

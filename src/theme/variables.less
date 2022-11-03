@@ -21,8 +21,11 @@
 @darkestGrey:                 #3b3b3b;
 @black:                       #000000;
 
-@lightBgColor:                @medLight;
-@medLightBgColor:             @grey;
+@contentCatBg:                fade(@grey, 50%);
+@loginBg:                     lighten(#3C5869, 60%);
+
+@lightBgColor:                @lightGrey;
+@medLightBgColor:             @medLight;
 @bgColor:                     @grey;
 @darkBgColor:                 @darkGrey;
 
@@ -59,10 +62,9 @@
 @infoDark:                    #004085;
 @successDark:                 darken(@success, 10%);
 
-@borderRadius:                0;
+@borderRadius:                5px;
+@borderRadiusOuter:           10px;
 @borderRadiusSecondary:       20px;
-@borderRadiusNew:             0;
-@borderRadiusOuterNew:        0;
 
 @btnPadding:                  1rem 2rem;
 @btnIconPadding:              2rem;
@@ -81,7 +83,9 @@
 @navLinkColor:                @linkColor;
 @navLinkColorActive:          @linkHoverColor;
 @navFontSize:                 @fontSizeBase;
-@navBgColor:                  @bgColor;
+@navBgColor:                  transparent;
+@navPathBgColor:              fade(@white, 50%);
+@navPathBorderTop:            0;
 @navDropwdownBgColor:         @darkBgColor;
 
 @boxShadow:                   0 3px 6px -3px rgba(0, 0, 0, 0.75);
@@ -98,6 +102,7 @@
 @notificationsZIndex:         60;
 
 @dropdownBorder:              0;
+@dropdownBgColor:             @white;
 
 @statusPadding:               0.5rem 1.25rem;
 @statusBg:                    darken(@primaryColor, 10%);
@@ -105,12 +110,12 @@
 
 @mapHeightDefault:            350px;
 
-@transitionDurationS:         0.15s;
+@transitionDurationS:         0.1s;
 @transitionDurationM:         0.35s;
 
 @touchDevice:                 ~"(pointer: coarse)";
 
-// when these are changed, also change LAYOUT_MEDIA_* in app.component.ts
+// when these are changed, also change LAYOUT_MEDIA_* in layout.config.ts
 @xs:                          ~"only screen and (max-width: 575.99px)";
 @sm:                          ~"only screen and (min-width: 576px) and (max-width: 767.99px)";
 @md:                          ~"only screen and (min-width: 768px) and (max-width: 991.99px)";

@@ -218,17 +218,17 @@
           <div class="search-info-group">
             <div class="search-info-group-title">Login</div>
             <div class="m--1">
-              <button class="link-btn link-btn-sm bulk-action-btn"
+              <button class="btn btn-light btn-flex bulk-action-btn"
                       (action)="confirmBulkAction(BulkAction.EXPIRE_CREDENTIALS)">
                 <i class="i i-xs i-dark i-password-reset mr-1"></i>
                 Expire credentials
               </button>
-              <button class="link-btn link-btn-sm bulk-action-btn"
+              <button class="btn btn-light btn-flex bulk-action-btn"
                       (action)="confirmBulkAction(BulkAction.CREATE_LOGIN_LINKS)">
                 <i class="i i-xs i-dark i-link mr-1"></i>
                 Create login links &amp; download
               </button>
-              <button class="link-btn link-btn-sm bulk-action-btn"
+              <button class="btn btn-light btn-flex bulk-action-btn"
                       (action)="confirmBulkAction(BulkAction.CREATE_LOGIN_LINKS_PERMANENT)">
                 <i class="i i-xs i-dark i-qr mr-1"></i>
                 Create QR codes &amp; download
@@ -238,19 +238,19 @@
           <div class="search-info-group">
             <div class="search-info-group-title">Access</div>
             <div class="m--1">
-              <button class="link-btn link-btn-sm bulk-action-btn"
+              <button class="btn btn-light btn-flex bulk-action-btn"
                       (action)="confirmBulkAction(BulkAction.ACTIVATE)">
                 <i class="i i-xs i-dark i-document-protect mr-1"></i>
                 Activate accounts
               </button>
 
-              <button class="link-btn link-btn-sm bulk-action-btn"
+              <button class="btn btn-light btn-flex bulk-action-btn"
                       (action)="confirmBulkAction(BulkAction.INACTIVATE)">
                 <i class="i i-xs i-dark i-document-protect mr-1"></i>
                 Inactivate accounts
               </button>
 
-              <button class="link-btn link-btn-sm bulk-action-btn"
+              <button class="btn btn-light btn-flex bulk-action-btn"
                       (action)="confirmBulkAction(BulkAction.DELETE)">
                 <i class="i i-xs i-dark i-trash mr-1"></i>
                 Delete accounts
@@ -291,7 +291,7 @@
          class="user-list-container"
          [ngClass]="{'disabled': hasStatus(StatusKey.USERS, StatusValue.IN_PROGRESS)}">
 
-      <ul class="list-group mt-2">
+      <ul class="list-group mt-1">
         <li *ngFor="let u of searchResult?.result"
             class="list-group-item user-container"
             [ngClass]="{'disabled': u.deleteStatus === StatusValue.SUCCESSFUL}">
@@ -654,7 +654,7 @@
       <i class="i i-check-success mb-1"></i>
       Success!
       <div class="mt-2">
-        <a class="link-btn link-btn-sm"
+        <a class="btn btn-default btn-flex"
            download="user_creation_logins.csv"
            [href]="getStatusContext(StatusKey.NEW_USER)">
           <i class="i i-xxs i-dark i-download mr-1"></i>
@@ -716,7 +716,7 @@
       Success!
       <div *ngIf="bulkAction === BulkAction.CREATE_LOGIN_LINKS"
            class="mt-2">
-        <a class="link-btn link-btn-sm"
+        <a class="btn btn-default btn-flex"
            download="user_creation_logins.csv"
            [href]="getStatusContext(StatusKey.BULK_ACTION)">
           <i class="i i-xxs i-dark i-download mr-1"></i>
@@ -725,7 +725,7 @@
       </div>
       <div *ngIf="bulkAction === BulkAction.CREATE_LOGIN_LINKS_PERMANENT"
            class="mt-2">
-        <a class="link-btn link-btn-sm"
+        <a class="btn btn-default btn-flex"
            [href]="getStatusContext(StatusKey.BULK_ACTION)">
           <i class="i i-xxs i-dark i-download mr-1"></i>
           Download generated QR codes as ZIP-file

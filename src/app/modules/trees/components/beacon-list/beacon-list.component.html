@@ -146,19 +146,19 @@
 
         <ng-container *auth="envService.security.rolesAllData">
           <a *ngIf="!hasAnyStatus(StatusKey.BEACON_DATA_DOWNLOAD, StatusValue.SUCCESSFUL, StatusValue.FAILED)"
-             class="link-btn m-1"
+             class="btn btn-sm btn-default d-inline-flex flex-row align-items-center"
              [download]="'beacon_data_' + selectedBeacon.deviceId + '.csv'"
              (action)="downloadBeaconData()"
              [ngClass]="{'disabled': hasStatus(StatusKey.BEACON_DATA_DOWNLOAD, StatusValue.IN_PROGRESS)}">
-            <i *ngIf="!hasStatus(StatusKey.BEACON_DATA_DOWNLOAD, StatusValue.IN_PROGRESS)" class="i i-xxs i-dark i-download mr-1"></i>
-            <i *ngIf="hasStatus(StatusKey.BEACON_DATA_DOWNLOAD, StatusValue.IN_PROGRESS)" class="i i-xxs i-dark i-load i-spin mr-1"></i>
+            <i *ngIf="!hasStatus(StatusKey.BEACON_DATA_DOWNLOAD, StatusValue.IN_PROGRESS)" class="i i-xxs i-black i-download mr-1"></i>
+            <i *ngIf="hasStatus(StatusKey.BEACON_DATA_DOWNLOAD, StatusValue.IN_PROGRESS)" class="i i-xxs i-black i-load i-spin mr-1"></i>
             {{'beacon_list.download_all_data' | translate}}
           </a>
           <a *ngIf="hasStatus(StatusKey.BEACON_DATA_DOWNLOAD, StatusValue.SUCCESSFUL)"
-             class="link-btn m-1"
+             class="btn btn-sm btn-default d-inline-flex flex-row align-items-center"
              [download]="'beacon_data_' + selectedBeacon.deviceId + '.csv'"
              [href]="getStatusContext(StatusKey.BEACON_DATA_DOWNLOAD)">
-            <i class="i i-xxs i-dark i-download mr-1"></i>
+            <i class="i i-xxs i-black i-download mr-1"></i>
             {{'beacon_list.download_all_data_now' | translate}}
           </a>
 

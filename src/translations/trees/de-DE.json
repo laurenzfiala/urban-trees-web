@@ -29,8 +29,7 @@
       "madeby": "Entwickelt vom ",
       "madeby_team": "CO₂BS-Team"
     },
-    "settings": "Spracheinstellungen",
-    "settings_logged_in": "Einstellungen, Konto & Sprache",
+    "settings": "Einstellungen",
     "login": "Anmelden",
     "logout": "Abmelden",
     "project_account_1": "Projekt-",
@@ -270,15 +269,15 @@
   "otp_manage": {
     "checking_state": "Frage Zwei-Faktor Status ab...",
     "checking_state_failed": "Konnte Status nicht abfragen",
-    "state_info_enabled": "Zwei-Faktor Authentifizierung ist EIN",
-    "state_info_disabled": "Zwei-Faktor Authentifizierung ist AUS",
+    "state_info_enabled": "Zwei-Faktor Authentifizierung ist <span class=\"text-semibold text-success\">EIN</span>",
+    "state_info_disabled": "Zwei-Faktor Authentifizierung ist <span class=\"text-semibold\">AUS</span>",
     "qr_scan_info": "Scanne den QR-Code mit einer Authenticator-App wie <a class=\"link\" href=\"https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2\" target=\"_blank\">Google Authenticator</a> oder <a class=\"link\" href=\"https://play.google.com/store/apps/details?id=com.beemdevelopment.aegis\" target=\"_blank\">Aegis</a>.",
     "activate_title": "Zwei-Faktor Authentifizierung aktivieren",
     "activate_btn": "Jetzt aktivieren",
     "activating_btn": "Aktiviere...",
     "activated_btn": "Aktiviert",
-    "recovery_codes_title": "Deine Wiederherstellungscodes:",
-    "recovery_codes_info": "Stelle sicher, dass Du diese Wiederherstellungscodes an einem sicheren Platz speicherst. Wenn Du den Zugang zu deiner Auth-App verlierst, kannst Du sie zum Einloggen nutzen. Jeder dieser Codes ist nur einmal gültig.",
+    "recovery_codes_title": "Deine Wiederherstellungscodes",
+    "recovery_codes_info": "Speichere diese Codes an einem sicheren Ort. Jeder Code ist nur einmal gültig.",
     "deactivate_title": "Zwei-Faktor Authentifizierung deaktivieren",
     "deactivate_btn": "Jetzt deaktivieren",
     "deactivating_btn": "Deaktiviere...",
@@ -300,6 +299,7 @@
       "title": "Information",
       "text": "„Stadtbäume als Klimabotschafter“: in diesem Projekt forschen Wissenschaftlerinnen und Wissenschaftler, Expertinnen und Experten, Lehrpersonen sowie Schülerinnen und Schüler aus Österreich, Deutschland und Ungarn gemeinsam. Durch Beobachtungen, Messungen und Modellierung phänologischer Phasen und mikroklimatischer Daten werden folgende Forschungsfragen bearbeitet: Wie beeinflussen Stadtbäume das Stadtklima? Wie beeinflusst das Stadtklima die Stadtbäume? Was bedeutet das für uns und die Bäume in Zukunft?<br/><br/>Die folgenden Visualisierungen zeigen ausgewählte Aspekte dieser Forschungsarbeiten.",
       "location": {
+        "map_btn_sm": "Karte",
         "map_open_btn": "Karte öffnen",
         "map_close_btn": "Karte schließen"
       }
@@ -460,8 +460,7 @@
   "general": {
     "retry": "Nochmals versuchen",
     "error": "Fehler",
-    "imprint": "Impressum",
-    "input_annotation": "Suchergebnisse werden automatisch während der Eingabe aktualisiert."
+    "imprint": "Impressum"
   },
   "map": {
     "error_default_text": "Kartendaten konnten nicht geladen werden. Bitte versuche es erneut.",
@@ -628,9 +627,7 @@
     "step_1": {
       "title": "Welcher Baum wird beobachtet?",
       "loading": "Lade Bäume...",
-      "error": "Bäume konnten nicht geladen werden.",
-      "select_map": "Auf der Karte auswählen",
-      "select_list": "oder in der Liste auswählen"
+      "error": "Bäume konnten nicht geladen werden."
     },
     "step_2": {
       "title": "Wann?",

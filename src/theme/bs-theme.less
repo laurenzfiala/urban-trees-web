@@ -19,10 +19,6 @@
 .navbar {
   z-index: @navZIndex;
 
-  .navbar-nav {
-    align-items: center;
-  }
-
   &.navbar-light {
     background-color: white;
   }
@@ -33,7 +29,7 @@
 }
 
 .nav-pills .nav-link {
-  border-radius: @borderRadiusNew;
+  border-radius: @borderRadius;
 
   &.active {
     background-color: @secondaryColorHighlight;
@@ -117,8 +113,8 @@
  */
 
 .dropdown > .dropdown-menu {
-  border-radius: @borderRadiusNew;
-  background-color: @navBgColor;
+  border-radius: @borderRadius;
+  background-color: @dropdownBgColor;
   border: 0;
 }
 
@@ -135,7 +131,7 @@
 
   + .dropdown-menu {
     z-index: @dropdownZIndex;
-    border-radius: @borderRadiusNew;
+    border-radius: @borderRadius;
     margin-top: -2.5rem;
     padding-top: 2.5rem;
     padding-bottom: 1rem;
@@ -216,7 +212,7 @@ hr {
 .form-control,
 .custom-file-label,
 .custom-file-label:after {
-  border-radius: @borderRadiusOuterNew;
+  border-radius: @borderRadius;
 }
 
 .custom-file {
@@ -260,8 +256,8 @@ hr {
 
   > .input-group-append {
     border: solid @borderColor 1px;
-    border-bottom-right-radius: @borderRadiusNew;
-    border-top-right-radius: @borderRadiusNew;
+    border-bottom-right-radius: @borderRadius;
+    border-top-right-radius: @borderRadius;
     background-color: @white;
 
     > .input-group-text {
@@ -302,8 +298,8 @@ tabset .nav:not(.nav-pills) {
     margin-right: 0.5rem;
 
     .nav-link {
-      border-top-left-radius: @borderRadiusNew;
-      border-top-right-radius: @borderRadiusNew;
+      border-top-left-radius: @borderRadius;
+      border-top-right-radius: @borderRadius;
       font-weight: bold;
       text-align: center;
       min-width: 150px;
@@ -337,7 +333,7 @@ tabset .nav:not(.nav-pills) {
 }
 
 .modal-content {
-  border-radius: @borderRadiusNew;
+  border-radius: @borderRadius;
 }
 
 .form-control::placeholder {
@@ -702,7 +698,7 @@ tabset .nav:not(.nav-pills) {
 .alert {
   padding: @gutter @gutter2x;
 
-  border-radius: @borderRadiusNew;
+  border-radius: @borderRadius;
   border: 0;
   display: flex;
   flex-direction: row;

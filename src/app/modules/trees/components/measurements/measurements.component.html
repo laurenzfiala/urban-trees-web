@@ -98,10 +98,6 @@
       [disabled]="hasStatus(StatusKey.BEACONS, StatusValue.FAILED)"
       class="form-control form-control-lg search-input mt-3"
       [placeholder]="'measurements.beacons.search_placeholder' | translate" />
-    <div class="text-xs text-subtle">
-      {{'general.input_annotation' | translate}}
-    </div>
-
     <div *ngIf="displayBeacons?.length > 0"
          class="mt-2">
 

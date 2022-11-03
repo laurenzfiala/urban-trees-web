@@ -27,13 +27,7 @@
 
     <ng-container *ngIf="hasStatus(StatusKey.TREES, StatusValue.SUCCESSFUL)">
 
-      <div class="content-cat-separator">
-        <div class="separator"></div>
-        <div class="separator-content">{{'phen_obs.step_1.select_map' | translate}}</div>
-        <div class="separator"></div>
-      </div>
-
-      <div class="map-wrapper">
+      <div class="map-wrapper mb-2">
         <ut-map
           [markers]="availableTrees"
           [selectedMarker]="selectedTree"
@@ -41,15 +35,10 @@
           errorText="phen_obs.tree.map.error"></ut-map>
       </div>
 
-      <div class="content-cat-separator">
-        <div class="separator"></div>
-        <div class="separator-content">{{'phen_obs.step_1.select_list' | translate}}</div>
-        <div class="separator"></div>
-      </div>
-
       <ut-tree-select [selectedTree]="selectedTree"
                       (selectedTreeChange)="selectTree($event)"
-                      [availableTrees]="availableTrees">
+                      [availableTrees]="availableTrees"
+                      [showList]="false">
       </ut-tree-select>
 
     </ng-container>
@@ -74,13 +63,13 @@
         </div>
 
         <div class="m-1">
-          <div *ngIf="isObserveNow"
-             class="link-btn d-flex flex-row align-items-center"
+          <button *ngIf="isObserveNow"
+             class="btn btn-default d-flex flex-row align-items-center"
              (action)="observationInPast()"
              tabindex="0">
-              <i class="i i-xs i-dark i-calendar mr-1"></i>
+              <i class="i i-xs i-black i-calendar mr-1"></i>
               {{'phen_obs.step_2.obs_past' | translate}}
-          </div>
+          </button>
         </div>
 
       </div>
@@ -263,25 +252,21 @@
               </div>
 
               <div *ngIf="type.userObservations.length > 0 && type.objects.length > 1"
-                   class="d-flex flex-row flex-wrap justify-content-end justify-content-md-start justm--2">
+                   class="d-flex flex-row flex-wrap justify-content-end justify-content-md-start">
 
-                <div class="d-flex align-items-center m-2"
-                      (action)="undoObservationResult(type, undefined, true)"
-                     role="button"
-                     tabindex="0">
-                  <i class="i i-dark i-undo-dashed i-sm mr-1"></i>
-                  <a class="link">{{'phen_obs.step_3.reset' | translate}}</a>
+                <button class="btn btn-sm btn-default d-flex align-items-center m-1"
+                      (action)="undoObservationResult(type, undefined, true)">
+                  <i class="i i-black i-undo-dashed i-sm mr-1"></i>
+                  {{'phen_obs.step_3.reset' | translate}}
+                </button>
+
+                <div class="btn btn-sm btn-default d-flex align-items-center m-1"
+                      (action)="undoObservationResult(type)">
+                  <i class="i i-black i-undo i-sm mr-1"></i>
+                  {{'phen_obs.step_3.undo' | translate}}
                 </div>
 
-                <div class="d-flex align-items-center m-2"
-                      (action)="undoObservationResult(type)"
-                     role="button"
-                     tabindex="0">
-                  <i class="i i-dark i-undo i-sm mr-1"></i>
-                  <a class="link">{{'phen_obs.step_3.undo' | translate}}</a>
-                </div>
-
-                <div class="d-flex align-items-center text-sm text-subtle m-2">
+                <div class="d-flex align-items-center text-sm text-subtle m-1">
                   <i class="i i-xs i-dark i-info mr-1"></i>
                   <span class="d-has-cursor">{{'phen_obs.step_3.undo_info_cursor' | translate}}</span>
                   <span class="d-has-touch">{{'phen_obs.step_3.undo_info_touch' | translate}}</span>
@@ -335,12 +320,18 @@
           <label *ngIf="userImageName" class="custom-file-label" for="userImage">
             {{userImageName}}
           </label>
-          <label *ngIf="!userImageName" class="custom-file-label" for="userImage">{{'phenology.observation.step3.upload_photo_placeholder' | translate}}</label>
+          <label *ngIf="!userImageName"
+                 class="custom-file-label"
+                 for="userImage">
+            {{'phenology.observation.step3.upload_photo_placeholder' | translate}}
+          </label>
         </div>
-        <div *ngIf="userImageName" class="link-btn text-sm ml-1 flex-shrink-0" (click)="this.observationService.userImage = null; checkProgress();">
-          <i class="i i-sm i-dark i-cross flex-shrink-0 mr-1"></i>
+        <button *ngIf="userImageName"
+             class="btn btn-sm btn-default ml-1 flex-shrink-0 d-flex flex-row align-items-center"
+             (click)="observationService.userImage = null; checkProgress();">
+          <i class="i i-xs i-black i-trash flex-shrink-0 mr-1"></i>
           {{'phen_obs.step_4.remove_image' | translate}}
-        </div>
+        </button>
       </div>
       <div class="invalid-feedback d-block" *ngIf="getUserImageErrors().indexOf(UserImageError.INVALID_SIZE) !== -1">
         {{'phenology.observation.step3.photo_size_invalid' | translate}}
@@ -388,11 +379,11 @@
 
         <div *ngIf="!addMoreObservers"
               class="m-1">
-          <div class="link-btn d-flex flex-row align-items-center"
+          <div class="btn btn-default d-flex flex-row align-items-center"
                (action)="addMoreObservers = true"
                role="button"
                tabindex="0">
-            <i class="i i-xs i-dark i-user-add mr-1"></i>
+            <i class="i i-xs i-black i-user-add mr-1"></i>
             {{'phen_obs.step_5.add_more' | translate}}
           </div>
         </div>

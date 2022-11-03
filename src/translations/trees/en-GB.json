@@ -30,8 +30,7 @@
       "madeby": "Made by the ",
       "madeby_team": "CO₂BS-Team"
     },
-    "settings": "Language settings",
-    "settings_logged_in": "Settings, Account & Language",
+    "settings": "Settings",
     "login": "Log in",
     "logout": "Log out",
     "project_account_1": "Project-",
@@ -282,15 +281,15 @@
   "otp_manage": {
     "checking_state": "Checking two-factor state",
     "checking_state_failed": "Could not check two-factor state",
-    "state_info_enabled": "Two-Factor Authentication is ON",
-    "state_info_disabled": "Two-Factor Authentication is OFF",
+    "state_info_enabled": "Two-Factor Authentication is <span class=\"text-semibold text-success\">ON</span>",
+    "state_info_disabled": "Two-Factor Authentication is <span class=\"text-semibold\">OFF</span>",
     "qr_scan_info": "Scan this QR-code using an Authenticator-App like <a class=\"link\" href=\"https://play.google.com/store/apps/details?id=com.google.android.apps.authenticator2\" target=\"_blank\">Google Authenticator</a> or <a class=\"link\" href=\"https://play.google.com/store/apps/details?id=com.beemdevelopment.aegis\" target=\"_blank\">Aegis</a>.",
     "activate_title": "Activate Two-Factor Authentication",
     "activate_btn": "Activate now",
     "activating_btn": "Activating...",
     "activated_btn": "Activated",
-    "recovery_codes_title": "Your recovery codes:",
-    "recovery_codes_info": "Make sure to store these recovery codes safely. If you lose access to your Authenticator-App, these allow you to log in. Each of the codes only works once.",
+    "recovery_codes_title": "Your recovery codes",
+    "recovery_codes_info": "Make sure to store these recovery codes safely. The codes are single-use.",
     "deactivate_title": "Deactivate Two-Factor Authentication",
     "deactivate_btn": "Deactivate now",
     "deactivating_btn": "Deactivating...",
@@ -312,6 +311,7 @@
       "title": "Information",
       "text": "„Urban Trees as climate messengers“: in this project researchers and students, experts and teachers from Austria, Germany and Hungary collaborate. By monitoring, measuring and modelling phenological phases and microclimate data, we aim to answer the following research questions: How do urban trees affect urban climate? How does urban climate influence the trees? How can these trees affect our future?<br/><br/>The following visualisations show selected aspects of this research.",
       "location": {
+        "map_btn_sm": "Map",
         "map_open_btn": "Open map",
         "map_close_btn": "Close map"
       }
@@ -472,8 +472,7 @@
   "general": {
     "retry": "Retry",
     "error": "Error",
-    "imprint": "Imprint",
-    "input_annotation": "Search results update automatically while typing."
+    "imprint": "Imprint"
   },
   "map": {
     "error_default_text": "Could not load map data. Please try again.",
@@ -640,9 +639,7 @@
     "step_1": {
       "title": "Which tree do you observe?",
       "loading": "Loading trees...",
-      "error": "Could not load trees",
-      "select_map": "Select on map",
-      "select_list": "or select in list"
+      "error": "Could not load trees"
     },
     "step_2": {
       "title": "When?",

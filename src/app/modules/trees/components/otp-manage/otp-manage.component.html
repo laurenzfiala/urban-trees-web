@@ -1,4 +1,4 @@
-<div class="container-fluid mt-2 mt-lg-5 mb-5">
+<div class="container-fluid mt-3 mt-lg-5 mb-5">
 
   <div *ngIf="hasStatus(StatusKey.CHECK_STATE, StatusValue.IN_PROGRESS)"
        class="d-flex justify-content-center align-items-center my-4">
@@ -14,8 +14,9 @@
 
   <ng-container *ngIf="hasStatus(StatusKey.CHECK_STATE, StatusValue.SUCCESSFUL)">
 
-    <div *ngIf="forceLogout && isActivateFlow && !isActive; else stateInfo" class="col-xs-12 col-sm-8 col-md-6 col-lg-5 col-xl-3 mx-auto p-0">
-      <div class="alert alert-light justify-content-between m-0">
+    <div *ngIf="forceLogout && isActivateFlow && !isActive; else userInfo"
+         class="col-xs-12 col-sm-8 col-md-6 col-lg-5 col-xl-3 mx-auto my-3 px-3">
+      <div class="d-flex flex-row align-items-center text-subtle">
         <i class="i i-dark i-info flex-shrink-0 mr-3"></i>
         <div>
           {{'otp_manage.info_forced_activation' | translate}}
@@ -23,19 +24,22 @@
       </div>
     </div>
 
-    <ng-template #stateInfo>
-      <div class="col-xs-12 col-sm-8 col-md-6 col-lg-5 col-xl-3 mx-auto p-0">
-        <div *ngIf="isActive" class="otp-status alert alert-success justify-content-between m-0">
-          <i class="i i-shield-active-success flex-shrink-0 mr-3"></i>
-          <div>
-            {{'otp_manage.state_info_enabled' | translate}}
-          </div>
+    <ng-template #userInfo>
+      <div class="col-xs-12 col-sm-8 col-md-6 col-lg-5 col-xl-3 mx-auto my-3 px-3">
+        <div class="d-flex flex-row align-items-center text-subtle">
+          <i class="i i-sm i-dark i-user mr-2"></i>
+          <div class="flex-shrink-0">Logged in as <span class="text-semibold">{{username()}}</span></div>
         </div>
-
-        <div *ngIf="!isActive" class="otp-status alert alert-dark justify-content-between m-0">
-          <i class="i i-dark i-shield-inactive flex-shrink-0 mr-3"></i>
-          <div>
-            {{'otp_manage.state_info_disabled' | translate}}
+        <div class="otp-status d-flex flex-row align-items-center text-subtle mt-2">
+          <div *ngIf="isActive"
+               class="d-flex flex-row flex-shrink-0 align-items-center w-100">
+            <i class="i i-dark i-shield-active flex-shrink-0 mr-2"></i>
+            <div [innerHTML]="'otp_manage.state_info_enabled' | translate"></div>
+          </div>
+          <div *ngIf="!isActive"
+               class="d-flex flex-row flex-shrink-0 align-items-center w-100">
+            <i class="i i-dark i-shield-inactive flex-shrink-0 mr-2"></i>
+            <div [innerHTML]="'otp_manage.state_info_disabled' | translate"></div>
           </div>
         </div>
       </div>
@@ -45,21 +49,18 @@
     <div *ngIf="isActivateFlow"
          class="col-xs-12 col-sm-8 col-md-6 col-lg-5 col-xl-3 mx-auto login-container">
 
-      <h1 class="mb-3">
-        {{'otp_manage.activate_title' | translate}}
-        <span class="text-sm text-subtle">
-          &ndash; {{username()}}
-        </span>
-      </h1>
-
       <!-- ACTIVATION PAGE 1 -->
       <ng-container *ngIf="!hasStatus(StatusKey.ACTIVATE, StatusValue.SUCCESSFUL)">
 
+        <h1 class="mb-3 mt-0">
+          {{'otp_manage.activate_title' | translate}}
+        </h1>
+
         <div class="text-center mb-2">
-          <img class="qr-code bg-light p-2" [src]="activationLink() | auth | async" />
+          <img class="qr-code bg-white p-2" [src]="activationLink() | auth | async" />
         </div>
 
-        <div class="alert alert-info text-sm mb-2">
+        <div class="alert alert-primary text-sm mb-2">
           <div [innerHTML]="'otp_manage.qr_scan_info' | translate"></div>
         </div>
 
@@ -100,15 +101,17 @@
       <ng-container *ngIf="hasStatus(StatusKey.ACTIVATE, StatusValue.SUCCESSFUL)">
 
         <div class="mb-2">
-          <div class="mb-2">{{'otp_manage.recovery_codes_title' | translate}}</div>
+          <h1 class="mb-3 mt-0">
+            {{'otp_manage.recovery_codes_title' | translate}}
+          </h1>
           <div class="flex-column justify-content-center text-code text-lg my--1">
             <div *ngFor="let scratchCode of scratchCodes"
-                 class="text-center bg-light p-2 my-1">{{scratchCode | otpScratchCode}}</div>
+                 class="text-center bg-white round p-2 my-1">{{scratchCode | otpScratchCode}}</div>
           </div>
         </div>
 
-        <div class="alert alert-warning text-sm mb-2">
-          <i class="i i-warning-warning flex-shrink-0 mr-3"></i>
+        <div class="alert text-sm text-subtle m-0 px-0">
+          <i class="i i-sm i-dark i-info flex-shrink-0 mr-3"></i>
           <div>{{'otp_manage.recovery_codes_info' | translate}}</div>
         </div>
 
@@ -121,11 +124,8 @@
     <div *ngIf="!isActivateFlow"
          class="col-xs-12 col-sm-8 col-md-6 col-lg-5 col-xl-3 mx-auto login-container">
 
-      <h1 class="mb-3">
+      <h1 class="mb-3 mt-0">
         {{'otp_manage.deactivate_title' | translate}}
-        <span class="text-sm text-subtle">
-          &ndash; {{username()}}
-        </span>
       </h1>
 
       <form #form="ngForm"

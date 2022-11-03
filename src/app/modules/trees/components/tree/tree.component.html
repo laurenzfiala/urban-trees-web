@@ -12,18 +12,23 @@
       {{'tree.species.' + tree.species.name | lowercase | translate}}
       <div><small class="text-subtle"><em>{{'tree.species.latin.' + tree.species.name | lowercase | translate}}</em></small></div>
     </h1>
-    <div class="d-flex flex-row align-items-center">
+    <div class="location-bar d-flex flex-row align-items-center">
       <i class="i i-md i-dark i-location mr-2"></i>
       <div>
         {{tree.location.street}}<br/>
         {{tree.location.city.name}}<br/>
       </div>
       <div class="flex-grow-1"></div>
-      <button class="link-btn link-btn-sm d-inline-flex flex-row align-items-center"
+      <button class="btn btn-default link-btn-sm d-inline-flex flex-row align-items-center"
          (action)="showMap = !showMap">
-        <i class="i i-xs i-dark my--1 mr-1"
+        <i class="i i-xs i-black my--1 mr-1"
            [ngClass]="{'i-chevron-up': showMap, 'i-chevron-down': !showMap}"></i>
-        {{('tree.summary.location.' + (showMap ? 'map_close_btn' : 'map_open_btn')) | translate}}
+        <div class="flex-shrink-0 d-sm-none">
+          {{('tree.summary.location.map_btn_sm') | translate}}
+        </div>
+        <div class="flex-shrink-0 d-none d-sm-inline">
+          {{('tree.summary.location.' + (showMap ? 'map_close_btn' : 'map_open_btn')) | translate}}
+        </div>
       </button>
     </div>
 
@@ -51,8 +56,8 @@
     <div *auth="envService.security.rolesTreeEditor" class="text-center mt-2">
       <button *ngIf="contentViewMode === ViewMode.CONTENT"
               (action)="contentViewMode = ViewMode.EDIT_CONTENT"
-              class="link-btn d-inline-flex justify-content-center">
-        <i class="i i-xs i-edit i-dark mr-1"></i>
+              class="btn btn-default d-inline-flex flex-row align-items-center">
+        <i class="i i-xs i-edit i-black mr-2"></i>
         {{('tree.edit_tree.' + (content?.id ? 'edit_btn' : 'add_btn')) | translate}}
       </button>
     </div>
@@ -97,7 +102,7 @@
   <div class="text-center">
     <button *ngIf="!showMore"
             (action)="showMore = true"
-            class="link-btn d-inline-flex justify-content-center">
+            class="btn btn-default d-inline-flex flex-row align-items-center">
       <i class="i i-xs i-chevron-down i-dark mr-1"></i>
       {{'tree.more_info.btn_label' | translate}}
     </button>

@@ -50,7 +50,8 @@ const routes: Routes = [
         component: HomeComponent,
         canActivate: [ProjectLoginGuard],
         data: {
-          roles: environment.security.roles.user
+          roles: environment.security.roles.user,
+          navKey: 'navigation.home'
         }
       },
       {
@@ -59,46 +60,74 @@ const routes: Routes = [
       },
       {
         path: 'imprint',
-        component: ImprintComponent
+        component: ImprintComponent,
+        data: {
+          navKey: 'navigation.imprint'
+        }
       },
       {
         path: 'privacy',
-        component: PrivacyComponent
+        component: PrivacyComponent,
+        data: {
+          navKey: 'navigation.privacy'
+        }
       },
       {
         path: 'settings',
-        component: SettingsComponent
+        component: SettingsComponent,
+        data: {
+          navKey: 'navigation.settings'
+        }
       },
       {
         path: 'measurements',
-        component: MeasurementsComponent
+        component: MeasurementsComponent,
+        data: {
+          navKey: 'navigation.measurements'
+        }
       },
       {
         path: 'statistics',
-        component: StatisticsComponent
+        component: StatisticsComponent,
+        data: {
+          navKey: 'navigation.statistics'
+        }
       },
       {
         path: 'trees',
-        component: TreeListComponent
+        component: TreeListComponent,
+        data: {
+          navKey: 'navigation.tree_list'
+        }
       },
       {
         path: 'tree/:treeId',
-        component: TreeComponent
+        component: TreeComponent,
+        data: {
+          navKey: 'navigation.tree_list'
+        }
       },
       {
         path: 'login',
         component: ProjectLoginComponent,
+        data: {
+          navKey: 'navigation.login'
+        }
       },
       {
         path: 'login/:token',
-        component: ProjectLoginComponent
+        component: ProjectLoginComponent,
+        data: {
+          navKey: 'navigation.login'
+        }
       },
       {
         path: 'account/changepassword',
         component: PasswordChangeComponent,
         canActivate: [ProjectLoginGuard],
         data: {
-          roles: [...environment.security.roles.user, environment.security.roles.tempChangePassword]
+          roles: [...environment.security.roles.user, environment.security.roles.tempChangePassword],
+          navKey: 'navigation.account'
         }
       },
       {
@@ -106,7 +135,8 @@ const routes: Routes = [
         component: UsernameChangeComponent,
         canActivate: [ProjectLoginGuard],
         data: {
-          roles: environment.security.roles.user
+          roles: environment.security.roles.user,
+          navKey: 'navigation.account'
         }
       },
       {
@@ -114,14 +144,18 @@ const routes: Routes = [
         component: OtpManageComponent,
         canActivate: [ProjectLoginGuard],
         data: {
-          roles: [...environment.security.roles.user, environment.security.roles.tempActivateOTP]
+          roles: [...environment.security.roles.user, environment.security.roles.tempActivateOTP],
+          navKey: 'navigation.account'
         }
       },
       {
         path: 'admin',
         component: AdminComponent,
         canActivate: [ProjectLoginGuard, AdminGuard],
-        data: {roles: [...environment.security.roles.admin, ...environment.security.roles.adminLocked]}
+        data: {
+          roles: [...environment.security.roles.admin, ...environment.security.roles.adminLocked],
+          navKey: 'navigation.admin'
+        }
       },
       {
         path: 'admin/tree',
@@ -129,7 +163,8 @@ const routes: Routes = [
         canActivate: [ProjectLoginGuard, AdminGuard],
         data: {
           roles: environment.security.roles.admin,
-          showAuthTimeout: true
+          showAuthTimeout: true,
+          navKey: 'navigation.admin'
         }
       },
       {
@@ -138,7 +173,8 @@ const routes: Routes = [
         canActivate: [ProjectLoginGuard, AdminGuard],
         data: {
           roles: environment.security.roles.admin,
-          showAuthTimeout: true
+          showAuthTimeout: true,
+          navKey: 'navigation.admin'
         }
       },
       {
@@ -147,7 +183,8 @@ const routes: Routes = [
         canActivate: [ProjectLoginGuard, AdminGuard],
         data: {
           roles: environment.security.roles.admin,
-          showAuthTimeout: true
+          showAuthTimeout: true,
+          navKey: 'navigation.admin'
         }
       },
       {
@@ -156,7 +193,8 @@ const routes: Routes = [
         canActivate: [ProjectLoginGuard, AdminGuard],
         data: {
           roles: environment.security.roles.admin,
-          showAuthTimeout: true
+          showAuthTimeout: true,
+          navKey: 'navigation.admin'
         }
       },
       {
@@ -165,7 +203,8 @@ const routes: Routes = [
         canActivate: [ProjectLoginGuard, AdminGuard],
         data: {
           roles: environment.security.roles.admin,
-          showAuthTimeout: true
+          showAuthTimeout: true,
+          navKey: 'navigation.admin'
         }
       },
       {// Note: if messages are implemented in the future, redirect from /admin/report to e.g. /messages and use same comp
@@ -174,7 +213,8 @@ const routes: Routes = [
         canActivate: [ProjectLoginGuard, AdminGuard],
         data: {
           roles: environment.security.roles.admin,
-          showAuthTimeout: true
+          showAuthTimeout: true,
+          navKey: 'navigation.admin'
         }
       },
       {// Note: if messages are implemented in the future, redirect from /admin/report to e.g. /messages and use same comp
@@ -183,7 +223,8 @@ const routes: Routes = [
         canActivate: [ProjectLoginGuard, AdminGuard],
         data: {
           roles: environment.security.roles.admin,
-          showAuthTimeout: true
+          showAuthTimeout: true,
+          navKey: 'navigation.admin'
         }
       },
       {
@@ -192,7 +233,8 @@ const routes: Routes = [
         canActivate: [ProjectLoginGuard],
         data: {
           roles: environment.security.roles.user,
-          showAuthTimeout: true
+          showAuthTimeout: true,
+          navKey: 'navigation.admin'
         }
       },
       {
@@ -204,7 +246,10 @@ const routes: Routes = [
         component: ObservationComponent,
         canActivate: [ProjectLoginGuard],
         canActivateChild: [ProjectLoginGuard],
-        data: {showAuthTimeout: true}
+        data: {
+          showAuthTimeout: true,
+          navKey: 'navigation.phenology'
+        }
       },
       {
         path: 'methodbox',
@@ -213,7 +258,8 @@ const routes: Routes = [
         canActivateChild: [ProjectLoginGuard],
         data: {
           roles: [...environment.security.roles.teacher, ...environment.security.roles.admin],
-          showAuthTimeout: true
+          showAuthTimeout: true,
+          navKey: 'navigation.methodbox'
         }
       },
       {
@@ -223,7 +269,8 @@ const routes: Routes = [
         canActivateChild: [ProjectLoginGuard],
         data: {
           roles: environment.security.roles.journal,
-          showAuthTimeout: true
+          showAuthTimeout: true,
+          navKey: 'navigation.journal'
         }
       },
       {
@@ -233,7 +280,8 @@ const routes: Routes = [
         canActivateChild: [ProjectLoginGuard],
         data: {
           roles: environment.security.roles.teacher,
-          showAuthTimeout: true
+          showAuthTimeout: true,
+          navKey: 'navigation.journal'
         }
       },
       {
@@ -244,7 +292,10 @@ const routes: Routes = [
             path: '**',
             redirectTo: ''
           }
-        ]
+        ],
+        data: {
+          navKey: 'navigation.help'
+        }
       },
       {
         path: '**',
