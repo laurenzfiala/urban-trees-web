@@ -198,15 +198,18 @@ export class ContentService extends AbstractService {
     const url = this.envService.endpoints.saveContent(contentPath, contentLang, isDraft);
 
     ContentService.LOG.debug('Saving content at ' + contentPath + '...');
+    content.sent = new Date();
 
     this.http.post<UserContent>(url, content.toJSONObject(this.envService))
       .map(uc => UserContent.fromObject(uc, this.envService))
       .subscribe((uc: UserContent) => {
         ContentService.LOG.debug('Saved content at ' + contentPath + ' successfully.');
         this.content = CmsContent.fromUserContent(uc, this.envService);
+        content.stored = uc.saveDate;
         this.content.historyId = uc.id;
         successCallback(content, uc);
       }, (e: any) => {
+        content.sent = undefined;
         ContentService.LOG.error('Could not save content at ' + contentPath + ': ' + e.message, e);
         if (errorCallback) {
           errorCallback(e, this.safeApiError(e));

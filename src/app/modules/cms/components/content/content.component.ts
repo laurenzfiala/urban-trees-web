@@ -303,8 +303,11 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, OnDes
       return;
     }
     const content = this.serializationService.serializeContent(this.content, ...this.elements);
-    this.changeConfig.changes.push(CmsContentChange.fromCmsContent(content, this.envService));
+    const contentChange = CmsContentChange.fromCmsContent(content, this.envService);
+    contentChange.stored = content.stored;
+    contentChange.isDraft = true;
     this.content = content;
+    this.changeConfig.changes.push(contentChange);
     this.changeConfig.lastTrackedChange = new Date();
     this.changeConfig.hasUntrackedChange = false;
 
@@ -372,6 +375,9 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, OnDes
     this.setStatus(StatusKey.SAVE, StatusValue.IN_PROGRESS);
     window.clearTimeout(this.saveTimeoutId);
     this.saveTimeoutId = 0;
+    if (contentChange) {
+      contentChange.sent = new Date();
+    }
     this.changeConfig.lastSentContent = content;
     this.changeConfig.isLastSaveDraft = !publish;
     const unsavedChangesBefore = this.changeConfig.unsavedChanges;
@@ -401,6 +407,9 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, OnDes
       }, (error, apiError) => {
         ContentComponent.LOG.warn('Failed to save content.');
         this.changeConfig.unsavedChanges = unsavedChangesBefore;
+        if (contentChange) {
+          contentChange.sent = undefined;
+        }
         this.setStatus(StatusKey.SAVE, StatusValue.FAILED);
         reject(apiError.message);
       });
@@ -564,7 +573,7 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, OnDes
    */
   public discard(): void {
     // TODO await saving
-    if (this.changeConfig.lastStoredContent && !this.changeConfig.lastStoredContent.isDraft) {
+    if (!this.changeConfig.lastStoredContent || (this.changeConfig.lastStoredContent && !this.changeConfig.lastStoredContent.isDraft)) {
       this.viewMode = ViewMode.CONTENT;
       this.toolbar.reset();
       this.reloadContent.emit();
