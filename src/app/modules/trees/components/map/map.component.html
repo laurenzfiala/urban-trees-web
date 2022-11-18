@@ -1,4 +1,6 @@
-<div id="map" class="map has-status-overlay" (mousedown)="onMapMouseDown($event)" (mouseup)="onMapMouseUp($event)">
+<div id="map" class="map has-status-overlay"
+     (mousedown)="onMapMouseDown($event)"
+     (mouseup)="onMapMouseUp($event)">
   <div *ngIf="hasStatus(StatusKey.MAP, StatusValue.IN_PROGRESS)" class="status-overlay load"></div>
   <div *ngIf="hasStatus(StatusKey.MAP, StatusValue.FAILED)" class="status-overlay">
     <div class="status-content">
@@ -16,7 +18,7 @@
   <div class="osm-copyright">&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a>
     contributors
   </div>
-  <div *ngIf="useActivator"
+  <div *ngIf="useActivator && userAcceptedMapLoad"
        class="activator"
        [ngClass]="{'disabled': isMapEnabled || hasStatus(StatusKey.MAP, StatusValue.IN_PROGRESS)}"
        (click)="isMapEnabled = true"
@@ -27,6 +29,20 @@
     </div>
     <div class="d-has-touch">
       {{'map.activator_touch' | translate}}
+    </div>
+  </div>
+  <div *ngIf="!userAcceptedMapLoad"
+       class="consent"
+       [ngClass]="{'disabled': false}"
+       (mousedown)="$event.stopPropagation()"
+       (mouseup)="$event.stopPropagation()">
+    <div class="text-center">
+      <p>
+        By clicking on accept you consent to load map data from openstreetmap.org<br/>
+        <small>This setting will be stored locally in your browser.</small>
+      </p>
+      <button class="btn btn-primary btn-sm"
+              (action)="userAcceptMapLoad()">Accept</button>
     </div>
   </div>
 </div>

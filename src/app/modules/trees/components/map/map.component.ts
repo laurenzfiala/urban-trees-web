@@ -27,6 +27,7 @@ import {MapMarkerDefault} from '../../entities/map-marker-default.entity';
 export class MapComponent extends AbstractComponent implements OnInit {
 
   private static LOG: Log = Log.newInstance(MapComponent);
+  private static LOCAL_STORAGE_CONSENT_KEY = 'consent-osm-map';
 
   public StatusKey = StatusKey;
   public StatusValue = StatusValue;
@@ -129,7 +130,9 @@ export class MapComponent extends AbstractComponent implements OnInit {
   }
 
   public ngOnInit(): void {
-    this.loadMap();
+    if (this.userAcceptedMapLoad) {
+      this.loadMap();
+    }
   }
 
   @Input()
@@ -169,6 +172,16 @@ export class MapComponent extends AbstractComponent implements OnInit {
 
   get selectedMarker(): MapMarker {
     return this.selectedMarkerInternal;
+  }
+
+  get userAcceptedMapLoad(): boolean {
+    return localStorage.getItem(MapComponent.LOCAL_STORAGE_CONSENT_KEY) === 'true';
+  }
+
+  public userAcceptMapLoad(): void {
+    localStorage.setItem(MapComponent.LOCAL_STORAGE_CONSENT_KEY, 'true');
+    this.isMapEnabled = true;
+    this.loadMap();
   }
 
   /**

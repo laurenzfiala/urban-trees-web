@@ -448,13 +448,13 @@
       "scroll": "Mehr Infos sind weiter unten"
     },
     "admin": {
-      "title": "Administratorfunktionen",
-      "desc": "Abkürzungen zur Adminkonsole",
-      "edit_link": "Baum konfigurieren"
+      "title": "Admin-Shortcuts",
+      "edit_link": "Baum konfigurieren",
+      "add_new_beacon": "Beacon hinzufügen"
     },
     "edit_tree": {
-      "edit_btn": "Baum-Beschreibung bearbeiten",
-      "add_btn": "Baum-Beschreibung hinzufügen"
+      "edit_btn": "Bearbeiten",
+      "add_label": "Steckbrief hinzufügen"
     }
   },
   "general": {

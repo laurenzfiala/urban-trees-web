@@ -460,13 +460,13 @@
       "scroll": "More info is below"
     },
     "admin": {
-      "title": "Admin-Tools",
-      "desc": "Shortcuts to the admin console",
-      "edit_link": "Edit tree"
+      "title": "Admin-Shortcuts",
+      "edit_link": "Edit tree",
+      "add_new_beacon": "Add beacon"
     },
     "edit_tree": {
-      "edit_btn": "Edit tree description",
-      "add_btn": "Add tree description"
+      "edit_btn": "Edit",
+      "add_label": "Add tree description"
     }
   },
   "general": {

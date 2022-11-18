@@ -12,7 +12,8 @@
       {{'tree.species.' + tree.species.name | lowercase | translate}}
       <div><small class="text-subtle"><em>{{'tree.species.latin.' + tree.species.name | lowercase | translate}}</em></small></div>
     </h1>
-    <div class="location-bar d-flex flex-row align-items-center">
+
+    <div class="tree-bar d-flex flex-row align-items-center text-sm">
       <i class="i i-md i-dark i-location mr-2"></i>
       <div>
         {{tree.location.street}}<br/>
@@ -41,26 +42,54 @@
       </ut-map>
     </div>
 
+    <ng-container *auth="envService.security.rolesAdmin">
+      <hr/>
+      <div class="tree-bar d-flex flex-column flex-sm-row m--1">
+        <div class="d-flex flex-row">
+          <i class="i i-md i-dark i-admin m-1 mr-2"></i>
+          <div class="m-1">
+            {{'tree.admin.title' | translate}}
+          </div>
+        </div>
+        <div class="flex-grow-1"></div>
+        <div class="d-flex flex-row">
+          <button class="btn btn-default link-btn-sm text-center flex-grow-1 flex-basis-0 flex-shrink-0 nowrap m-1"
+                  [routerLink]="['/admin/beacon/manage']"
+                  [queryParams]="{'assocTree': tree.id}">
+            {{'tree.admin.add_new_beacon' | translate}}
+          </button>
+          <button class="btn btn-default link-btn-sm text-center flex-grow-1 flex-basis-0 flex-shrink-0 nowrap m-1"
+                  [routerLink]="['/admin/tree']"
+                  [queryParams]="{'tree': tree.id}">
+            {{'tree.admin.edit_link' | translate}}
+          </button>
+        </div>
+      </div>
+    </ng-container>
+
   </div>
 </section>
 
 <section class="content-cat">
   <div class="container">
 
+    <h1 class="content-cat-heading">
+      Baum-Steckbrief
+
+      <div *auth="envService.security.rolesTreeEditor">
+        <button *ngIf="content && contentViewMode === ViewMode.CONTENT && content?.id"
+                (action)="contentViewMode = ViewMode.EDIT_CONTENT"
+                class="btn btn-outline-primary btn-sm btn-flex ml-2">
+          {{'tree.edit_tree.edit_btn' | translate}}
+        </button>
+      </div>
+    </h1>
+
     <ut-cms-content *ngIf="tree && content"
                     [content]="content"
                     [(viewMode)]="contentViewMode"
                     (contentSave)="content = $event"
                     (reloadContent)="loadTreeContent()"></ut-cms-content>
-
-    <div *auth="envService.security.rolesTreeEditor" class="text-center mt-2">
-      <button *ngIf="contentViewMode === ViewMode.CONTENT"
-              (action)="contentViewMode = ViewMode.EDIT_CONTENT"
-              class="btn btn-default d-inline-flex flex-row align-items-center">
-        <i class="i i-xs i-edit i-black mr-2"></i>
-        {{('tree.edit_tree.' + (content?.id ? 'edit_btn' : 'add_btn')) | translate}}
-      </button>
-    </div>
 
   </div>
 </section>
@@ -79,22 +108,6 @@
         {{'tree.beacon.details.none_attached' | translate}}
       </div>
     </div>
-  </div>
-</section>
-
-<section *auth="envService.security.rolesAdmin" class="content-cat">
-  <div class="container">
-    <h1 class="content-cat-heading">
-      {{'tree.admin.title' | translate}}
-    </h1>
-    <div class="content-cat-text">
-      {{'tree.admin.desc' | translate}}
-    </div>
-    <a class="content-cat-link"
-       [routerLink]="['/admin/tree']"
-       [queryParams]="{'tree': tree.id}">
-      {{'tree.admin.edit_link' | translate}}
-    </a>
   </div>
 </section>
 
