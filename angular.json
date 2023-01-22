@@ -140,5 +140,8 @@
     "@schematics/angular:directive": {
       "prefix": "ut"
     }
+  },
+  "cli": {
+    "analytics": false
   }
 }
