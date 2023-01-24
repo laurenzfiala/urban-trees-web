@@ -1,3 +1,5 @@
+
+import {map} from 'rxjs/operators';
 import {Injectable, Type} from '@angular/core';
 import {HttpClient, HttpErrorResponse, HttpEventType} from '@angular/common/http';
 import {ApiError} from '../../shared/entities/api-error.entity';
@@ -105,8 +107,8 @@ export class ContentService extends AbstractService {
                      errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void): void {
 
     ContentService.LOG.debug('Loading content at ' + contentPath + '...');
-    this.http.get<Array<UserContent>>(this.envService.endpoints.loadContent(contentPath, contentLang))
-      .map(contents => contents && contents.map(c => UserContent.fromObject(c, this.envService)))
+    this.http.get<Array<UserContent>>(this.envService.endpoints.loadContent(contentPath, contentLang)).pipe(
+      map(contents => contents && contents.map(c => UserContent.fromObject(c, this.envService))))
       .subscribe((contents: Array<UserContent>) => {
         ContentService.LOG.debug('Loaded content at ' + contentPath + ' successfully.');
         successCallback(new UserContents(contentPath, contentLang, contents));
@@ -125,8 +127,8 @@ export class ContentService extends AbstractService {
 
     ContentService.LOG.debug('Loading user content history...');
 
-    this.http.get<Array<UserContentMetadata>>(this.envService.endpoints.loadContentUserHistory(this.authService.getUserId(), contentIdPrefix))
-      .map(list => list && list.map(h => UserContentMetadata.fromObject(h, this.envService)))
+    this.http.get<Array<UserContentMetadata>>(this.envService.endpoints.loadContentUserHistory(this.authService.getUserId(), contentIdPrefix)).pipe(
+      map(list => list && list.map(h => UserContentMetadata.fromObject(h, this.envService))))
       .subscribe((h: Array<UserContentMetadata>) => {
         ContentService.LOG.debug('Loaded user content history successfully.');
         successCallback(h);
@@ -200,8 +202,8 @@ export class ContentService extends AbstractService {
     ContentService.LOG.debug('Saving content at ' + contentPath + '...');
     content.sent = new Date();
 
-    this.http.post<UserContent>(url, content.toJSONObject(this.envService))
-      .map(uc => UserContent.fromObject(uc, this.envService))
+    this.http.post<UserContent>(url, content.toJSONObject(this.envService)).pipe(
+      map(uc => UserContent.fromObject(uc, this.envService)))
       .subscribe((uc: UserContent) => {
         ContentService.LOG.debug('Saved content at ' + contentPath + ' successfully.');
         this.content = CmsContent.fromUserContent(uc, this.envService);

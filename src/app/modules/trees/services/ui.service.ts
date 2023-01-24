@@ -1,3 +1,5 @@
+
+import {map} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import {Log} from '../../shared/services/log.service';
 import {EnvironmentService} from '../../shared/services/environment.service';
@@ -31,8 +33,8 @@ export class UIService extends AbstractService {
   public loadSystemStatistics(successCallback: (stats: SystemStatistics) => void,
               errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void): void {
 
-    this.http.get(this.envService.endpoints.systemStatistics)
-      .map(s => s && SystemStatistics.fromObject(s))
+    this.http.get(this.envService.endpoints.systemStatistics).pipe(
+      map(s => s && SystemStatistics.fromObject(s)))
       .subscribe((response: SystemStatistics) => {
         UIService.LOG.debug('Received system stats.');
         successCallback(response);
@@ -53,8 +55,8 @@ export class UIService extends AbstractService {
   public loadMeasurementStatistics(successCallback: (stats: MeasurementStatistics) => void,
               errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void): void {
 
-    this.http.get(this.envService.endpoints.measurementsStatistics)
-      .map(s => s && MeasurementStatistics.fromObject(s))
+    this.http.get(this.envService.endpoints.measurementsStatistics).pipe(
+      map(s => s && MeasurementStatistics.fromObject(s)))
       .subscribe((response: MeasurementStatistics) => {
         UIService.LOG.debug('Received measurement stats.');
         successCallback(response);

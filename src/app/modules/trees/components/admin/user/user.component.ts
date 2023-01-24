@@ -11,7 +11,7 @@ import {SearchResult} from '../../../entities/search-result.entity';
 import {TranslateService} from '@ngx-translate/core';
 import {SubscriptionManagerService} from '../../../services/subscription-manager.service';
 import {takeUntil} from 'rxjs/operators';
-import {Subject} from 'rxjs/Subject';
+import {Subject} from 'rxjs';
 import {AbstractComponent} from '../../../../shared/components/abstract.component';
 
 @Component({

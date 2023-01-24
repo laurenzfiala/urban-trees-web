@@ -4,8 +4,7 @@
  * @author Laurenz Fiala
  * @since 2021/02/11
  */
-import {Subject} from 'rxjs/Subject';
-import {Observable} from 'rxjs/Observable';
+import {Subject, Observable} from 'rxjs';
 
 export class CmsValidationResult {
 

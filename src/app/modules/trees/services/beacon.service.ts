@@ -1,18 +1,11 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
-import {Tree} from '../entities/tree.entity';
 import {ApiError} from '../../shared/entities/api-error.entity';
 import {EnvironmentService} from '../../shared/services/environment.service';
 import {AbstractService} from '../../shared/services/abstract.service';
 import {Log} from '../../shared/services/log.service';
-import {BeaconData} from '../entities/beacon-data.entity';
-import * as moment from 'moment';
-import {City} from '../entities/city.entity';
-import {TreeSpecies} from '../entities/tree-species.entity';
-import {BeaconSettings} from '../entities/beacon-settings.entity';
-import {BeaconDataMode} from '../entities/beacon-data-mode.entity';
 import {BeaconFrontend} from '../entities/beacon-frontend.entity';
-import {Beacon} from '../entities/beacon.entity';
+import {map, timeout} from 'rxjs/operators';
 
 /**
  * Service for backend calls regarding beacons
@@ -43,8 +36,7 @@ export class BeaconService extends AbstractService {
     BeaconService.LOG.debug('Loading beacon ' + beaconId + ' from ' + url + ' ...');
 
     this.http.get<BeaconFrontend>(url)
-      .timeout(this.envService.defaultTimeout)
-      .map(b => BeaconFrontend.fromObject(b))
+      .pipe(timeout(this.envService.defaultTimeout), map(b => BeaconFrontend.fromObject(b)))
       .subscribe((result: BeaconFrontend) => {
         successCallback(result);
       }, (e: any) => {
@@ -68,8 +60,7 @@ export class BeaconService extends AbstractService {
     BeaconService.LOG.debug('Loading beacons from ' + url + ' ...');
 
     this.http.get<Array<BeaconFrontend>>(url)
-      .timeout(this.envService.defaultTimeout)
-      .map(list => list && list.map(b => BeaconFrontend.fromObject(b)))
+      .pipe(timeout(this.envService.defaultTimeout), map(list => list && list.map(b => BeaconFrontend.fromObject(b))))
       .subscribe((results: Array<BeaconFrontend>) => {
         successCallback(results);
       }, (e: any) => {

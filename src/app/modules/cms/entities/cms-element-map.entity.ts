@@ -1,7 +1,6 @@
 import {Type} from '@angular/core';
 import {ToolbarBtn, ToolbarSection} from './toolbar.entity';
-import {PartialObserver} from 'rxjs';
-import {Observable} from 'rxjs/Observable';
+import {PartialObserver, Observable} from 'rxjs';
 
 /**
  * CMS element map that holds the mapping from element names

@@ -1,6 +1,6 @@
-import {Component, ElementRef, EmbeddedViewRef, Input, OnDestroy, OnInit, TemplateRef, ViewChild} from '@angular/core';
-import {interval, Observable, Subscription} from 'rxjs';
-import 'rxjs-compat/add/operator/takeWhile';
+import {Component, Input, OnDestroy, OnInit, TemplateRef, ViewChild} from '@angular/core';
+import {interval, Subscription} from 'rxjs';
+import {takeWhile} from 'rxjs/operators';
 
 @Component({
   selector: 'ut-slideshow',
@@ -63,7 +63,7 @@ export class SlideshowComponent implements OnInit, OnDestroy {
     }
 
     this.nextSlideSubscription = interval(this.intervalMs)
-      .takeWhile(val => !this.internalPause)
+      .pipe(takeWhile(val => !this.internalPause))
       .subscribe(i => {
         this.nextSlide();
       });

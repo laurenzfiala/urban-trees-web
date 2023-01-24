@@ -1,10 +1,12 @@
+
+import {map} from 'rxjs/operators';
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {AbstractService} from '../../shared/services/abstract.service';
 import {EnvironmentService} from '../../shared/services/environment.service';
 import {Announcement} from '../entities/announcement.entity';
 import {Log} from '../../shared/services/log.service';
-import 'rxjs/add/operator/map';
+
 import {ApiError} from '../../shared/entities/api-error.entity';
 
 /**
@@ -34,8 +36,8 @@ export class AnnouncementService extends AbstractService {
       return;
     }
 
-    this.http.get<Array<Announcement>>(this.envService.endpoints.announcements)
-      .map(list => list && list.map(a => Announcement.fromObject(a)))
+    this.http.get<Array<Announcement>>(this.envService.endpoints.announcements).pipe(
+      map(list => list && list.map(a => Announcement.fromObject(a))))
       .subscribe((announcements: Array<Announcement>) => {
       AnnouncementService.LOG.trace('Successfully loaded announcements.');
       AnnouncementService.announcements = announcements;
@@ -55,8 +57,8 @@ export class AnnouncementService extends AbstractService {
   public loadAllAnnouncements(successCallback: (announcements: Array<Announcement>) => void,
                               errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void): void {
 
-    this.http.get<Array<Announcement>>(this.envService.endpoints.allAnnouncements)
-      .map(list => list && list.map(a => Announcement.fromObject(a)))
+    this.http.get<Array<Announcement>>(this.envService.endpoints.allAnnouncements).pipe(
+      map(list => list && list.map(a => Announcement.fromObject(a))))
       .subscribe((announcements: Array<Announcement>) => {
         AnnouncementService.LOG.trace('Successfully loaded all announcements.');
         successCallback(announcements);

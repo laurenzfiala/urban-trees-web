@@ -8,9 +8,7 @@ import {TranslateService} from '@ngx-translate/core';
 import {City} from '../../entities/city.entity';
 import {MapMarker} from '../../interfaces/map-marker.interface';
 import {ActivatedRoute, Router} from '@angular/router';
-import {query} from '@angular/animations';
 import {SearchService} from '../../services/search.service';
-import {delay} from 'rxjs-compat/operator/delay';
 import {EnvironmentService} from '../../../shared/services/environment.service';
 
 @Component({

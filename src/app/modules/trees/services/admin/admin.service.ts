@@ -16,8 +16,8 @@ import {BeaconLogSeverity} from '../../entities/BeaconLogSeverity';
 import {BeaconFrontend} from '../../entities/beacon-frontend.entity';
 import {UserCreation} from '../../entities/user-creation.entity';
 import {SearchResult} from '../../entities/search-result.entity';
-import {Observable} from 'rxjs/Observable';
-import {of} from 'rxjs';
+import {Observable} from 'rxjs';
+import {catchError, map, timeout} from 'rxjs/operators';
 
 /**
  * Service for backend calls on the admin pages.
@@ -48,8 +48,7 @@ export class AdminService extends AbstractService {
     AdminService.LOG.debug('Saving new city to ' + this.envService.endpoints.addCity + ' ...');
 
     this.http.post(this.envService.endpoints.addCity, city)
-      .timeout(this.envService.defaultTimeout)
-      .map(c => City.fromObject(c))
+      .pipe(timeout(this.envService.defaultTimeout), map(c => City.fromObject(c)))
       .subscribe((result: City) => {
         successCallback(result);
       }, (e: any) => {
@@ -72,8 +71,7 @@ export class AdminService extends AbstractService {
     AdminService.LOG.debug('Saving tree to ' + this.envService.endpoints.addTree + ' ...');
 
     this.http.post(this.envService.endpoints.addTree, tree)
-      .timeout(this.envService.defaultTimeout)
-      .map(t => Tree.fromObject(t))
+      .pipe(timeout(this.envService.defaultTimeout), map(t => Tree.fromObject(t)))
       .subscribe((result: Tree) => {
         successCallback(result);
       }, (e: any) => {
@@ -92,8 +90,7 @@ export class AdminService extends AbstractService {
 
     const payload = new UserCreation(templateUser, usernames);
     this.http.put<Array<User>>(this.envService.endpoints.addUsers, payload)
-      .timeout(this.envService.defaultTimeout)
-      .map(r => r && r.map(u => User.fromObject(u)))
+      .pipe(timeout(this.envService.defaultTimeout), map(r => r && r.map(u => User.fromObject(u))))
       .subscribe((createdUsers) => {
         successCallback(createdUsers);
       }, (e: any) => {
@@ -111,7 +108,7 @@ export class AdminService extends AbstractService {
     AdminService.LOG.debug('Saving user to ' + url + ' ...');
 
     this.http.get(url, {responseType: 'text'})
-      .timeout(this.envService.defaultTimeout)
+      .pipe(timeout(this.envService.defaultTimeout))
       .subscribe((response: string) => {
         successCallback(response);
       }, (e: any) => {
@@ -142,8 +139,7 @@ export class AdminService extends AbstractService {
     AdminService.LOG.debug('Saving tree (modified) to ' + this.envService.endpoints.addTree + ' ...');
 
     this.http.post(this.envService.endpoints.modifyTree(tree.id), tree)
-      .timeout(this.envService.defaultTimeout)
-      .map(t => Tree.fromObject(t))
+      .pipe(timeout(this.envService.defaultTimeout), map(t => Tree.fromObject(t)))
       .subscribe((result: Tree) => {
         successCallback(result);
       }, (e: any) => {
@@ -166,8 +162,7 @@ export class AdminService extends AbstractService {
     AdminService.LOG.debug('Saving beacon to ' + this.envService.endpoints.addBeacon + ' ...');
 
     this.http.post(this.envService.endpoints.addBeacon, beacon)
-      .timeout(this.envService.defaultTimeout)
-      .map(b => b && BeaconFrontend.fromObject(b))
+      .pipe(timeout(this.envService.defaultTimeout), map(b => b && BeaconFrontend.fromObject(b)))
       .subscribe((result: BeaconFrontend) => {
         successCallback(result);
       }, (e: any) => {
@@ -191,8 +186,7 @@ export class AdminService extends AbstractService {
     AdminService.LOG.debug('Saving beacon (modified) to ' + url + ' ...');
 
     this.http.post(url, beacon)
-      .timeout(this.envService.defaultTimeout)
-      .map(b => BeaconFrontend.fromObject(b))
+      .pipe(timeout(this.envService.defaultTimeout), map(b => BeaconFrontend.fromObject(b)))
       .subscribe((result: BeaconFrontend) => {
         successCallback(result);
       }, (e: any) => {
@@ -216,7 +210,7 @@ export class AdminService extends AbstractService {
     AdminService.LOG.debug('Deleting beacon - ' +  + ' ...');
 
     this.http.delete(url)
-      .timeout(this.envService.defaultTimeout)
+      .pipe(timeout(this.envService.defaultTimeout))
       .subscribe(() => {
         successCallback();
       }, (e: any) => {
@@ -244,8 +238,7 @@ export class AdminService extends AbstractService {
     AdminService.LOG.debug('Loading beacon logs...');
 
     this.http.get<Array<BeaconLog>>(url)
-      .timeout(this.envService.defaultTimeout)
-      .map(list => list && list.map(l => BeaconLog.fromObject(l)))
+      .pipe(timeout(this.envService.defaultTimeout), map(list => list && list.map(l => BeaconLog.fromObject(l))))
       .subscribe((result: Array<BeaconLog>) => {
         successCallback(result);
       }, (e: any) => {
@@ -263,15 +256,14 @@ export class AdminService extends AbstractService {
     AdminService.LOG.debug('Loading users...');
 
     return this.http.post<SearchResult<Array<User>>>(url, this.searchFiltersToPayload(searchFilters))
-      .timeout(this.envService.defaultTimeout)
-      .map(r => {
+      .pipe(timeout(this.envService.defaultTimeout), map(r => {
         const result = SearchResult.fromObject(r);
         result.result = result.result.map(user => User.fromObject(user));
         return result;
-      }).catch(e => {
+      }), catchError(e => {
         AdminService.LOG.error('Could not load users: ' + e.message, e);
         throw this.safeApiError(e);
-      });
+      }));
 
   }
 
@@ -302,8 +294,7 @@ export class AdminService extends AbstractService {
     AdminService.LOG.debug('Loading all user roles...');
 
     this.http.get<Array<User>>(url)
-      .timeout(this.envService.defaultTimeout)
-      .map(list => list && list.map(r => Role.fromObject(r)))
+      .pipe(timeout(this.envService.defaultTimeout), map(list => list && list.map(r => Role.fromObject(r))))
       .subscribe((result: Array<Role>) => {
         successCallback(result);
       }, (e: any) => {
@@ -324,7 +315,7 @@ export class AdminService extends AbstractService {
     AdminService.LOG.debug('Adding user roles...');
 
     this.http.put(url, roles)
-      .timeout(this.envService.defaultTimeout)
+      .pipe(timeout(this.envService.defaultTimeout))
       .subscribe(() => {
         successCallback();
       }, (e: any) => {
@@ -345,7 +336,7 @@ export class AdminService extends AbstractService {
     AdminService.LOG.debug('Adding user role...');
 
     this.http.put(url, roles)
-      .timeout(this.envService.defaultTimeout)
+      .pipe(timeout(this.envService.defaultTimeout))
       .subscribe(() => {
         successCallback();
       }, (e: any) => {
@@ -365,7 +356,7 @@ export class AdminService extends AbstractService {
     AdminService.LOG.debug('Deleting user ' + user.username + '...');
 
     this.http.delete(url)
-      .timeout(this.envService.defaultTimeout)
+      .pipe(timeout(this.envService.defaultTimeout))
       .subscribe(() => {
         successCallback();
       }, (e: any) => {
@@ -385,7 +376,7 @@ export class AdminService extends AbstractService {
     AdminService.LOG.debug('Expiring credentials of user ' + user.username + '...');
 
     this.http.get(url)
-      .timeout(this.envService.defaultTimeout)
+      .pipe(timeout(this.envService.defaultTimeout))
       .subscribe(() => {
         successCallback();
       }, (e: any) => {
@@ -405,7 +396,7 @@ export class AdminService extends AbstractService {
     AdminService.LOG.debug('Activating user ' + user.username + '...');
 
     this.http.get(url)
-      .timeout(this.envService.defaultTimeout)
+      .pipe(timeout(this.envService.defaultTimeout))
       .subscribe(() => {
         successCallback();
       }, (e: any) => {
@@ -425,7 +416,7 @@ export class AdminService extends AbstractService {
     AdminService.LOG.debug('Inactivating user ' + user.username + '...');
 
     this.http.get(url)
-      .timeout(this.envService.defaultTimeout)
+      .pipe(timeout(this.envService.defaultTimeout))
       .subscribe(() => {
         successCallback();
       }, (e: any) => {
@@ -457,7 +448,7 @@ export class AdminService extends AbstractService {
     this.http.put(url, payload, {headers: new HttpHeaders({
         'Content-Type':  'application/json'
       })})
-      .timeout(this.envService.defaultTimeout)
+      .pipe(timeout(this.envService.defaultTimeout))
       .subscribe(() => {
         successCallback();
       }, (e: any) => {
@@ -477,7 +468,7 @@ export class AdminService extends AbstractService {
     AdminService.LOG.debug('Deleting announcement with id ' + announcmentId + '...');
 
     this.http.delete(url)
-      .timeout(this.envService.defaultTimeout)
+      .pipe(timeout(this.envService.defaultTimeout))
       .subscribe(() => {
         successCallback();
       }, (e: any) => {
@@ -501,8 +492,7 @@ export class AdminService extends AbstractService {
     const payload = Object.assign({}, data);
 
     this.http.post<Array<User>>(url, payload)
-      .timeout(this.envService.bulkTimeout)
-      .map(users => users && users.map(u => User.fromObject(u)))
+      .pipe(timeout(this.envService.bulkTimeout), map(users => users && users.map(u => User.fromObject(u))))
       .subscribe((affectedUsers: Array<User>) => {
         successCallback(affectedUsers);
       }, (e: any) => {

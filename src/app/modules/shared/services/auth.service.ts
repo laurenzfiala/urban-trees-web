@@ -1,3 +1,5 @@
+
+import {map} from 'rxjs/operators';
 import {Inject, Injectable, NgZone} from '@angular/core';
 import {Log} from './log.service';
 import {EnvironmentService} from './environment.service';
@@ -235,8 +237,8 @@ export class AuthService extends AbstractService {
                                      errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void): void {
 
     AuthService.LOG.debug('Loading granting users for permission ' + permission + '...');
-    this.http.get<Array<UserIdentity>>(this.envService.endpoints.usersGrantingPermission(permission))
-      .map(list => list && list.map(u => UserIdentity.fromObject(u)))
+    this.http.get<Array<UserIdentity>>(this.envService.endpoints.usersGrantingPermission(permission)).pipe(
+      map(list => list && list.map(u => UserIdentity.fromObject(u))))
       .subscribe((grantingUsers: Array<UserIdentity>) => {
         AuthService.LOG.debug('Loaded granting users successfully.');
         successCallback(new Set<UserIdentity>(grantingUsers));
@@ -269,8 +271,8 @@ export class AuthService extends AbstractService {
       permission
     );
 
-    this.http.post<UserIdentity>(this.envService.endpoints.addUserPermission, payload)
-      .map(u => u && UserIdentity.fromObject(u))
+    this.http.post<UserIdentity>(this.envService.endpoints.addUserPermission, payload).pipe(
+      map(u => u && UserIdentity.fromObject(u)))
       .subscribe((result: UserIdentity) => {
         AuthService.LOG.debug('Requested permission ' + permission + ' successfully.');
         successCallback(result);

@@ -6,7 +6,7 @@
  * @since 2021/02/11
  */
 import {CmsValidationResult} from './cms-validation-result.entity';
-import {Observable} from 'rxjs/Observable';
+import {Observable} from 'rxjs';
 import {Async2Pipe} from '../../shared/pipes/async2.pipe';
 import {TranslateService} from '@ngx-translate/core';
 

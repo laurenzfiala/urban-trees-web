@@ -11,7 +11,8 @@ import {City} from '../entities/city.entity';
 import {TreeSpecies} from '../entities/tree-species.entity';
 import {BeaconSettings} from '../entities/beacon-settings.entity';
 import {BeaconDataMode} from '../entities/beacon-data-mode.entity';
-import {Observable} from 'rxjs/Observable';
+import {Observable} from 'rxjs';
+import {map, timeout} from 'rxjs/operators';
 
 /**
  * Service for backend calls on the tree-list
@@ -41,8 +42,7 @@ export class TreeService extends AbstractService {
     TreeService.LOG.debug('Loading available trees from ' + this.envService.endpoints.allTrees + ' ...');
 
     this.http.get<Array<Tree>>(this.envService.endpoints.allTrees)
-      .timeout(this.envService.defaultTimeout)
-      .map(list => list && list.map(d => Tree.fromObject(d)))
+      .pipe(timeout(this.envService.defaultTimeout), map(list => list && list.map(d => Tree.fromObject(d))))
       .subscribe((results: Array<Tree>) => {
         successCallback(results);
       }, (e: any) => {
@@ -90,8 +90,7 @@ export class TreeService extends AbstractService {
     TreeService.LOG.debug('Loading tree ' + treeId + ' from ' + url + ' ...');
 
     return this.http.get<Tree>(url)
-      .timeout(this.envService.defaultTimeout)
-      .map(r => r && Tree.fromObject(r));
+      .pipe(timeout(this.envService.defaultTimeout), map(r => r && Tree.fromObject(r)));
 
   }
 
@@ -128,8 +127,7 @@ export class TreeService extends AbstractService {
     TreeService.LOG.debug('Loading beacon data for beacon id ' + beaconId + ' from ' + url + ' ...');
 
     this.http.get<Array<BeaconData>>(url)
-      .timeout(this.envService.defaultTimeout)
-      .map(list => list && list.map(d => BeaconData.fromObject(d)))
+      .pipe(timeout(this.envService.defaultTimeout), map(list => list && list.map(d => BeaconData.fromObject(d))))
       .subscribe((results: Array<BeaconData>) => {
         successCallback(results);
       }, (e: any) => {
@@ -156,8 +154,7 @@ export class TreeService extends AbstractService {
     TreeService.LOG.debug('Loading beacon settings for beacon id ' + beaconId + ' from ' + url + ' ...');
 
     this.http.get<BeaconSettings>(url)
-      .timeout(this.envService.defaultTimeout)
-      .map(s => BeaconSettings.fromObject(s))
+      .pipe(timeout(this.envService.defaultTimeout), map(s => BeaconSettings.fromObject(s)))
       .subscribe((results: BeaconSettings) => {
         successCallback(results);
       }, (e: any) => {
@@ -180,7 +177,7 @@ export class TreeService extends AbstractService {
     TreeService.LOG.debug('Loading cities from ' + this.envService.endpoints.cities + ' ...');
 
     this.http.get<Array<City>>(this.envService.endpoints.cities)
-      .timeout(this.envService.defaultTimeout)
+      .pipe(timeout(this.envService.defaultTimeout))
       .subscribe((results: Array<City>) => {
         successCallback(results);
       }, (e: any) => {
@@ -203,7 +200,7 @@ export class TreeService extends AbstractService {
     TreeService.LOG.debug('Loading species from ' + this.envService.endpoints.species + ' ...');
 
     this.http.get<Array<TreeSpecies>>(this.envService.endpoints.species)
-      .timeout(this.envService.defaultTimeout)
+      .pipe(timeout(this.envService.defaultTimeout))
       .subscribe((results: Array<TreeSpecies>) => {
         successCallback(results);
       }, (e: any) => {

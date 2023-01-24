@@ -1,9 +1,11 @@
+
+import {map} from 'rxjs/operators';
 import {Injectable} from '@angular/core';
 import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {AbstractService} from '../../shared/services/abstract.service';
 import {EnvironmentService} from '../../shared/services/environment.service';
 import {Log} from '../../shared/services/log.service';
-import 'rxjs/add/operator/map';
+
 import {ApiError} from '../../shared/entities/api-error.entity';
 import {Report} from '../entities/report.entity';
 import {ReportFrontend} from '../entities/report-frontend.entity';
@@ -30,8 +32,8 @@ export class MessagesService extends AbstractService {
   public loadReports(successCallback: (reports: Array<ReportFrontend>) => void,
                      errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void): void {
 
-    this.http.get<Array<Report>>(this.envService.endpoints.allReports)
-      .map(list => list && list.map(r => ReportFrontend.fromObject(r, this.envService)))
+    this.http.get<Array<Report>>(this.envService.endpoints.allReports).pipe(
+      map(list => list && list.map(r => ReportFrontend.fromObject(r, this.envService))))
       .subscribe((reports: Array<ReportFrontend>) => {
         MessagesService.LOG.trace('Successfully loaded all reports.');
         successCallback(reports);

@@ -1,8 +1,10 @@
+
+import {catchError} from 'rxjs/operators';
 import {Injectable} from '@angular/core';
 import {HttpErrorResponse, HttpEvent, HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
 import {Observable} from 'rxjs/observable';
-import {_throw} from 'rxjs/observable/throw';
-import 'rxjs/add/operator/catch';
+import {throwError as _throw} from 'rxjs';
+
 import {Router, RouterStateSnapshot} from '@angular/router';
 import {Log} from '../services/log.service';
 import {AuthService} from '../services/auth.service';
@@ -37,8 +39,8 @@ export class AuthInterceptor implements HttpInterceptor {
 
     AuthInterceptor.LOG.trace('Added auth headers to http request.');
 
-    return next.handle(newRequest)
-      .catch(error => {
+    return next.handle(newRequest).pipe(
+      catchError(error => {
 
         const hasAuthRequirement = error.headers.get(ProjectLoginComponent.HTTP_HEADER_AUTH_REQUIRES_KEY);
         if (error instanceof HttpErrorResponse && !hasAuthRequirement && error.status === 403 && !this.isExcludedRoute(routerState)) {
@@ -48,7 +50,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
         return _throw(error);
 
-      }) as any;
+      })) as any;
 
   }
 

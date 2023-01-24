@@ -30,7 +30,7 @@ import {Level} from '@tiptap/extension-heading/src/heading';
 import CmsTextLinkComponentExtension from '../../components/cms-text-link/cms-text-link.extension';
 import {HardBreak} from '@tiptap/extension-hard-break';
 import {TranslateService} from '@ngx-translate/core';
-import {Observable} from 'rxjs/Observable';
+import {Observable} from 'rxjs';
 import {TooltipDirective} from 'ngx-bootstrap/tooltip';
 import {once} from 'events';
 import {Async2Pipe} from '../../../shared/pipes/async2.pipe';

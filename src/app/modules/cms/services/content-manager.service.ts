@@ -1,24 +1,16 @@
-import {Injectable, Type} from '@angular/core';
-import {HttpClient, HttpErrorResponse, HttpEventType} from '@angular/common/http';
+import {Injectable} from '@angular/core';
+import {HttpClient, HttpErrorResponse} from '@angular/common/http';
 import {ApiError} from '../../shared/entities/api-error.entity';
 import {AbstractService} from '../../shared/services/abstract.service';
 import {Log} from '../../shared/services/log.service';
 import {EnvironmentService} from '../../shared/services/environment.service';
-import {CmsElementMap} from '../entities/cms-element-map.entity';
-import {CmsElement} from '../interfaces/cms-element.interface';
-import {CmsComponent} from '../interfaces/cms-component.interface';
-import {ElementType} from '../enums/cms-element-type.enum';
-import {CmsLayout} from '../interfaces/cms-layout.interface';
-import {BehaviorSubject, Observable, Subject} from 'rxjs';
 import {AuthService} from '../../shared/services/auth.service';
-import {CmsContentContextRef} from '../entities/cms-content-context-ref.entity';
-import {CmsContent} from '../entities/cms-content.entity';
 import {UserContent} from '../entities/user-content.entity';
 import {UserContentMetadata} from '../entities/user-content-metadata.entity';
-import {ViewMode} from '../enums/cms-layout-view-mode.enum';
 import {UserContentManagerAccess} from '../entities/user-content-manager-access.entity';
 import {UserContentAccess} from '../entities/user-content-access.entity';
 import {UserContentStatus} from '../entities/user-content-status.entity';
+import {map} from 'rxjs/operators';
 
 /**
  * Handles loading and approving of CMS content for the ContentManagerComponent.
@@ -51,7 +43,7 @@ export class ContentManagerService extends AbstractService {
     let url = this.envService.endpoints.managerContentAccessViewable(pathExp);
     ContentManagerService.LOG.debug('Loading approvable content access at ' + url + '...');
     this.http.get<Array<UserContentManagerAccess>>(url)
-      .map(list => list && list.map(a => UserContentManagerAccess.fromObject(a, this.envService)))
+      .pipe(map(list => list && list.map(a => UserContentManagerAccess.fromObject(a, this.envService))))
       .subscribe((accessList: Array<UserContentManagerAccess>) => {
         ContentManagerService.LOG.debug('Loaded approvable content access at ' + url + ' successfully.');
         successCallback(accessList);
@@ -77,7 +69,7 @@ export class ContentManagerService extends AbstractService {
     let url = this.envService.endpoints.managerContentAccessApprovable(pathExp);
     ContentManagerService.LOG.debug('Loading viewable content access at ' + url + '...');
     this.http.get<Array<UserContentManagerAccess>>(url)
-      .map(list => list && list.map(a => UserContentManagerAccess.fromObject(a, this.envService)))
+      .pipe(map(list => list && list.map(a => UserContentManagerAccess.fromObject(a, this.envService))))
       .subscribe((accessList: Array<UserContentManagerAccess>) => {
         ContentManagerService.LOG.debug('Loaded viewable content access at ' + url + ' successfully.');
         successCallback(accessList);
@@ -105,7 +97,7 @@ export class ContentManagerService extends AbstractService {
     let url = this.envService.endpoints.managerContentViewable(access.id);
     ContentManagerService.LOG.debug('Loading viewable content at ' + url + '...');
     this.http.get<Array<UserContentManagerAccess>>(url)
-      .map(list => list && list.map(a => UserContentMetadata.fromObject(a, this.envService)))
+      .pipe(map(list => list && list.map(a => UserContentMetadata.fromObject(a, this.envService))))
       .subscribe((contentList: Array<UserContentMetadata>) => {
         ContentManagerService.LOG.debug('Loaded viewable content at ' + url + ' successfully.');
         successCallback(contentList);
@@ -133,7 +125,7 @@ export class ContentManagerService extends AbstractService {
     let url = this.envService.endpoints.managerContentApprovable(access.id);
     ContentManagerService.LOG.debug('Loading approvable content at ' + url + '...');
     this.http.get<Array<UserContentManagerAccess>>(url)
-      .map(list => list && list.map(a => UserContentMetadata.fromObject(a, this.envService)))
+      .pipe(map(list => list && list.map(a => UserContentMetadata.fromObject(a, this.envService))))
       .subscribe((contentList: Array<UserContentMetadata>) => {
         ContentManagerService.LOG.debug('Loaded approvable content at ' + url + ' successfully.');
         successCallback(contentList);
@@ -159,7 +151,7 @@ export class ContentManagerService extends AbstractService {
     let url = this.envService.endpoints.managerContent(contentUid);
     ContentManagerService.LOG.debug('Loading approvable content at ' + url + '...');
     this.http.get<Array<UserContentManagerAccess>>(url)
-      .map(c => UserContent.fromObject(c, this.envService))
+      .pipe(map(c => UserContent.fromObject(c, this.envService)))
       .subscribe((content: UserContent) => {
         ContentManagerService.LOG.debug('Loaded content at ' + url + ' successfully.');
         successCallback(content);
@@ -179,7 +171,7 @@ export class ContentManagerService extends AbstractService {
     let url = this.envService.endpoints.managerApproveContent(contentUid);
     ContentManagerService.LOG.debug('Approving content at ' + url + '...');
     this.http.post<UserContentStatus>(url, {})
-      .map(s => UserContentStatus[s])
+      .pipe(map(s => UserContentStatus[s]))
       .subscribe((status: UserContentStatus) => {
         ContentManagerService.LOG.debug('Approved content at ' + url + ' successfully.');
         successCallback(status);
@@ -199,7 +191,7 @@ export class ContentManagerService extends AbstractService {
     let url = this.envService.endpoints.managerDenyContent(contentUid);
     ContentManagerService.LOG.debug('Denying content at ' + url + '...');
     this.http.post<UserContentStatus>(url, {})
-      .map(s => UserContentStatus[s])
+      .pipe(map(s => UserContentStatus[s]))
       .subscribe((status: UserContentStatus) => {
         ContentManagerService.LOG.debug('Denying content at ' + url + ' successfully.');
         successCallback(status);

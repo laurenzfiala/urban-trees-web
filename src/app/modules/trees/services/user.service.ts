@@ -10,6 +10,7 @@ import {interval} from 'rxjs';
 import {SubscriptionManagerService} from './subscription-manager.service';
 import {AuthService} from '../../shared/services/auth.service';
 import {Report} from '../entities/report.entity';
+import {map, timeout} from 'rxjs/operators';
 
 /**
  * Service for user functionality.
@@ -47,8 +48,7 @@ export class UserService extends AbstractService implements OnDestroy {
               errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void): void {
 
     this.http.get(this.envService.endpoints.userAchievements)
-      .timeout(this.envService.defaultTimeout)
-      .map(a => a && UserAchievements.fromObject(a))
+      .pipe(timeout(this.envService.defaultTimeout), map(a => a && UserAchievements.fromObject(a)))
       .subscribe((response: UserAchievements) => {
         UserService.LOG.debug('Received user achievements.');
         successCallback(response);
@@ -70,8 +70,7 @@ export class UserService extends AbstractService implements OnDestroy {
               errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void): void {
 
     this.http.get(this.envService.endpoints.userData)
-      .timeout(this.envService.defaultTimeout)
-      .map(a => a && UserData.fromObject(a))
+      .pipe(timeout(this.envService.defaultTimeout), map(a => a && UserData.fromObject(a)))
       .subscribe((response: UserData) => {
         UserService.LOG.debug('Received user data.');
         successCallback(response);
@@ -136,7 +135,7 @@ export class UserService extends AbstractService implements OnDestroy {
               errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void): void {
 
     this.http.delete(this.envService.endpoints.userDeleteAccount)
-      .timeout(this.envService.defaultTimeout)
+      .pipe(timeout(this.envService.defaultTimeout))
       .subscribe(() => {
         UserService.LOG.info('Successfully deleted user account.');
         successCallback();
@@ -157,8 +156,7 @@ export class UserService extends AbstractService implements OnDestroy {
                      errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void): void {
 
     this.http.get<Array<Report>>(this.envService.endpoints.userReport)
-      .timeout(this.envService.defaultTimeout)
-      .map(list => list && list.map(r => Report.fromObject(r, this.envService)))
+      .pipe(timeout(this.envService.defaultTimeout), map(list => list && list.map(r => Report.fromObject(r, this.envService))))
       .subscribe((results: Array<Report>) => {
         UserService.LOG.debug('Successfully loaded user reports.');
         successCallback(results);
@@ -180,7 +178,7 @@ export class UserService extends AbstractService implements OnDestroy {
                     errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void): void {
 
     this.http.put(this.envService.endpoints.userReport, report)
-      .timeout(this.envService.defaultTimeout)
+      .pipe(timeout(this.envService.defaultTimeout))
       .subscribe(() => {
         UserService.LOG.info('Successfully sent report.');
         successCallback();

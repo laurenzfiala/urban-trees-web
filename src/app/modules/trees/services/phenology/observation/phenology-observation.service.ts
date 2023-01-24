@@ -1,3 +1,5 @@
+
+import {map, timeout} from 'rxjs/operators';
 import {Injectable} from '@angular/core';
 import {PhenologyDatasetFrontend} from '../../../entities/phenology-dataset-frontend.entity';
 import {Image} from '../../../entities/image.entity';
@@ -6,11 +8,10 @@ import {EnvironmentService} from '../../../../shared/services/environment.servic
 import {Log} from '../../../../shared/services/log.service';
 import {PhenologyObservationTypeFrontend} from '../../../entities/phenology-observation-type-frontend.entity';
 import {ActivatedRoute, Router} from '@angular/router';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/timeout';
+
+
 import {PhenologyDataset} from '../../../entities/phenology-dataset.entity';
-import {Observable} from 'rxjs/Observable';
-import {Subject} from 'rxjs/Subject';
+import {Observable, Subject} from 'rxjs';
 import {ApiError} from '../../../../shared/entities/api-error.entity';
 import {SubscriptionManagerService} from '../../subscription-manager.service';
 import {TreeFrontend} from '../../../entities/tree-frontend.entity';
@@ -81,9 +82,9 @@ export class PhenologyObservationService extends AbstractService {
                          successCallback: (types: Array<PhenologyDatasetWithTree>) => void,
                          errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void): void {
 
-    this.http.get<Array<PhenologyDataset>>(this.envService.endpoints.phenologyHistory(userId))
-      .timeout(this.envService.defaultTimeout)
-      .map(value => value.map(element => PhenologyDatasetWithTree.fromObject(element)))
+    this.http.get<Array<PhenologyDataset>>(this.envService.endpoints.phenologyHistory(userId)).pipe(
+      timeout(this.envService.defaultTimeout),
+      map(value => value.map(element => PhenologyDatasetWithTree.fromObject(element))),)
       .subscribe((history: Array<PhenologyDatasetWithTree>) => {
         successCallback(history);
       }, (e: any) => {
@@ -113,9 +114,9 @@ export class PhenologyObservationService extends AbstractService {
     this.observationSpec = new Array<PhenologyObservationTypeFrontend>();
     this.observationSpecSpeciesId = selectedSpeciesId;
 
-    this.http.get<Array<PhenologyObservationTypeFrontend>>(this.envService.endpoints.getPhenologySpec(selectedSpeciesId))
-      .timeout(this.envService.defaultTimeout)
-      .map(value => value.map(element => PhenologyObservationTypeFrontend.fromObject(element)))
+    this.http.get<Array<PhenologyObservationTypeFrontend>>(this.envService.endpoints.getPhenologySpec(selectedSpeciesId)).pipe(
+      timeout(this.envService.defaultTimeout),
+      map(value => value.map(element => PhenologyObservationTypeFrontend.fromObject(element))),)
       .subscribe((types: Array<PhenologyObservationTypeFrontend>) => {
         this.observationSpec = types;
         successCallback(types);
@@ -137,9 +138,9 @@ export class PhenologyObservationService extends AbstractService {
   public loadAllPhenologyObservationTypes(successCallback: (types: Array<PhenologyObservationTypeFrontend>) => void,
                                           errorCallback?: (error: HttpErrorResponse, apiError?: ApiError) => void): void {
 
-    this.http.get<Array<PhenologyObservationTypeFrontend>>(this.envService.endpoints.phenologyObservationTypes)
-      .timeout(this.envService.defaultTimeout)
-      .map(value => value && value.map(element => PhenologyObservationTypeFrontend.fromObject(element)))
+    this.http.get<Array<PhenologyObservationTypeFrontend>>(this.envService.endpoints.phenologyObservationTypes).pipe(
+      timeout(this.envService.defaultTimeout),
+      map(value => value && value.map(element => PhenologyObservationTypeFrontend.fromObject(element))),)
       .subscribe((types: Array<PhenologyObservationTypeFrontend>) => {
         successCallback(types);
       }, (e: any) => {
@@ -165,9 +166,9 @@ export class PhenologyObservationService extends AbstractService {
 
     this.images[resultId] = new Image(0);
     let url = this.envService.endpoints.getPhenologyObservationResultImg(selectedTreeSpeciesId, resultId);
-    this.http.get<Image>(url)
-      .timeout(this.envService.defaultTimeout)
-      .map(r => r && Image.fromObject(r))
+    this.http.get<Image>(url).pipe(
+      timeout(this.envService.defaultTimeout),
+      map(r => r && Image.fromObject(r)),)
       .subscribe((image: Image) => {
       image.encodedImage = 'data:image/jpeg;base64,' + image.encodedImage;
       this.images[resultId] = image;
@@ -194,9 +195,9 @@ export class PhenologyObservationService extends AbstractService {
     this.dataset.treeId = this.selectedTree.id;
 
     let path = this.envService.endpoints.getPhenologyDatasetSubmission(this.dataset.treeId);
-    this.http.post(path, this.dataset.apply(this.envService.outputDateFormat))
-      .timeout(this.envService.defaultTimeout)
-      .map(value => PhenologyDataset.fromObject(value))
+    this.http.post(path, this.dataset.apply(this.envService.outputDateFormat)).pipe(
+      timeout(this.envService.defaultTimeout),
+      map(value => PhenologyDataset.fromObject(value)),)
       .subscribe((result: PhenologyDataset) => {
       PhenologyObservationService.LOG.info('Successfully submitted phenology observation dataset.');
       successCallback(result.id);
