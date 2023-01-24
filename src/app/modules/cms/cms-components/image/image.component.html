@@ -1,7 +1,7 @@
 <div class="cms-component position-relative w-100 h-100">
   <div *ngIf="!hasViewMode(ViewMode.CONTENT); else viewContent"
        [tooltip]="validationErrorTooltipTemplate"
-       [tooltipIsOpen]="validationResults.hasHighlighted() && hasViewMode(ViewMode.EDIT_CONTENT)"
+       [isOpen]="validationResults.hasHighlighted() && hasViewMode(ViewMode.EDIT_CONTENT)"
        [adaptivePosition]="false"
        placement="top"
        triggers=""

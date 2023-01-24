@@ -2,7 +2,7 @@
   <div *ngIf="!hasViewMode(ViewMode.CONTENT)"
        class="cms-file-container custom-file"
        [tooltip]="validationErrorTooltipTemplate"
-       [tooltipIsOpen]="validationResults.hasHighlighted() && hasViewMode(ViewMode.EDIT_CONTENT)"
+       [isOpen]="validationResults.hasHighlighted() && hasViewMode(ViewMode.EDIT_CONTENT)"
        [adaptivePosition]="false"
        placement="top"
        triggers=""

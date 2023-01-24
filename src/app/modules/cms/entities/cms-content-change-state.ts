@@ -7,8 +7,6 @@
 import {Stack} from './stack.entity';
 import {CmsContentChange} from './cms-content-change';
 import {CmsContent} from './cms-content.entity';
-import {UserContent} from './user-content.entity';
-import {UserContents} from './user-contents.entity';
 
 export class CmsContentChangeState {
 
@@ -33,7 +31,7 @@ export class CmsContentChangeState {
   /**
    * Stores the last sent cms content.
    */
-  public lastSentContent: Date;
+  public lastSentContent: CmsContent;
 
   /**
    * Whether the displayed content has any untracked change not yet

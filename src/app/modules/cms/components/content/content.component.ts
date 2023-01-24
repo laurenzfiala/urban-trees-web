@@ -323,11 +323,11 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, OnDes
                             publish: boolean = false): Promise<CmsContent> {
 
     const now = Date.now();
-    const lastSentContent = this.changeConfig.lastSentContent;
-    if (!force && lastSentContent?.getTime() > now - this.envService.contentSaveDebounceMs) {
+    const lastSentContentTime = this.changeConfig.lastSentContent?.sent?.getTime();
+    if (!force && lastSentContentTime > now - this.envService.contentSaveDebounceMs) {
       ContentComponent.LOG.trace('Saving is not yet allowed.');
       if (this.saveTimeoutId === 0) {
-        const saveWaitMs = this.envService.contentSaveDebounceMs - now + lastSentContent.getTime();
+        const saveWaitMs = this.envService.contentSaveDebounceMs - now + lastSentContentTime;
         await new Promise((resolve, reject) => {
           this.saveTimeoutId = window.setTimeout(resolve, saveWaitMs);
           ContentComponent.LOG.trace('Deferred save for ' + saveWaitMs / 1000 + 's using timeout handle ' + this.saveTimeoutId);
@@ -338,7 +338,7 @@ export class ContentComponent extends AbstractCmsLayout implements OnInit, OnDes
       }
     }
 
-    let content;
+    let content: CmsContent | undefined;
     let contentChange;
     if (this.changeConfig.hasUntrackedChange) {
       content = this.serializationService.serializeContent(this.content, ...this.elements);

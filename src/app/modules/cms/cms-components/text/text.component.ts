@@ -32,8 +32,7 @@ import {HardBreak} from '@tiptap/extension-hard-break';
 import {TranslateService} from '@ngx-translate/core';
 import {Observable} from 'rxjs';
 import {TooltipDirective} from 'ngx-bootstrap/tooltip';
-import {once} from 'events';
-import {Async2Pipe} from '../../../shared/pipes/async2.pipe';
+import {ViewMode} from '../../enums/cms-layout-view-mode.enum';
 
 @Component({
   selector: 'ut-cms-text',
@@ -86,7 +85,7 @@ export class TextComponent extends AbstractCmsComponent implements OnInit, After
       }
     },
     onFocus: () => this.focus(),
-    onUpdate: () => this.onUpdate(),
+    onUpdate: () => this.onEditorUpdate(),
     onSelectionUpdate: () => this.onSelectionchange()
   });
 
@@ -119,7 +118,7 @@ export class TextComponent extends AbstractCmsComponent implements OnInit, After
   }
 
   public async deserialize(serialized: any): Promise<void> {
-    const state = serialized;
+    const state: {text: string} = serialized;
     this.text = state.text;
     this.update();
   }
@@ -134,13 +133,16 @@ export class TextComponent extends AbstractCmsComponent implements OnInit, After
     return this.constructor.name;
   }
 
-  public onUpdate() {
-    this.text = this.editor.getHTML();
+  public onEditorUpdate() {
+    const editorHTML = this.editor.getHTML();
+    if (this.hasViewMode(ViewMode.EDIT_CONTENT) && this.text !== editorHTML) {
+      this.text = editorHTML;
+      this.changed();
+    }
     if (this.validationResults.hasErrors() && this.validationResults.hasHighlighted()) {
       this.validate().highlight();
       this.cdRef.detectChanges();
     }
-    this.changed();
   }
 
   public getToolbarContextual(): ToolbarSection<ToolbarElement> {
