@@ -4,7 +4,7 @@
     <h1 class="content-cat-heading">
       Die digitale Methodenbox
 
-      <ng-container *auth="envService.security.rolesTeacher">
+      <ng-container *auth="envService.security.rolesAdmin">
         <button *ngIf="content && contentViewMode === ViewMode.CONTENT"
                 (action)="contentViewMode = ViewMode.EDIT_CONTENT"
                 class="btn btn-outline-primary btn-sm btn-flex ml-2">

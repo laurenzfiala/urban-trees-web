@@ -77,7 +77,7 @@
       Baum-Steckbrief
 
       <div *auth="envService.security.rolesTreeEditor">
-        <button *ngIf="content && contentViewMode === ViewMode.CONTENT && content?.id"
+        <button *ngIf="content && contentViewMode === ViewMode.CONTENT"
                 (action)="contentViewMode = ViewMode.EDIT_CONTENT"
                 class="btn btn-outline-primary btn-sm btn-flex ml-2">
           {{'tree.edit_tree.edit_btn' | translate}}
