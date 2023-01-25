@@ -7,8 +7,8 @@ export const environment = {
 
   production:                         true,
 
-  webHost:                            'https://urban-tree-climate1.sbg.ac.at',
-  host:                               'https://urban-tree-climate1.sbg.ac.at/api',
+  webHost:                            'https://cobs.laurenz.dev',
+  host:                               'https://cobs.laurenz.dev/api',
   mapHost:                            'http://urban-tree-climate.sbg.ac.at:80',
 
   endpoints: {
